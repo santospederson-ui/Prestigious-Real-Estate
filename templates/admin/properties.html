@@ -1,65 +1,324 @@
 {% extends "base.html" %}
 
-
 {% block title %}
 Manage Properties | Admin
 {% endblock %}
 
 
-
 {% block content %}
 
+<style>
 
-<section class="admin-form-section">
+.manage-page{
+    padding:40px 0;
+    background:#f7f8fa;
+}
+
+
+.manage-card{
+
+    background:white;
+    border-radius:16px;
+    padding:35px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+
+.manage-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+
+}
+
+
+.manage-header h1{
+
+    color:#1F2A44;
+    font-size:30px;
+    margin-bottom:5px;
+
+}
+
+
+.manage-header p{
+
+    color:#777;
+
+}
+
+
+
+/* FILTER */
+
+
+.property-filter{
+
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+
+}
+
+
+.property-filter a{
+
+    padding:10px 20px;
+    border-radius:25px;
+    text-decoration:none;
+    background:#8A1538;
+    color:white;
+    font-size:14px;
+    font-weight:600;
+
+}
+
+
+.property-filter a:hover{
+
+    background:#1F2A44;
+
+}
+
+
+
+/* TABLE */
+
+
+.table-wrapper{
+
+    overflow-x:auto;
+
+}
+
+
+.property-table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+
+.property-table th{
+
+    background:#f1f3f5;
+    padding:15px;
+    text-align:left;
+    color:#1F2A44;
+    font-size:14px;
+
+}
+
+
+
+.property-table td{
+
+    padding:15px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+
+}
+
+
+.property-table tr:hover{
+
+    background:#fafafa;
+
+}
+
+
+
+/* IMAGE */
+
+
+.property-thumb{
+
+    width:90px;
+    height:70px;
+    object-fit:cover;
+    border-radius:10px;
+
+}
+
+
+
+/* STATUS */
+
+
+.status{
+
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+
+}
+
+
+.status.Available{
+
+    background:#d4edda;
+    color:#155724;
+
+}
+
+
+.status.Sold{
+
+    background:#f8d7da;
+    color:#721c24;
+
+}
+
+
+.status.Rented{
+
+    background:#fff3cd;
+    color:#856404;
+
+}
+
+
+
+/* BUTTONS */
+
+
+.action-btn{
+
+    padding:8px 15px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+
+.edit{
+
+    background:#1F2A44;
+    color:white;
+
+}
+
+
+.delete{
+
+    background:#8A1538;
+    color:white;
+
+}
+
+
+
+.action-btn:hover{
+
+    opacity:.85;
+
+}
+
+
+
+/* PAGINATION */
+
+
+.pagination{
+
+    margin-top:30px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    align-items:center;
+
+}
+
+
+.pagination a{
+
+    padding:8px 18px;
+    background:#8A1538;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+
+}
+
+
+
+@media(max-width:768px){
+
+.manage-card{
+
+padding:20px;
+
+}
+
+
+.manage-header h1{
+
+font-size:24px;
+
+}
+
+
+}
+
+</style>
+
+
+
+<section class="manage-page">
+
 
 <div class="container">
 
 
-<div class="admin-form-card">
+<div class="manage-card">
 
 
-<div class="form-header">
+
+<div class="manage-header">
+
+<div>
 
 <h1>
 Manage Properties
 </h1>
 
 <p>
-View and manage Prestigious Real Estate listings
+View, edit and maintain Prestigious Real Estate listings.
 </p>
 
 </div>
 
 
-
-<!-- FILTER BUTTONS -->
-
-<div style="margin-bottom:30px;">
+</div>
 
 
-<a href="{{ url_for('manage_properties') }}"
-class="view-btn">
 
+
+
+<div class="property-filter">
+
+
+<a href="{{ url_for('manage_properties') }}">
 All Properties
-
 </a>
 
 
-
-<a href="{{ url_for('manage_properties', purpose='Rent') }}"
-class="view-btn">
-
-Rental Properties
-
+<a href="{{ url_for('manage_properties', purpose='Rent') }}">
+Rental
 </a>
 
 
-
-<a href="{{ url_for('manage_properties', purpose='Sale') }}"
-class="view-btn">
-
-Properties For Sale
-
+<a href="{{ url_for('manage_properties', purpose='Sale') }}">
+Sale
 </a>
 
 
@@ -69,6 +328,8 @@ Properties For Sale
 
 
 
+
+<div class="table-wrapper">
 
 
 <table class="property-table">
@@ -82,26 +343,21 @@ Properties For Sale
 Image
 </th>
 
-
 <th>
 Property
 </th>
-
 
 <th>
 Location
 </th>
 
-
 <th>
 Price
 </th>
 
-
 <th>
 Status
 </th>
-
 
 <th>
 Action
@@ -110,16 +366,12 @@ Action
 
 </tr>
 
-
 </thead>
 
 
 
-
-
-
-
 <tbody>
+
 
 
 {% for item in properties %}
@@ -130,18 +382,20 @@ Action
 
 <td>
 
+
 {% if item.main_image %}
+
 
 <img
 src="{{ url_for('static',
 filename='uploads/properties/' + item.main_image) }}"
-class="table-image">
+class="property-thumb">
+
 
 {% endif %}
 
+
 </td>
-
-
 
 
 
@@ -158,9 +412,8 @@ class="table-image">
 {{ item.property_type }}
 </small>
 
+
 </td>
-
-
 
 
 
@@ -170,9 +423,6 @@ class="table-image">
 📍 {{ item.location }}
 
 </td>
-
-
-
 
 
 
@@ -191,34 +441,36 @@ QAR {{ "{:,.0f}".format(item.price or 0) }}
 
 
 
-
-
-
 <td>
 
+<span class="status {{ item.status }}">
+
 {{ item.status }}
+
+</span>
+
 
 </td>
 
 
 
 
-
-
-
 <td>
 
 
-<a href="{{ url_for('edit_property', id=item.id) }}"
-class="edit-btn">
+<a
+href="{{ url_for('edit_property', id=item.id) }}"
+class="action-btn edit">
 
 Edit
 
 </a>
 
 
-<a href="{{ url_for('delete_property', id=item.id) }}"
-class="delete-btn">
+<a
+href="{{ url_for('delete_property', id=item.id) }}"
+class="action-btn delete"
+onclick="return confirm('Delete this property?');">
 
 Delete
 
@@ -237,7 +489,7 @@ Delete
 
 <tr>
 
-<td colspan="6">
+<td colspan="6" style="text-align:center;padding:40px;">
 
 No properties found
 
@@ -256,6 +508,8 @@ No properties found
 </table>
 
 
+</div>
+
 
 
 
@@ -263,22 +517,17 @@ No properties found
 
 {% if total_pages > 1 %}
 
-<div class="pagination">
 
+<div class="pagination">
 
 
 {% if page > 1 %}
 
 <a href="{{ url_for('manage_properties', page=page-1, purpose=purpose) }}">
-
 Previous
-
 </a>
 
 {% endif %}
-
-
-
 
 
 
@@ -289,20 +538,15 @@ Page {{page}} of {{total_pages}}
 
 
 
-
-
 {% if page < total_pages %}
 
 <a href="{{ url_for('manage_properties', page=page+1, purpose=purpose) }}">
-
 Next
-
 </a>
 
 {% endif %}
 
 
-
 </div>
 
 
@@ -310,15 +554,13 @@ Next
 
 
 
-
-
 </div>
 
 
 </div>
+
 
 </section>
-
 
 
 {% endblock %}
