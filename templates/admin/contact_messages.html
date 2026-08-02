@@ -239,4 +239,361 @@ Contact Messages | Prestigious Real Estate Admin
 
 </section>
 
+
+
+<style>
+
+/* ==========================
+   CONTACT MESSAGES ADMIN PAGE
+========================== */
+
+
+.admin-form-section{
+
+    padding:70px 0;
+    background:#f7f8fa;
+
+}
+
+
+
+.admin-form-card{
+
+    background:white;
+    padding:45px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+}
+
+
+
+/* HEADER */
+
+.form-header{
+
+    text-align:center;
+    margin-bottom:35px;
+
+}
+
+
+.form-header h1{
+
+    font-family:'Playfair Display',serif;
+    color:#1F2A44;
+    font-size:40px;
+    font-weight:800;
+    margin-bottom:10px;
+
+}
+
+
+
+.form-header p{
+
+    color:#777;
+    font-size:15px;
+
+}
+
+
+
+
+/* SEARCH AREA */
+
+form input[type="text"]{
+
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    transition:.3s;
+
+}
+
+
+
+form input[type="text"]:focus{
+
+    outline:none;
+    border-color:#8A1538 !important;
+    box-shadow:0 0 0 3px rgba(138,21,56,.12);
+
+}
+
+
+
+
+/* SEARCH BUTTON */
+
+.save-property-btn{
+
+    background:#8A1538;
+    color:white;
+    border:none;
+    padding:12px 35px;
+    border-radius:25px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+
+.save-property-btn:hover{
+
+    background:#1F2A44;
+
+}
+
+
+
+
+/* TABLE */
+
+
+.property-table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    background:white;
+
+}
+
+
+
+.property-table thead{
+
+    background:#1F2A44;
+    color:white;
+
+}
+
+
+
+.property-table th{
+
+    padding:16px;
+    text-align:left;
+    font-size:14px;
+    font-weight:700;
+
+}
+
+
+
+.property-table td{
+
+    padding:15px;
+    border-bottom:1px solid #eee;
+    color:#555;
+    font-size:14px;
+
+}
+
+
+
+.property-table tbody tr{
+
+    transition:.3s;
+
+}
+
+
+
+.property-table tbody tr:hover{
+
+    background:#f9f9f9;
+
+}
+
+
+
+
+/* BUTTONS */
+
+
+.view-btn,
+.delete-btn{
+
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:20px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    margin-right:5px;
+    transition:.3s;
+
+}
+
+
+
+.view-btn{
+
+    background:#1F2A44;
+    color:white;
+
+}
+
+
+
+.view-btn:hover{
+
+    background:#8A1538;
+
+}
+
+
+
+
+.delete-btn{
+
+    background:#8A1538;
+    color:white;
+
+}
+
+
+
+.delete-btn:hover{
+
+    background:#b32050;
+
+}
+
+
+
+
+/* EMPTY MESSAGE */
+
+.property-table h3{
+
+    color:#1F2A44;
+    font-family:'Playfair Display',serif;
+
+}
+
+
+
+.property-table p{
+
+    color:#777;
+
+}
+
+
+
+
+
+/* PAGINATION */
+
+
+.pagination{
+
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:35px;
+    flex-wrap:wrap;
+
+}
+
+
+
+.pagination a{
+
+    padding:10px 16px;
+    border-radius:20px;
+    background:#f1f1f1;
+    color:#1F2A44;
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+    transition:.3s;
+
+}
+
+
+
+.pagination a:hover{
+
+    background:#8A1538;
+    color:white;
+
+}
+
+
+
+.pagination a.active{
+
+    background:#8A1538;
+    color:white;
+
+}
+
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.admin-form-card{
+
+    padding:25px 20px;
+
+}
+
+
+
+.form-header h1{
+
+    font-size:30px;
+
+}
+
+
+
+.property-table th,
+.property-table td{
+
+    white-space:nowrap;
+
+}
+
+
+
+}
+
+
+
+@media(max-width:480px){
+
+
+.form-header h1{
+
+    font-size:24px;
+
+}
+
+
+
+.view-btn,
+.delete-btn{
+
+    padding:7px 12px;
+    font-size:12px;
+
+}
+
+
+}
+
+
+</style>
+
+
+
 {% endblock %}
