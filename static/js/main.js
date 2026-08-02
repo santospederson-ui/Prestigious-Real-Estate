@@ -112,3 +112,28 @@ if (heroSlides.length > 0) {
     }, 5000);
 
 }
+
+
+// ================================
+// MOBILE MENU
+// ================================
+
+
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+
+const navMenu = document.getElementById("navMenu");
+
+
+if(mobileMenuBtn && navMenu){
+
+
+mobileMenuBtn.addEventListener("click",()=>{
+
+
+navMenu.classList.toggle("active");
+
+
+});
+
+
+}
