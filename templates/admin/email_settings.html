@@ -569,4 +569,246 @@ Sender email must be verified in Brevo
 </div>
 
 
+
+<style>
+
+:root{
+
+    --maroon:#8A1538;
+    --maroon-dark:#5f1028;
+    --gold:#c9a227;
+    --text:#1f2937;
+    --border:#e5e7eb;
+    --background:#f8fafc;
+
+}
+
+
+/* PAGE */
+
+.email-settings-page{
+
+    background:var(--background);
+    min-height:100vh;
+    padding:50px 20px;
+
+}
+
+
+/* CARD */
+
+.email-card{
+
+    max-width:900px;
+    margin:auto;
+    background:white;
+    border-radius:20px;
+    border:1px solid #ececec;
+    box-shadow:0 18px 45px rgba(0,0,0,.08);
+    overflow:hidden;
+
+}
+
+
+/* HEADER */
+
+.email-header{
+
+    background:linear-gradient(
+        135deg,
+        var(--maroon),
+        var(--maroon-dark)
+    );
+
+    color:white;
+    padding:35px 40px;
+
+}
+
+.email-header h2{
+
+    margin:0;
+    font-size:32px;
+    font-weight:800;
+    letter-spacing:.3px;
+
+}
+
+.email-header p{
+
+    margin-top:10px;
+    opacity:.9;
+    font-size:15px;
+
+}
+
+
+/* BODY */
+
+.email-body{
+
+    padding:40px;
+
+}
+
+
+/* LABEL */
+
+.email-label{
+
+    display:block;
+    font-weight:700;
+    color:#374151;
+    font-size:14px;
+    margin-bottom:10px;
+
+}
+
+
+/* INPUT */
+
+.email-input{
+
+    height:52px;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+    padding:12px 15px;
+    font-size:15px;
+    transition:.3s;
+
+}
+
+.email-input:focus{
+
+    border-color:var(--maroon);
+    box-shadow:0 0 0 4px rgba(138,21,56,.15);
+
+}
+
+
+/* CHECKBOX */
+
+.email-check{
+
+    width:18px;
+    height:18px;
+    accent-color:var(--maroon);
+
+}
+
+
+/* BUTTON */
+
+.save-btn{
+
+    display:block;
+    width:100%;
+    margin-top:15px;
+
+    background:var(--maroon);
+    color:white;
+
+    border:none;
+
+    height:52px;
+
+    border-radius:12px;
+
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.3px;
+
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:var(--maroon-dark);
+    color:white;
+    transform:translateY(-2px);
+
+}
+
+
+/* INFO BOX */
+
+.info-box{
+
+    margin-top:40px;
+
+    background:#fff8e7;
+
+    border-left:5px solid var(--gold);
+
+    padding:25px;
+
+    border-radius:12px;
+
+}
+
+.info-box h5{
+
+    color:#7c5b00;
+    font-weight:800;
+    margin-bottom:12px;
+
+}
+
+.info-box ul{
+
+    margin:0;
+    padding-left:20px;
+
+}
+
+.info-box li{
+
+    color:#555;
+    line-height:1.8;
+    margin-bottom:6px;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.email-settings-page{
+
+    padding:25px 10px;
+
+}
+
+.email-header{
+
+    padding:25px;
+
+}
+
+.email-header h2{
+
+    font-size:26px;
+
+}
+
+.email-header p{
+
+    font-size:14px;
+
+}
+
+.email-body{
+
+    padding:22px;
+
+}
+
+}
+
+</style>
+
+
+
 {% endblock %}
