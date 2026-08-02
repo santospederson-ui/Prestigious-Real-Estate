@@ -8,7 +8,183 @@ View Contact Message | Admin
 {% endblock %}
 
 
+<style>
 
+/* ==========================
+   VIEW CONTACT MESSAGE STYLE
+========================== */
+
+
+.contact-message-box {
+
+    background:#f8f9fb;
+    padding:30px;
+    border-radius:15px;
+    margin-top:30px;
+
+}
+
+
+
+.contact-details {
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+
+}
+
+
+
+.contact-details h4,
+.contact-message-box h4 {
+
+    color:#1F2A44;
+    font-size:15px;
+    font-weight:800;
+    margin-bottom:8px;
+
+}
+
+
+
+.contact-details p,
+.contact-message-box p {
+
+    color:#555;
+    font-size:15px;
+
+}
+
+
+
+
+.contact-message-content {
+
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    line-height:1.8;
+    border:1px solid #eee;
+    color:#444;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.05);
+
+}
+
+
+
+
+
+.contact-divider {
+
+    margin:35px 0;
+    border:0;
+    border-top:1px solid #ddd;
+
+}
+
+
+
+
+
+.contact-actions {
+
+    margin-top:35px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+
+}
+
+
+
+
+.contact-actions a {
+
+    text-decoration:none;
+
+}
+
+
+
+
+
+.view-btn {
+
+    background:#1F2A44;
+    color:white;
+    padding:10px 25px;
+    border-radius:8px;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+
+
+.view-btn:hover {
+
+    background:#8A1538;
+    color:white;
+
+}
+
+
+
+
+
+.delete-btn {
+
+    background:#8A1538;
+    color:white;
+    padding:10px 25px;
+    border-radius:8px;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+
+
+.delete-btn:hover {
+
+    background:#5f1028;
+    color:white;
+
+}
+
+
+
+
+@media(max-width:768px){
+
+    .contact-message-box{
+
+        padding:20px;
+
+    }
+
+
+    .contact-details{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .contact-message-content{
+
+        padding:18px;
+
+    }
+
+
+}
+
+
+</style>
 
 
 {% block content %}
