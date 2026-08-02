@@ -563,6 +563,267 @@ Save Property
 </section>
 
 
+<style>
+
+/* ==========================
+   ADD PROPERTY PAGE STYLE
+========================== */
+
+.admin-form-section{
+
+    padding:70px 0;
+    background:#f7f8fa;
+
+}
+
+
+.admin-form-card{
+
+    background:white;
+    max-width:1000px;
+    margin:auto;
+    padding:45px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+}
+
+
+/* HEADER */
+
+.form-header{
+
+    text-align:center;
+    margin-bottom:40px;
+
+}
+
+
+.form-header h1{
+
+    font-family:'Playfair Display',serif;
+    color:#1F2A44;
+    font-size:40px;
+    font-weight:800;
+    margin-bottom:10px;
+
+}
+
+
+.form-header p{
+
+    color:#777;
+    font-size:15px;
+
+}
+
+
+
+/* GRID */
+
+.form-grid{
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+
+}
+
+
+
+/* LABELS */
+
+.admin-form-card label{
+
+    display:block;
+    margin-bottom:8px;
+    color:#1F2A44;
+    font-size:14px;
+    font-weight:700;
+
+}
+
+
+
+
+/* INPUTS */
+
+
+.admin-form-card input,
+.admin-form-card select,
+.admin-form-card textarea{
+
+
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:14px;
+    font-family:'Inter',sans-serif;
+    background:white;
+
+}
+
+
+
+.admin-form-card input:focus,
+.admin-form-card select:focus,
+.admin-form-card textarea:focus{
+
+    outline:none;
+    border-color:#8A1538;
+    box-shadow:0 0 0 3px rgba(138,21,56,.15);
+
+}
+
+
+
+.admin-form-card textarea{
+
+    min-height:130px;
+    margin-bottom:25px;
+    resize:vertical;
+
+}
+
+
+
+/* FILE UPLOAD */
+
+.admin-form-card input[type="file"]{
+
+    background:#f8f8f8;
+    padding:12px;
+
+}
+
+
+
+/* FEATURES */
+
+.features-grid{
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    background:#f7f8fa;
+    padding:25px;
+    border-radius:12px;
+    margin:20px 0 35px;
+
+}
+
+
+
+.features-grid label{
+
+    background:white;
+    padding:12px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+
+}
+
+
+
+.features-grid input{
+
+    width:auto;
+
+}
+
+
+
+
+/* BUTTON */
+
+.save-property-btn{
+
+    width:100%;
+    padding:16px;
+    background:#8A1538;
+    color:white;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+
+.save-property-btn:hover{
+
+    background:#1F2A44;
+
+}
+
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.admin-form-card{
+
+    padding:25px 20px;
+
+}
+
+
+.form-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+.form-header h1{
+
+    font-size:30px;
+
+}
+
+
+
+.features-grid{
+
+    grid-template-columns:1fr 1fr;
+
+}
+
+
+}
+
+
+
+@media(max-width:480px){
+
+
+.form-header h1{
+
+    font-size:24px;
+
+}
+
+
+.features-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+}
+
+</style>
 
 
 {% endblock %}
