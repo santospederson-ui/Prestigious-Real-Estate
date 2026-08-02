@@ -10,234 +10,203 @@ Contact Us | Prestigious Real Estate
 PAGE HERO
 ========================= -->
 
-<section class="page-hero"
-style="background-image:url('{{ url_for('static', filename='images/contact/contact.jpg') }}');">
-
-    <div class="page-overlay">
-
-        <div class="container">
-
-            <h1>
-                Contact Us
-            </h1>
-
-            <p>
-                We'd love to hear from you. Our team is ready to help you find your ideal property.
-            </p>
-
-        </div>
-
+<section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/contact/contact.jpg') }}');">
+  <div class="page-overlay">
+    <div class="container">
+      <h1>Contact Us</h1>
+      <p>We'd love to hear from you. Our team is ready to help you find your ideal property.</p>
     </div>
-
+  </div>
 </section>
-
-
 
 <!-- =========================
 CONTACT SECTION
 ========================= -->
 
 <section class="contact-section">
-
-    <div class="container">
-
-        <div class="contact-wrapper">
-
-            <!-- ===================
-            LEFT SIDE
-            ==================== -->
-
-            <div class="contact-info">
-
-                <h2>
-                    Let's Talk
-                </h2>
-
-                <p>
-                    Whether you're buying, selling, renting or investing,
-                    Prestigious Real Estate is here to guide you every step
-                    of the way.
-                </p>
-
-                <div class="info-box">
-
-                    <h4>
-                        📍 Office Address
-                    </h4>
-
-                    <p>
-                        Doha, Qatar
-                    </p>
-
-                </div>
-
-                <div class="info-box">
-
-                    <h4>
-                        ☎ Phone
-                    </h4>
-
-                    <p>
-                        +974 XXXX XXXX
-                    </p>
-
-                </div>
-
-                <div class="info-box">
-
-                    <h4>
-                        ✉ Email
-                    </h4>
-
-                    <p>
-                        info@prestigiousrealestate.qa
-                    </p>
-
-                </div>
-
-                <div class="info-box">
-
-                    <h4>
-                        🕒 Working Hours
-                    </h4>
-
-                    <p>
-
-                        Sunday - Thursday
-
-                        <br>
-
-                        8:00 AM - 6:00 PM
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ===================
-            RIGHT SIDE
-            ==================== -->
-
-            <div class="contact-form-card">
-
-                <h2>
-                    Send Us A Message
-                </h2>
-
-                {% with messages=get_flashed_messages(with_categories=true) %}
-
-                    {% if messages %}
-
-                        {% for category,message in messages %}
-
-                        <div class="alert-success">
-
-                            {{ message }}
-
-                        </div>
-
-                        {% endfor %}
-
-                    {% endif %}
-
-                {% endwith %}
-
-                <form method="POST">
-
-                    <div class="form-row">
-
-                        <div>
-
-                            <label>
-                                Full Name
-                            </label>
-
-                            <input
-                            type="text"
-                            name="fullname"
-                            required>
-
-                        </div>
-
-                        <div>
-
-                            <label>
-                                Email
-                            </label>
-
-                            <input
-                            type="email"
-                            name="email"
-                            required>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="form-row">
-
-                        <div>
-
-                            <label>
-                                Phone
-                            </label>
-
-                            <input
-                                type="tel"
-                                name="phone"
-                                placeholder="+974 1234 5678">
-
-                        </div>
-
-                        <div>
-
-                            <label>
-                                Subject
-                            </label>
-
-                            <input
-                            type="text"
-                            name="subject"
-                            required>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <label>
-                        Message
-                    </label>
-
-                    <textarea
-                    name="message"
-                    rows="7"
-                    required></textarea>
-
-
-
-                    <button
-                    type="submit"
-                    class="primary-btn">
-
-                        Send Message
-
-                    </button>
-
-                </form>
-
-            </div>
-
+  <div class="container">
+    <div class="contact-wrapper">
+      <!-- LEFT SIDE -->
+      <div class="contact-info">
+        <h2>Let's Talk</h2>
+        <p>Whether you're buying, selling, renting or investing, Prestigious Real Estate is here to guide you every step of the way.</p>
+
+        <div class="info-box">
+          <h4>📍 Office Address</h4>
+          <p>Doha, Qatar</p>
         </div>
 
-    </div>
+        <div class="info-box">
+          <h4>☎ Phone</h4>
+          <p>+974 XXXX XXXX</p>
+        </div>
 
+        <div class="info-box">
+          <h4>✉ Email</h4>
+          <p>info@prestigiousrealestate.qa</p>
+        </div>
+
+        <div class="info-box">
+          <h4>🕒 Working Hours</h4>
+          <p>Sunday - Thursday<br>8:00 AM - 6:00 PM</p>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="contact-form-card">
+        <h2>Send Us A Message</h2>
+
+        <form method="POST">
+          <div class="form-row">
+            <div>
+              <label>Full Name</label>
+              <input type="text" name="fullname" required>
+            </div>
+            <div>
+              <label>Email</label>
+              <input type="email" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label>Phone</label>
+              <input type="tel" name="phone" placeholder="+974 1234 5678">
+            </div>
+            <div>
+              <label>Subject</label>
+              <input type="text" name="subject" required>
+            </div>
+          </div>
+
+          <label>Message</label>
+          <textarea name="message" rows="7" required></textarea>
+
+          <button type="submit" class="primary-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </section>
+
+<style>
+.contact-section {
+  padding: 60px 0;
+  background: white;
+}
+
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.contact-info h2 {
+  font-size: 32px;
+  color: var(--secondary);
+  margin-bottom: 15px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+}
+
+.contact-info > p {
+  font-size: 15px;
+  color: var(--gray);
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.info-box {
+  margin-bottom: 25px;
+}
+
+.info-box h4 {
+  font-size: 16px;
+  color: var(--secondary);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.info-box p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.contact-form-card {
+  background: var(--light);
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.contact-form-card h2 {
+  font-size: 28px;
+  color: var(--secondary);
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.contact-form-card label {
+  display: block;
+  font-weight: 600;
+  color: var(--secondary);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.contact-form-card input,
+.contact-form-card textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  transition: 0.3s ease;
+}
+
+.contact-form-card input:focus,
+.contact-form-card textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(138, 21, 56, 0.1);
+}
+
+.contact-form-card textarea {
+  resize: vertical;
+  margin-bottom: 20px;
+}
+
+.contact-form-card .primary-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-info h2,
+  .contact-form-card h2 {
+    font-size: 24px;
+  }
+}
+</style>
 
 {% endblock %}

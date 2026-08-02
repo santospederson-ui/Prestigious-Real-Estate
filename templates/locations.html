@@ -1,280 +1,177 @@
 {% extends "base.html" %}
 
-
 {% block title %}
-
-Luxury Property Locations in Qatar | Doha, Lusail & The Pearl | Prestigious Real Estate
-
+Luxury Property Locations in Qatar | Prestigious Real Estate
 {% endblock %}
 
-
-
-
 {% block content %}
-
-
 
 <!-- =========================
      LOCATION HERO
 ========================= -->
 
-
-<section class="page-hero"
-style="background-image:url('{{ url_for('static', filename='images/hero/locations.jpg') }}');">
-
-
-<div class="page-overlay">
-
-
-<div class="container">
-
-
-<h1>
-Explore Prime Property Locations in Qatar
-</h1>
-
-
-<p>
-Discover luxury villas, apartments and investment properties across Qatar's most desirable communities.
-</p>
-
-
-</div>
-
-
-</div>
-
-
+<section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/contact/contact.jpg') }}');">
+  <div class="page-overlay">
+    <div class="container">
+      <h1>Explore Prime Property Locations in Qatar</h1>
+      <p>Discover luxury villas, apartments and investment properties across Qatar's most desirable communities.</p>
+    </div>
+  </div>
 </section>
-
-
-
-
-
-
-
-
 
 <!-- =========================
      LOCATIONS
 ========================= -->
 
-
 <section class="locations-section">
-
-
-<div class="container">
-
-
-
-<div class="section-title">
-
-
-<h2>
-Popular Real Estate Locations in Qatar
-</h2>
-
-
-<p>
-Explore premium residential and commercial properties in Qatar's top destinations.
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="location-grid">
-
-
-
-
-
-
-
-<!-- THE PEARL -->
-
-
-<div class="location-card">
-
-
-<img
-src="{{ url_for('static', filename='images/locations/the_pearl.jpeg') }}"
-alt="Luxury apartments and waterfront properties in The Pearl Qatar">
-
-
-<div class="location-overlay">
-
-
-<h3>
-The Pearl Qatar
-</h3>
-
-
-<p>
-Luxury waterfront apartments, premium residences and exclusive lifestyle communities.
-</p>
-
-
-<a href="{{ url_for('properties') }}">
-View Properties
-</a>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- LUSAIL -->
-
-
-<div class="location-card">
-
-
-<img
-src="{{ url_for('static', filename='images/locations/lusail.jpg') }}"
-alt="Modern residential properties and apartments in Lusail City Qatar">
-
-
-<div class="location-overlay">
-
-
-<h3>
-Lusail City
-</h3>
-
-
-<p>
-Modern smart-city communities, apartments and attractive property investment opportunities.
-</p>
-
-
-<a href="{{ url_for('properties') }}">
-View Properties
-</a>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- WEST BAY -->
-
-
-<div class="location-card">
-
-
-<img
-src="{{ url_for('static', filename='images/locations/west_bay.jpg') }}"
-alt="Luxury apartments and commercial properties in West Bay Doha Qatar">
-
-
-<div class="location-overlay">
-
-
-<h3>
-West Bay
-</h3>
-
-
-<p>
-Premium residences, office spaces and high-value commercial properties.
-</p>
-
-
-<a href="{{ url_for('properties') }}">
-View Properties
-</a>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- DOHA -->
-
-
-<div class="location-card">
-
-
-<img
-src="{{ url_for('static', filename='images/locations/doha.jpg') }}"
-alt="Residential and commercial properties in Doha Qatar">
-
-
-<div class="location-overlay">
-
-
-<h3>
-Doha
-</h3>
-
-
-<p>
-Residential homes, apartments and commercial properties across Qatar's capital city.
-</p>
-
-
-<a href="{{ url_for('properties') }}">
-View Properties
-</a>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-</div>
-
-
-
-</div>
-
-
+  <div class="container">
+    <div class="section-title">
+      <h2>Popular Real Estate Locations in Qatar</h2>
+      <p>Explore premium residential and commercial properties in Qatar's top destinations.</p>
+    </div>
+
+    <div class="location-grid">
+      <!-- THE PEARL -->
+      <div class="location-card">
+        <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="The Pearl Qatar" loading="lazy">
+        <div class="location-overlay">
+          <h3>The Pearl Qatar</h3>
+          <p>Luxury waterfront apartments, premium residences and exclusive lifestyle communities.</p>
+          <a href="{{ url_for('properties', location='The Pearl') }}">View Properties</a>
+        </div>
+      </div>
+
+      <!-- LUSAIL -->
+      <div class="location-card">
+        <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="Lusail City" loading="lazy">
+        <div class="location-overlay">
+          <h3>Lusail City</h3>
+          <p>Modern smart-city communities, apartments and attractive property investment opportunities.</p>
+          <a href="{{ url_for('properties', location='Lusail') }}">View Properties</a>
+        </div>
+      </div>
+
+      <!-- WEST BAY -->
+      <div class="location-card">
+        <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="West Bay" loading="lazy">
+        <div class="location-overlay">
+          <h3>West Bay</h3>
+          <p>Premium residences, office spaces and high-value commercial properties.</p>
+          <a href="{{ url_for('properties', location='West Bay') }}">View Properties</a>
+        </div>
+      </div>
+
+      <!-- DOHA -->
+      <div class="location-card">
+        <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="Doha" loading="lazy">
+        <div class="location-overlay">
+          <h3>Doha</h3>
+          <p>Residential homes, apartments and commercial properties across Qatar's capital city.</p>
+          <a href="{{ url_for('properties', location='Doha') }}">View Properties</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<style>
+.locations-section {
+  padding: 60px 0;
+  background: white;
+}
 
+.location-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
 
+.location-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  height: 300px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
+.location-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.3s ease;
+}
 
+.location-card:hover img {
+  transform: scale(1.08);
+}
+
+.location-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 25px;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.location-overlay h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+}
+
+.location-overlay p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.location-overlay a {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  transition: 0.3s ease;
+  width: fit-content;
+}
+
+.location-overlay a:hover {
+  background: var(--secondary);
+}
+
+@media (max-width: 768px) {
+  .location-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .location-card {
+    height: 200px;
+  }
+
+  .location-overlay {
+    padding: 15px;
+  }
+
+  .location-overlay h3 {
+    font-size: 16px;
+  }
+
+  .location-overlay p {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+}
+</style>
 
 {% endblock %}

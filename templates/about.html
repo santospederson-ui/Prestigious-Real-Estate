@@ -1,326 +1,219 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}
-
 About Us | Prestigious Real Estate Qatar
-
 {% endblock %}
 
-
-
-
-
 {% block content %}
-
-
 
 <!-- =========================
      ABOUT HERO
 ========================= -->
 
-
-<section class="page-hero"
-style="background-image:url('{{ url_for('static', filename='images/hero/about.png') }}');">
-
-
-<div class="page-overlay">
-
-
-<div class="container">
-
-
-<h1>
-About Prestigious Real Estate
-</h1>
-
-
-<p>
-Building trusted real estate experiences
-across Qatar.
-</p>
-
-
-</div>
-
-
-</div>
-
-
+<section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/contact/contact.jpg') }}');">
+  <div class="page-overlay">
+    <div class="container">
+      <h1>About Prestigious Real Estate</h1>
+      <p>Building trusted real estate experiences across Qatar.</p>
+    </div>
+  </div>
 </section>
-
-
-
-
-
-
 
 <!-- =========================
      WHO WE ARE
 ========================= -->
 
-
 <section class="about-section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image">
+        <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="Prestigious Real Estate" loading="lazy">
+      </div>
 
-
-<div class="container">
-
-
-<div class="about-grid">
-
-
-
-
-
-<div class="about-image">
-
-
-<img src="{{ url_for('static', filename='images/hero/company.jpg') }}"
-alt="Prestigious Real Estate">
-
-
-</div>
-
-
-
-
-
-
-
-<div class="about-content">
-
-
-<h2>
-Who We Are
-</h2>
-
-
-<p>
-
-Prestigious Real Estate is a Qatar-based real estate company
-focused on delivering premium property solutions for
-residential and commercial clients.
-
-</p>
-
-
-<p>
-
-We connect buyers, investors and tenants with
-quality properties while providing professional
-guidance throughout the property journey.
-
-</p>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-</div>
-
-
+      <div class="about-content">
+        <h2>Who We Are</h2>
+        <p>Prestigious Real Estate is a Qatar-based real estate company focused on delivering premium property solutions for residential and commercial clients.</p>
+        <p>We connect buyers, investors and tenants with quality properties while providing professional guidance throughout the property journey.</p>
+      </div>
+    </div>
+  </div>
 </section>
-
-
-
-
-
-
-
 
 <!-- =========================
      MISSION VISION
 ========================= -->
 
-
 <section class="mission-section">
+  <div class="container">
+    <div class="mission-grid">
+      <div class="mission-card">
+        <h3>Our Mission</h3>
+        <p>To provide exceptional real estate services through professionalism, transparency and market expertise.</p>
+      </div>
 
-
-<div class="container">
-
-
-
-<div class="mission-grid">
-
-
-
-
-
-<div class="mission-card">
-
-
-<h3>
-Our Mission
-</h3>
-
-
-<p>
-
-To provide exceptional real estate services
-through professionalism, transparency and
-market expertise.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="mission-card">
-
-
-<h3>
-Our Vision
-</h3>
-
-
-<p>
-
-To become one of Qatar's most trusted
-real estate brands by delivering value
-and excellence.
-
-</p>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-</div>
-
-
+      <div class="mission-card">
+        <h3>Our Vision</h3>
+        <p>To become one of Qatar's most trusted real estate brands by delivering value and excellence.</p>
+      </div>
+    </div>
+  </div>
 </section>
-
-
-
-
-
-
-
 
 <!-- =========================
      VALUES
 ========================= -->
 
-
 <section class="values-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Our Core Values</h2>
+    </div>
 
+    <div class="values-grid">
+      <div class="value-card">
+        <h3>Integrity</h3>
+        <p>Building relationships through honesty and transparency.</p>
+      </div>
 
-<div class="container">
+      <div class="value-card">
+        <h3>Excellence</h3>
+        <p>Delivering premium service and quality solutions.</p>
+      </div>
 
-
-
-<div class="section-title">
-
-
-<h2>
-Our Core Values
-</h2>
-
-
-</div>
-
-
-
-
-
-
-<div class="values-grid">
-
-
-
-
-
-<div class="value-card">
-
-
-<h3>
-Integrity
-</h3>
-
-
-<p>
-Building relationships through honesty
-and transparency.
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="value-card">
-
-
-<h3>
-Excellence
-</h3>
-
-
-<p>
-Delivering premium service and quality
-solutions.
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="value-card">
-
-
-<h3>
-Customer Focus
-</h3>
-
-
-<p>
-Putting clients at the center of
-everything we do.
-</p>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-</div>
-
-
+      <div class="value-card">
+        <h3>Customer Focus</h3>
+        <p>Putting clients at the center of everything we do.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
+<style>
+.about-section {
+  padding: 60px 0;
+  background: white;
+}
 
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
 
+.about-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
 
+.about-content h2 {
+  font-size: 32px;
+  color: var(--secondary);
+  margin-bottom: 20px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+}
+
+.about-content p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--gray);
+  margin-bottom: 15px;
+}
+
+.mission-section {
+  padding: 60px 0;
+  background: var(--light);
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.mission-card {
+  background: white;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.mission-card h3 {
+  font-size: 24px;
+  color: var(--secondary);
+  margin-bottom: 15px;
+  font-weight: 800;
+}
+
+.mission-card p {
+  color: var(--gray);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.values-section {
+  padding: 60px 0;
+  background: white;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.value-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-8px);
+}
+
+.value-card h3 {
+  font-size: 20px;
+  color: var(--secondary);
+  margin-bottom: 12px;
+  font-weight: 800;
+}
+
+.value-card p {
+  color: var(--gray);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .about-content h2 {
+    font-size: 24px;
+  }
+
+  .mission-grid,
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 
 {% endblock %}
