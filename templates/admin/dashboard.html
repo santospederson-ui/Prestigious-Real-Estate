@@ -535,6 +535,354 @@ No customer enquiries available
 </section>
 
 
+<style>
 
+/* =========================
+   ADMIN DASHBOARD
+========================= */
+
+.dashboard-section{
+
+    padding:60px 0;
+    background:#f7f8fa;
+
+}
+
+
+/* ADMIN HEADER */
+
+.admin-header{
+
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+
+}
+
+
+.admin-welcome h1{
+
+    color:var(--secondary);
+    font-family:'Playfair Display', serif;
+    font-size:36px;
+    font-weight:800;
+    margin-bottom:10px;
+
+}
+
+
+.admin-welcome p{
+
+    color:var(--gray);
+    font-size:15px;
+
+}
+
+
+
+.logout-btn{
+
+    background:var(--primary);
+    color:white;
+    text-decoration:none;
+    padding:12px 28px;
+    border-radius:25px;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+
+.logout-btn:hover{
+
+    background:var(--secondary);
+
+}
+
+
+
+/* SECTION TITLES */
+
+.dashboard-section-title{
+
+    color:var(--secondary);
+    font-family:'Playfair Display',serif;
+    font-size:32px;
+    font-weight:800;
+    margin-bottom:25px;
+
+}
+
+
+
+
+/* DASHBOARD GRID */
+
+.dashboard-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+
+}
+
+
+
+/* CARDS */
+
+.dashboard-card{
+
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    transition:.3s ease;
+
+}
+
+
+.dashboard-card:hover{
+
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
+
+
+
+.dashboard-icon{
+
+    font-size:42px;
+    margin-bottom:15px;
+
+}
+
+
+
+.dashboard-card h3{
+
+    color:var(--secondary);
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:12px;
+
+}
+
+
+
+.dashboard-number{
+
+    font-size:40px;
+    font-weight:800;
+    color:var(--primary);
+    margin-bottom:10px;
+
+}
+
+
+
+.dashboard-card p{
+
+    color:var(--gray);
+    font-size:14px;
+
+}
+
+
+
+.dashboard-card a{
+
+    display:inline-block;
+    margin-top:15px;
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:700;
+
+}
+
+
+.dashboard-card a:hover{
+
+    color:var(--secondary);
+    text-decoration:underline;
+
+}
+
+
+
+/* RECENT MESSAGE TABLE CARD */
+
+.admin-form-card{
+
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+
+
+.admin-form-card h2{
+
+    color:var(--secondary);
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    margin-bottom:25px;
+
+}
+
+
+
+/* TABLE */
+
+.property-table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+
+.property-table th{
+
+    background:var(--secondary);
+    color:white;
+    padding:14px;
+    text-align:left;
+    font-size:14px;
+
+}
+
+
+
+.property-table td{
+
+    padding:14px;
+    border-bottom:1px solid #eee;
+    color:#555;
+    font-size:14px;
+
+}
+
+
+
+.property-table tr:hover{
+
+    background:#fafafa;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.dashboard-section{
+
+    padding:40px 0;
+
+}
+
+
+
+.admin-header{
+
+    flex-direction:column;
+    gap:20px;
+    text-align:center;
+
+}
+
+
+
+.admin-welcome h1{
+
+    font-size:28px;
+
+}
+
+
+
+.dashboard-section-title{
+
+    font-size:26px;
+
+}
+
+
+
+.dashboard-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.admin-form-card{
+
+    padding:20px;
+    overflow-x:auto;
+
+}
+
+
+
+.property-table{
+
+    min-width:600px;
+
+}
+
+
+
+.logout-btn{
+
+    width:100%;
+    text-align:center;
+
+}
+
+
+}
+
+
+
+@media(max-width:480px){
+
+
+.admin-welcome h1{
+
+    font-size:24px;
+
+}
+
+
+.dashboard-card{
+
+    padding:25px;
+
+}
+
+
+.dashboard-number{
+
+    font-size:32px;
+
+}
+
+
+}
+
+
+</style>
 
 {% endblock %}
