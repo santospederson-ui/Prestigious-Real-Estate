@@ -8,7 +8,182 @@ Property Images | Admin
 {% endblock %}
 
 
+<style>
 
+/* PROPERTY IMAGE MANAGEMENT */
+
+.property-image-gallery {
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    margin-top:30px;
+
+}
+
+
+
+.property-image-card {
+
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s ease;
+    position:relative;
+
+}
+
+
+
+.property-image-card:hover {
+
+    transform:translateY(-5px);
+    box-shadow:0 15px 30px rgba(0,0,0,.12);
+
+}
+
+
+
+.property-image-card img {
+
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:12px;
+    display:block;
+
+}
+
+
+
+/* COVER LABEL */
+
+.cover-label {
+
+    display:block;
+    margin-top:15px;
+    background:#8A1538;
+    color:white;
+    text-align:center;
+    padding:10px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:700;
+
+}
+
+
+
+/* SET COVER BUTTON */
+
+.cover-btn {
+
+    display:block;
+    margin-top:15px;
+    text-align:center;
+    background:#1F2A44;
+    color:white;
+    padding:10px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+
+
+.cover-btn:hover {
+
+    background:#8A1538;
+    color:white;
+
+}
+
+
+
+/* UPLOAD AREA */
+
+.property-image-card input,
+form input[type="file"] {
+
+    margin:15px 0;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    width:100%;
+    background:white;
+
+}
+
+
+
+form label {
+
+    display:block;
+    font-weight:700;
+    color:#1F2A44;
+    margin-bottom:10px;
+
+}
+
+
+
+/* BUTTON SPACING */
+
+form .save-property-btn {
+
+    margin-top:15px;
+
+}
+
+
+
+/* DIVIDER */
+
+hr {
+
+    margin:40px 0;
+    border:0;
+    border-top:1px solid #ddd;
+
+}
+
+
+
+.admin-form-card h2 {
+
+    color:#1F2A44;
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    margin-bottom:20px;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .property-image-gallery{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .property-image-card img{
+
+        height:200px;
+
+    }
+
+}
+
+</style>
 {% block content %}
 
 
