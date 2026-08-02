@@ -1,770 +1,324 @@
-{% extends "base.html" %}
+<style>
 
+/* =================================
+   EDIT PROPERTY ADMIN PAGE
+================================= */
 
 
-{% block title %}
+.admin-form-section{
 
-Edit Property | Prestigious Real Estate Admin
+    padding:70px 0;
+    background:#f7f8fa;
 
-{% endblock %}
+}
 
 
 
+.admin-form-card{
 
+    background:white;
+    padding:45px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
 
+}
 
 
-{% block content %}
 
+/* HEADER */
 
 
-<section class="admin-form-section">
+.form-header{
 
+    text-align:center;
+    margin-bottom:40px;
 
-<div class="container">
+}
 
 
 
-<div class="admin-form-card">
+.form-header h1{
 
+    font-family:'Playfair Display',serif;
+    color:#1F2A44;
+    font-size:42px;
+    font-weight:800;
+    margin-bottom:10px;
 
+}
 
 
 
-<div class="form-header">
+.form-header p{
 
-<h1>
-Edit Property
-</h1>
+    color:#777;
+    font-size:15px;
 
+}
 
-<p>
-Update property details and maintain your real estate listings.
-</p>
 
 
-</div>
 
 
+/* FORM GRID */
 
 
+.form-grid{
 
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
 
+}
 
 
 
-<form method="POST">
 
+/* LABELS */
 
 
+.admin-form-card label{
 
+    display:block;
+    color:#1F2A44;
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:8px;
 
-<div class="form-grid">
+}
 
 
 
 
 
+/* INPUTS */
 
 
-<div>
+.admin-form-card input,
+.admin-form-card select,
+.admin-form-card textarea{
 
-<label>
-Property Title
-</label>
 
+    width:100%;
+    padding:14px 15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:14px;
+    font-family:'Inter',sans-serif;
+    color:#212529;
+    background:white;
+    transition:.3s;
 
-<input
-type="text"
-name="title"
-value="{{ property.title }}"
-required>
 
-</div>
+}
 
 
 
+.admin-form-card input:focus,
+.admin-form-card select:focus,
+.admin-form-card textarea:focus{
 
 
+    outline:none;
+    border-color:#8A1538;
+    box-shadow:0 0 0 3px rgba(138,21,56,.12);
 
 
+}
 
 
 
 
-<div>
 
-<label>
-Purpose
-</label>
+/* TEXTAREA */
 
 
-<select name="purpose" required>
+.admin-form-card textarea{
 
 
-<option value="Sale"
-{% if property.purpose=="Sale" %}selected{% endif %}>
-Sale
-</option>
+    min-height:130px;
+    resize:vertical;
+    margin-bottom:25px;
 
+}
 
-<option value="Rent"
-{% if property.purpose=="Rent" %}selected{% endif %}>
-Rent
-</option>
 
 
-</select>
 
 
-</div>
+/* CHECKBOX FEATURES */
 
 
+.form-grid input[type="checkbox"]{
 
 
+    width:auto;
+    margin-right:8px;
 
+}
 
 
 
 
+.form-grid div:has(input[type="checkbox"]) label{
 
 
-<div>
+    background:#f7f8fa;
+    padding:14px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
 
-<label>
-Property Type
-</label>
+}
 
 
-<select name="property_type">
 
+.form-grid div:has(input[type="checkbox"]) label:hover{
 
-<option value="Villa"
-{% if property.property_type=="Villa" %}selected{% endif %}>
-Villa
-</option>
 
+    background:#eee;
 
-<option value="Apartment"
-{% if property.property_type=="Apartment" %}selected{% endif %}>
-Apartment
-</option>
+}
 
 
-<option value="Office"
-{% if property.property_type=="Office" %}selected{% endif %}>
-Office
-</option>
 
 
-<option value="Commercial Building"
-{% if property.property_type=="Commercial Building" %}selected{% endif %}>
-Commercial Building
-</option>
 
 
-</select>
+/* CURRENT IMAGE */
 
 
-</div>
+.current-image{
 
 
+    margin:35px 0;
 
+}
 
 
 
+.current-image label{
 
 
+    margin-bottom:15px;
 
+}
 
 
-<div>
 
-<label>
-Location
-</label>
+.current-image img{
 
 
-<select name="location" required>
+    display:block;
+    width:250px;
+    height:180px;
+    object-fit:cover;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
 
+}
 
-<option value="Doha"
-{% if property.location=="Doha" %}selected{% endif %}>
-Doha
-</option>
 
 
 
-<option value="Lusail"
-{% if property.location=="Lusail" %}selected{% endif %}>
-Lusail
-</option>
 
 
 
-<option value="The Pearl"
-{% if property.location=="The Pearl" %}selected{% endif %}>
-The Pearl
-</option>
+/* BUTTON */
 
 
+.save-property-btn{
 
-<option value="West Bay"
-{% if property.location=="West Bay" %}selected{% endif %}>
-West Bay
-</option>
 
+    width:100%;
+    padding:16px;
+    background:#8A1538;
+    color:white;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
 
+}
 
-<option value="Al Wakrah"
-{% if property.location=="Al Wakrah" %}selected{% endif %}>
-Al Wakrah
-</option>
 
 
+.save-property-btn:hover{
 
-</select>
 
+    background:#1F2A44;
+    transform:translateY(-3px);
 
-</div>
 
+}
 
 
 
 
 
+/* MOBILE */
 
 
+@media(max-width:768px){
 
 
+.admin-form-card{
 
-<div>
+    padding:25px 20px;
 
-<label>
-Price (QAR)
-</label>
+}
 
 
-<input
-type="number"
-name="price"
-value="{{ property.price }}">
 
+.form-header h1{
 
-</div>
+    font-size:30px;
 
+}
 
 
 
+.form-grid{
 
+    grid-template-columns:1fr;
 
+}
 
 
 
-<div>
+.current-image img{
 
-<label>
-Bedrooms
-</label>
+    width:100%;
+    height:auto;
 
+}
 
-<input
-type="number"
-name="bedrooms"
-value="{{ property.bedrooms or 0 }}">
 
 
-</div>
+}
 
 
 
+@media(max-width:480px){
 
 
+.form-header h1{
 
+    font-size:24px;
 
+}
 
 
-<div>
+.admin-form-card textarea{
 
-<label>
-Bathrooms
-</label>
+    min-height:100px;
 
+}
 
-<input
-type="number"
-name="bathrooms"
-value="{{ property.bathrooms or 0 }}">
 
+}
 
-</div>
 
-
-
-
-
-
-
-
-
-<div>
-
-<label>
-Area (SQM)
-</label>
-
-
-<input
-type="number"
-name="area"
-value="{{ property.area or 0 }}">
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div>
-
-<label>
-Parking Spaces
-</label>
-
-
-<input
-type="number"
-name="parking"
-value="{{ property.parking or 0 }}">
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div>
-
-<label>
-Furnished
-</label>
-
-
-<select name="furnished">
-
-
-<option value="Fully Furnished"
-{% if property.furnished=="Fully Furnished" %}selected{% endif %}>
-Fully Furnished
-</option>
-
-
-<option value="Semi Furnished"
-{% if property.furnished=="Semi Furnished" %}selected{% endif %}>
-Semi Furnished
-</option>
-
-
-<option value="Not Furnished"
-{% if property.furnished=="Not Furnished" %}selected{% endif %}>
-Not Furnished
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div>
-
-<label>
-Property Status
-</label>
-
-
-<select name="status">
-
-
-<option value="Available"
-{% if property.status=="Available" %}selected{% endif %}>
-Available
-</option>
-
-
-<option value="Sold"
-{% if property.status=="Sold" %}selected{% endif %}>
-Sold
-</option>
-
-
-<option value="Rented"
-{% if property.status=="Rented" %}selected{% endif %}>
-Rented
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =========================
-PROPERTY FEATURES
-========================= -->
-
-
-<div style="margin-top:35px;">
-
-
-<label>
-Property Features
-</label>
-
-
-
-<div class="form-grid">
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Swimming Pool"
-{% if {'feature_name':'Swimming Pool'} in saved_features %}checked{% endif %}>
-
-Swimming Pool
-
-</label>
-
-</div>
-
-
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Smart Home"
-{% if {'feature_name':'Smart Home'} in saved_features %}checked{% endif %}>
-
-Smart Home
-
-</label>
-
-</div>
-
-
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Private Parking"
-{% if {'feature_name':'Private Parking'} in saved_features %}checked{% endif %}>
-
-Private Parking
-
-</label>
-
-</div>
-
-
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Security 24/7"
-{% if {'feature_name':'Security 24/7'} in saved_features %}checked{% endif %}>
-
-Security 24/7
-
-</label>
-
-</div>
-
-
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Gym"
-{% if {'feature_name':'Gym'} in saved_features %}checked{% endif %}>
-
-Gym
-
-</label>
-
-</div>
-
-
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Garden"
-{% if {'feature_name':'Garden'} in saved_features %}checked{% endif %}>
-
-Garden
-
-</label>
-
-</div>
-
-
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Balcony"
-{% if {'feature_name':'Balcony'} in saved_features %}checked{% endif %}>
-
-Balcony
-
-</label>
-
-</div>
-
-
-
-
-
-<div>
-
-<label>
-
-<input
-type="checkbox"
-name="features"
-value="Sea View"
-{% if {'feature_name':'Sea View'} in saved_features %}checked{% endif %}>
-
-Sea View
-
-</label>
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<label>
-Property Address
-</label>
-
-
-<textarea name="address">
-
-{{ property.address }}
-
-</textarea>
-
-
-
-
-
-
-
-
-
-<label>
-Property Description
-</label>
-
-
-<textarea name="description">
-
-{{ property.description }}
-
-</textarea>
-
-
-
-
-
-
-
-
-
-<!-- CURRENT IMAGE -->
-
-
-<div class="current-image">
-
-
-<label>
-Current Property Image
-</label>
-
-
-
-
-{% if property.main_image %}
-
-
-
-<img
-
-src="{{ url_for('static', filename='uploads/properties/' ~ property.main_image) }}"
-
-alt="{{ property.title }}"
-
-style="
-width:250px;
-height:180px;
-object-fit:cover;
-border-radius:15px;
-margin-top:15px;
-">
-
-
-{% else %}
-
-
-<p>
-No image uploaded
-</p>
-
-
-{% endif %}
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<button
-
-type="submit"
-
-class="save-property-btn">
-
-
-Update Property
-
-
-</button>
-
-
-
-
-
-
-
-
-
-</form>
-
-
-
-
-
-
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-{% endblock %}
+</style>
