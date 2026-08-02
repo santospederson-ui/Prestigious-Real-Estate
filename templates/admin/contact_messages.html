@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}
+Contact Messages | Prestigious Real Estate Admin
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-form-section">
+
+    <div class="container">
+
+        <div class="admin-form-card">
+
+            <div class="form-header">
+
+                <h1>
+                    Contact Messages
+                </h1>
+
+                <p>
+                    Manage enquiries submitted through the website.
+                </p>
+
+            </div>
+
+            <!-- SEARCH -->
+
+            <form
+                method="GET"
+                action="{{ url_for('contact_messages') }}"
+                style="
+                display:flex;
+                gap:15px;
+                margin:30px 0;
+                flex-wrap:wrap;
+                ">
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ search }}"
+                    placeholder="Search by name, email or subject..."
+                    style="
+                    flex:1;
+                    min-width:280px;
+                    padding:12px 15px;
+                    border:1px solid #ddd;
+                    border-radius:8px;
+                    ">
+
+                <button
+                    type="submit"
+                    class="save-property-btn">
+
+                    Search
+
+                </button>
+
+            </form>
+
+            <div style="overflow-x:auto;">
+
+                <table class="property-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Subject</th>
+
+                            <th>Date</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+
+                                    {{ message.fullname }}
+
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                {{ message.email }}
+
+                            </td>
+
+                            <td>
+
+                                {{ message.phone }}
+
+                            </td>
+
+                            <td>
+
+                                {{ message.subject }}
+
+                            </td>
+
+                            <td>
+
+                                {{ message.created_at.strftime('%d %b %Y') }}
+
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="{{ url_for('view_contact_message', id=message.id) }}"
+                                    class="view-btn">
+
+                                    View
+
+                                </a>
+
+                                <a
+                                    href="{{ url_for('delete_contact_message', id=message.id) }}"
+                                    class="delete-btn"
+                                    onclick="return confirm('Delete this message?');">
+
+                                    Delete
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                style="
+                                text-align:center;
+                                padding:60px;
+                                ">
+
+                                <h3>
+
+                                    No Messages Found
+
+                                </h3>
+
+                                <p>
+
+                                    Contact enquiries will appear here.
+
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- PAGINATION -->
+
+            {% if total_pages > 1 %}
+
+            <div class="pagination">
+
+                {% if page > 1 %}
+
+                <a href="{{ url_for('contact_messages',
+                page=page-1,
+                search=search) }}">
+
+                    Previous
+
+                </a>
+
+                {% endif %}
+
+                {% for p in range(1,total_pages+1) %}
+
+                <a
+                    href="{{ url_for('contact_messages',
+                    page=p,
+                    search=search) }}"
+                    class="{% if p==page %}active{% endif %}">
+
+                    {{ p }}
+
+                </a>
+
+                {% endfor %}
+
+                {% if page < total_pages %}
+
+                <a href="{{ url_for('contact_messages',
+                page=page+1,
+                search=search) }}">
+
+                    Next
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

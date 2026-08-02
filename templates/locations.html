@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Luxury Property Locations in Qatar | Doha, Lusail & The Pearl | Prestigious Real Estate
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+<!-- =========================
+     LOCATION HERO
+========================= -->
+
+
+<section class="page-hero"
+style="background-image:url('{{ url_for('static', filename='images/hero/locations.jpg') }}');">
+
+
+<div class="page-overlay">
+
+
+<div class="container">
+
+
+<h1>
+Explore Prime Property Locations in Qatar
+</h1>
+
+
+<p>
+Discover luxury villas, apartments and investment properties across Qatar's most desirable communities.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+     LOCATIONS
+========================= -->
+
+
+<section class="locations-section">
+
+
+<div class="container">
+
+
+
+<div class="section-title">
+
+
+<h2>
+Popular Real Estate Locations in Qatar
+</h2>
+
+
+<p>
+Explore premium residential and commercial properties in Qatar's top destinations.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="location-grid">
+
+
+
+
+
+
+
+<!-- THE PEARL -->
+
+
+<div class="location-card">
+
+
+<img
+src="{{ url_for('static', filename='images/locations/the_pearl.jpeg') }}"
+alt="Luxury apartments and waterfront properties in The Pearl Qatar">
+
+
+<div class="location-overlay">
+
+
+<h3>
+The Pearl Qatar
+</h3>
+
+
+<p>
+Luxury waterfront apartments, premium residences and exclusive lifestyle communities.
+</p>
+
+
+<a href="{{ url_for('properties') }}">
+View Properties
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- LUSAIL -->
+
+
+<div class="location-card">
+
+
+<img
+src="{{ url_for('static', filename='images/locations/lusail.jpg') }}"
+alt="Modern residential properties and apartments in Lusail City Qatar">
+
+
+<div class="location-overlay">
+
+
+<h3>
+Lusail City
+</h3>
+
+
+<p>
+Modern smart-city communities, apartments and attractive property investment opportunities.
+</p>
+
+
+<a href="{{ url_for('properties') }}">
+View Properties
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- WEST BAY -->
+
+
+<div class="location-card">
+
+
+<img
+src="{{ url_for('static', filename='images/locations/west_bay.jpg') }}"
+alt="Luxury apartments and commercial properties in West Bay Doha Qatar">
+
+
+<div class="location-overlay">
+
+
+<h3>
+West Bay
+</h3>
+
+
+<p>
+Premium residences, office spaces and high-value commercial properties.
+</p>
+
+
+<a href="{{ url_for('properties') }}">
+View Properties
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- DOHA -->
+
+
+<div class="location-card">
+
+
+<img
+src="{{ url_for('static', filename='images/locations/doha.jpg') }}"
+alt="Residential and commercial properties in Doha Qatar">
+
+
+<div class="location-overlay">
+
+
+<h3>
+Doha
+</h3>
+
+
+<p>
+Residential homes, apartments and commercial properties across Qatar's capital city.
+</p>
+
+
+<a href="{{ url_for('properties') }}">
+View Properties
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Admin Login | Prestigious Real Estate
+</title>
+
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+
+</head>
+
+
+<body>
+
+
+
+<section class="login-page">
+
+
+
+<div class="login-card">
+
+
+
+    <div class="login-logo">
+
+
+        <img src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="Prestigious Real Estate">
+
+
+    </div>
+
+
+
+
+    <h1>
+    Prestigious Real <span>Estate</span>
+</h1>
+
+
+
+    <p>
+        Admin Login
+    </p>
+
+
+
+
+
+    <form method="POST">
+
+
+        <label>
+            Username
+        </label>
+
+
+        <input
+        type="text"
+        name="username"
+        placeholder="Enter username"
+        required>
+
+
+
+
+
+        <label>
+            Password
+        </label>
+
+
+        <input
+        type="password"
+        name="password"
+        placeholder="Enter password"
+        required>
+
+
+
+
+
+        <button type="submit" class="login-btn">
+
+            Login
+
+        </button>
+
+
+
+
+    </form>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+</body>
+
+</html>

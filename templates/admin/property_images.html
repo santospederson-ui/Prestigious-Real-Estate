@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Property Images | Admin
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<section class="admin-form-section">
+
+
+<div class="container">
+
+
+<div class="admin-form-card">
+
+
+
+<div class="form-header">
+
+<h1>
+Manage Property Images
+</h1>
+
+
+<p>
+{{ property.title }}
+</p>
+
+
+
+<a href="{{ url_for('manage_properties') }}"
+class="view-btn"
+style="display:inline-block;margin-top:20px;">
+
+← Back to Properties
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- =========================
+     UPLOAD IMAGES
+========================= -->
+
+
+<form method="POST"
+      enctype="multipart/form-data">
+
+
+
+<label>
+Upload More Images
+</label>
+
+
+<input
+type="file"
+name="images"
+multiple
+accept="image/*">
+
+
+
+
+
+
+<button
+type="submit"
+class="save-property-btn">
+
+Add Images
+
+</button>
+
+
+</form>
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+<h2>
+Gallery
+</h2>
+
+
+
+
+
+
+
+<div class="property-image-gallery">
+
+
+
+{% for image in images %}
+
+
+
+<div class="property-image-card">
+
+
+
+
+
+<img
+
+src="{{ url_for('static',
+filename='uploads/properties/' ~ image.image_name) }}"
+
+alt="Property Image"
+
+>
+
+
+
+
+
+
+{% if image.image_name == property.main_image %}
+
+
+<span class="cover-label">
+
+✓ Current Cover Image
+
+</span>
+
+
+{% else %}
+
+
+
+<a
+
+href="{{ url_for('set_cover_image',
+property_id=property.id,
+image_name=image.image_name) }}"
+
+class="cover-btn">
+
+Set As Cover
+
+</a>
+
+
+
+{% endif %}
+
+
+
+
+
+
+
+<a
+
+href="{{ url_for('delete_property_image',
+image_id=image.id,
+property_id=property.id) }}"
+
+onclick="return confirm('Delete this image?');"
+
+class="delete-btn"
+
+style="display:block;margin-top:10px;text-align:center;">
+
+Delete Image
+
+</a>
+
+
+
+
+</div>
+
+
+
+{% else %}
+
+
+
+<p>
+No images uploaded.
+</p>
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,890 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+{{ seo_title }}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+<!-- =========================
+PROPERTY SEO STRUCTURED DATA
+========================= -->
+
+<script type="application/ld+json">
+
+{
+"@context":"https://schema.org",
+"@type":"Residence",
+
+"name":"{{ property.title }}",
+
+"description":"{{ property.description|striptags|replace('"','') }}",
+
+"image":"{{ url_for('static', filename='uploads/properties/' ~ property.main_image, _external=True) }}",
+
+"address":
+{
+"@type":"PostalAddress",
+"addressLocality":"{{ property.location }}",
+"addressCountry":"QA"
+},
+
+"offers":
+{
+"@type":"Offer",
+
+"price":"{{ property.price }}",
+
+"priceCurrency":"QAR",
+
+"availability":
+"https://schema.org/InStock"
+
+},
+
+"seller":
+{
+"@type":"RealEstateAgent",
+
+"name":"Prestigious Real Estate"
+
+}
+
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+PROPERTY HERO
+========================= -->
+
+<section class="property-detail-hero">
+
+
+<div class="container">
+
+
+<span class="property-status
+{% if property.purpose == 'Rent' %}rent{% endif %}">
+
+FOR {{ property.purpose|upper }}
+
+</span>
+
+
+<h1>
+
+{{ property.title }}
+
+</h1>
+
+
+<p>
+
+📍 {{ property.location }}
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+PROPERTY GALLERY + INFO
+========================= -->
+
+
+<section class="property-details">
+
+
+<div class="container">
+
+
+
+<div class="details-grid">
+
+
+
+
+
+
+<!-- IMAGE AREA -->
+
+<div class="details-image">
+
+
+{% if gallery_images %}
+
+
+<img
+
+src="{{ url_for('static',
+filename='uploads/properties/' ~ gallery_images[0].image_name) }}"
+
+alt="{{ property.title }} in {{ property.location }} Qatar">
+
+
+
+{% elif property.main_image %}
+
+
+<img
+
+src="{{ url_for('static',
+filename='uploads/properties/' ~ property.main_image) }}"
+
+alt="{{ property.title }} in {{ property.location }} Qatar">
+
+
+
+{% else %}
+
+
+<img
+
+src="{{ url_for('static',
+filename='images/no-image.png') }}"
+
+alt="No image available">
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- PROPERTY INFORMATION -->
+
+
+<div class="details-info">
+
+
+
+<h2>
+
+{{ property.title }}
+
+</h2>
+
+
+
+<h3 class="property-price">
+
+QAR {{ "{:,.0f}".format(property.price or 0) }}
+
+</h3>
+
+
+
+
+
+
+<p>
+
+{{ property.description }}
+
+</p>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+PROPERTY FEATURES
+========================= -->
+
+
+<div class="details-features">
+
+
+
+<div>
+
+<h4>
+{{ property.bedrooms }}
+</h4>
+
+<span>
+Bedrooms
+</span>
+
+</div>
+
+
+
+
+
+
+<div>
+
+<h4>
+{{ property.bathrooms }}
+</h4>
+
+<span>
+Bathrooms
+</span>
+
+</div>
+
+
+
+
+
+
+<div>
+
+<h4>
+{{ property.area }}
+</h4>
+
+<span>
+SQM
+</span>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+EXTRA FEATURES
+========================= -->
+
+
+{% if features %}
+
+
+<div class="property-extra-features">
+
+
+<h3>
+
+Property Features
+
+</h3>
+
+
+
+
+<div class="feature-list">
+
+
+
+{% for feature in features %}
+
+
+
+<div class="feature-item">
+
+✓ {{ feature.feature_name }}
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+<a href="{{ url_for('contact') }}"
+class="primary-btn">
+
+Contact Agent
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========================
+IMAGE GALLERY
+========================= -->
+
+
+{% if gallery_images %}
+
+
+
+<section class="property-gallery">
+
+
+<div class="container">
+
+
+
+<h2>
+
+Property Gallery
+
+</h2>
+
+
+
+
+
+
+<div class="gallery-grid">
+
+
+
+{% for image in gallery_images %}
+
+
+
+
+<div class="gallery-item">
+
+
+
+<img
+
+src="{{ url_for('static',
+filename='uploads/properties/' ~ image.image_name) }}"
+
+alt="{{ property.title }} gallery image in {{ property.location }} Qatar"
+
+
+>
+
+
+
+</div>
+
+
+
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+{% endif %}
+
+<!-- =========================
+PROPERTY DESCRIPTION
+========================= -->
+
+
+<section class="description-section">
+
+
+<div class="container">
+
+
+<h2>
+
+Property Description
+
+</h2>
+
+
+
+<p>
+
+{{ property.description }}
+
+</p>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+PROPERTY INFORMATION
+========================= -->
+
+
+<section class="description-section">
+
+
+<div class="container">
+
+
+<h2>
+
+Property Information
+
+</h2>
+
+
+
+
+
+<div class="property-info-list">
+
+
+
+
+
+<p>
+
+<strong>
+Type:
+</strong>
+
+{{ property.property_type }}
+
+</p>
+
+
+
+
+
+
+<p>
+
+<strong>
+Purpose:
+</strong>
+
+{{ property.purpose }}
+
+</p>
+
+
+
+
+
+
+<p>
+
+<strong>
+Address:
+</strong>
+
+{{ property.address }}
+
+</p>
+
+
+
+
+
+
+<p>
+
+<strong>
+Furnished:
+</strong>
+
+{{ property.furnished }}
+
+</p>
+
+
+
+
+
+
+<p>
+
+<strong>
+Status:
+</strong>
+
+{{ property.status }}
+
+</p>
+
+
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+LOCATION
+========================= -->
+
+
+<section class="location-section">
+
+
+<div class="container">
+
+
+<h2>
+
+Property Location
+
+</h2>
+
+
+
+
+
+
+<div class="map-placeholder">
+
+
+📍 {{ property.location }}
+
+
+
+<br><br>
+
+
+
+Google Map Integration Coming Soon
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========================
+RELATED PROPERTIES
+========================= -->
+
+
+{% if related_properties %}
+
+
+
+<section class="related-properties">
+
+
+<div class="container">
+
+
+
+<h2>
+
+Related Properties
+
+</h2>
+
+
+
+
+
+
+
+<div class="related-grid">
+
+
+
+
+
+{% for item in related_properties %}
+
+
+
+
+
+
+<div class="related-card">
+
+
+
+
+
+<div class="related-image">
+
+
+
+
+
+{% if item.main_image %}
+
+
+
+
+
+<img
+
+src="{{ url_for('static',
+filename='uploads/properties/' ~ item.main_image) }}"
+
+alt="{{ item.title }} in {{ item.location }} Qatar"
+
+>
+
+
+
+
+{% else %}
+
+
+
+
+
+<img
+
+src="{{ url_for('static',
+filename='images/no-image.png') }}"
+
+alt="No image available"
+
+>
+
+
+
+
+{% endif %}
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="related-info">
+
+
+
+
+
+<h3>
+
+{{ item.title }}
+
+</h3>
+
+
+
+
+
+
+<p>
+
+📍 {{ item.location }}
+
+</p>
+
+
+
+
+
+
+
+<h4>
+
+QAR {{ "{:,.0f}".format(item.price or 0) }}
+
+</h4>
+
+
+
+
+
+
+
+
+<a href="{{ url_for('property_details', id=item.id) }}">
+
+View Details →
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+{% endfor %}
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+{% endif %}
+
+
+
+
+
+
+{% endblock %}

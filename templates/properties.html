@@ -1,0 +1,483 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Properties | Prestigious Real Estate
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+<!-- =========================
+PAGE HERO
+========================= -->
+
+<section class="page-hero"
+style="background-image:url('/static/images/properties/hero.jpg');">
+
+
+<div class="page-overlay">
+
+
+<div class="container">
+
+
+<h1>
+Our Properties
+</h1>
+
+
+<p>
+Discover premium properties for rent and sale in Qatar
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- =========================
+PROPERTY FILTER
+========================= -->
+
+
+<section class="property-filter">
+
+
+<div class="container">
+
+
+<form class="filter-box"
+method="GET"
+action="{{ url_for('properties') }}">
+
+
+
+<select name="property_type">
+
+<option value="">
+Property Type
+</option>
+
+
+<option value="Villa">
+Villa
+</option>
+
+
+<option value="Apartment">
+Apartment
+</option>
+
+
+<option value="Office">
+Office
+</option>
+
+
+<option value="Commercial Building">
+Commercial Building
+</option>
+
+
+</select>
+
+
+
+
+
+<select name="purpose">
+
+
+<option value="">
+Purpose
+</option>
+
+
+<option value="Sale">
+Sale
+</option>
+
+
+<option value="Rent">
+Rent
+</option>
+
+
+</select>
+
+
+
+
+
+<select name="location">
+
+
+<option value="">
+Location
+</option>
+
+
+<option value="Doha">
+Doha
+</option>
+
+
+<option value="Lusail">
+Lusail
+</option>
+
+
+<option value="The Pearl">
+The Pearl
+</option>
+
+
+<option value="West Bay">
+West Bay
+</option>
+
+
+<option value="Al Wakrah">
+Al Wakrah
+</option>
+
+
+</select>
+
+
+
+
+
+<button type="submit">
+
+Search
+
+</button>
+
+
+
+</form>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+PROPERTY LIST
+========================= -->
+
+
+<section class="properties-section">
+
+
+<div class="container">
+
+
+
+<div class="section-title">
+
+
+<h2>
+Available Properties
+</h2>
+
+
+<p>
+Explore our latest property opportunities
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="property-grid">
+
+
+
+
+
+{% for property in properties %}
+
+
+
+
+
+<div class="property-card">
+
+
+
+
+
+<div class="property-image">
+
+
+{% if property.main_image %}
+
+
+<img
+src="{{ url_for('static', filename='uploads/properties/' ~ property.main_image) }}"
+alt="{{ property.title }}">
+
+
+{% else %}
+
+
+<img
+src="{{ url_for('static', filename='images/no-image.jpg') }}"
+alt="No Image">
+
+
+{% endif %}
+
+
+
+
+
+<div class="property-status
+{% if property.purpose == 'Rent' %}rent{% endif %}">
+
+
+{{ property.purpose }}
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="property-info">
+
+
+
+<h3>
+
+{{ property.title }}
+
+</h3>
+
+
+
+
+
+<p class="location">
+
+📍 {{ property.location }}
+
+</p>
+
+
+
+
+
+
+
+<p class="property-price">
+
+QAR {{ "{:,.0f}".format(property.price or 0) }}
+
+</p>
+
+
+
+
+
+
+
+
+<div class="property-meta">
+
+
+<span>
+🛏 {{ property.bedrooms or 0 }} Beds
+</span>
+
+
+
+<span>
+🚿 {{ property.bathrooms or 0 }} Baths
+</span>
+
+
+
+<span>
+📐 {{ property.area or 0 }} sqm
+</span>
+
+
+</div>
+
+
+
+
+
+
+
+<a href="{{ url_for('property_details', id=property.id) }}">
+View Details
+</a>
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+{% else %}
+
+
+
+<h3>
+No properties available
+</h3>
+
+
+
+{% endfor %}
+
+
+
+
+
+</div>
+
+
+
+
+<!-- =========================
+PAGINATION
+========================= -->
+
+
+{% if total_pages > 1 %}
+
+
+<div class="pagination">
+
+
+{% if page > 1 %}
+
+
+<a href="{{ url_for(
+'properties',
+page=page-1,
+property_type=property_type,
+purpose=purpose,
+location=location
+) }}">
+
+← Previous
+
+</a>
+
+
+{% endif %}
+
+
+
+
+
+
+<span>
+
+Page {{ page }} of {{ total_pages }}
+
+</span>
+
+
+
+
+
+
+
+{% if page < total_pages %}
+
+
+<a href="{{ url_for(
+'properties',
+page=page+1,
+property_type=property_type,
+purpose=purpose,
+location=location
+) }}">
+
+Next →
+
+</a>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+{% endblock %}

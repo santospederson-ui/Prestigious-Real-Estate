@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+View Contact Message | Admin
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+<section class="admin-form-section">
+
+
+<div class="container">
+
+
+
+<div class="admin-form-card">
+
+
+
+
+
+<div class="form-header">
+
+
+<h1>
+Contact Message
+</h1>
+
+
+<p>
+View enquiry details from website visitors
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div style="
+background:#f8f9fb;
+padding:30px;
+border-radius:15px;
+margin-top:30px;
+">
+
+
+
+
+
+
+<div style="
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+">
+
+
+
+
+
+
+<div>
+
+<h4>
+Full Name
+</h4>
+
+<p>
+{{ message.fullname }}
+</p>
+
+</div>
+
+
+
+
+
+
+<div>
+
+<h4>
+Email
+</h4>
+
+<p>
+{{ message.email }}
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<h4>
+Phone
+</h4>
+
+<p>
+{{ message.phone or 'Not provided' }}
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<h4>
+Date Received
+</h4>
+
+<p>
+
+{{ message.created_at.strftime('%d %B %Y, %I:%M %p') }}
+
+</p>
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<hr style="margin:35px 0;">
+
+
+
+
+
+
+<div>
+
+<h4>
+Subject
+</h4>
+
+
+<p>
+
+{{ message.subject }}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<hr style="margin:35px 0;">
+
+
+
+
+
+
+
+<div>
+
+<h4>
+Message
+</h4>
+
+
+<div style="
+background:white;
+padding:25px;
+border-radius:12px;
+line-height:1.8;
+border:1px solid #eee;
+">
+
+
+{{ message.message }}
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div style="
+margin-top:35px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+">
+
+
+
+
+
+<a href="{{ url_for('contact_messages') }}"
+class="view-btn">
+
+← Back To Messages
+
+</a>
+
+
+
+
+
+
+
+<a href="{{ url_for('delete_contact_message', id=message.id) }}"
+class="delete-btn"
+onclick="return confirm('Delete this message?');">
+
+Delete Message
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+{% endblock %}

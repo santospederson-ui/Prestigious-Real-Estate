@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Manage Properties | Admin
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<section class="admin-form-section">
+
+<div class="container">
+
+
+<div class="admin-form-card">
+
+
+<div class="form-header">
+
+<h1>
+Manage Properties
+</h1>
+
+<p>
+View and manage Prestigious Real Estate listings
+</p>
+
+</div>
+
+
+
+<!-- FILTER BUTTONS -->
+
+<div style="margin-bottom:30px;">
+
+
+<a href="{{ url_for('manage_properties') }}"
+class="view-btn">
+
+All Properties
+
+</a>
+
+
+
+<a href="{{ url_for('manage_properties', purpose='Rent') }}"
+class="view-btn">
+
+Rental Properties
+
+</a>
+
+
+
+<a href="{{ url_for('manage_properties', purpose='Sale') }}"
+class="view-btn">
+
+Properties For Sale
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+<table class="property-table">
+
+
+<thead>
+
+<tr>
+
+<th>
+Image
+</th>
+
+
+<th>
+Property
+</th>
+
+
+<th>
+Location
+</th>
+
+
+<th>
+Price
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Action
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+
+
+
+<tbody>
+
+
+{% for item in properties %}
+
+
+<tr>
+
+
+<td>
+
+{% if item.main_image %}
+
+<img
+src="{{ url_for('static',
+filename='uploads/properties/' + item.main_image) }}"
+class="table-image">
+
+{% endif %}
+
+</td>
+
+
+
+
+
+
+<td>
+
+<strong>
+{{ item.title }}
+</strong>
+
+<br>
+
+<small>
+{{ item.property_type }}
+</small>
+
+</td>
+
+
+
+
+
+
+<td>
+
+📍 {{ item.location }}
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+<strong style="color:#8A1538">
+
+QAR {{ "{:,.0f}".format(item.price or 0) }}
+
+</strong>
+
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+{{ item.status }}
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+
+<a href="{{ url_for('edit_property', id=item.id) }}"
+class="edit-btn">
+
+Edit
+
+</a>
+
+
+<a href="{{ url_for('delete_property', id=item.id) }}"
+class="delete-btn">
+
+Delete
+
+</a>
+
+
+</td>
+
+
+</tr>
+
+
+
+{% else %}
+
+
+<tr>
+
+<td colspan="6">
+
+No properties found
+
+</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+
+
+
+
+{% if total_pages > 1 %}
+
+<div class="pagination">
+
+
+
+{% if page > 1 %}
+
+<a href="{{ url_for('manage_properties', page=page-1, purpose=purpose) }}">
+
+Previous
+
+</a>
+
+{% endif %}
+
+
+
+
+
+
+<span>
+Page {{page}} of {{total_pages}}
+</span>
+
+
+
+
+
+
+{% if page < total_pages %}
+
+<a href="{{ url_for('manage_properties', page=page+1, purpose=purpose) }}">
+
+Next
+
+</a>
+
+{% endif %}
+
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+{% endblock %}

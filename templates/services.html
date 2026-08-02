@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+Premium Real Estate Services in Qatar | Property Sales, Leasing & Management | Prestigious Real Estate
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+
+
+
+<!-- =========================
+     SERVICES HERO
+========================= -->
+
+
+<section class="page-hero"
+style="background-image:url('{{ url_for('static', filename='images/hero/services.jpg') }}');">
+
+
+<div class="page-overlay">
+
+
+<div class="container">
+
+
+<h1>
+Professional Real Estate Services in Qatar
+</h1>
+
+
+<p>
+Complete property solutions for buyers, tenants, investors and property owners.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+     SERVICES
+========================= -->
+
+
+<section class="services-page">
+
+
+<div class="container">
+
+
+
+<div class="section-title">
+
+
+<h2>
+Our Real Estate Services
+</h2>
+
+
+<p>
+Helping clients buy, rent and manage properties across Qatar with confidence.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="services-grid">
+
+
+
+
+
+
+
+<div class="service-card">
+
+
+<div class="service-icon">
+🏠
+</div>
+
+
+<h3>
+Property Sales
+</h3>
+
+
+<p>
+
+We help clients discover premium villas,
+apartments and commercial properties for sale
+in Qatar's best locations.
+
+</p>
+
+
+
+<a href="{{ url_for('properties') }}">
+View Properties
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="service-card">
+
+
+<div class="service-icon">
+🔑
+</div>
+
+
+<h3>
+Property Leasing
+</h3>
+
+
+<p>
+
+Find suitable rental homes, offices and
+commercial spaces with professional guidance.
+
+</p>
+
+
+
+<a href="{{ url_for('properties') }}">
+Find Rental Properties
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="service-card">
+
+
+<div class="service-icon">
+🏢
+</div>
+
+
+<h3>
+Property Management
+</h3>
+
+
+<p>
+
+Professional property management services
+for owners, landlords and investors.
+
+</p>
+
+
+
+<a href="{{ url_for('contact') }}">
+Contact Us
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="service-card">
+
+
+<div class="service-icon">
+📈
+</div>
+
+
+<h3>
+Real Estate Consultancy
+</h3>
+
+
+<p>
+
+Expert market advice to help clients make
+better property investment decisions in Qatar.
+
+</p>
+
+
+
+<a href="{{ url_for('contact') }}">
+Speak With Us
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+     WHY CLIENTS TRUST US
+========================= -->
+
+
+<section class="trust-section">
+
+
+<div class="container">
+
+
+
+<h2>
+Why Choose Prestigious Real Estate?
+</h2>
+
+
+
+
+
+<div class="trust-grid">
+
+
+
+
+
+<div>
+
+<h3>
+Qatar Market Expertise
+</h3>
+
+<p>
+Strong knowledge of Qatar's residential and commercial property market.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<h3>
+Trusted Service
+</h3>
+
+<p>
+Transparent, professional and reliable property solutions.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<h3>
+Professional Support
+</h3>
+
+<p>
+Dedicated assistance throughout your property journey.
+</p>
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+{% endblock %}

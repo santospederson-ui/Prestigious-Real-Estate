@@ -1,0 +1,572 @@
+{% extends "base.html" %}
+
+{% block title %}
+Prestigious Real Estate | Email Settings
+{% endblock %}
+
+
+{% block content %}
+
+
+<style>
+
+:root {
+
+    --maroon:#8A1538;
+    --maroon-dark:#5f1028;
+    --gold:#c9a227;
+    --text:#1f2937;
+    --border:#e5e7eb;
+    --background:#f8fafc;
+
+}
+
+
+/* PAGE */
+
+.email-settings-page {
+
+    background:var(--background);
+
+    min-height:100vh;
+
+    padding:40px 20px;
+
+}
+
+
+
+/* CARD */
+
+.email-card {
+
+    max-width:900px;
+
+    margin:auto;
+
+    background:white;
+
+    border-radius:18px;
+
+    border:1px solid var(--border);
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+    overflow:hidden;
+
+}
+
+
+
+/* HEADER */
+
+.email-header {
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--maroon),
+    var(--maroon-dark)
+    );
+
+    color:white;
+
+    padding:30px;
+
+
+}
+
+
+.email-header h2 {
+
+    margin:0;
+
+    font-weight:800;
+
+}
+
+
+
+.email-header p {
+
+    margin-top:8px;
+
+    opacity:.85;
+
+}
+
+
+
+/* BODY */
+
+.email-body {
+
+    padding:35px;
+
+}
+
+
+
+/* LABEL */
+
+.email-label {
+
+    font-weight:700;
+
+    color:#374151;
+
+    margin-bottom:8px;
+
+}
+
+
+
+/* INPUT */
+
+.email-input {
+
+    height:48px;
+
+    border-radius:10px;
+
+    border:1px solid #d1d5db;
+
+    padding:10px 15px;
+
+    transition:.3s;
+
+}
+
+
+
+.email-input:focus {
+
+    border-color:var(--maroon);
+
+    box-shadow:
+    0 0 0 4px rgba(138,21,56,.15);
+
+}
+
+
+
+/* CHECKBOX */
+
+.email-check {
+
+    width:18px;
+
+    height:18px;
+
+    accent-color:var(--maroon);
+
+}
+
+
+
+/* BUTTON */
+
+
+.save-btn {
+
+    background:var(--maroon);
+
+    color:white;
+
+    border:none;
+
+    padding:13px 35px;
+
+    border-radius:10px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+
+
+.save-btn:hover {
+
+    background:var(--maroon-dark);
+
+    color:white;
+
+    transform:translateY(-2px);
+
+}
+
+
+
+/* INFO */
+
+.info-box {
+
+    margin-top:30px;
+
+    background:#fff8e7;
+
+    border-left:5px solid var(--gold);
+
+    padding:20px;
+
+    border-radius:10px;
+
+}
+
+
+.info-box h5 {
+
+    color:#7c5b00;
+
+    font-weight:800;
+
+}
+
+
+
+.info-box li {
+
+    margin-bottom:8px;
+
+    color:#555;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.email-body{
+
+padding:20px;
+
+}
+
+}
+
+
+</style>
+
+
+
+<div class="email-settings-page">
+
+
+<div class="email-card">
+
+
+<div class="email-header">
+
+
+<h2>
+Email Notification Settings
+</h2>
+
+
+<p>
+Configure Brevo SMTP for Prestigious Real Estate enquiry notifications.
+</p>
+
+
+</div>
+
+
+
+<div class="email-body">
+
+
+
+<form method="POST">
+
+
+
+<div class="mb-4">
+
+<label class="email-label">
+SMTP Server
+</label>
+
+
+<input
+
+type="text"
+
+name="smtp_server"
+
+class="form-control email-input"
+
+value="{{ settings.smtp_server if settings else 'smtp-relay.brevo.com' }}"
+
+required
+
+>
+
+</div>
+
+
+
+
+
+<div class="mb-4">
+
+
+<label class="email-label">
+SMTP Port
+</label>
+
+
+<input
+
+type="number"
+
+name="smtp_port"
+
+class="form-control email-input"
+
+value="{{ settings.smtp_port if settings else '587' }}"
+
+required
+
+>
+
+
+</div>
+
+
+
+
+
+<div class="mb-4">
+
+
+<label class="email-label">
+Brevo SMTP Username
+</label>
+
+
+<input
+
+type="text"
+
+name="smtp_username"
+
+class="form-control email-input"
+
+value="{{ settings.smtp_username if settings else '' }}"
+
+placeholder="example@smtp-brevo.com"
+
+required
+
+>
+
+
+</div>
+
+
+
+
+
+
+<div class="mb-4">
+
+
+<label class="email-label">
+Brevo SMTP Key
+</label>
+
+
+<input
+
+type="password"
+
+name="smtp_password"
+
+class="form-control email-input"
+
+placeholder="Enter Brevo SMTP Key"
+
+required
+
+>
+
+
+</div>
+
+
+
+
+
+
+<div class="mb-4">
+
+
+<label class="email-label">
+Sender Email
+</label>
+
+
+<input
+
+type="email"
+
+name="from_email"
+
+class="form-control email-input"
+
+value="{{ settings.from_email if settings else '' }}"
+
+placeholder="noreply@yourdomain.com"
+
+required
+
+>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-4">
+
+
+<label class="email-label">
+Sender Name
+</label>
+
+
+<input
+
+type="text"
+
+name="sender_name"
+
+class="form-control email-input"
+
+value="{{ settings.sender_name if settings else 'Prestigious Real Estate' }}"
+
+>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="form-check mb-4">
+
+
+<input
+
+type="checkbox"
+
+name="use_tls"
+
+class="form-check-input email-check"
+
+checked
+
+>
+
+
+<label class="form-check-label ms-2">
+
+Enable TLS Security
+
+</label>
+
+
+</div>
+
+
+
+
+
+
+
+<button
+
+type="submit"
+
+class="save-btn">
+
+
+Save Email Settings
+
+
+</button>
+
+
+
+</form>
+
+
+
+
+
+<div class="info-box">
+
+
+<h5>
+Brevo Configuration Guide
+</h5>
+
+
+<ul>
+
+<li>
+SMTP Server: smtp-relay.brevo.com
+</li>
+
+
+<li>
+SMTP Port: 587
+</li>
+
+
+<li>
+Security: TLS
+</li>
+
+
+<li>
+Use Brevo SMTP Key, not account password
+</li>
+
+
+<li>
+Sender email must be verified in Brevo
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+{% endblock %}

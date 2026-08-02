@@ -1,0 +1,1044 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+Prestigious Real Estate | Qatar Properties
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+<!-- =========================
+     HERO SECTION
+========================= -->
+
+
+<section class="hero">
+
+
+<div class="hero-slider">
+
+
+
+<div class="hero-slide active"
+style="background-image:url('{{ url_for('static', filename='images/hero/hero1.png') }}');">
+</div>
+
+
+
+<div class="hero-slide"
+style="background-image:url('{{ url_for('static', filename='images/hero/hero2.jpg') }}');">
+</div>
+
+
+
+<div class="hero-slide"
+style="background-image:url('{{ url_for('static', filename='images/hero/hero3.png') }}');">
+</div>
+
+
+
+<div class="hero-slide"
+style="background-image:url('{{ url_for('static', filename='images/hero/hero4.jpg') }}');">
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="hero-overlay">
+
+
+<div class="hero-content">
+
+
+<h1>
+
+Discover Exceptional
+<br>
+Properties Across Qatar
+
+</h1>
+
+
+
+<p>
+
+Find premium residential and commercial
+properties designed for modern living.
+
+</p>
+
+
+
+
+<div class="hero-buttons">
+
+
+<a href="{{ url_for('properties') }}" class="primary-btn">
+
+Explore Properties
+
+</a>
+
+
+
+<a href="{{ url_for('contact') }}" class="outline-btn">
+
+Contact Us
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- =========================
+     SMART PROPERTY SEARCH
+========================= -->
+
+<section class="search-box">
+
+    <div class="container">
+
+        <div class="search-card">
+
+            <h2>
+                Find Your Dream Property
+            </h2>
+
+            <p>
+                Search by property type, location, features, lifestyle or any keyword.
+            </p>
+
+            <form
+                action="{{ url_for('properties') }}"
+                method="GET"
+                class="smart-search-form">
+
+                <div class="smart-search-input">
+
+                    <i class="fas fa-search"></i>
+
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search villas, apartments, studios, Lusail, sea view, swimming pool..."
+                        autocomplete="off">
+
+                    <button type="submit">
+
+                        Search Properties
+
+                    </button>
+
+                </div>
+
+            </form>
+
+            <div class="popular-searches">
+
+                <span>Popular Searches:</span>
+
+                <a href="{{ url_for('properties', search='Villa') }}">
+                    Villas
+                </a>
+
+                <a href="{{ url_for('properties', search='Apartment') }}">
+                    Apartments
+                </a>
+
+                <a href="{{ url_for('properties', search='Studio') }}">
+                    Studio
+                </a>
+
+                <a href="{{ url_for('properties', search='Office') }}">
+                    Office
+                </a>
+
+                <a href="{{ url_for('properties', search='Lusail') }}">
+                    Lusail
+                </a>
+
+                <a href="{{ url_for('properties', search='Rent') }}">
+                    For Rent
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+<!-- =========================
+     FEATURED PROPERTIES
+========================= -->
+
+<section class="featured-properties">
+
+    <div class="container">
+
+
+        <div class="section-title">
+
+            <h2>
+                Featured Properties
+            </h2>
+
+            <p>
+                Discover exclusive residential and commercial properties
+                selected for exceptional lifestyle and investment opportunities across Qatar.
+            </p>
+
+        </div>
+
+
+
+        <div class="property-slider-container">
+
+
+            <button class="slider-btn prev">
+                &#8249;
+            </button>
+
+
+
+            <div class="property-slider">
+
+
+                <div class="property-track">
+
+
+
+                    {% if properties %}
+
+
+                    {% for property in properties %}
+
+
+
+                    <div class="property-card">
+
+
+
+                        <!-- PROPERTY IMAGE -->
+
+                        <div class="property-image">
+
+
+                            {% if property.main_image %}
+
+                            <img src="{{ url_for('static', filename='uploads/properties/' ~ property.main_image) }}"
+                                 alt="{{ property.title }}">
+
+
+                            {% else %}
+
+
+                            <img src="{{ url_for('static', filename='images/no-image.png') }}"
+                                 alt="Property Image">
+
+
+                            {% endif %}
+
+
+
+
+                            <span class="property-status
+                            {% if property.purpose == 'Rent' %}rent{% endif %}">
+
+                                {% if property.purpose == 'Rent' %}
+
+                                    FOR RENT
+
+                                {% else %}
+
+                                    FOR SALE
+
+                                {% endif %}
+
+                            </span>
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <!-- PROPERTY INFORMATION -->
+
+
+                        <div class="property-info">
+
+
+
+                            <h3>
+
+                                {{ property.title }}
+
+                            </h3>
+
+
+
+
+
+                            <p class="location">
+
+                                📍 {{ property.location }}
+
+                            </p>
+
+
+
+
+
+                            <div class="property-price">
+
+
+                                {% if property.price %}
+
+                                QAR {{ "{:,.0f}".format(property.price) }}
+
+                                {% else %}
+
+                                Contact For Price
+
+                                {% endif %}
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div class="property-meta">
+
+
+                                {% if property.bedrooms %}
+
+                                <span>
+                                    🛏 {{ property.bedrooms }} Beds
+                                </span>
+
+                                {% endif %}
+
+
+
+                                {% if property.bathrooms %}
+
+                                <span>
+                                    🛁 {{ property.bathrooms }} Baths
+                                </span>
+
+                                {% endif %}
+
+
+
+
+                                {% if property.area %}
+
+                                <span>
+                                    📐 {{ "{:,.0f}".format(property.area) }} sqm
+                                </span>
+
+                                {% endif %}
+
+
+
+                            </div>
+
+
+
+
+
+
+                            <a href="{{ url_for('property_details', id=property.id) }}">
+
+                                View Property Details →
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    {% endfor %}
+
+
+
+                    {% else %}
+
+
+
+                    <div style="width:100%;text-align:center;padding:80px 20px;">
+
+
+                        <h3>
+                            No Featured Properties Available
+                        </h3>
+
+
+                        <p>
+                            Add properties from the admin dashboard to display them here.
+                        </p>
+
+
+                    </div>
+
+
+
+                    {% endif %}
+
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <button class="slider-btn next">
+
+                &#8250;
+
+            </button>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="view-all">
+
+
+            <a href="{{ url_for('properties') }}">
+
+                Explore All Properties
+
+            </a>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+</section>
+
+<!-- =========================
+     WHY CHOOSE US
+========================= -->
+
+
+<section class="why-section">
+
+
+<div class="container">
+
+
+
+<div class="section-title">
+
+
+<h2>
+Why Choose Prestigious Real Estate
+</h2>
+
+
+<p>
+Delivering exceptional property solutions across Qatar.
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="why-grid">
+
+
+
+
+
+<div class="why-card">
+
+
+<div class="why-icon">
+
+🏙️
+
+</div>
+
+
+<h3>
+Qatar Market Expertise
+</h3>
+
+
+<p>
+Deep understanding of Qatar's real estate market,
+locations and investment opportunities.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="why-card">
+
+
+<div class="why-icon">
+
+🏢
+
+</div>
+
+
+<h3>
+Luxury Development
+</h3>
+
+
+<p>
+Connecting clients with premium residential
+and commercial developments.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="why-card">
+
+
+<div class="why-icon">
+
+🤝
+
+</div>
+
+
+<h3>
+Trusted Service
+</h3>
+
+
+<p>
+Professional guidance built on transparency,
+trust and long-term relationships.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="why-card">
+
+
+<div class="why-icon">
+
+👔
+
+</div>
+
+
+<h3>
+Professional Team
+</h3>
+
+
+<p>
+Experienced specialists dedicated to delivering
+the best property experience.
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+<!-- =========================
+     PROPERTY CATEGORIES
+========================= -->
+
+
+<section class="categories-section">
+
+
+<div class="container">
+
+
+
+<div class="section-title">
+
+
+<h2>
+Explore Property Categories
+</h2>
+
+
+<p>
+Discover premium real estate opportunities
+designed for every lifestyle and investment goal.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="category-grid">
+
+
+
+
+
+<!-- CATEGORY 1 -->
+
+
+<div class="category-card">
+
+
+<img src="{{ url_for('static', filename='images/locations/commercial.jpeg') }}"
+alt="Luxury Villas">
+
+
+
+<div class="category-overlay">
+
+
+<h3>
+Luxury Villas
+</h3>
+
+
+<p>
+Exclusive homes with modern designs
+and premium finishes.
+</p>
+
+
+
+<a href="#">
+Explore
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- CATEGORY 2 -->
+
+
+<div class="category-card">
+
+
+<img src="{{ url_for('static', filename='images/locations/apartment.jpg') }}"
+alt="Luxury Apartments">
+
+
+
+<div class="category-overlay">
+
+
+<h3>
+Luxury Apartments
+</h3>
+
+
+<p>
+Modern residences in Qatar's
+most desirable locations.
+</p>
+
+
+
+<a href="#">
+Explore
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- CATEGORY 3 -->
+
+
+<div class="category-card">
+
+
+<img src="{{ url_for('static', filename='images/locations/villa.jpg') }}"
+alt="Commercial Properties">
+
+
+
+<div class="category-overlay">
+
+
+<h3>
+Commercial Properties
+</h3>
+
+
+<p>
+Premium offices and business
+spaces for companies.
+</p>
+
+
+
+<a href="#">
+Explore
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- CATEGORY 4 -->
+
+
+<div class="category-card">
+
+
+<img src="{{ url_for('static', filename='images/locations/investment.jpeg') }}"
+alt="Investment Properties">
+
+
+
+<div class="category-overlay">
+
+
+<h3>
+Investment Properties
+</h3>
+
+
+<p>
+Strategic opportunities for
+long-term growth.
+</p>
+
+
+
+<a href="#">
+Explore
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+<!-- =========================
+     TESTIMONIALS
+========================= -->
+
+
+<section class="testimonial-section">
+
+
+<div class="container">
+
+
+<div class="section-title">
+
+
+<h2>
+What Our Clients Say
+</h2>
+
+
+<p>
+Trusted by clients looking for premium real estate solutions in Qatar.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="testimonial-grid">
+
+
+
+
+
+<div class="testimonial-card">
+
+
+<div class="stars">
+★★★★★
+</div>
+
+
+<p>
+"Prestigious Real Estate provided excellent
+guidance and helped us find the perfect property
+for our family."
+</p>
+
+
+
+<h4>
+Mohammed A.
+</h4>
+
+
+<span>
+Lusail Resident
+</span>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="testimonial-card">
+
+
+<div class="stars">
+★★★★★
+</div>
+
+
+<p>
+"Professional service, great market knowledge
+and a smooth buying experience."
+</p>
+
+
+
+<h4>
+Sarah K.
+</h4>
+
+
+<span>
+Property Investor
+</span>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="testimonial-card">
+
+
+<div class="stars">
+★★★★★
+</div>
+
+
+<p>
+"The team understood our requirements and
+found exactly what we were looking for."
+</p>
+
+
+
+<h4>
+David O.
+</h4>
+
+
+<span>
+Doha Client
+</span>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- =========================
+     FIND PROPERTY CTA
+========================= -->
+
+<section class="cta-section">
+
+    <div class="container">
+
+        <div class="cta-box">
+
+            <h2>
+                Looking for Your Ideal Property?
+            </h2>
+
+            <p>
+                Explore our exclusive collection of residential and commercial
+                properties across Qatar. Let us help you find a home or investment
+                that perfectly matches your lifestyle and budget.
+            </p>
+
+            <a href="/find-property" class="cta-btn">
+                Find My Property
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+{% endblock %}

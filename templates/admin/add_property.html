@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Add Property | Prestigious Real Estate Admin
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+<section class="admin-form-section">
+
+
+<div class="container">
+
+
+<div class="admin-form-card">
+
+
+
+<div class="form-header">
+
+<h1>
+Add New Property
+</h1>
+
+
+<p>
+Create a premium property listing for Qatar market
+</p>
+
+</div>
+
+
+
+
+
+
+
+<form method="POST"
+enctype="multipart/form-data">
+
+
+
+
+
+<div class="form-grid">
+
+
+
+
+
+<div>
+
+<label>
+Property Title
+</label>
+
+<input
+type="text"
+name="title"
+placeholder="Luxury Villa in Lusail"
+required>
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<label>
+Purpose
+</label>
+
+
+<select name="purpose" required>
+
+
+<option value="">
+Select Purpose
+</option>
+
+
+<option value="Sale">
+For Sale
+</option>
+
+
+<option value="Rent">
+For Rent
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<label>
+Property Type
+</label>
+
+
+<select name="property_type" required>
+
+
+<option>
+Villa
+</option>
+
+
+<option>
+Apartment
+</option>
+
+
+<option>
+Office
+</option>
+
+
+<option>
+Commercial Building
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<label>
+Location
+</label>
+
+
+<select name="location">
+
+
+<option>
+Doha
+</option>
+
+<option>
+Lusail
+</option>
+
+<option>
+The Pearl
+</option>
+
+<option>
+West Bay
+</option>
+
+<option>
+Al Wakrah
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+<label>
+Price (QAR)
+</label>
+
+
+<input
+type="number"
+name="price"
+placeholder="3500000">
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+<label>
+Bedrooms
+</label>
+
+
+<input
+type="number"
+name="bedrooms"
+placeholder="0"
+required>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+<label>
+Bathrooms
+</label>
+
+
+<input
+type="number"
+name="bathrooms"
+placeholder="0"
+required>
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<label>
+Area SQM
+</label>
+
+
+<input
+type="number"
+name="area"
+placeholder="700">
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<label>
+Parking Spaces
+</label>
+
+
+<input
+type="number"
+name="parking"
+placeholder="0"
+required>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Furnished
+</label>
+
+
+<select name="furnished">
+
+
+<option value="Not Furnished">
+Not Furnished
+</option>
+
+
+<option value="Semi Furnished">
+Semi Furnished
+</option>
+
+
+<option value="Fully Furnished">
+Fully Furnished
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<label>
+
+Property Address
+
+</label>
+
+
+<textarea
+name="address"
+placeholder="Complete property address">
+</textarea>
+
+
+
+
+
+
+
+
+<label>
+
+Property Description
+
+</label>
+
+
+<textarea
+name="description"
+placeholder="Describe property features, location advantages and facilities">
+</textarea>
+
+
+
+
+
+
+
+
+
+<label>
+
+Upload Property Images
+
+</label>
+
+
+
+<p style="color:#777;margin-bottom:10px;">
+
+First image will automatically become the main property image.
+
+</p>
+
+
+
+
+<input
+
+type="file"
+
+name="images"
+
+multiple
+
+accept="image/*"
+
+required
+
+>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- =========================
+     PROPERTY FEATURES
+========================= -->
+
+
+<label>
+Property Features
+</label>
+
+
+<div class="features-grid">
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Swimming Pool">
+
+Swimming Pool
+
+</label>
+
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Smart Home">
+
+Smart Home
+
+</label>
+
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Sea View">
+
+Sea View
+
+</label>
+
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Private Garden">
+
+Private Garden
+
+</label>
+
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Gym">
+
+Gym
+
+</label>
+
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Security 24/7">
+
+Security 24/7
+
+</label>
+
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Maid Room">
+
+Maid Room
+
+</label>
+
+
+
+<label>
+<input type="checkbox"
+name="features"
+value="Balcony">
+
+Balcony
+
+</label>
+
+
+</div>
+
+
+
+
+
+<button
+
+type="submit"
+
+class="save-property-btn">
+
+Save Property
+
+</button>
+
+
+
+
+
+
+
+</form>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,770 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+Edit Property | Prestigious Real Estate Admin
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block content %}
+
+
+
+<section class="admin-form-section">
+
+
+<div class="container">
+
+
+
+<div class="admin-form-card">
+
+
+
+
+
+<div class="form-header">
+
+<h1>
+Edit Property
+</h1>
+
+
+<p>
+Update property details and maintain your real estate listings.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<form method="POST">
+
+
+
+
+
+<div class="form-grid">
+
+
+
+
+
+
+
+<div>
+
+<label>
+Property Title
+</label>
+
+
+<input
+type="text"
+name="title"
+value="{{ property.title }}"
+required>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Purpose
+</label>
+
+
+<select name="purpose" required>
+
+
+<option value="Sale"
+{% if property.purpose=="Sale" %}selected{% endif %}>
+Sale
+</option>
+
+
+<option value="Rent"
+{% if property.purpose=="Rent" %}selected{% endif %}>
+Rent
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Property Type
+</label>
+
+
+<select name="property_type">
+
+
+<option value="Villa"
+{% if property.property_type=="Villa" %}selected{% endif %}>
+Villa
+</option>
+
+
+<option value="Apartment"
+{% if property.property_type=="Apartment" %}selected{% endif %}>
+Apartment
+</option>
+
+
+<option value="Office"
+{% if property.property_type=="Office" %}selected{% endif %}>
+Office
+</option>
+
+
+<option value="Commercial Building"
+{% if property.property_type=="Commercial Building" %}selected{% endif %}>
+Commercial Building
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Location
+</label>
+
+
+<select name="location" required>
+
+
+<option value="Doha"
+{% if property.location=="Doha" %}selected{% endif %}>
+Doha
+</option>
+
+
+
+<option value="Lusail"
+{% if property.location=="Lusail" %}selected{% endif %}>
+Lusail
+</option>
+
+
+
+<option value="The Pearl"
+{% if property.location=="The Pearl" %}selected{% endif %}>
+The Pearl
+</option>
+
+
+
+<option value="West Bay"
+{% if property.location=="West Bay" %}selected{% endif %}>
+West Bay
+</option>
+
+
+
+<option value="Al Wakrah"
+{% if property.location=="Al Wakrah" %}selected{% endif %}>
+Al Wakrah
+</option>
+
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Price (QAR)
+</label>
+
+
+<input
+type="number"
+name="price"
+value="{{ property.price }}">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Bedrooms
+</label>
+
+
+<input
+type="number"
+name="bedrooms"
+value="{{ property.bedrooms or 0 }}">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Bathrooms
+</label>
+
+
+<input
+type="number"
+name="bathrooms"
+value="{{ property.bathrooms or 0 }}">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Area (SQM)
+</label>
+
+
+<input
+type="number"
+name="area"
+value="{{ property.area or 0 }}">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Parking Spaces
+</label>
+
+
+<input
+type="number"
+name="parking"
+value="{{ property.parking or 0 }}">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Furnished
+</label>
+
+
+<select name="furnished">
+
+
+<option value="Fully Furnished"
+{% if property.furnished=="Fully Furnished" %}selected{% endif %}>
+Fully Furnished
+</option>
+
+
+<option value="Semi Furnished"
+{% if property.furnished=="Semi Furnished" %}selected{% endif %}>
+Semi Furnished
+</option>
+
+
+<option value="Not Furnished"
+{% if property.furnished=="Not Furnished" %}selected{% endif %}>
+Not Furnished
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+<label>
+Property Status
+</label>
+
+
+<select name="status">
+
+
+<option value="Available"
+{% if property.status=="Available" %}selected{% endif %}>
+Available
+</option>
+
+
+<option value="Sold"
+{% if property.status=="Sold" %}selected{% endif %}>
+Sold
+</option>
+
+
+<option value="Rented"
+{% if property.status=="Rented" %}selected{% endif %}>
+Rented
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================
+PROPERTY FEATURES
+========================= -->
+
+
+<div style="margin-top:35px;">
+
+
+<label>
+Property Features
+</label>
+
+
+
+<div class="form-grid">
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Swimming Pool"
+{% if {'feature_name':'Swimming Pool'} in saved_features %}checked{% endif %}>
+
+Swimming Pool
+
+</label>
+
+</div>
+
+
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Smart Home"
+{% if {'feature_name':'Smart Home'} in saved_features %}checked{% endif %}>
+
+Smart Home
+
+</label>
+
+</div>
+
+
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Private Parking"
+{% if {'feature_name':'Private Parking'} in saved_features %}checked{% endif %}>
+
+Private Parking
+
+</label>
+
+</div>
+
+
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Security 24/7"
+{% if {'feature_name':'Security 24/7'} in saved_features %}checked{% endif %}>
+
+Security 24/7
+
+</label>
+
+</div>
+
+
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Gym"
+{% if {'feature_name':'Gym'} in saved_features %}checked{% endif %}>
+
+Gym
+
+</label>
+
+</div>
+
+
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Garden"
+{% if {'feature_name':'Garden'} in saved_features %}checked{% endif %}>
+
+Garden
+
+</label>
+
+</div>
+
+
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Balcony"
+{% if {'feature_name':'Balcony'} in saved_features %}checked{% endif %}>
+
+Balcony
+
+</label>
+
+</div>
+
+
+
+
+
+<div>
+
+<label>
+
+<input
+type="checkbox"
+name="features"
+value="Sea View"
+{% if {'feature_name':'Sea View'} in saved_features %}checked{% endif %}>
+
+Sea View
+
+</label>
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<label>
+Property Address
+</label>
+
+
+<textarea name="address">
+
+{{ property.address }}
+
+</textarea>
+
+
+
+
+
+
+
+
+
+<label>
+Property Description
+</label>
+
+
+<textarea name="description">
+
+{{ property.description }}
+
+</textarea>
+
+
+
+
+
+
+
+
+
+<!-- CURRENT IMAGE -->
+
+
+<div class="current-image">
+
+
+<label>
+Current Property Image
+</label>
+
+
+
+
+{% if property.main_image %}
+
+
+
+<img
+
+src="{{ url_for('static', filename='uploads/properties/' ~ property.main_image) }}"
+
+alt="{{ property.title }}"
+
+style="
+width:250px;
+height:180px;
+object-fit:cover;
+border-radius:15px;
+margin-top:15px;
+">
+
+
+{% else %}
+
+
+<p>
+No image uploaded
+</p>
+
+
+{% endif %}
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<button
+
+type="submit"
+
+class="save-property-btn">
+
+
+Update Property
+
+
+</button>
+
+
+
+
+
+
+
+
+
+</form>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+{% endblock %}
