@@ -4,9 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <title>
 {% block title %}
@@ -14,556 +14,188 @@ Prestigious Real Estate | Luxury Properties in Qatar
 {% endblock %}
 </title>
 
-
-
 <!-- SEO DESCRIPTION -->
-
-<meta name="description"
-content="Prestigious Real Estate is a premium real estate company in Qatar offering luxury villas, apartments, commercial buildings, offices, investment properties and property management services.">
-
-
-
-<meta name="author"
-content="Prestigious Real Estate">
-
-
-
-<meta name="robots"
-content="index, follow">
-
-
-
-<link rel="canonical"
-href="{{ request.base_url }}">
-
-
+<meta name="description" content="Prestigious Real Estate is a premium real estate company in Qatar offering luxury villas, apartments, commercial buildings, offices, investment properties and property management services.">
+<meta name="keywords" content="real estate Qatar, villas for sale, apartments for rent, Doha properties, luxury homes, commercial property">
+<meta name="author" content="Prestigious Real Estate">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ request.base_url }}">
 
 <!-- MOBILE BRAND COLOR -->
-
-<meta name="theme-color"
-content="#8A1538">
-
-
-
-
+<meta name="theme-color" content="#8A1538">
 
 <!-- OPEN GRAPH -->
-
-<meta property="og:site_name"
-content="Prestigious Real Estate">
-
-
-
-<meta property="og:title"
-content="Prestigious Real Estate | Luxury Properties in Qatar">
-
-
-
-<meta property="og:description"
-content="Luxury properties for sale and rent in Qatar. Premium villas, apartments, commercial properties and investment opportunities.">
-
-
-
-<meta property="og:type"
-content="website">
-
-
-
-<meta property="og:url"
-content="{{ request.url }}">
-
-
-
-<meta property="og:image"
-content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
-
-
-
-
+<meta property="og:site_name" content="Prestigious Real Estate">
+<meta property="og:title" content="Prestigious Real Estate | Luxury Properties in Qatar">
+<meta property="og:description" content="Luxury properties for sale and rent in Qatar. Premium villas, apartments, commercial properties and investment opportunities.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.url }}">
+<meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
 
 <!-- TWITTER CARD -->
-
-
-<meta name="twitter:card"
-content="summary_large_image">
-
-
-
-<meta name="twitter:title"
-content="Prestigious Real Estate | Qatar">
-
-
-
-<meta name="twitter:description"
-content="Luxury properties for sale and rent in Qatar.">
-
-
-
-<meta name="twitter:image"
-content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
-
-
-
-
-
-
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prestigious Real Estate | Qatar">
+<meta name="twitter:description" content="Luxury properties for sale and rent in Qatar.">
+<meta name="twitter:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
 
 <!-- GOOGLE FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
-<link rel="preconnect"
-href="https://fonts.googleapis.com">
-
-
-<link rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
-
-
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
-rel="stylesheet">
-
-
-
-
+<!-- FONT AWESOME -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <!-- MAIN CSS -->
-
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/style.css') }}">
-
-
-
-
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 <!-- FAVICON -->
-
-<link rel="icon"
-type="image/png"
-href="{{ url_for('static', filename='images/favicon/favicon.png') }}">
-
-
-
-<link rel="icon"
-type="image/png"
-href="{{ url_for('static', filename='images/favicon/favicon.png') }}">
-
-
-
-<link rel="apple-touch-icon"
-href="{{ url_for('static', filename='images/favicon/apple-touch-icon.png') }}">
-
-
-
-
-
-
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon/favicon.png') }}">
+<link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon/apple-touch-icon.png') }}">
 
 <!-- STRUCTURED DATA -->
-
 <script type="application/ld+json">
-
 {
-"@context":"https://schema.org",
-
-"@type":"RealEstateAgent",
-
-"name":"Prestigious Real Estate",
-
-"url":"{{ request.url_root[:-1] }}",
-
-"logo":"{{ url_for('static', filename='images/logo.png', _external=True) }}",
-
-"image":"{{ url_for('static', filename='images/logo.png', _external=True) }}",
-
-"priceRange":"$$$",
-
-"telephone":"+974 XXXXXXXX",
-
-"address":
-{
-"@type":"PostalAddress",
-"addressLocality":"Doha",
-"addressCountry":"QA"
+  "@context":"https://schema.org",
+  "@type":"RealEstateAgent",
+  "name":"Prestigious Real Estate",
+  "url":"{{ request.url_root[:-1] }}",
+  "logo":"{{ url_for('static', filename='images/logo.png', _external=True) }}",
+  "image":"{{ url_for('static', filename='images/logo.png', _external=True) }}",
+  "priceRange":"$$$",
+  "telephone":"+974 XXXXXXXX",
+  "address":{
+    "@type":"PostalAddress",
+    "addressLocality":"Doha",
+    "addressCountry":"QA"
+  }
 }
-
-}
-
 </script>
-
-
-
-
 
 </head>
 
-
-
-
 <body>
-
-
-
 
 <!-- =========================
 NAVBAR
 ========================= -->
 
-
 <header class="navbar">
-
 
 <div class="container nav-wrapper">
 
-
-
 <div class="logo">
 
-
 <a href="{{ url_for('home') }}">
-
-
-<img
-src="{{ url_for('static', filename='images/logo.png') }}"
-alt="Prestigious Real Estate Qatar Logo">
-
-
+<img src="{{ url_for('static', filename='images/logo.png') }}" alt="Prestigious Real Estate Qatar Logo">
 </a>
-
-
-
 
 <div class="logo-text">
-
-
-<h2>
-Prestigious
-</h2>
-
-
-<span>
-Real Estate
-</span>
-
-
+<h2>Prestigious</h2>
+<span>Real Estate</span>
 </div>
 
-
-
 </div>
-
-
-
-
-
 
 <nav>
-
-
-<a href="{{ url_for('home') }}">
-Home
-</a>
-
-
-<a href="{{ url_for('about') }}">
-About
-</a>
-
-
-<a href="{{ url_for('properties') }}">
-Properties
-</a>
-
-
-<a href="{{ url_for('services') }}">
-Services
-</a>
-
-
-<a href="{{ url_for('locations') }}">
-Locations
-</a>
-
-
-<a href="{{ url_for('contact') }}">
-Contact
-</a>
-
-
-
-
-<a href="{{ url_for('find_property') }}"
-class="nav-btn">
-
-Find My Property
-
-</a>
-
-
-
+<a href="{{ url_for('home') }}">Home</a>
+<a href="{{ url_for('about') }}">About</a>
+<a href="{{ url_for('properties') }}">Properties</a>
+<a href="{{ url_for('services') }}">Services</a>
+<a href="{{ url_for('locations') }}">Locations</a>
+<a href="{{ url_for('contact') }}">Contact</a>
+<a href="{{ url_for('find_property') }}" class="nav-btn">Find Property</a>
 </nav>
-
-
 
 </div>
 
-
 </header>
-
-
-
-
-
 
 <!-- =========================
 MAIN CONTENT
 ========================= -->
 
-
 <main>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
 {% block content %}
-
 {% endblock %}
 
-
 </main>
-
-
-
-
-
-
 
 <!-- =========================
 FOOTER
 ========================= -->
 
-
 <footer>
 
+<div class="container">
 
 <div class="footer-container">
 
-
-
-
+<div>
+<h3>Prestigious Real Estate</h3>
+<p>Premium property solutions in Qatar built on trust, excellence and professional service.</p>
+</div>
 
 <div>
-
-
-<h3>
-Prestigious Real Estate
-</h3>
-
-
-<p>
-
-Premium property solutions in Qatar built on trust, excellence and professional service.
-
-</p>
-
-
+<h4>Quick Links</h4>
+<p><a href="{{ url_for('home') }}">Home</a></p>
+<p><a href="{{ url_for('properties') }}">Properties</a></p>
+<p><a href="{{ url_for('find_property') }}">Find Property</a></p>
+<p><a href="{{ url_for('contact') }}">Contact</a></p>
 </div>
-
-
-
-
-
-
 
 <div>
-
-
-<h4>
-Quick Links
-</h4>
-
-
-<p>
-<a href="{{ url_for('home') }}">
-Home
-</a>
-</p>
-
-
-<p>
-<a href="{{ url_for('properties') }}">
-Properties
-</a>
-</p>
-
-
-<p>
-<a href="{{ url_for('find_property') }}">
-Find Property
-</a>
-</p>
-
-
-<p>
-<a href="{{ url_for('contact') }}">
-Contact
-</a>
-</p>
-
-
+<h4>Services</h4>
+<p>Property Sales</p>
+<p>Property Leasing</p>
+<p>Property Management</p>
+<p>Real Estate Consultation</p>
 </div>
-
-
-
-
-
-
 
 <div>
-
-
-<h4>
-Services
-</h4>
-
-
-<p>
-Property Sales
-</p>
-
-
-<p>
-Property Leasing
-</p>
-
-
-<p>
-Property Management
-</p>
-
-
-<p>
-Real Estate Consultation
-</p>
-
-
+<h4>Contact</h4>
+<p>📍 Doha, Qatar</p>
+<p>📞 +974 XXXXXXXX</p>
+<p>✉ info@prestigiousrealestate.com</p>
 </div>
 
-
-
-
-
-
-
-<div>
-
-
-<h4>
-Contact
-</h4>
-
-
-<p>
-📍 Doha, Qatar
-</p>
-
-
-<p>
-📞 +974 XXXXXXXX
-</p>
-
-
-<p>
-✉ info@prestigiousrealestate.com
-</p>
-
-
 </div>
-
-
-
-
-
-</div>
-
-
-
-
-
-
 
 <div class="copyright">
-
-
 © 2026 Prestigious Real Estate. All Rights Reserved.
-
-
 </div>
 
-
-
+</div>
 
 </footer>
 
-
-
-
-
-
-
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-
-
-
-
-
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
-
-
-const alerts = document.querySelectorAll(
-".alert-success, .alert-danger, .alert-warning, .alert-info"
-);
-
-
-
-alerts.forEach(function(alert){
-
-
-setTimeout(function(){
-
-
-alert.style.transition="opacity .8s ease";
-
-
-alert.style.opacity="0";
-
-
-
-setTimeout(function(){
-
-alert.remove();
-
-},800);
-
-
-
-},8000);
-
-
-
+  const alerts = document.querySelectorAll(".alert-success, .alert-danger, .alert-warning, .alert-info");
+  alerts.forEach(function(alert){
+    setTimeout(function(){
+      alert.style.transition="opacity .8s ease";
+      alert.style.opacity="0";
+      setTimeout(function(){
+        alert.remove();
+      }, 800);
+    }, 8000);
+  });
 });
-
-
-});
-
-
 </script>
-
-
-
-
 
 </body>
 
