@@ -13,8 +13,8 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 <section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/contact/contact.jpg') }}');">
   <div class="page-overlay">
     <div class="container">
-      <h1>Explore Prime Property Locations in Qatar</h1>
-      <p>Discover luxury villas, apartments and investment properties across Qatar's most desirable communities.</p>
+      <h1>Explore Prime Property Locations</h1>
+      <p>Discover the best communities in Qatar</p>
     </div>
   </div>
 </section>
@@ -26,8 +26,8 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 <section class="locations-section">
   <div class="container">
     <div class="section-title">
-      <h2>Popular Real Estate Locations in Qatar</h2>
-      <p>Explore premium residential and commercial properties in Qatar's top destinations.</p>
+      <h2>Popular Real Estate Locations</h2>
+      <p>Explore premium properties in Qatar's most desirable destinations</p>
     </div>
 
     <div class="location-grid">
@@ -35,9 +35,11 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
       <div class="location-card">
         <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="The Pearl Qatar" loading="lazy">
         <div class="location-overlay">
-          <h3>The Pearl Qatar</h3>
-          <p>Luxury waterfront apartments, premium residences and exclusive lifestyle communities.</p>
-          <a href="{{ url_for('properties', location='The Pearl') }}">View Properties</a>
+          <div class="overlay-content">
+            <h3>The Pearl Qatar</h3>
+            <p>Luxury waterfront apartments and exclusive lifestyle communities.</p>
+            <a href="{{ url_for('properties', location='The Pearl') }}" class="location-btn">Explore →</a>
+          </div>
         </div>
       </div>
 
@@ -45,9 +47,11 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
       <div class="location-card">
         <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="Lusail City" loading="lazy">
         <div class="location-overlay">
-          <h3>Lusail City</h3>
-          <p>Modern smart-city communities, apartments and attractive property investment opportunities.</p>
-          <a href="{{ url_for('properties', location='Lusail') }}">View Properties</a>
+          <div class="overlay-content">
+            <h3>Lusail City</h3>
+            <p>Modern smart-city communities with investment opportunities.</p>
+            <a href="{{ url_for('properties', location='Lusail') }}" class="location-btn">Explore →</a>
+          </div>
         </div>
       </div>
 
@@ -55,9 +59,11 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
       <div class="location-card">
         <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="West Bay" loading="lazy">
         <div class="location-overlay">
-          <h3>West Bay</h3>
-          <p>Premium residences, office spaces and high-value commercial properties.</p>
-          <a href="{{ url_for('properties', location='West Bay') }}">View Properties</a>
+          <div class="overlay-content">
+            <h3>West Bay</h3>
+            <p>Premium residences and high-value commercial properties.</p>
+            <a href="{{ url_for('properties', location='West Bay') }}" class="location-btn">Explore →</a>
+          </div>
         </div>
       </div>
 
@@ -65,9 +71,11 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
       <div class="location-card">
         <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="Doha" loading="lazy">
         <div class="location-overlay">
-          <h3>Doha</h3>
-          <p>Residential homes, apartments and commercial properties across Qatar's capital city.</p>
-          <a href="{{ url_for('properties', location='Doha') }}">View Properties</a>
+          <div class="overlay-content">
+            <h3>Doha</h3>
+            <p>Capital city properties across all segments and neighborhoods.</p>
+            <a href="{{ url_for('properties', location='Doha') }}" class="location-btn">Explore →</a>
+          </div>
         </div>
       </div>
     </div>
@@ -75,92 +83,259 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 </section>
 
 <style>
+/* PAGE HERO */
+.page-hero {
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.page-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(138, 21, 56, 0.85) 0%, rgba(31, 42, 68, 0.85) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.page-overlay .container {
+  color: white;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.page-overlay h1 {
+  font-size: 56px;
+  margin-bottom: 20px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+  line-height: 1.2;
+}
+
+.page-overlay p {
+  font-size: 20px;
+  margin-bottom: 0;
+  opacity: 0.95;
+}
+
+/* LOCATIONS SECTION */
 .locations-section {
-  padding: 60px 0;
+  padding: 80px 0;
   background: white;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-title h2 {
+  font-size: 42px;
+  color: var(--secondary);
+  margin-bottom: 15px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+}
+
+.section-title p {
+  font-size: 16px;
+  color: var(--gray);
+  max-width: 600px;
+  margin: auto;
 }
 
 .location-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
 }
 
 .location-card {
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
-  height: 300px;
+  border-radius: 16px;
+  height: 350px;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.location-card:hover {
+  box-shadow: 0 15px 50px rgba(0,0,0,0.15);
 }
 
 .location-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 0.3s ease;
+  transition: transform 0.4s ease;
 }
 
 .location-card:hover img {
-  transform: scale(1.08);
+  transform: scale(1.12);
 }
 
 .location-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 25px;
+  padding: 0;
   color: white;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.overlay-content {
+  padding: 35px;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.location-card:hover .overlay-content {
+  transform: translateY(0);
 }
 
 .location-overlay h3 {
-  font-size: 22px;
-  margin-bottom: 10px;
+  font-size: 26px;
+  margin-bottom: 12px;
   font-weight: 800;
   font-family: 'Playfair Display', serif;
 }
 
 .location-overlay p {
-  font-size: 13px;
-  line-height: 1.5;
-  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 18px;
+  opacity: 0.95;
 }
 
-.location-overlay a {
+.location-btn {
   display: inline-block;
-  background: var(--primary);
-  color: white;
-  padding: 8px 20px;
-  border-radius: 20px;
+  background: var(--gold);
+  color: var(--secondary);
+  padding: 10px 24px;
+  border-radius: 25px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 12px;
-  transition: 0.3s ease;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.3s ease;
   width: fit-content;
 }
 
-.location-overlay a:hover {
-  background: var(--secondary);
+.location-btn:hover {
+  background: white;
+  color: var(--primary);
+  transform: translateX(5px);
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 1024px) {
+  .page-overlay h1 {
+    font-size: 42px;
+  }
+
+  .location-grid {
+    gap: 25px;
+  }
 }
 
 @media (max-width: 768px) {
+  .page-hero {
+    min-height: 400px;
+  }
+
+  .page-overlay h1 {
+    font-size: 32px;
+  }
+
+  .page-overlay p {
+    font-size: 16px;
+  }
+
+  .locations-section {
+    padding: 50px 0;
+  }
+
+  .section-title h2 {
+    font-size: 32px;
+  }
+
+  .section-title {
+    margin-bottom: 40px;
+  }
+
   .location-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .location-card {
+    height: 280px;
+  }
+
+  .overlay-content {
+    padding: 25px;
+  }
+
+  .location-overlay h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .location-overlay p {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  .location-btn {
+    font-size: 11px;
+    padding: 8px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-hero {
+    min-height: 300px;
+  }
+
+  .page-overlay h1 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .page-overlay p {
+    font-size: 14px;
+  }
+
+  .section-title h2 {
+    font-size: 24px;
+  }
+
+  .section-title p {
+    font-size: 14px;
+  }
+
+  .location-grid {
+    grid-template-columns: 1fr;
     gap: 15px;
   }
 
   .location-card {
-    height: 200px;
+    height: 240px;
   }
 
-  .location-overlay {
-    padding: 15px;
+  .overlay-content {
+    padding: 20px;
   }
 
   .location-overlay h3 {
@@ -169,7 +344,6 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 
   .location-overlay p {
     font-size: 12px;
-    margin-bottom: 8px;
   }
 }
 </style>

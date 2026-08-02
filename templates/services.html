@@ -13,8 +13,8 @@ Premium Real Estate Services in Qatar | Prestigious Real Estate
 <section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/contact/contact.jpg') }}');">
   <div class="page-overlay">
     <div class="container">
-      <h1>Professional Real Estate Services in Qatar</h1>
-      <p>Complete property solutions for buyers, tenants, investors and property owners.</p>
+      <h1>Professional Real Estate Services</h1>
+      <p>Complete property solutions for every need</p>
     </div>
   </div>
 </section>
@@ -27,36 +27,36 @@ Premium Real Estate Services in Qatar | Prestigious Real Estate
   <div class="container">
     <div class="section-title">
       <h2>Our Real Estate Services</h2>
-      <p>Helping clients buy, rent and manage properties across Qatar with confidence.</p>
+      <p>Comprehensive solutions tailored to your real estate goals</p>
     </div>
 
     <div class="services-grid">
       <div class="service-card">
         <div class="service-icon">🏠</div>
         <h3>Property Sales</h3>
-        <p>We help clients discover premium villas, apartments and commercial properties for sale in Qatar's best locations.</p>
-        <a href="{{ url_for('properties') }}">View Properties</a>
+        <p>Discover premium villas, apartments and commercial properties for sale in Qatar's best locations with expert guidance.</p>
+        <a href="{{ url_for('properties') }}" class="service-link">View Properties <span>→</span></a>
       </div>
 
       <div class="service-card">
         <div class="service-icon">🔑</div>
         <h3>Property Leasing</h3>
-        <p>Find suitable rental homes, offices and commercial spaces with professional guidance.</p>
-        <a href="{{ url_for('properties') }}">Find Rental Properties</a>
+        <p>Find suitable rental homes, offices and commercial spaces with professional guidance and support throughout.</p>
+        <a href="{{ url_for('properties') }}" class="service-link">Find Rentals <span>→</span></a>
       </div>
 
       <div class="service-card">
         <div class="service-icon">🏢</div>
         <h3>Property Management</h3>
-        <p>Professional property management services for owners, landlords and investors.</p>
-        <a href="{{ url_for('contact') }}">Contact Us</a>
+        <p>Professional property management services for owners, landlords and investors to maximize returns.</p>
+        <a href="{{ url_for('contact') }}" class="service-link">Get Started <span>→</span></a>
       </div>
 
       <div class="service-card">
         <div class="service-icon">📈</div>
         <h3>Real Estate Consultancy</h3>
-        <p>Expert market advice to help clients make better property investment decisions in Qatar.</p>
-        <a href="{{ url_for('contact') }}">Speak With Us</a>
+        <p>Expert market advice to help you make better property investment decisions with confidence.</p>
+        <a href="{{ url_for('contact') }}" class="service-link">Consult Now <span>→</span></a>
       </div>
     </div>
   </div>
@@ -68,134 +68,305 @@ Premium Real Estate Services in Qatar | Prestigious Real Estate
 
 <section class="trust-section">
   <div class="container">
-    <h2>Why Choose Prestigious Real Estate?</h2>
+    <div class="section-title">
+      <h2>Why Choose Prestigious Real Estate?</h2>
+      <p>The advantages that set us apart</p>
+    </div>
+    
     <div class="trust-grid">
-      <div>
+      <div class="trust-card">
+        <div class="trust-icon">🎯</div>
         <h3>Qatar Market Expertise</h3>
-        <p>Strong knowledge of Qatar's residential and commercial property market.</p>
+        <p>Deep knowledge of Qatar's residential and commercial property market with current insights.</p>
       </div>
 
-      <div>
+      <div class="trust-card">
+        <div class="trust-icon">🤝</div>
         <h3>Trusted Service</h3>
-        <p>Transparent, professional and reliable property solutions.</p>
+        <p>Transparent, professional and reliable property solutions you can depend on.</p>
       </div>
 
-      <div>
+      <div class="trust-card">
+        <div class="trust-icon">💼</div>
         <h3>Professional Support</h3>
-        <p>Dedicated assistance throughout your property journey.</p>
+        <p>Dedicated assistance throughout your entire property journey every step of the way.</p>
       </div>
     </div>
   </div>
 </section>
 
 <style>
+/* PAGE HERO */
+.page-hero {
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.page-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(138, 21, 56, 0.85) 0%, rgba(31, 42, 68, 0.85) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.page-overlay .container {
+  color: white;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.page-overlay h1 {
+  font-size: 56px;
+  margin-bottom: 20px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+  line-height: 1.2;
+}
+
+.page-overlay p {
+  font-size: 20px;
+  margin-bottom: 0;
+  opacity: 0.95;
+}
+
+/* SERVICES PAGE */
 .services-page {
-  padding: 60px 0;
+  padding: 80px 0;
   background: white;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-title h2 {
+  font-size: 42px;
+  color: var(--secondary);
+  margin-bottom: 15px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+}
+
+.section-title p {
+  font-size: 16px;
+  color: var(--gray);
+  max-width: 600px;
+  margin: auto;
 }
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 35px;
 }
 
 .service-card {
-  background: white;
-  padding: 35px;
-  border-radius: 12px;
+  background: linear-gradient(135deg, white 0%, #f7f8fa 100%);
+  padding: 45px 35px;
+  border-radius: 16px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: 0.3s ease;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 .service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  transform: translateY(-15px);
+  box-shadow: 0 20px 60px rgba(138, 21, 56, 0.15);
+  background: linear-gradient(135deg, #f7f8fa 0%, white 100%);
+  border-color: var(--gold);
 }
 
 .service-icon {
-  font-size: 45px;
-  margin-bottom: 15px;
+  font-size: 55px;
+  margin-bottom: 25px;
+  display: block;
 }
 
 .service-card h3 {
-  font-size: 20px;
+  font-size: 24px;
   color: var(--secondary);
-  margin-bottom: 12px;
+  margin-bottom: 18px;
   font-weight: 800;
 }
 
 .service-card p {
   color: var(--gray);
-  line-height: 1.7;
-  font-size: 14px;
-  margin-bottom: 20px;
+  line-height: 1.8;
+  font-size: 15px;
+  margin-bottom: 25px;
 }
 
-.service-card a {
+.service-link {
   display: inline-block;
   color: var(--primary);
   text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  transition: 0.3s ease;
+  font-weight: 700;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  padding: 10px 20px;
+  border-radius: 8px;
 }
 
-.service-card a:hover {
-  color: var(--secondary);
+.service-link:hover {
+  color: white;
+  background: var(--primary);
+  transform: translateX(5px);
 }
 
+.service-link span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  margin-left: 5px;
+}
+
+.service-card:hover .service-link span {
+  transform: translateX(5px);
+}
+
+/* TRUST SECTION */
 .trust-section {
-  padding: 60px 0;
-  background: var(--light);
-}
-
-.trust-section h2 {
-  font-size: 36px;
-  color: var(--secondary);
-  text-align: center;
-  margin-bottom: 40px;
-  font-weight: 800;
-  font-family: 'Playfair Display', serif;
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f7f8fa 0%, #ffffff 100%);
 }
 
 .trust-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-top: 50px;
 }
 
-.trust-grid > div {
+.trust-card {
   background: white;
-  padding: 30px;
-  border-radius: 12px;
+  padding: 45px 35px;
+  border-radius: 16px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #e8e8e8;
 }
 
-.trust-grid h3 {
-  font-size: 18px;
+.trust-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+  border-color: var(--gold);
+}
+
+.trust-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.trust-card h3 {
+  font-size: 22px;
   color: var(--secondary);
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   font-weight: 800;
 }
 
-.trust-grid p {
+.trust-card p {
   color: var(--gray);
-  line-height: 1.6;
-  font-size: 14px;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 1024px) {
+  .page-overlay h1 {
+    font-size: 42px;
+  }
+
+  .services-grid,
+  .trust-grid {
+    gap: 30px;
+  }
 }
 
 @media (max-width: 768px) {
+  .page-hero {
+    min-height: 400px;
+  }
+
+  .page-overlay h1 {
+    font-size: 32px;
+  }
+
+  .page-overlay p {
+    font-size: 16px;
+  }
+
+  .services-page,
+  .trust-section {
+    padding: 50px 0;
+  }
+
+  .section-title h2 {
+    font-size: 32px;
+  }
+
+  .section-title {
+    margin-bottom: 40px;
+  }
+
   .services-grid,
   .trust-grid {
     grid-template-columns: 1fr;
+    gap: 25px;
   }
 
-  .trust-section h2 {
-    font-size: 28px;
+  .service-card,
+  .trust-card {
+    padding: 35px 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-hero {
+    min-height: 300px;
+  }
+
+  .page-overlay h1 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .page-overlay p {
+    font-size: 14px;
+  }
+
+  .section-title h2 {
+    font-size: 24px;
+  }
+
+  .section-title p {
+    font-size: 14px;
+  }
+
+  .service-icon,
+  .trust-icon {
+    font-size: 40px;
+  }
+
+  .service-card h3,
+  .trust-card h3 {
+    font-size: 18px;
+  }
+
+  .service-card p,
+  .trust-card p {
+    font-size: 14px;
   }
 }
 </style>
