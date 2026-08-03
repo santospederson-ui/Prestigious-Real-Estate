@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, url_for, flash, session, req
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 import mysql.connector
+import requests
 
 import smtplib
 from email.mime.text import MIMEText
