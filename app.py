@@ -4,6 +4,8 @@ from flask import Flask, render_template, redirect, url_for, flash, session, req
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 import mysql.connector
+
+from datetime import datetime, timedelta
 import requests
 
 import smtplib
@@ -24,6 +26,64 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "super-secret-key")
+
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
+
+
+
+
+# ==========================================
+# SESSION TIMEOUT
+# ==========================================
+@app.before_request
+def session_timeout():
+
+    # Ignore static files
+    if request.endpoint == "static":
+        return
+
+
+    # Check if admin is logged in
+    if "admin_id" in session:
+
+
+        now = datetime.utcnow()
+
+
+        last_activity = session.get(
+            "last_activity"
+        )
+
+
+        if last_activity:
+
+
+            last_activity_time = datetime.fromisoformat(
+                last_activity
+            )
+
+
+            # If inactive for 30 minutes
+            if now - last_activity_time > timedelta(minutes=30):
+
+                session.clear()
+
+
+                flash(
+                    "Your session expired. Please login again.",
+                    "warning"
+                )
+
+
+                return redirect(
+                    url_for("admin_login")
+                )
+
+
+        # Update activity time
+        session["last_activity"] = now.isoformat()
+
+
 
 
 
@@ -1576,18 +1636,29 @@ def admin_login():
 
         if user and check_password_hash(user["password"], password):
 
+            session.permanent = True
+
             session["admin_id"] = user["id"]
             session["admin_name"] = user["fullname"]
 
-            return redirect(url_for("admin_dashboard"))
+            session["last_activity"] = datetime.utcnow().isoformat()
+
+            return redirect(
+                url_for("admin_dashboard")
+            )
 
 
         else:
 
-            flash("Invalid username or password", "danger")
+            flash(
+                "Invalid username or password",
+                "danger"
+            )
 
 
-    return render_template("admin/login.html")
+    return render_template(
+        "admin/login.html"
+    )
 
 # =====================================================
 # LOGOUT ROUTE
@@ -3027,11 +3098,6 @@ def property_requests():
         total_pages=total_pages
 
     )
-
-
-
-
-
 
 
 
