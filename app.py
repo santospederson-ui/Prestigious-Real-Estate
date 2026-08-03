@@ -2603,78 +2603,83 @@ def property_images(id):
 
 
 
-    # =========================
-    # ADD MORE IMAGES
-    # =========================
+   # =========================
+# ADD MORE IMAGES
+# =========================
 
-    if request.method == "POST":
+if request.method == "POST":
 
-
-        images = request.files.getlist("images")
-
-
-        for image in images:
+    images = request.files.getlist("images")
 
 
-            if image and allowed_file(image.filename):
+    # make sure upload folder exists
+    upload_folder = app.config["UPLOAD_FOLDER"]
+
+    os.makedirs(
+        upload_folder,
+        exist_ok=True
+    )
 
 
-                image_name = secure_filename(
-                    image.filename
-                )
+    for image in images:
 
 
-                image_path = os.path.join(
-                    app.config["UPLOAD_FOLDER"],
-                    image_name
-                )
+        if image and allowed_file(image.filename):
 
 
-                image.save(image_path)
-
-
-
-                # save to gallery table
-
-                cursor.execute(
-                    """
-                    INSERT INTO property_images
-                    (
-                    property_id,
-                    image_name
-                    )
-                    VALUES
-                    (%s,%s)
-                    """,
-                    (
-                    id,
-                    image_name
-                    )
-                )
-
-
-
-        conn.commit()
-
-
-        flash(
-            "Images uploaded successfully",
-            "success"
-        )
-
-
-
-        cursor.close()
-        conn.close()
-
-
-
-        return redirect(
-            url_for(
-                "property_images",
-                id=id
+            image_name = secure_filename(
+                image.filename
             )
+
+
+            image_path = os.path.join(
+                upload_folder,
+                image_name
+            )
+
+
+            # save physical file
+            image.save(image_path)
+
+
+
+            # save database record
+            cursor.execute(
+                """
+                INSERT INTO property_images
+                (
+                property_id,
+                image_name
+                )
+                VALUES
+                (%s,%s)
+                """,
+                (
+                id,
+                image_name
+                )
+            )
+
+
+    conn.commit()
+
+
+    flash(
+        "Images uploaded successfully",
+        "success"
+    )
+
+
+    cursor.close()
+    conn.close()
+
+
+    return redirect(
+        url_for(
+            "property_images",
+            id=id
         )
+    )
 
 
 
