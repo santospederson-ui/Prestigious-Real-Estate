@@ -2801,42 +2801,87 @@ def delete_property_image(image_id, property_id):
 # =====================================================
 # SET COVER IMAGE BY ADMIN ROUTE ROUTE
 # =====================================================
-@app.route("/admin/set-cover-image/<int:property_id>/<path:image_name>")
-def set_cover_image(property_id, image_name):
+@app.route("/admin/set-cover-image/<int:property_id>/<int:image_id>")
+def set_cover_image(property_id, image_id):
 
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
 
     conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
 
-    cursor = conn.cursor()
+    try:
 
+        # get cloudinary image url
 
-    cursor.execute(
-        """
-        UPDATE properties
-        SET main_image=%s
-        WHERE id=%s
-        """,
-        (
-            image_name,
-            property_id
+        cursor.execute(
+            """
+            SELECT image_name
+            FROM property_images
+            WHERE id=%s
+            """,
+            (image_id,)
         )
-    )
+
+        image = cursor.fetchone()
 
 
-    conn.commit()
+        if not image:
+
+            flash(
+                "Image not found",
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "property_images",
+                    id=property_id
+                )
+            )
 
 
-    cursor.close()
-    conn.close()
+        # update cover image
+
+        cursor.execute(
+            """
+            UPDATE properties
+            SET main_image=%s
+            WHERE id=%s
+            """,
+            (
+                image["image_name"],
+                property_id
+            )
+        )
 
 
-    flash(
-        "Cover image updated successfully",
-        "success"
-    )
+        conn.commit()
+
+
+        flash(
+            "Cover image updated successfully",
+            "success"
+        )
+
+
+    except Exception as e:
+
+        conn.rollback()
+
+        print("SET COVER ERROR:", e)
+
+        flash(
+            "Could not update cover image",
+            "danger"
+        )
+
+
+    finally:
+
+        cursor.close()
+        conn.close()
 
 
     return redirect(
@@ -2845,8 +2890,6 @@ def set_cover_image(property_id, image_name):
             id=property_id
         )
     )
-
-
 
 
 
