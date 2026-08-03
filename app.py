@@ -2839,7 +2839,7 @@ def delete_property_image(image_id, property_id):
 # =====================================================
 # SET COVER IMAGE BY ADMIN ROUTE ROUTE
 # =====================================================
-@app.route("/admin/set-cover-image/<int:property_id>/<image_name>")
+@app.route("/admin/set-cover-image/<int:property_id>/<path:image_name>")
 def set_cover_image(property_id, image_name):
 
     if "admin_id" not in session:
@@ -2878,10 +2878,10 @@ def set_cover_image(property_id, image_name):
 
 
     return redirect(
-       url_for(
-    "property_images",
-    id=property_id
-            )
+        url_for(
+            "property_images",
+            id=property_id
+        )
     )
 
 
