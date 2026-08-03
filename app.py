@@ -1198,7 +1198,10 @@ def contact():
             email_result
         )
 
-        flash("Your message has been securely submitted. A member of our team will reach out shortly.", "success")
+        flash(
+            "Your property request has been submitted. Our team will contact you soon.",
+            "success"
+        )
 
         # ==========================
         # SEND CUSTOMER CONFIRMATION
@@ -1513,71 +1516,243 @@ def find_property():
 
     if request.method == "POST":
 
+        fullname = request.form.get("fullname")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
 
-        fullname = request.form["fullname"]
-        email = request.form["email"]
-        phone = request.form["phone"]
-
-        purpose = request.form["purpose"]
-
-        property_type = request.form["property_type"]
-
-        location = request.form["location"]
-
-        budget = request.form["budget"]
-
-        bedrooms = request.form["bedrooms"]
-
-        requirements = request.form["requirements"]
+        purpose = request.form.get("purpose")
+        property_type = request.form.get("property_type")
+        location = request.form.get("location")
+        budget = request.form.get("budget")
+        bedrooms = request.form.get("bedrooms")
+        requirements = request.form.get("requirements")
 
 
+        # ==========================
+        # SAVE PROPERTY REQUEST
+        # ==========================
 
         conn = get_db_connection()
 
         cursor = conn.cursor()
 
 
-
         cursor.execute(
-        """
-        INSERT INTO find_property_requests
-        (
-        fullname,
-        email,
-        phone,
-        purpose,
-        property_type,
-        location,
-        budget,
-        bedrooms,
-        requirements
-        )
+            """
+            INSERT INTO find_property_requests
+            (
+                fullname,
+                email,
+                phone,
+                purpose,
+                property_type,
+                location,
+                budget,
+                bedrooms,
+                requirements
+            )
 
-        VALUES
-        (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            VALUES
+            (%s,%s,%s,%s,%s,%s,%s,%s,%s)
 
-        """,
+            """,
 
-        (
-        fullname,
-        email,
-        phone,
-        purpose,
-        property_type,
-        location,
-        budget,
-        bedrooms,
-        requirements
-        )
-
+            (
+                fullname,
+                email,
+                phone,
+                purpose,
+                property_type,
+                location,
+                budget,
+                bedrooms,
+                requirements
+            )
         )
 
 
         conn.commit()
 
-
         cursor.close()
         conn.close()
+
+
+
+        # ==========================
+        # SEND ADMIN NOTIFICATION
+        # ==========================
+
+        email_result = send_email(
+
+            "santospederson@gmail.com",
+
+            "New Property Request - Prestigious Real Estate",
+
+            f"""
+
+            <h2>New Property Search Request</h2>
+
+            <hr>
+
+
+            <p>
+            <b>Name:</b> {fullname}
+            </p>
+
+
+            <p>
+            <b>Email:</b> {email}
+            </p>
+
+
+            <p>
+            <b>Phone:</b> {phone}
+            </p>
+
+
+            <hr>
+
+
+            <h3>Property Requirements</h3>
+
+
+            <p>
+            <b>Purpose:</b> {purpose}
+            </p>
+
+
+            <p>
+            <b>Property Type:</b> {property_type}
+            </p>
+
+
+            <p>
+            <b>Preferred Location:</b> {location}
+            </p>
+
+
+            <p>
+            <b>Budget:</b> {budget}
+            </p>
+
+
+            <p>
+            <b>Bedrooms:</b> {bedrooms}
+            </p>
+
+
+            <hr>
+
+
+            <h3>Additional Requirements</h3>
+
+            <p>
+            {requirements}
+            </p>
+
+
+            <hr>
+
+            <p>
+            Sent from Prestigious Real Estate Website
+            </p>
+
+            """
+
+        )
+
+
+        print(
+            "FIND PROPERTY ADMIN EMAIL STATUS:",
+            email_result
+        )
+
+
+
+
+        # ==========================
+        # SEND CUSTOMER CONFIRMATION
+        # ==========================
+
+
+        customer_email_result = send_email(
+
+            email,
+
+            "Your Property Request Has Been Received",
+
+            f"""
+
+            <h2>Hello {fullname},</h2>
+
+
+            <p>
+            Thank you for submitting your property request to 
+            <b>Prestigious Real Estate</b>.
+            </p>
+
+
+            <p>
+            We have received your requirements and our property team
+            will carefully review available options.
+            </p>
+
+
+            <h3>Your Request Summary</h3>
+
+
+            <p>
+            <b>Purpose:</b> {purpose}
+            </p>
+
+
+            <p>
+            <b>Property Type:</b> {property_type}
+            </p>
+
+
+            <p>
+            <b>Location:</b> {location}
+            </p>
+
+
+            <p>
+            <b>Budget:</b> {budget}
+            </p>
+
+
+            <p>
+            <b>Bedrooms:</b> {bedrooms}
+            </p>
+
+
+            <br>
+
+
+            <p>
+            One of our property consultants will contact you shortly.
+            </p>
+
+
+            <br>
+
+
+            <p>
+            Regards,
+            <br>
+            <b>Prestigious Real Estate Team</b>
+            </p>
+
+
+            """
+
+        )
+
+
+        print(
+            "CUSTOMER CONFIRMATION EMAIL STATUS:",
+            customer_email_result
+        )
 
 
 
