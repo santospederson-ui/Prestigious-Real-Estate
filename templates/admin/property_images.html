@@ -391,7 +391,10 @@ Property Images | Admin
                 {% for image in images %}
                     <div class="property-image-card">
                         <div class="image-container">
-                            <img  src="{% if image.image_name.startswith('http') %} {{ image.image_name }} {% else %} {{ url_for('static', filename='uploads/properties/' ~ image.image_name) }} {% endif %}" alt="Property Image">
+                            <img
+                                 src="{{ image.image_name if image.image_name.startswith('http')
+                                 else url_for('static', filename='uploads/properties/' ~ image.image_name) }}"
+                               {% endif %}" alt="Property Image">
                             
                             {% if image.image_name == property.main_image %}
                                 <span class="cover-badge">★ Primary Cover</span>
@@ -400,7 +403,7 @@ Property Images | Admin
 
                         <div class="card-actions">
                             {% if image.image_name != property.main_image %}
-                                <a href="{{ url_for('set_cover_image', property_id=property.id, image_name=image.image_name) }}" class="cover-btn">
+                                <a href="{{ url_for('set_cover_image',property_id=property.id,image_id=image.id)}}" class="cover-btn">
                                     Set Cover
                                 </a>
                                 <a href="{{ url_for('delete_property_image', image_id=image.id, property_id=property.id) }}" onclick="return confirm('Delete this image?');" class="delete-btn">
