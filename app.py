@@ -140,133 +140,96 @@ def sitemap():
 
 def send_email(to_email, subject, html_message):
 
-    print("******** SEND EMAIL FUNCTION STARTED ********")
+    print("******** BREVO API EMAIL START ********")
 
     try:
 
-        print("========== EMAIL DEBUG START ==========")
-
-
         conn = get_db_connection()
-
         cursor = conn.cursor(dictionary=True)
 
-
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT *
             FROM email_settings
             LIMIT 1
-            """
-        )
-
+        """)
 
         settings = cursor.fetchone()
-
 
         cursor.close()
         conn.close()
 
-
-
         if not settings:
 
-            print("ERROR: email_settings table is empty")
+            print("ERROR: Email settings not configured.")
+            return False
+
+        api_key = settings["smtp_password"]
+
+        sender_email = settings["from_email"]
+
+        sender_name = settings["sender_name"]
+
+
+        headers = {
+            "accept": "application/json",
+            "api-key": api_key,
+            "content-type": "application/json"
+        }
+
+
+        payload = {
+
+            "sender": {
+                "name": sender_name,
+                "email": sender_email
+            },
+
+            "to": [
+                {
+                    "email": to_email
+                }
+            ],
+
+            "subject": subject,
+
+            "htmlContent": html_message
+
+        }
+
+
+        response = requests.post(
+
+            "https://api.brevo.com/v3/smtp/email",
+
+            headers=headers,
+
+            json=payload,
+
+            timeout=30
+
+        )
+
+
+        print("Brevo Status:", response.status_code)
+        print("Brevo Response:", response.text)
+
+
+        if response.status_code in [200, 201]:
+
+            print("EMAIL SENT SUCCESSFULLY")
+
+            return True
+
+        else:
+
+            print("EMAIL FAILED")
 
             return False
 
 
-
-        print("SMTP SERVER:", settings["smtp_server"])
-        print("SMTP PORT:", settings["smtp_port"])
-        print("SMTP USER:", settings["smtp_username"])
-        print("FROM EMAIL:", settings["from_email"])
-
-
-
-        msg = MIMEMultipart("alternative")
-
-
-        msg["From"] = (
-            f"{settings['sender_name']} <{settings['from_email']}>"
-        )
-
-        msg["To"] = to_email
-
-        msg["Subject"] = subject
-
-
-        msg.attach(
-            MIMEText(
-                html_message,
-                "html"
-            )
-        )
-
-
-
-        print("Connecting to Brevo...")
-
-        server = smtplib.SMTP(
-            settings["smtp_server"],
-            int(settings["smtp_port"]),
-            timeout=30
-        )
-
-
-        server.ehlo()
-
-
-        print("Starting TLS...")
-
-        server.starttls()
-
-
-        server.ehlo()
-
-
-        print("Logging into Brevo...")
-
-
-        server.login(
-
-            settings["smtp_username"],
-
-            settings["smtp_password"]
-
-        )
-
-
-        print("LOGIN SUCCESS")
-
-
-
-        server.sendmail(
-
-            settings["from_email"],
-
-            to_email,
-
-            msg.as_string()
-
-        )
-
-
-        print("EMAIL SENT")
-
-        server.quit()
-
-
-        print("========== EMAIL DEBUG END ==========")
-
-
-        return True
-
-
-
     except Exception as e:
 
-        print("========== EMAIL ERROR ==========")
+        print("BREVO EMAIL ERROR")
 
         print(type(e).__name__)
 
