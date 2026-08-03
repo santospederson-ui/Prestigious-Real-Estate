@@ -2878,10 +2878,10 @@ def set_cover_image(property_id, image_name):
 
 
     return redirect(
-        url_for(
-            "manage_property_images",
-            id=property_id
-        )
+       url_for(
+    "property_images",
+    id=property_id
+            )
     )
 
 
