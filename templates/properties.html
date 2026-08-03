@@ -70,10 +70,18 @@ PROPERTY LIST
         <div class="property-card">
           <div class="property-image">
             {% if property.main_image %}
-              <img src="{{ url_for('static', filename='uploads/properties/' ~ property.main_image) }}" alt="{{ property.title }}" loading="lazy">
-            {% else %}
-              <img src="{{ url_for('static', filename='images/no-image.jpg') }}" alt="No Image" loading="lazy">
-            {% endif %}
+
+                  <img src="{{ property.main_image }}"
+                       alt="{{ property.title }}"
+                       loading="lazy">
+                  
+                  {% else %}
+                  
+                  <img src="{{ url_for('static', filename='images/no-image.jpg') }}"
+                       alt="No Image"
+                       loading="lazy">
+                  
+                  {% endif %}
 
             <div class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
               {{ property.purpose|upper }}
