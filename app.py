@@ -2567,18 +2567,14 @@ def property_images(id):
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
-
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-
     try:
 
-
-        # =========================
+        # ==========================================
         # GET PROPERTY DETAILS
-        # =========================
-
+        # ==========================================
         cursor.execute(
             """
             SELECT *
@@ -2590,90 +2586,84 @@ def property_images(id):
 
         property = cursor.fetchone()
 
-
         if not property:
-
             return "Property not found", 404
 
-
-
-        # =========================
-        # UPLOAD MORE IMAGES
-        # =========================
-
+        # ==========================================
+        # UPLOAD IMAGES TO CLOUDINARY
+        # ==========================================
         if request.method == "POST":
 
-    images_upload = request.files.getlist("images")
+            images_upload = request.files.getlist("images")
 
-    for image in images_upload:
+            if not images_upload:
+                flash("Please select at least one image.", "warning")
+                return redirect(url_for("property_images", id=id))
 
-        if image and allowed_file(image.filename):
+            MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10MB
 
-            MAX_IMAGE_SIZE = 10 * 1024 * 1024
+            for image in images_upload:
 
-            if image.content_length and image.content_length > MAX_IMAGE_SIZE:
+                if image and allowed_file(image.filename):
 
-                flash(
-                    "Image too large. Maximum size is 10MB.",
-                    "danger"
-                )
+                    if (
+                        hasattr(image, "content_length")
+                        and image.content_length
+                        and image.content_length > MAX_IMAGE_SIZE
+                    ):
+                        flash(
+                            "Image too large. Maximum size is 10MB.",
+                            "danger"
+                        )
+                        return redirect(
+                            url_for(
+                                "property_images",
+                                id=id
+                            )
+                        )
 
-                return redirect(
-                    url_for(
-                        "property_images",
-                        id=id
+                    # Upload to Cloudinary
+                    result = cloudinary.uploader.upload(
+                        image,
+                        folder="prestigious_real_estate/properties"
                     )
-                )
 
-            result = cloudinary.uploader.upload(
+                    image_url = result["secure_url"]
 
-                image,
+                    # Save URL in database
+                    cursor.execute(
+                        """
+                        INSERT INTO property_images
+                        (
+                            property_id,
+                            image_name
+                        )
+                        VALUES
+                        (%s,%s)
+                        """,
+                        (
+                            id,
+                            image_url
+                        )
+                    )
 
-                folder="prestigious_real_estate/properties"
+            conn.commit()
 
+            flash(
+                "Images uploaded successfully.",
+                "success"
             )
 
-            image_url = result["secure_url"]
-
-            cursor.execute(
-                """
-                INSERT INTO property_images
-                (
-                    property_id,
-                    image_name
-                )
-                VALUES
-                (%s,%s)
-                """,
-                (
-                    id,
-                    image_url
+            return redirect(
+                url_for(
+                    "property_images",
+                    id=id
                 )
             )
 
-    conn.commit()
-
-    flash(
-        "Images uploaded successfully",
-        "success"
-    )
-
-    return redirect(
-        url_for(
-            "property_images",
-            id=id
-        )
-    )
-
-
-
-
-
-        # =========================
+        # ==========================================
         # LOAD PROPERTY IMAGES
-        # =========================
-
-
+        # ==========================================
         cursor.execute(
             """
             SELECT *
@@ -2684,10 +2674,7 @@ def property_images(id):
             (id,)
         )
 
-
         images = cursor.fetchall()
-
-
 
         return render_template(
             "admin/property_images.html",
@@ -2696,20 +2683,16 @@ def property_images(id):
             property_id=id
         )
 
-
-
     except Exception as e:
-
 
         conn.rollback()
 
         print("PROPERTY IMAGE ERROR:", e)
 
         flash(
-            "Something went wrong uploading images",
+            f"Something went wrong: {e}",
             "danger"
         )
-
 
         return redirect(
             url_for(
@@ -2717,14 +2700,10 @@ def property_images(id):
             )
         )
 
-
-
     finally:
-
 
         cursor.close()
         conn.close()
-
 
 
 # =========================
