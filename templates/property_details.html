@@ -16,7 +16,7 @@ PROPERTY SEO STRUCTURED DATA
   "@type":"Residence",
   "name":"{{ property.title }}",
   "description":"{{ property.description|striptags|replace('"','') }}",
-  "image":"{{ url_for('static', filename='uploads/properties/' ~ property.main_image, _external=True) }}",
+  "image":"{{ property.main_image }}",
   "address":{
     "@type":"PostalAddress",
     "addressLocality":"{{ property.location }}",
@@ -56,14 +56,28 @@ PROPERTY GALLERY + INFO
     <div class="details-grid">
       <!-- IMAGE AREA -->
       <div class="details-image">
-        {% if gallery_images %}
-          <img src="{{ url_for('static', filename='uploads/properties/' ~ gallery_images[0].image_name) }}" alt="{{ property.title }} in {{ property.location }} Qatar" loading="lazy">
-        {% elif property.main_image %}
-          <img src="{{ url_for('static', filename='uploads/properties/' ~ property.main_image) }}" alt="{{ property.title }} in {{ property.location }} Qatar" loading="lazy">
-        {% else %}
-          <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
-        {% endif %}
-      </div>
+
+    {% if gallery_images %}
+
+      <img src="{{ gallery_images[0].image_name }}"
+           alt="{{ property.title }} in {{ property.location }} Qatar"
+           loading="lazy">
+
+    {% elif property.main_image %}
+
+      <img src="{{ property.main_image }}"
+           alt="{{ property.title }} in {{ property.location }} Qatar"
+           loading="lazy">
+
+    {% else %}
+
+      <img src="{{ url_for('static', filename='images/no-image.png') }}"
+           alt="No image available"
+           loading="lazy">
+
+    {% endif %}
+
+</div>
 
       <!-- PROPERTY INFORMATION -->
       <div class="details-info">
@@ -120,7 +134,9 @@ IMAGE GALLERY
       <div class="gallery-grid">
         {% for image in gallery_images %}
           <div class="gallery-item">
-            <img src="{{ url_for('static', filename='uploads/properties/' ~ image.image_name) }}" alt="{{ property.title }} gallery image in {{ property.location }} Qatar" loading="lazy">
+            <img src="{{ image.image_name }}"
+             alt="{{ property.title }} gallery image in {{ property.location }} Qatar"
+             loading="lazy">
           </div>
         {% endfor %}
       </div>
@@ -183,7 +199,7 @@ RELATED PROPERTIES
           <div class="related-card">
             <div class="related-image">
               {% if item.main_image %}
-                <img src="{{ url_for('static', filename='uploads/properties/' ~ item.main_image) }}" alt="{{ item.title }} in {{ item.location }} Qatar" loading="lazy">
+                <img src="{{ item.main_image }}"      alt="{{ item.title }} in {{ item.location }} Qatar"      loading="lazy">
               {% else %}
                 <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
               {% endif %}
