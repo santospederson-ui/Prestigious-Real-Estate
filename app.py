@@ -1138,7 +1138,7 @@ def contact():
             email_result
         )
 
-
+        flash("Your message has been securely submitted. A member of our team will reach out shortly.", "success")
 
         # ==========================
         # SEND CUSTOMER CONFIRMATION
