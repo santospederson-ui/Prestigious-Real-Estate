@@ -435,9 +435,19 @@ alt="{{ item.title }}">
 {% else %}
 
 <img
-src="{{ url_for('static', filename='uploads/properties/' + item.main_image) }}"
+src="{{ url_for('static', filename='uploads/properties/' ~ item.main_image) }}"
 class="property-thumb"
 alt="{{ item.title }}">
+
+{% endif %}
+
+
+{% else %}
+
+<img
+src="{{ url_for('static', filename='images/no-image.png') }}"
+class="property-thumb"
+alt="No Image">
 
 {% endif %}
 
