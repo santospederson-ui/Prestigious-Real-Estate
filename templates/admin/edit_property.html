@@ -1,14 +1,318 @@
-<style>
+{% extends "base.html" %}
 
-/* =================================
-   EDIT PROPERTY ADMIN PAGE
-================================= */
+
+{% block title %}
+Edit Property | Prestigious Real Estate Admin
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<section class="admin-form-section">
+
+
+<div class="container">
+
+
+<div class="admin-form-card">
+
+
+<div class="form-header">
+
+<h1>
+Edit Property
+</h1>
+
+<p>
+Update premium property information
+</p>
+
+</div>
+
+
+
+<form method="POST">
+
+
+
+<div class="form-grid">
+
+
+<div>
+<label>Property Title</label>
+
+<input
+type="text"
+name="title"
+value="{{ property.title }}"
+required>
+
+</div>
+
+
+
+
+<div>
+<label>Purpose</label>
+
+<select name="purpose">
+
+<option>
+{{ property.purpose }}
+</option>
+
+<option>Sale</option>
+
+<option>Rent</option>
+
+</select>
+
+</div>
+
+
+
+
+
+<div>
+<label>Property Type</label>
+
+<select name="property_type">
+
+<option>
+{{ property.property_type }}
+</option>
+
+<option>Villa</option>
+
+<option>Apartment</option>
+
+<option>Office</option>
+
+<option>Commercial Building</option>
+
+</select>
+
+</div>
+
+
+
+
+
+<div>
+<label>Location</label>
+
+<input
+type="text"
+name="location"
+value="{{ property.location }}">
+
+</div>
+
+
+
+
+
+<div>
+<label>Price (QAR)</label>
+
+<input
+type="number"
+name="price"
+value="{{ property.price }}">
+
+</div>
+
+
+
+
+<div>
+<label>Bedrooms</label>
+
+<input
+type="number"
+name="bedrooms"
+value="{{ property.bedrooms }}">
+
+</div>
+
+
+
+
+
+<div>
+<label>Bathrooms</label>
+
+<input
+type="number"
+name="bathrooms"
+value="{{ property.bathrooms }}">
+
+</div>
+
+
+
+
+<div>
+<label>Area SQM</label>
+
+<input
+type="number"
+name="area"
+value="{{ property.area }}">
+
+</div>
+
+
+
+
+<div>
+<label>Parking Spaces</label>
+
+<input
+type="number"
+name="parking"
+value="{{ property.parking }}">
+
+</div>
+
+
+
+
+<div>
+<label>Furnished</label>
+
+<select name="furnished">
+
+<option>
+{{ property.furnished }}
+</option>
+
+<option>Fully Furnished</option>
+
+<option>Semi Furnished</option>
+
+<option>Not Furnished</option>
+
+</select>
+
+</div>
+
+
+
+
+<div>
+<label>Status</label>
+
+<select name="status">
+
+<option>
+{{ property.status }}
+</option>
+
+<option>Available</option>
+
+<option>Sold</option>
+
+<option>Rented</option>
+
+</select>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<label>
+Property Address
+</label>
+
+
+<textarea name="address">{{ property.address }}</textarea>
+
+
+
+
+<label>
+Property Description
+</label>
+
+
+<textarea name="description">{{ property.description }}</textarea>
+
+
+
+
+
+<div class="current-image">
+
+<label>
+Current Property Image
+</label>
+
+
+{% if property.main_image %}
+
+
+<img src="{{ property.main_image }}">
+
+
+{% else %}
+
+<p>
+No image uploaded
+</p>
+
+{% endif %}
+
+
+</div>
+
+
+
+
+
+<button
+class="save-property-btn"
+type="submit">
+
+Update Property
+
+</button>
+
+
+
+
+</form>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<style>
 
 
 .admin-form-section{
 
-    padding:70px 0;
-    background:#f7f8fa;
+padding:70px 0;
+background:#f7f8fa;
 
 }
 
@@ -16,22 +320,22 @@
 
 .admin-form-card{
 
-    background:white;
-    padding:45px;
-    border-radius:18px;
-    box-shadow:0 15px 40px rgba(0,0,0,.08);
+background:white;
+max-width:1000px;
+margin:auto;
+padding:45px;
+border-radius:20px;
+box-shadow:0 20px 50px rgba(0,0,0,.08);
 
 }
 
 
 
-/* HEADER */
-
 
 .form-header{
 
-    text-align:center;
-    margin-bottom:40px;
+text-align:center;
+margin-bottom:40px;
 
 }
 
@@ -39,11 +343,10 @@
 
 .form-header h1{
 
-    font-family:'Playfair Display',serif;
-    color:#1F2A44;
-    font-size:42px;
-    font-weight:800;
-    margin-bottom:10px;
+font-family:'Playfair Display',serif;
+font-size:42px;
+color:#1F2A44;
+font-weight:800;
 
 }
 
@@ -51,47 +354,35 @@
 
 .form-header p{
 
-    color:#777;
-    font-size:15px;
+color:#777;
 
 }
 
 
-
-
-
-/* FORM GRID */
 
 
 .form-grid{
 
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:25px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
 
 }
 
 
-
-
-/* LABELS */
 
 
 .admin-form-card label{
 
-    display:block;
-    color:#1F2A44;
-    font-weight:700;
-    font-size:14px;
-    margin-bottom:8px;
+display:block;
+margin-bottom:8px;
+font-weight:700;
+color:#1F2A44;
+font-size:14px;
 
 }
 
 
-
-
-
-/* INPUTS */
 
 
 .admin-form-card input,
@@ -99,18 +390,14 @@
 .admin-form-card textarea{
 
 
-    width:100%;
-    padding:14px 15px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    font-size:14px;
-    font-family:'Inter',sans-serif;
-    color:#212529;
-    background:white;
-    transition:.3s;
-
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:14px;
 
 }
+
 
 
 
@@ -119,26 +406,9 @@
 .admin-form-card textarea:focus{
 
 
-    outline:none;
-    border-color:#8A1538;
-    box-shadow:0 0 0 3px rgba(138,21,56,.12);
-
-
-}
-
-
-
-
-
-/* TEXTAREA */
-
-
-.admin-form-card textarea{
-
-
-    min-height:130px;
-    resize:vertical;
-    margin-bottom:25px;
+outline:none;
+border-color:#8A1538;
+box-shadow:0 0 0 3px rgba(138,21,56,.15);
 
 }
 
@@ -146,61 +416,20 @@
 
 
 
-/* CHECKBOX FEATURES */
+textarea{
 
-
-.form-grid input[type="checkbox"]{
-
-
-    width:auto;
-    margin-right:8px;
+min-height:130px;
+margin-bottom:25px;
 
 }
 
 
 
-
-.form-grid div:has(input[type="checkbox"]) label{
-
-
-    background:#f7f8fa;
-    padding:14px;
-    border-radius:10px;
-    cursor:pointer;
-    transition:.3s;
-
-}
-
-
-
-.form-grid div:has(input[type="checkbox"]) label:hover{
-
-
-    background:#eee;
-
-}
-
-
-
-
-
-
-/* CURRENT IMAGE */
 
 
 .current-image{
 
-
-    margin:35px 0;
-
-}
-
-
-
-.current-image label{
-
-
-    margin-bottom:15px;
+margin:30px 0;
 
 }
 
@@ -208,13 +437,11 @@
 
 .current-image img{
 
-
-    display:block;
-    width:250px;
-    height:180px;
-    object-fit:cover;
-    border-radius:15px;
-    box-shadow:0 10px 25px rgba(0,0,0,.15);
+width:280px;
+height:200px;
+object-fit:cover;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.15);
 
 }
 
@@ -222,24 +449,28 @@
 
 
 
-
-
-/* BUTTON */
-
-
 .save-property-btn{
 
 
-    width:100%;
-    padding:16px;
-    background:#8A1538;
-    color:white;
-    border:none;
-    border-radius:30px;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
+width:100%;
+padding:16px;
+
+background:#8A1538;
+
+color:white;
+
+border:none;
+
+border-radius:30px;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
 
 }
 
@@ -247,73 +478,43 @@
 
 .save-property-btn:hover{
 
+background:#1F2A44;
 
-    background:#1F2A44;
-    transform:translateY(-3px);
-
+transform:translateY(-3px);
 
 }
 
 
 
-
-
-/* MOBILE */
 
 
 @media(max-width:768px){
 
 
-.admin-form-card{
+.form-grid{
 
-    padding:25px 20px;
+grid-template-columns:1fr;
 
 }
 
+
+.admin-form-card{
+
+padding:25px;
+
+}
 
 
 .form-header h1{
 
-    font-size:30px;
+font-size:30px;
 
 }
-
-
-
-.form-grid{
-
-    grid-template-columns:1fr;
-
-}
-
 
 
 .current-image img{
 
-    width:100%;
-    height:auto;
-
-}
-
-
-
-}
-
-
-
-@media(max-width:480px){
-
-
-.form-header h1{
-
-    font-size:24px;
-
-}
-
-
-.admin-form-card textarea{
-
-    min-height:100px;
+width:100%;
 
 }
 
@@ -322,3 +523,7 @@
 
 
 </style>
+
+
+
+{% endblock %}
