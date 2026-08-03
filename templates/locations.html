@@ -83,9 +83,13 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 </section>
 
 <style>
+/* ==================================
+   LUXURY LOCATIONS PAGE STYLES
+================================== */
+
 /* PAGE HERO */
 .page-hero {
-  min-height: 500px;
+  min-height: 520px;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -97,7 +101,7 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 .page-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: linear-gradient(180deg, rgba(31, 42, 68, 0.45) 0%, rgba(15, 23, 42, 0.85) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,100 +109,106 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 }
 
 .page-overlay .container {
-  color: white;
+  color: #ffffff;
   position: relative;
   z-index: 2;
   text-align: center;
+  max-width: 850px;
 }
 
 .page-overlay h1 {
-  font-size: 56px;
-  margin-bottom: 20px;
+  font-size: clamp(36px, 5vw, 56px);
+  margin-bottom: 18px;
   font-weight: 800;
-  font-family: 'Playfair Display', serif;
-  line-height: 1.2;
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  line-height: 1.15;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .page-overlay p {
-  font-size: 20px;
+  font-size: clamp(16px, 2vw, 20px);
   margin-bottom: 0;
-  opacity: 0.95;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
 /* LOCATIONS SECTION */
 .locations-section {
-  padding: 80px 0;
-  background: white;
+  padding: 100px 0;
+  background: #ffffff;
 }
 
 .section-title {
   text-align: center;
-  margin-bottom: 60px;
+  max-width: 650px;
+  margin: 0 auto 60px auto;
 }
 
 .section-title h2 {
-  font-size: 42px;
-  color: var(--secondary);
-  margin-bottom: 15px;
+  font-size: clamp(30px, 3.5vw, 42px);
+  color: var(--navy-dark, #1F2A44);
+  margin-bottom: 14px;
   font-weight: 800;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-serif, 'Playfair Display', serif);
 }
 
 .section-title p {
-  font-size: 16px;
-  color: var(--gray);
-  max-width: 600px;
-  margin: auto;
+  font-size: 15px;
+  color: var(--text-secondary, #64748b);
+  margin: 0;
 }
 
 .location-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
+  gap: 32px;
 }
 
 .location-card {
   position: relative;
   overflow: hidden;
-  border-radius: 16px;
-  height: 350px;
+  border-radius: 20px;
+  height: 400px;
   cursor: pointer;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border-color, rgba(212, 175, 55, 0.25));
 }
 
 .location-card:hover {
-  box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.22);
+  border-color: var(--gold-accent, #D4AF37);
 }
 
 .location-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .location-card:hover img {
-  transform: scale(1.12);
+  transform: scale(1.1);
 }
 
 .location-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.6) 40%, rgba(15, 23, 42, 0.92) 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 0;
-  color: white;
+  color: #ffffff;
   transition: all 0.3s ease;
 }
 
 .overlay-content {
-  padding: 35px;
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
+  padding: 36px 30px;
+  transform: translateY(15px);
+  transition: transform 0.4s ease;
 }
 
 .location-card:hover .overlay-content {
@@ -207,67 +217,58 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 
 .location-overlay h3 {
   font-size: 26px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-weight: 800;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .location-overlay p {
   font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 18px;
-  opacity: 0.95;
+  line-height: 1.65;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .location-btn {
-  display: inline-block;
-  background: var(--gold);
-  color: var(--secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-accent, #D4AF37);
+  color: var(--navy-dark, #1F2A44);
   padding: 10px 24px;
-  border-radius: 25px;
+  border-radius: 30px;
   text-decoration: none;
   font-weight: 700;
   font-size: 13px;
   transition: all 0.3s ease;
   width: fit-content;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
 }
 
 .location-btn:hover {
-  background: white;
-  color: var(--primary);
-  transform: translateX(5px);
+  background: #ffffff;
+  color: var(--qatar-maroon, #8A1538);
+  transform: translateX(6px);
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.4);
 }
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 1024px) {
-  .page-overlay h1 {
-    font-size: 42px;
-  }
-
   .location-grid {
-    gap: 25px;
+    gap: 24px;
   }
 }
 
 @media (max-width: 768px) {
   .page-hero {
-    min-height: 400px;
-  }
-
-  .page-overlay h1 {
-    font-size: 32px;
-  }
-
-  .page-overlay p {
-    font-size: 16px;
+    min-height: 380px;
+    background-attachment: scroll;
   }
 
   .locations-section {
-    padding: 50px 0;
-  }
-
-  .section-title h2 {
-    font-size: 32px;
+    padding: 60px 0;
   }
 
   .section-title {
@@ -280,70 +281,42 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
   }
 
   .location-card {
-    height: 280px;
+    height: 320px;
   }
 
   .overlay-content {
-    padding: 25px;
+    padding: 24px 20px;
+    transform: translateY(0);
   }
 
   .location-overlay h3 {
-    font-size: 18px;
-    margin-bottom: 8px;
+    font-size: 20px;
+    margin-bottom: 6px;
   }
 
   .location-overlay p {
-    font-size: 12px;
-    margin-bottom: 12px;
+    font-size: 13px;
+    margin-bottom: 14px;
   }
 
   .location-btn {
-    font-size: 11px;
+    font-size: 12px;
     padding: 8px 18px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 540px) {
   .page-hero {
     min-height: 300px;
   }
 
-  .page-overlay h1 {
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
-
-  .page-overlay p {
-    font-size: 14px;
-  }
-
-  .section-title h2 {
-    font-size: 24px;
-  }
-
-  .section-title p {
-    font-size: 14px;
-  }
-
   .location-grid {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 20px;
   }
 
   .location-card {
-    height: 240px;
-  }
-
-  .overlay-content {
-    padding: 20px;
-  }
-
-  .location-overlay h3 {
-    font-size: 16px;
-  }
-
-  .location-overlay p {
-    font-size: 12px;
+    height: 280px;
   }
 }
 </style>
