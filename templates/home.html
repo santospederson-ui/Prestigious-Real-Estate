@@ -78,11 +78,15 @@ Prestigious Real Estate | Qatar Properties
             {% for property in properties %}
               <div class="property-card">
                 <div class="property-image">
-                  {% if property.main_image %}
-                    <img src="{{ url_for('static', filename='uploads/properties/' ~ property.main_image) }}" alt="{{ property.title }}" loading="lazy">
-                  {% else %}
-                    <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="Property Image" loading="lazy">
-                  {% endif %}
+                 {% if property.main_image %}
+                        <img src="{{ property.main_image }}" 
+                             alt="{{ property.title }}" 
+                             loading="lazy">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/no-image.png') }}" 
+                             alt="Property Image" 
+                             loading="lazy">
+                    {% endif %}
                   <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
                     {% if property.purpose == 'Rent' %}FOR RENT{% else %}FOR SALE{% endif %}
                   </span>
