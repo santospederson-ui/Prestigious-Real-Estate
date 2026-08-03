@@ -159,7 +159,6 @@ Prestigious Real Estate | Qatar Properties
 
 .smart-search-form {
   width: 100%;
-
 }
 
 .smart-search-input {
@@ -414,26 +413,36 @@ Prestigious Real Estate | Qatar Properties
 .slider-btn.prev { left: -22px; }
 .slider-btn.next { right: -22px; }
 
+/* REDESIGNED EXPLORE ALL PROPERTIES BUTTON */
 .view-all {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 .view-all a {
-  display: inline-block;
-  padding: 12px 30px;
-  border: 2px solid var(--qatar-maroon);
-  color: var(--qatar-maroon);
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 38px;
+  background: var(--qatar-maroon);
+  color: #ffffff;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.3px;
   text-decoration: none;
-  transition: var(--transition-smooth);
+  box-shadow: 0 8px 24px rgba(138, 21, 56, 0.25);
+  border: 2px solid var(--qatar-maroon);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view-all a:hover {
-  background: var(--qatar-maroon);
+  background: var(--qatar-maroon-dark);
+  border-color: var(--qatar-maroon-dark);
   color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(138, 21, 56, 0.38);
 }
 
 /* WHY CHOOSE US */
