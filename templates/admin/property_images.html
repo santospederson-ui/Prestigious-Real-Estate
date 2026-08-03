@@ -391,7 +391,7 @@ Property Images | Admin
                 {% for image in images %}
                     <div class="property-image-card">
                         <div class="image-container">
-                            <img src="{{ url_for('static', filename='uploads/properties/' ~ image.image_name) }}" alt="Property Image">
+                            <img src="{{ image.image_name }}" alt="Property Image">
                             
                             {% if image.image_name == property.main_image %}
                                 <span class="cover-badge">★ Primary Cover</span>
