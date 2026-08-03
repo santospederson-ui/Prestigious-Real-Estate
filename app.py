@@ -1116,11 +1116,6 @@ def contact():
 
 
 
-        flash(
-            "Thank you. Your enquiry has been received.",
-            "success"
-        )
-
         # ==========================
         # SEND CUSTOMER CONFIRMATION
         # ==========================
