@@ -2569,212 +2569,178 @@ def property_images(id):
 
 
     conn = get_db_connection()
-
     cursor = conn.cursor(dictionary=True)
 
 
-
-    # =========================
-    # GET PROPERTY DETAILS
-    # =========================
-
-    cursor.execute(
-        """
-        SELECT *
-        FROM properties
-        WHERE id=%s
-        """,
-        (id,)
-    )
+    try:
 
 
-    property = cursor.fetchone()
+        # =========================
+        # GET PROPERTY DETAILS
+        # =========================
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM properties
+            WHERE id=%s
+            """,
+            (id,)
+        )
+
+        property = cursor.fetchone()
+
+
+        if not property:
+
+            return "Property not found", 404
 
 
 
-    if not property:
+        # =========================
+        # UPLOAD MORE IMAGES
+        # =========================
+
+        if request.method == "POST":
+
+
+            images_upload = request.files.getlist("images")
+
+
+            # create upload directory if missing
+
+            upload_folder = app.config["UPLOAD_FOLDER"]
+
+
+            os.makedirs(
+                upload_folder,
+                exist_ok=True
+            )
+
+
+
+            for image in images_upload:
+
+
+                if image and allowed_file(image.filename):
+
+
+                    image_name = secure_filename(
+                        image.filename
+                    )
+
+
+                    image_path = os.path.join(
+                        upload_folder,
+                        image_name
+                    )
+
+
+                    # save image file
+
+                    image.save(
+                        image_path
+                    )
+
+
+
+                    # save database record
+
+                    cursor.execute(
+                        """
+                        INSERT INTO property_images
+                        (
+                        property_id,
+                        image_name
+                        )
+                        VALUES
+                        (%s,%s)
+                        """,
+                        (
+                        id,
+                        image_name
+                        )
+                    )
+
+
+
+            conn.commit()
+
+
+
+            flash(
+                "Images uploaded successfully",
+                "success"
+            )
+
+
+
+            return redirect(
+                url_for(
+                    "property_images",
+                    id=id
+                )
+            )
+
+
+
+
+
+        # =========================
+        # LOAD PROPERTY IMAGES
+        # =========================
+
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM property_images
+            WHERE property_id=%s
+            ORDER BY id DESC
+            """,
+            (id,)
+        )
+
+
+        images = cursor.fetchall()
+
+
+
+        return render_template(
+            "admin/property_images.html",
+            property=property,
+            images=images,
+            property_id=id
+        )
+
+
+
+    except Exception as e:
+
+
+        conn.rollback()
+
+        print("PROPERTY IMAGE ERROR:", e)
+
+        flash(
+            "Something went wrong uploading images",
+            "danger"
+        )
+
+
+        return redirect(
+            url_for(
+                "manage_properties"
+            )
+        )
+
+
+
+    finally:
+
 
         cursor.close()
         conn.close()
-
-        return "Property not found", 404
-
-
-
-
-
-   # =========================
-# ADD MORE IMAGES
-# =========================
-
-if request.method == "POST":
-
-    images = request.files.getlist("images")
-
-
-    # make sure upload folder exists
-    upload_folder = app.config["UPLOAD_FOLDER"]
-
-    os.makedirs(
-        upload_folder,
-        exist_ok=True
-    )
-
-
-    for image in images:
-
-
-        if image and allowed_file(image.filename):
-
-
-            image_name = secure_filename(
-                image.filename
-            )
-
-
-            image_path = os.path.join(
-                upload_folder,
-                image_name
-            )
-
-
-            # save physical file
-            image.save(image_path)
-
-
-
-            # save database record
-            cursor.execute(
-                """
-                INSERT INTO property_images
-                (
-                property_id,
-                image_name
-                )
-                VALUES
-                (%s,%s)
-                """,
-                (
-                id,
-                image_name
-                )
-            )
-
-
-    conn.commit()
-
-
-    flash(
-        "Images uploaded successfully",
-        "success"
-    )
-
-
-    cursor.close()
-    conn.close()
-
-
-    return redirect(
-        url_for(
-            "property_images",
-            id=id
-        )
-    )
-
-
-
-
-
-
-    # =========================
-    # GET GALLERY IMAGES
-    # =========================
-
-
-    cursor.execute(
-        """
-        SELECT id, image_name
-        FROM property_images
-        WHERE property_id=%s
-        ORDER BY id ASC
-        """,
-        (id,)
-    )
-
-
-    images = cursor.fetchall()
-
-
-
-
-
-    cursor.close()
-    conn.close()
-
-
-
-
-
-    return render_template(
-        "admin/property_images.html",
-        property=property,
-        images=images,
-        property_id=id
-    )
-
-
-
-
-    # =========================
-    # GET PROPERTY IMAGES
-    # =========================
-
-
-    cursor.execute(
-    """
-    SELECT *
-    FROM property_images
-    WHERE property_id=%s
-
-    ORDER BY id DESC
-
-    """,
-    (id,)
-    )
-
-
-    images = cursor.fetchall()
-
-
-
-    cursor.execute(
-    """
-    SELECT title
-    FROM properties
-    WHERE id=%s
-
-    """,
-    (id,)
-    )
-
-
-    property = cursor.fetchone()
-
-
-
-    cursor.close()
-
-    conn.close()
-
-
-
-    return render_template(
-        "admin/property_images.html",
-        images=images,
-        property=property,
-        property_id=id
-    )
-
 
 
 
