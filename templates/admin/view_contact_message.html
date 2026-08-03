@@ -8,185 +8,6 @@ View Contact Message | Admin
 {% endblock %}
 
 
-<style>
-
-/* ==========================
-   VIEW CONTACT MESSAGE STYLE
-========================== */
-
-
-.contact-message-box {
-
-    background:#f8f9fb;
-    padding:30px;
-    border-radius:15px;
-    margin-top:30px;
-
-}
-
-
-
-.contact-details {
-
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:25px;
-
-}
-
-
-
-.contact-details h4,
-.contact-message-box h4 {
-
-    color:#1F2A44;
-    font-size:15px;
-    font-weight:800;
-    margin-bottom:8px;
-
-}
-
-
-
-.contact-details p,
-.contact-message-box p {
-
-    color:#555;
-    font-size:15px;
-
-}
-
-
-
-
-.contact-message-content {
-
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    line-height:1.8;
-    border:1px solid #eee;
-    color:#444;
-
-    box-shadow:
-    0 5px 15px rgba(0,0,0,.05);
-
-}
-
-
-
-
-
-.contact-divider {
-
-    margin:35px 0;
-    border:0;
-    border-top:1px solid #ddd;
-
-}
-
-
-
-
-
-.contact-actions {
-
-    margin-top:35px;
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-
-}
-
-
-
-
-.contact-actions a {
-
-    text-decoration:none;
-
-}
-
-
-
-
-
-.view-btn {
-
-    background:#1F2A44;
-    color:white;
-    padding:10px 25px;
-    border-radius:8px;
-    font-weight:600;
-    transition:.3s;
-
-}
-
-
-
-.view-btn:hover {
-
-    background:#8A1538;
-    color:white;
-
-}
-
-
-
-
-
-.delete-btn {
-
-    background:#8A1538;
-    color:white;
-    padding:10px 25px;
-    border-radius:8px;
-    font-weight:600;
-    transition:.3s;
-
-}
-
-
-
-.delete-btn:hover {
-
-    background:#5f1028;
-    color:white;
-
-}
-
-
-
-
-@media(max-width:768px){
-
-    .contact-message-box{
-
-        padding:20px;
-
-    }
-
-
-    .contact-details{
-
-        grid-template-columns:1fr;
-
-    }
-
-
-    .contact-message-content{
-
-        padding:18px;
-
-    }
-
-
-}
-
-
-</style>
-
-
 {% block content %}
 
 
@@ -226,23 +47,14 @@ View enquiry details from website visitors
 
 
 
-<div style="
-background:#f8f9fb;
-padding:30px;
-border-radius:15px;
-margin-top:30px;
-">
+<div class="contact-message-box">
 
 
 
 
 
 
-<div style="
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-">
+<div class="contact-details">
 
 
 
@@ -327,7 +139,7 @@ Date Received
 
 
 
-<hr style="margin:35px 0;">
+<hr class="contact-divider">
 
 
 
@@ -341,7 +153,7 @@ Subject
 </h4>
 
 
-<p>
+<p class="subject-text">
 
 {{ message.subject }}
 
@@ -355,7 +167,7 @@ Subject
 
 
 
-<hr style="margin:35px 0;">
+<hr class="contact-divider">
 
 
 
@@ -370,13 +182,7 @@ Message
 </h4>
 
 
-<div style="
-background:white;
-padding:25px;
-border-radius:12px;
-line-height:1.8;
-border:1px solid #eee;
-">
+<div class="contact-message-content">
 
 
 {{ message.message }}
@@ -402,12 +208,7 @@ border:1px solid #eee;
 
 
 
-<div style="
-margin-top:35px;
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-">
+<div class="contact-actions">
 
 
 
@@ -455,7 +256,193 @@ Delete Message
 
 </section>
 
+<style>
 
+/* ==================================
+   LUXURY VIEW MESSAGE STYLES
+================================== */
+
+.admin-form-section {
+    padding: 60px 0;
+    background: #f8fafc;
+    min-height: 80vh;
+}
+
+.admin-form-card {
+    background: #ffffff;
+    padding: 44px;
+    border-radius: 24px;
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.05);
+    border: 1px solid var(--border-color, #e2e8f0);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.form-header {
+    margin-bottom: 32px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 20px;
+}
+
+.form-header h1 {
+    color: var(--navy-dark, #1F2A44);
+    font-family: var(--font-serif, 'Playfair Display', serif);
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.form-header p {
+    color: var(--text-secondary, #64748b);
+    font-size: 15px;
+}
+
+.contact-message-box {
+    background: #f8fafc;
+    padding: 36px;
+    border-radius: 20px;
+    margin-top: 24px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-left: 5px solid var(--gold-accent, #D4AF37);
+}
+
+.contact-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.contact-details h4,
+.contact-message-box h4 {
+    color: var(--navy-dark, #1F2A44);
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.contact-details p {
+    color: #334155;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    word-break: break-word;
+}
+
+.subject-text {
+    color: var(--navy-dark, #1F2A44);
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.contact-message-content {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 14px;
+    line-height: 1.85;
+    border: 1px solid var(--border-color, #e2e8f0);
+    color: #334155;
+    font-size: 15px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    white-space: pre-wrap;
+}
+
+.contact-divider {
+    margin: 28px 0;
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.contact-actions {
+    margin-top: 36px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.contact-actions a {
+    text-decoration: none;
+}
+
+.view-btn {
+    background: var(--navy-dark, #1F2A44);
+    color: #ffffff;
+    padding: 13px 28px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(31, 42, 68, 0.18);
+    display: inline-flex;
+    align-items: center;
+}
+
+.view-btn:hover {
+    background: var(--qatar-maroon, #8A1538);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(138, 21, 56, 0.25);
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: #ffffff;
+    padding: 13px 28px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.2);
+    display: inline-flex;
+    align-items: center;
+}
+
+.delete-btn:hover {
+    background: var(--qatar-maroon, #8A1538);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(138, 21, 56, 0.3);
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+    .admin-form-section {
+        padding: 40px 0;
+    }
+
+    .admin-form-card {
+        padding: 24px;
+    }
+
+    .contact-message-box {
+        padding: 24px;
+    }
+
+    .contact-details {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .contact-message-content {
+        padding: 20px;
+    }
+
+    .contact-actions {
+        flex-direction: column;
+    }
+
+    .view-btn, .delete-btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+</style>
 
 
 
