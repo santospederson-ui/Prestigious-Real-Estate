@@ -1,16 +1,3 @@
-Here is the redesigned, modern, and professional version of your **Manage Properties** admin page.
-
-All Flask routes (`url_for(...)`), Jinja2 logic (`{% for item in properties %}`, `{% if total_pages > 1 %}`), conditional image checks (`item.main_image.startswith('http')`), form fields, table structures, and JavaScript confirmations are kept **100% intact**.
-
-### Key Improvements
-
-* **Qatar Maroon & Gold Palette**: Uses `#8A1538` (Qatar Maroon) as the primary brand element along with soft gold accents (`#D4AF37`) and sleek dark slate background tones for a high-end luxury admin dashboard feel.
-* **Refined Filter Pills**: Upgraded filter buttons into modern segment controls with active visual states.
-* **Enhanced Table UI**: Modernized table rows with soft hover states, subtle rounded borders, inline location icons, and clear typography hierarchy.
-* **Modern Status Badges**: Refined status indicators with soft translucent backgrounds (Green for Available, Red for Sold, Warm Gold for Rented).
-* **Action Button Layout**: Transformed standard links into styled micro-action buttons with hover transitions and clean SVG icons.
-
-```html
 {% extends "base.html" %}
 
 {% block title %}
@@ -79,21 +66,22 @@ Manage Properties | Admin
   margin: 0;
 }
 
-/* FILTER BAR */
+/* SEGMENTED FILTER CONTROL */
 .property-filter {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   flex-wrap: wrap;
   margin-bottom: 30px;
   background: #f1f5f9;
   padding: 6px;
-  border-radius: 14px;
+  border-radius: 12px;
   width: fit-content;
+  border: 1px solid var(--border-light);
 }
 
 .property-filter a {
   padding: 10px 22px;
-  border-radius: 10px;
+  border-radius: 8px;
   text-decoration: none;
   background: transparent;
   color: var(--text-muted);
@@ -104,10 +92,11 @@ Manage Properties | Admin
 
 .property-filter a:hover {
   color: var(--qatar-maroon);
-  background: rgba(138, 21, 56, 0.06);
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
 }
 
-/* TABLE STYLING */
+/* TABLE CONTAINER */
 .table-wrapper {
   overflow-x: auto;
   border-radius: 14px;
@@ -151,8 +140,8 @@ Manage Properties | Admin
 
 /* PROPERTY THUMB IMAGE */
 .property-table .property-thumb {
-  width: 90px !important;
-  height: 65px !important;
+  width: 95px !important;
+  height: 68px !important;
   object-fit: cover !important;
   border-radius: 10px !important;
   display: block !important;
@@ -162,38 +151,22 @@ Manage Properties | Admin
 }
 
 .property-table .property-thumb:hover {
-  transform: scale(1.06);
+  transform: scale(1.05);
   border-color: var(--qatar-maroon);
-  box-shadow: 0 6px 15px rgba(138, 21, 56, 0.15);
+  box-shadow: 0 6px 15px rgba(138, 21, 56, 0.2);
 }
 
-/* PROPERTY INFO TEXT */
-.property-title-cell strong {
+/* TYPOGRAPHY IN TABLE */
+.property-table strong {
   color: var(--navy-dark);
   font-size: 15px;
   font-weight: 700;
-  display: block;
-  margin-bottom: 2px;
 }
 
-.property-title-cell small {
+.property-table small {
   color: var(--text-muted);
   font-size: 13px;
   font-weight: 500;
-}
-
-.location-cell {
-  color: var(--text-muted);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.price-text {
-  color: var(--qatar-maroon);
-  font-size: 15px;
-  font-weight: 800;
 }
 
 /* STATUS BADGES */
@@ -226,24 +199,18 @@ Manage Properties | Admin
 }
 
 /* ACTION BUTTONS */
-.action-btn-group {
-  display: flex;
+.property-table .action-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  flex-wrap: nowrap;
-}
-
-.action-btn {
-  padding: 8px 14px;
+  justify-content: center;
+  padding: 8px 16px;
   border-radius: 8px;
   text-decoration: none;
   font-size: 12px;
   font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  margin-right: 6px;
+  margin-bottom: 0;
   transition: all 0.2s ease;
-  white-space: nowrap;
 }
 
 .action-btn.edit {
@@ -254,6 +221,7 @@ Manage Properties | Admin
 .action-btn.edit:hover {
   background: #0f172a;
   transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
 }
 
 .action-btn.images {
@@ -263,7 +231,9 @@ Manage Properties | Admin
 
 .action-btn.images:hover {
   background: #b59226;
+  color: #ffffff;
   transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.25);
 }
 
 .action-btn.delete {
@@ -276,15 +246,7 @@ Manage Properties | Admin
   background: #ef4444;
   color: #ffffff;
   transform: translateY(-1px);
-}
-
-/* EMPTY STATE */
-.empty-table-cell {
-  text-align: center;
-  padding: 60px 20px !important;
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
 }
 
 /* PAGINATION */
@@ -292,12 +254,12 @@ Manage Properties | Admin
   margin-top: 35px;
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
 }
 
 .pagination a {
-  padding: 10px 20px;
+  padding: 10px 22px;
   background: var(--qatar-maroon);
   color: #ffffff;
   text-decoration: none;
@@ -318,10 +280,9 @@ Manage Properties | Admin
   font-size: 14px;
   font-weight: 600;
   color: var(--text-muted);
-  padding: 0 8px;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE DESIGN */
 @media(max-width: 768px) {
   .manage-card {
     padding: 24px;
@@ -348,28 +309,19 @@ Manage Properties | Admin
   <div class="container">
     <div class="manage-card">
 
-      <!-- HEADER -->
       <div class="manage-header">
         <div>
           <h1>Manage Properties</h1>
-          <p>View, edit, and maintain Prestigious Real Estate listings.</p>
+          <p>View, edit and maintain Prestigious Real Estate listings.</p>
         </div>
       </div>
 
-      <!-- FILTERS -->
       <div class="property-filter">
-        <a href="{{ url_for('manage_properties') }}">
-          All Properties
-        </a>
-        <a href="{{ url_for('manage_properties', purpose='Rent') }}">
-          Rental
-        </a>
-        <a href="{{ url_for('manage_properties', purpose='Sale') }}">
-          Sale
-        </a>
+        <a href="{{ url_for('manage_properties') }}">All Properties</a>
+        <a href="{{ url_for('manage_properties', purpose='Rent') }}">Rental</a>
+        <a href="{{ url_for('manage_properties', purpose='Sale') }}">Sale</a>
       </div>
 
-      <!-- TABLE -->
       <div class="table-wrapper">
         <table class="property-table">
           <thead>
@@ -407,21 +359,18 @@ Manage Properties | Admin
                   {% endif %}
                 </td>
 
-                <td class="property-title-cell">
+                <td>
                   <strong>{{ item.title }}</strong>
+                  <br>
                   <small>{{ item.property_type }}</small>
                 </td>
 
-                <td>
-                  <div class="location-cell">
-                    <span>📍</span> {{ item.location }}
-                  </div>
-                </td>
+                <td>📍 {{ item.location }}</td>
 
                 <td>
-                  <span class="price-text">
+                  <strong style="color:#8A1538">
                     QAR {{ "{:,.0f}".format(item.price or 0) }}
-                  </span>
+                  </strong>
                 </td>
 
                 <td>
@@ -431,31 +380,29 @@ Manage Properties | Admin
                 </td>
 
                 <td>
-                  <div class="action-btn-group">
-                    <a
-                      href="{{ url_for('edit_property', id=item.id) }}"
-                      class="action-btn edit">
-                      Edit
-                    </a>
+                  <a
+                    href="{{ url_for('edit_property', id=item.id) }}"
+                    class="action-btn edit">
+                    Edit
+                  </a>
 
-                    <a
-                      href="{{ url_for('property_images', id=item.id) }}"
-                      class="action-btn images">
-                      Images
-                    </a>
+                  <a
+                    href="{{ url_for('property_images', id=item.id) }}"
+                    class="action-btn images">
+                    Images
+                  </a>
 
-                    <a
-                      href="{{ url_for('delete_property', id=item.id) }}"
-                      class="action-btn delete"
-                      onclick="return confirm('Delete this property?');">
-                      Delete
-                    </a>
-                  </div>
+                  <a
+                    href="{{ url_for('delete_property', id=item.id) }}"
+                    class="action-btn delete"
+                    onclick="return confirm('Delete this property?');">
+                    Delete
+                  </a>
                 </td>
               </tr>
             {% else %}
               <tr>
-                <td colspan="6" class="empty-table-cell">
+                <td colspan="6" style="text-align:center;padding:40px;">
                   No properties found
                 </td>
               </tr>
@@ -464,22 +411,21 @@ Manage Properties | Admin
         </table>
       </div>
 
-      <!-- PAGINATION -->
       {% if total_pages > 1 %}
         <div class="pagination">
           {% if page > 1 %}
             <a href="{{ url_for('manage_properties', page=page-1, purpose=purpose) }}">
-              ← Previous
+              Previous
             </a>
           {% endif %}
 
           <span>
-            Page <strong>{{page}}</strong> of {{total_pages}}
+            Page {{page}} of {{total_pages}}
           </span>
 
           {% if page < total_pages %}
             <a href="{{ url_for('manage_properties', page=page+1, purpose=purpose) }}">
-              Next →
+              Next
             </a>
           {% endif %}
         </div>
@@ -490,5 +436,3 @@ Manage Properties | Admin
 </section>
 
 {% endblock %}
-
-```
