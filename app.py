@@ -1885,6 +1885,12 @@ def add_property():
 
             if image and allowed_file(image.filename):
 
+                MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10MB
+
+                if image.content_length and image.content_length > MAX_IMAGE_SIZE:
+                    flash("Image too large. Maximum size is 10MB.", "danger")
+                    return redirect(url_for("add_property"))
+
 
                 result = cloudinary.uploader.upload(
                     image,
