@@ -392,9 +392,8 @@ Property Images | Admin
                     <div class="property-image-card">
                         <div class="image-container">
                             <img
-                                 src="{{ image.image_name if image.image_name.startswith('http')
-                                 else url_for('static', filename='uploads/properties/' ~ image.image_name) }}"
-                               {% endif %}" alt="Property Image">
+src="{{ image.image_name if image.image_name.startswith('http') else url_for('static', filename='uploads/properties/' ~ image.image_name) }}"
+alt="Property Image">
                             
                             {% if image.image_name == property.main_image %}
                                 <span class="cover-badge">★ Primary Cover</span>
