@@ -9,8 +9,13 @@ import requests
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
 from flask import Response, send_from_directory
 from dotenv import load_dotenv
+
+import cloudinary
+import cloudinary.uploader
+
 
 load_dotenv()
 
@@ -22,7 +27,9 @@ app.secret_key = os.getenv("SECRET_KEY", "super-secret-key")
 
 
 
-
+# ==========================================
+# MYSQL CONNECTION
+# ==========================================
 def get_db_connection():
 
     return mysql.connector.connect(
@@ -34,6 +41,17 @@ def get_db_connection():
     )
 
 
+
+
+
+# ==========================================
+# CLOUDINARY
+# ==========================================
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET")
+)
 
 
 
@@ -1803,168 +1821,243 @@ def add_property():
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
+
     if request.method == "POST":
 
+
         title = request.form["title"]
-        slug = title.lower().replace(" ", "-") + "-" + str(uuid.uuid4())[:6]
+
+        slug = (
+            title.lower()
+            .replace(" ", "-")
+            + "-"
+            + str(uuid.uuid4())[:6]
+        )
+
+
         purpose = request.form["purpose"]
         property_type = request.form["property_type"]
         location = request.form["location"]
         address = request.form["address"]
+
         price = request.form.get("price", 0)
         bedrooms = request.form.get("bedrooms", 0)
         bathrooms = request.form.get("bathrooms", 0)
         area = request.form.get("area", 0)
         parking = request.form.get("parking", 0)
+
         furnished = request.form["furnished"]
+
         description = request.form["description"]
+
 
         featured = 0
         status = "Available"
 
+
+
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # -------------------------
-        # IMAGE HANDLING
-        # -------------------------
 
-        filename = None
+
+        # ==========================
+        # CLOUDINARY IMAGE UPLOAD
+        # ==========================
+
+
+        main_image = None
+
+        uploaded_images = []
+
 
         images = request.files.getlist("images")
 
-        saved_images = []
 
         for image in images:
 
+
             if image and allowed_file(image.filename):
 
-                image_name = secure_filename(image.filename)
 
-                image_path = os.path.join(
-                    app.config["UPLOAD_FOLDER"],
-                    image_name
+                result = cloudinary.uploader.upload(
+                    image,
+                    folder="prestigious_real_estate/properties"
                 )
 
-                image.save(image_path)
 
-                if filename is None:
-                    filename = image_name
+                image_url = result["secure_url"]
 
-                saved_images.append(image_name)
 
-        # -------------------------
+                uploaded_images.append(image_url)
+
+
+
+                # First image becomes cover image
+
+                if main_image is None:
+
+                    main_image = image_url
+
+
+
+
+
+        # ==========================
         # INSERT PROPERTY
-        # -------------------------
+        # ==========================
+
 
         cursor.execute(
-        """
-        INSERT INTO properties
-        (
-        title,
-        slug,
-        purpose,
-        property_type,
-        location,
-        address,
-        price,
-        bedrooms,
-        bathrooms,
-        area,
-        parking,
-        furnished,
-        featured,
-        status,
-        description,
-        main_image
+            """
+            INSERT INTO properties
+            (
+                title,
+                slug,
+                purpose,
+                property_type,
+                location,
+                address,
+                price,
+                bedrooms,
+                bathrooms,
+                area,
+                parking,
+                furnished,
+                featured,
+                status,
+                description,
+                main_image
+            )
+
+            VALUES
+            (
+                %s,%s,%s,%s,%s,%s,%s,%s,
+                %s,%s,%s,%s,%s,%s,%s,%s
+            )
+
+            """,
+
+            (
+                title,
+                slug,
+                purpose,
+                property_type,
+                location,
+                address,
+                price,
+                bedrooms,
+                bathrooms,
+                area,
+                parking,
+                furnished,
+                featured,
+                status,
+                description,
+                main_image
+            )
         )
-        VALUES
-        (
-        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-        %s,%s,%s,%s,%s,%s
-        )
-        """,
-        (
-        title,
-        slug,
-        purpose,
-        property_type,
-        location,
-        address,
-        price,
-        bedrooms,
-        bathrooms,
-        area,
-        parking,
-        furnished,
-        featured,
-        status,
-        description,
-        filename
-        )
-        )
+
+
 
         property_id = cursor.lastrowid
 
-        # =========================
-        # SAVE PROPERTY FEATURES
-        # =========================
+
+
+
+
+        # ==========================
+        # SAVE FEATURES
+        # ==========================
+
 
         features = request.form.getlist("features")
 
+
         for feature in features:
+
+
             cursor.execute(
+
                 """
                 INSERT INTO property_features
                 (
                     property_id,
                     feature_name
                 )
+
                 VALUES
                 (%s,%s)
+
                 """,
+
                 (
                     property_id,
                     feature
                 )
+
             )
 
 
 
-        # -------------------------
-        # SAVE ALL IMAGES TO property_images
-        # -------------------------
 
-        for image_name in saved_images:
+
+
+        # ==========================
+        # SAVE CLOUDINARY IMAGES
+        # ==========================
+
+
+        for image_url in uploaded_images:
+
+
             cursor.execute(
-            """
-            INSERT INTO property_images
-            (
-            property_id,
-            image_name
+
+                """
+                INSERT INTO property_images
+                (
+                    property_id,
+                    image_name
+                )
+
+                VALUES
+                (%s,%s)
+
+                """,
+
+                (
+                    property_id,
+                    image_url
+                )
+
             )
-            VALUES
-            (%s,%s)
-            """,
-            (
-            property_id,
-            image_name
-            )
-            )
+
+
+
+
 
         conn.commit()
 
+
         cursor.close()
         conn.close()
+
+
 
         flash(
             "Property added successfully",
             "success"
         )
 
+
+
         return redirect(
             url_for("admin_dashboard")
         )
+
+
+
+
 
     return render_template(
         "admin/add_property.html"
