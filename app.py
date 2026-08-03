@@ -630,14 +630,27 @@ def home():
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
+    SELECT *
+    FROM properties
+    WHERE featured = 1
+      AND status = 'Available'
+    ORDER BY id DESC
+    LIMIT 6
+""")
+
+properties = cursor.fetchall()
+
+if len(properties) < 6:
+    cursor.execute("""
         SELECT *
         FROM properties
+        WHERE status='Available'
+          AND featured = 0
         ORDER BY id DESC
-        LIMIT 6
-    """)
+        LIMIT %s
+    """, (6 - len(properties),))
 
-    properties = cursor.fetchall()
-
+    properties.extend(cursor.fetchall())
     cursor.close()
     conn.close()
 
