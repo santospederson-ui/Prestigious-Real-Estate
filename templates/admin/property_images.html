@@ -1,631 +1,439 @@
 {% extends "base.html" %}
 
-
 {% block title %}
 Property Images | Admin
 {% endblock %}
 
-
-
 {% block content %}
-
-
-
 <style>
-
 /* ==================================
-   PROPERTY IMAGE MANAGEMENT
+   QATAR MAROON THEME & DESIGN SYSTEM
 ================================== */
-
-
-.image-management-page{
-
-    padding:40px 0;
-    background:#f7f8fa;
-
+:root {
+    --qatar-maroon: #8A1538;
+    --qatar-maroon-dark: #670d28;
+    --qatar-maroon-light: rgba(138, 21, 56, 0.08);
+    --navy-dark: #0f172a;
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --bg-surface: #f8fafc;
 }
 
-
-
-.image-management-card{
-
-    background:white;
-    border-radius:16px;
-    padding:35px;
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
+.image-management-page {
+    padding: 40px 0;
+    background: #f1f5f9;
+    min-height: 85vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-
-
-/* HEADER */
-
-.image-header{
-
-    margin-bottom:30px;
-
+.image-management-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    border: 1px solid var(--border-color);
 }
 
-
-
-.image-header h1{
-
-    color:#1F2A44;
-    font-size:30px;
-    font-weight:800;
-    font-family:'Playfair Display',serif;
-    margin-bottom:8px;
-
+/* HEADER SECTION */
+.image-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-
-
-.image-header p{
-
-    color:#777;
-    font-size:16px;
-
+.image-header h1 {
+    color: var(--text-primary);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
 }
 
-
-
-
-/* BACK BUTTON */
-
-
-.back-btn{
-
-    display:inline-block;
-    margin-top:20px;
-    padding:10px 22px;
-    border-radius:8px;
-    background:#1F2A44;
-    color:white;
-    text-decoration:none;
-    font-weight:600;
-    transition:.3s;
-
+.image-header .subtitle {
+    color: var(--qatar-maroon);
+    font-weight: 600;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--qatar-maroon-light);
+    padding: 4px 12px;
+    border-radius: 20px;
 }
 
-
-.back-btn:hover{
-
-    background:#8A1538;
-    color:white;
-
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-
-
-
-/* UPLOAD BOX */
-
-
-.upload-box{
-
-    margin-top:30px;
-    background:#f8f9fb;
-    padding:25px;
-    border-radius:14px;
-    border:1px solid #eee;
-
+.back-btn:hover {
+    background: var(--qatar-maroon);
+    color: #ffffff;
+    border-color: var(--qatar-maroon);
+    transform: translateY(-2px);
 }
 
-
-
-.upload-box label{
-
-    display:block;
-    color:#1F2A44;
-    font-weight:700;
-    margin-bottom:12px;
-
+/* DRAG & DROP UPLOAD BOX */
+.upload-box {
+    background: var(--bg-surface);
+    padding: 35px;
+    border-radius: 16px;
+    border: 2px dashed #cbd5e1;
+    text-align: center;
+    transition: all 0.2s ease;
+    position: relative;
 }
 
-
-
-.upload-box input[type="file"]{
-
-    width:100%;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    background:white;
-
+.upload-box:hover {
+    border-color: var(--qatar-maroon);
+    background: var(--qatar-maroon-light);
 }
 
-
-
-/* BUTTON */
-
-
-.save-property-btn{
-
-
-    margin-top:15px;
-    padding:12px 25px;
-    background:#8A1538;
-    color:white;
-    border:none;
-    border-radius:8px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-
+.upload-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(138, 21, 56, 0.1);
+    color: var(--qatar-maroon);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px auto;
+    font-size: 20px;
 }
 
-
-
-.save-property-btn:hover{
-
-    background:#1F2A44;
-
+.upload-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
 }
 
-
-
-
-
-/* DIVIDER */
-
-
-hr{
-
-    margin:40px 0;
-    border:0;
-    border-top:1px solid #eee;
-
+.upload-hint {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
 }
 
-
-
-
-.image-management-card h2{
-
-    color:#1F2A44;
-    font-size:28px;
-    font-family:'Playfair Display',serif;
-    margin-bottom:20px;
-
+.file-input-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
 }
 
-
-
-
-
-/* GALLERY */
-
-
-.property-image-gallery{
-
-    display:grid;
-    grid-template-columns:
-    repeat(auto-fit,minmax(260px,1fr));
-
-    gap:25px;
-    margin-top:25px;
-
+.upload-box input[type="file"] {
+    display: none;
 }
 
-
-
-
-
-/* IMAGE CARD */
-
-
-.property-image-card{
-
-    background:white;
-    border-radius:16px;
-    padding:15px;
-    border:1px solid #eee;
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-    transition:.3s;
-
+.custom-file-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-
-
-.property-image-card:hover{
-
-    transform:translateY(-5px);
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
-
+.custom-file-btn:hover {
+    border-color: var(--qatar-maroon);
+    color: var(--qatar-maroon);
 }
 
-
-
-
-
-/* PROPERTY IMAGE */
-
-
-.property-image-card img{
-
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    border-radius:12px;
-    display:block;
-
+.save-property-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: var(--qatar-maroon);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(138, 21, 56, 0.25);
 }
 
-
-
-
-
-/* CURRENT COVER */
-
-
-.cover-label{
-
-    display:block;
-    margin-top:15px;
-    padding:10px;
-    background:#8A1538;
-    color:white;
-    text-align:center;
-    border-radius:8px;
-    font-size:14px;
-    font-weight:700;
-
+.save-property-btn:hover {
+    background: var(--qatar-maroon-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(138, 21, 56, 0.35);
 }
 
-
-
-
-
-/* SET COVER */
-
-
-.cover-btn{
-
-    display:block;
-    margin-top:15px;
-    padding:10px;
-    background:#1F2A44;
-    color:white;
-    text-align:center;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:600;
-    transition:.3s;
-
+/* GALLERY SECTION */
+.gallery-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 40px 0 20px 0;
 }
 
-
-
-.cover-btn:hover{
-
-    background:#8A1538;
-    color:white;
-
+.gallery-title-wrapper h2 {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
 }
 
-
-
-
-
-/* DELETE */
-
-
-.delete-btn{
-
-    display:block;
-    margin-top:10px;
-    padding:10px;
-    background:#dc3545;
-    color:white;
-    text-align:center;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:600;
-
+.image-count-badge {
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
 }
 
-
-
-.delete-btn:hover{
-
-    background:#a71d2a;
-
+.property-image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
 }
 
-
-
-
-/* MOBILE */
-
-
-@media(max-width:768px){
-
-
-.image-management-card{
-
-    padding:20px;
-
+/* MODERN IMAGE CARD */
+.property-image-card {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.25s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
-
-
-.property-image-gallery{
-
-    grid-template-columns:1fr;
-
+.property-image-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
 }
 
-
-
-.property-image-card img{
-
-    height:200px;
-
+.image-container {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
 }
 
-
-.image-header h1{
-
-    font-size:24px;
-
+.property-image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
-
+.property-image-card:hover img {
+    transform: scale(1.04);
 }
 
+/* CARD BADGES & ACTIONS */
+.cover-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--qatar-maroon);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
 
+.card-actions {
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: #ffffff;
+    border-top: 1px solid #f1f5f9;
+}
 
+.cover-btn {
+    padding: 8px 12px;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    transition: 0.2s;
+}
+
+.cover-btn:hover {
+    background: var(--qatar-maroon);
+    color: white;
+    border-color: var(--qatar-maroon);
+}
+
+.delete-btn {
+    padding: 8px 12px;
+    background: rgba(239, 68, 68, 0.08);
+    color: #ef4444;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    transition: 0.2s;
+}
+
+.delete-btn:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.full-width-btn {
+    grid-column: span 2;
+}
+
+/* EMPTY STATE */
+.empty-gallery {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--bg-surface);
+    border-radius: 14px;
+    border: 1px dashed var(--border-color);
+}
+
+.empty-gallery p {
+    color: var(--text-muted);
+    font-weight: 500;
+    margin: 0;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .image-management-card {
+        padding: 24px;
+        border-radius: 14px;
+    }
+
+    .image-header-container {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+    }
+
+    .property-image-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
 </style>
 
-
-
-
-
-
 <section class="image-management-page">
-
-
-<div class="container">
-
-
-
-<div class="image-management-card">
-
-
-
-
-
-
-<div class="image-header">
-
-
-<h1>
-Manage Property Images
-</h1>
-
-
-<p>
-{{ property.title }}
-</p>
-
-
-
-<a href="{{ url_for('manage_properties') }}"
-class="back-btn">
-
-← Back to Properties
-
-</a>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- UPLOAD -->
-
-<div class="upload-box">
-
-
-<form method="POST"
-      enctype="multipart/form-data">
-
-
-
-<label>
-Upload More Images
-</label>
-
-
-
-<input
-type="file"
-name="images"
-multiple
-accept="image/*">
-
-
-
-
-
-<button
-type="submit"
-class="save-property-btn">
-
-Add Images
-
-</button>
-
-
-
-</form>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<hr>
-
-
-
-
-
-
-<h2>
-Property Gallery
-</h2>
-
-
-
-
-
-
-
-<div class="property-image-gallery">
-
-
-
-
-
-{% for image in images %}
-
-
-
-
-<div class="property-image-card">
-
-
-
-
-
-<img
-
-src="{{ url_for('static',
-filename='uploads/properties/' ~ image.image_name) }}"
-
-alt="Property Image"
-
->
-
-
-
-
-
-
-{% if image.image_name == property.main_image %}
-
-
-
-<div class="cover-label">
-
-✓ Current Cover Image
-
-</div>
-
-
-
-{% else %}
-
-
-
-<a
-
-href="{{ url_for('set_cover_image',
-property_id=property.id,
-image_name=image.image_name) }}"
-
-class="cover-btn">
-
-Set As Cover
-
-</a>
-
-
-
-{% endif %}
-
-
-
-
-
-<a
-
-href="{{ url_for('delete_property_image',
-image_id=image.id,
-property_id=property.id) }}"
-
-onclick="return confirm('Delete this image?');"
-
-class="delete-btn">
-
-Delete Image
-
-</a>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-{% else %}
-
-
-
-<p>
-No images uploaded.
-</p>
-
-
-
-{% endfor %}
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-</div>
-
-
-
-</div>
-
-
-
+    <div class="container">
+        <div class="image-management-card">
+            
+            <!-- HEADER -->
+            <div class="image-header-container">
+                <div class="image-header">
+                    <h1>Manage Property Images</h1>
+                    <span class="subtitle">🏠 {{ property.title }}</span>
+                </div>
+                <a href="{{ url_for('manage_properties') }}" class="back-btn">
+                    ← Back to Properties
+                </a>
+            </div>
+
+            <!-- DRAG & DROP UPLOAD FORM -->
+            <div class="upload-box">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-label">Upload New Photos</div>
+                    <div class="upload-hint">Select one or multiple high-res image files (JPEG, PNG, WEBP)</div>
+                    
+                    <div class="file-input-wrapper">
+                        <label for="file-upload" class="custom-file-btn">
+                            Choose Files
+                        </label>
+                        <input id="file-upload" type="file" name="images" multiple accept="image/*" onchange="updateFileName(this)">
+                        <span id="file-name-display" style="display:block; margin-top:8px; font-size:12px; color:var(--text-muted);"></span>
+                    </div>
+
+                    <button type="submit" class="save-property-btn">
+                        Upload to Gallery
+                    </button>
+                </form>
+            </div>
+
+            <!-- GALLERY TITLE -->
+            <div class="gallery-title-wrapper">
+                <h2>Photo Gallery</h2>
+                <span class="image-count-badge">{{ images|length }} Photos Total</span>
+            </div>
+
+            <!-- GALLERY GRID -->
+            <div class="property-image-gallery">
+                {% for image in images %}
+                    <div class="property-image-card">
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='uploads/properties/' ~ image.image_name) }}" alt="Property Image">
+                            
+                            {% if image.image_name == property.main_image %}
+                                <span class="cover-badge">★ Primary Cover</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-actions">
+                            {% if image.image_name != property.main_image %}
+                                <a href="{{ url_for('set_cover_image', property_id=property.id, image_name=image.image_name) }}" class="cover-btn">
+                                    Set Cover
+                                </a>
+                                <a href="{{ url_for('delete_property_image', image_id=image.id, property_id=property.id) }}" onclick="return confirm('Delete this image?');" class="delete-btn">
+                                    Delete
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('delete_property_image', image_id=image.id, property_id=property.id) }}" onclick="return confirm('Delete this image?');" class="delete-btn full-width-btn">
+                                    Delete Image
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="empty-gallery">
+                        <p>No photos uploaded yet. Use the upload box above to add property images.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
 </section>
 
-
-
-
-
-
+<script>
+function updateFileName(input) {
+    const display = document.getElementById('file-name-display');
+    if (input.files.length > 0) {
+        display.innerText = input.files.length === 1 
+            ? input.files[0].name 
+            : `${input.files.length} files selected`;
+    } else {
+        display.innerText = '';
+    }
+}
+</script>
 {% endblock %}
