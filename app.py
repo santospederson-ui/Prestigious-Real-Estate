@@ -2098,6 +2098,13 @@ def manage_properties():
     try:
 
         # ==========================
+        # FILTER
+        # ==========================
+
+        purpose = request.args.get("purpose")
+
+
+        # ==========================
         # PAGINATION SETTINGS
         # ==========================
 
@@ -2107,7 +2114,13 @@ def manage_properties():
             type=int
         )
 
-        per_page = 10   # number of properties per page
+
+        per_page = 10
+
+
+        if page < 1:
+            page = 1
+
 
 
         offset = (page - 1) * per_page
@@ -2115,17 +2128,7 @@ def manage_properties():
 
 
         # ==========================
-        # FILTER PURPOSE
-        # ==========================
-
-        purpose = request.args.get(
-            "purpose"
-        )
-
-
-
-        # ==========================
-        # COUNT TOTAL PROPERTIES
+        # TOTAL RECORD COUNT
         # ==========================
 
         if purpose:
@@ -2137,9 +2140,7 @@ def manage_properties():
                 FROM properties
                 WHERE purpose=%s
                 """,
-                (
-                    purpose,
-                )
+                (purpose,)
             )
 
 
@@ -2154,17 +2155,22 @@ def manage_properties():
             )
 
 
-
-        result = cursor.fetchone()
-
-        total_properties = result["total"]
+        total = cursor.fetchone()["total"]
 
 
 
         total_pages = (
-            total_properties + per_page - 1
+            total + per_page - 1
         ) // per_page
 
+
+
+        if total_pages > 0 and page > total_pages:
+            page = total_pages
+
+            offset = (
+                page - 1
+            ) * per_page
 
 
 
@@ -2177,11 +2183,24 @@ def manage_properties():
 
             cursor.execute(
                 """
-                SELECT *
+                SELECT
+                    id,
+                    title,
+                    property_type,
+                    location,
+                    purpose,
+                    price,
+                    status,
+                    main_image
+
                 FROM properties
+
                 WHERE purpose=%s
+
                 ORDER BY id DESC
+
                 LIMIT %s OFFSET %s
+
                 """,
                 (
                     purpose,
@@ -2196,10 +2215,22 @@ def manage_properties():
 
             cursor.execute(
                 """
-                SELECT *
+                SELECT
+                    id,
+                    title,
+                    property_type,
+                    location,
+                    purpose,
+                    price,
+                    status,
+                    main_image
+
                 FROM properties
+
                 ORDER BY id DESC
+
                 LIMIT %s OFFSET %s
+
                 """,
                 (
                     per_page,
@@ -2214,11 +2245,17 @@ def manage_properties():
 
 
         return render_template(
-            "admin/manage_properties.html",
+
+            "admin/properties.html",
+
             properties=properties,
+
             page=page,
+
             total_pages=total_pages,
+
             purpose=purpose
+
         )
 
 
@@ -2227,7 +2264,7 @@ def manage_properties():
 
 
         print(
-            "MANAGE PROPERTY ERROR:",
+            "MANAGE PROPERTIES ERROR:",
             e
         )
 
@@ -2251,7 +2288,6 @@ def manage_properties():
 
         cursor.close()
         conn.close()
-
 
 
 # =====================================================
