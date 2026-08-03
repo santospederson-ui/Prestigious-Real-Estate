@@ -2603,84 +2603,67 @@ def property_images(id):
 
         if request.method == "POST":
 
+    images_upload = request.files.getlist("images")
 
-            images_upload = request.files.getlist("images")
+    for image in images_upload:
 
+        if image and allowed_file(image.filename):
 
-            # create upload directory if missing
+            MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
-            upload_folder = app.config["UPLOAD_FOLDER"]
+            if image.content_length and image.content_length > MAX_IMAGE_SIZE:
 
+                flash(
+                    "Image too large. Maximum size is 10MB.",
+                    "danger"
+                )
 
-            os.makedirs(
-                upload_folder,
-                exist_ok=True
+                return redirect(
+                    url_for(
+                        "property_images",
+                        id=id
+                    )
+                )
+
+            result = cloudinary.uploader.upload(
+
+                image,
+
+                folder="prestigious_real_estate/properties"
+
             )
 
+            image_url = result["secure_url"]
 
-
-            for image in images_upload:
-
-
-                if image and allowed_file(image.filename):
-
-
-                    image_name = secure_filename(
-                        image.filename
-                    )
-
-
-                    image_path = os.path.join(
-                        upload_folder,
-                        image_name
-                    )
-
-
-                    # save image file
-
-                    image.save(
-                        image_path
-                    )
-
-
-
-                    # save database record
-
-                    cursor.execute(
-                        """
-                        INSERT INTO property_images
-                        (
-                        property_id,
-                        image_name
-                        )
-                        VALUES
-                        (%s,%s)
-                        """,
-                        (
-                        id,
-                        image_name
-                        )
-                    )
-
-
-
-            conn.commit()
-
-
-
-            flash(
-                "Images uploaded successfully",
-                "success"
-            )
-
-
-
-            return redirect(
-                url_for(
-                    "property_images",
-                    id=id
+            cursor.execute(
+                """
+                INSERT INTO property_images
+                (
+                    property_id,
+                    image_name
+                )
+                VALUES
+                (%s,%s)
+                """,
+                (
+                    id,
+                    image_url
                 )
             )
+
+    conn.commit()
+
+    flash(
+        "Images uploaded successfully",
+        "success"
+    )
+
+    return redirect(
+        url_for(
+            "property_images",
+            id=id
+        )
+    )
 
 
 
