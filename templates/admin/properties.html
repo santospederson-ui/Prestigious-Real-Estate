@@ -459,11 +459,23 @@ QAR {{ "{:,.0f}".format(item.price or 0) }}
 <td>
 
 
+<td>
+
+
 <a
 href="{{ url_for('edit_property', id=item.id) }}"
 class="action-btn edit">
 
 Edit
+
+</a>
+
+
+<a
+href="{{ url_for('property_images', property_id=item.id) }}"
+class="action-btn images">
+
+Images
 
 </a>
 
