@@ -2092,165 +2092,165 @@ def manage_properties():
 
 
     conn = get_db_connection()
-
     cursor = conn.cursor(dictionary=True)
 
 
+    try:
 
-    # ============================
-    # FILTER
-    # ============================
+        # ==========================
+        # PAGINATION SETTINGS
+        # ==========================
 
-    purpose = request.args.get("purpose")
+        page = request.args.get(
+            "page",
+            1,
+            type=int
+        )
 
-
-
-    # ============================
-    # PAGINATION
-    # ============================
-
-    page = request.args.get(
-        "page",
-        1,
-        type=int
-    )
+        per_page = 10   # number of properties per page
 
 
-    per_page = 10
-
-    offset = (page - 1) * per_page
+        offset = (page - 1) * per_page
 
 
 
+        # ==========================
+        # FILTER PURPOSE
+        # ==========================
 
-    # ============================
-    # QUERY
-    # ============================
-
-    if purpose:
+        purpose = request.args.get(
+            "purpose"
+        )
 
 
-        cursor.execute(
-            """
-            SELECT
-                id,
-                title,
-                property_type,
-                location,
-                purpose,
-                price,
-                status,
-                main_image
 
-            FROM properties
+        # ==========================
+        # COUNT TOTAL PROPERTIES
+        # ==========================
 
-            WHERE purpose=%s
+        if purpose:
 
-            ORDER BY id DESC
 
-            LIMIT %s OFFSET %s
+            cursor.execute(
+                """
+                SELECT COUNT(*) AS total
+                FROM properties
+                WHERE purpose=%s
+                """,
+                (
+                    purpose,
+                )
+            )
 
-            """,
-            (
-                purpose,
-                per_page,
-                offset
+
+        else:
+
+
+            cursor.execute(
+                """
+                SELECT COUNT(*) AS total
+                FROM properties
+                """
+            )
+
+
+
+        result = cursor.fetchone()
+
+        total_properties = result["total"]
+
+
+
+        total_pages = (
+            total_properties + per_page - 1
+        ) // per_page
+
+
+
+
+        # ==========================
+        # LOAD PROPERTIES
+        # ==========================
+
+        if purpose:
+
+
+            cursor.execute(
+                """
+                SELECT *
+                FROM properties
+                WHERE purpose=%s
+                ORDER BY id DESC
+                LIMIT %s OFFSET %s
+                """,
+                (
+                    purpose,
+                    per_page,
+                    offset
+                )
+            )
+
+
+        else:
+
+
+            cursor.execute(
+                """
+                SELECT *
+                FROM properties
+                ORDER BY id DESC
+                LIMIT %s OFFSET %s
+                """,
+                (
+                    per_page,
+                    offset
+                )
+            )
+
+
+
+        properties = cursor.fetchall()
+
+
+
+        return render_template(
+            "admin/manage_properties.html",
+            properties=properties,
+            page=page,
+            total_pages=total_pages,
+            purpose=purpose
+        )
+
+
+
+    except Exception as e:
+
+
+        print(
+            "MANAGE PROPERTY ERROR:",
+            e
+        )
+
+
+        flash(
+            "Unable to load properties",
+            "danger"
+        )
+
+
+        return redirect(
+            url_for(
+                "admin_dashboard"
             )
         )
 
 
-    else:
+
+    finally:
 
 
-        cursor.execute(
-            """
-            SELECT
-                id,
-                title,
-                property_type,
-                location,
-                purpose,
-                price,
-                status,
-                main_image
-
-            FROM properties
-
-            ORDER BY id DESC
-
-            LIMIT %s OFFSET %s
-
-            """,
-            (
-                per_page,
-                offset
-            )
-        )
-
-
-
-    properties = cursor.fetchall()
-
-
-
-    # ============================
-    # COUNT
-    # ============================
-
-    if purpose:
-
-
-        cursor.execute(
-            """
-            SELECT COUNT(*) AS total
-            FROM properties
-            WHERE purpose=%s
-            """,
-            (purpose,)
-        )
-
-
-    else:
-
-
-        cursor.execute(
-            """
-            SELECT COUNT(*) AS total
-            FROM properties
-            """
-        )
-
-
-
-    total = cursor.fetchone()["total"]
-
-
-
-    total_pages = (
-        total + per_page - 1
-    ) // per_page
-
-
-
-    cursor.close()
-    conn.close()
-
-
-
-    return render_template(
-
-        "admin/properties.html",
-
-        properties=properties,
-
-        page=page,
-
-        total_pages=total_pages,
-
-        purpose=purpose
-
-    )
-
+        cursor.close()
+        conn.close()
 
 
 
