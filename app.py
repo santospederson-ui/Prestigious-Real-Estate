@@ -626,17 +626,19 @@ def allowed_file(filename):
 def home():
 
     conn = get_db_connection()
-
     cursor = conn.cursor(dictionary=True)
 
-     cursor.execute("""
+    cursor.execute("""
         SELECT *
         FROM properties
+        WHERE featured = 1
+          AND status='Available'
         ORDER BY id DESC
         LIMIT 6
     """)
 
     properties = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
