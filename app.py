@@ -47,11 +47,9 @@ def get_db_connection():
 # ==========================================
 # CLOUDINARY
 # ==========================================
-cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
-    api_key=os.getenv("CLOUDINARY_API_KEY"),
-    api_secret=os.getenv("CLOUDINARY_API_SECRET")
-)
+CLOUDINARY_CLOUD_NAME=da8y4zqz5
+CLOUDINARY_API_KEY=551545451643298
+CLOUDINARY_API_SECRET=CtN8D84Db81NFkhUwGUm8W2cvEU
 
 
 
