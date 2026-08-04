@@ -36,20 +36,12 @@ PROPERTY SEO STRUCTURED DATA
 </script>
 
 <!-- =========================
-TOP FULL-STRETCH MOSAIC GALLERY
+TOP FULL-BLEED MOSAIC GALLERY
 ========================= -->
 
 <section class="top-mosaic-section">
   
-  <div class="container mosaic-text-container">
-    <div class="mosaic-header-info">
-      <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">FOR {{ property.purpose|upper }}</span>
-      <h1>{{ property.title }}</h1>
-      <p class="property-location-tag">📍 {{ property.location }}</p>
-    </div>
-  </div>
-
-  <!-- FULL STRETCH 70% / 30% DYNAMIC MOSAIC DISPLAY (EDGE TO EDGE) -->
+  <!-- FULL STRETCH 70% / 30% DYNAMIC MOSAIC DISPLAY (TOP OF PAGE) -->
   <div class="mosaic-grid-wrapper full-stretch">
     
     <!-- 70% LEFT MAIN FEATURED IMAGE -->
@@ -61,6 +53,13 @@ TOP FULL-STRETCH MOSAIC GALLERY
       {% else %}
         <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
       {% endif %}
+
+      <div class="mosaic-header-overlay">
+        <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">FOR {{ property.purpose|upper }}</span>
+        <h1>{{ property.title }}</h1>
+        <p class="property-location-tag">📍 {{ property.location }}</p>
+      </div>
+
       <div class="image-expand-badge">🔍 Click to Expand</div>
     </div>
 
@@ -81,12 +80,12 @@ TOP FULL-STRETCH MOSAIC GALLERY
 
   </div>
 
-  <!-- ADDITIONAL GALLERY IMAGES (IF MORE THAN 3 IMAGES EXIST) -->
+  <!-- ADDITIONAL GALLERY IMAGES: LEFT TO RIGHT HORIZONTAL SCROLL -->
   {% if gallery_images and gallery_images|length > 3 %}
-    <div class="container">
-      <div class="additional-gallery-strip">
+    <div class="horizontal-gallery-container">
+      <div class="horizontal-scroll-strip">
         {% for image in gallery_images[3:] %}
-          <div class="additional-thumb-item" onclick="openLightbox({{ loop.index0 + 3 }})">
+          <div class="horizontal-thumb-item" onclick="openLightbox({{ loop.index0 + 3 }})">
             <img src="{{ image.image_name }}" alt="{{ property.title }} photo {{ loop.index + 3 }}" loading="lazy">
           </div>
         {% endfor %}
@@ -249,7 +248,8 @@ LIGHTBOX MODAL FOR FULL VIEW
   }
 
   function closeLightbox() {
-    document.getElementById("imageLightbox").style.display = "none";
+    document.getElementById("imageLightbox");
+    modal.style.display = "none";
   }
 
   window.onclick = function(event) {
@@ -272,73 +272,36 @@ LIGHTBOX MODAL FOR FULL VIEW
 ================================== */
 
 .top-mosaic-section {
-  padding: 30px 0 20px;
+  padding: 0;
+  margin-top: 0;
   background: #ffffff;
   width: 100%;
   overflow-x: hidden;
 }
 
-.mosaic-header-info {
-  margin-bottom: 20px;
-}
-
-.property-status {
-  display: inline-block;
-  background: var(--qatar-maroon, #8A1538);
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 6px 18px;
-  border-radius: 20px;
-  letter-spacing: 1.5px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 14px rgba(138, 21, 56, 0.25);
-}
-
-.property-status.rent {
-  background: var(--gold-accent, #D4AF37);
-  color: #0F172A;
-}
-
-.mosaic-header-info h1 {
-  font-size: clamp(26px, 3.5vw, 40px);
-  color: var(--navy-dark, #1F2A44);
-  font-weight: 800;
-  font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-bottom: 6px;
-}
-
-.property-location-tag {
-  font-size: 15px;
-  color: #64748b;
-  font-weight: 500;
-}
-
-/* FULL-STRETCH 70% LEFT / 30% RIGHT MOSAIC GRID LAYOUT */
+/* FULL-STRETCH MOSAIC GRID AT TOP EDGE */
 .mosaic-grid-wrapper.full-stretch {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  height: 580px;
-  margin-bottom: 16px;
-  padding: 0 8px;
+  height: 600px;
   box-sizing: border-box;
 }
 
 /* 70% LEFT MAIN FEATURED IMAGE */
 .mosaic-main-70 {
-  flex: 0 0 calc(70% - 4px);
-  width: calc(70% - 4px);
+  flex: 0 0 calc(70% - 2px);
+  width: calc(70% - 2px);
   height: 100%;
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  background: #1e293b;
+  background: #000000;
 }
 
 .mosaic-main-70 img {
@@ -350,6 +313,54 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .mosaic-main-70:hover img {
   transform: scale(1.02);
+}
+
+/* ELEGANT OVERLAY FOR TITLE & STATUS AT TOP LEFT */
+.mosaic-header-overlay {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 2;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(10px);
+  padding: 16px 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  max-width: 80%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.property-status {
+  display: inline-block;
+  background: var(--qatar-maroon, #8A1538);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.property-status.rent {
+  background: var(--gold-accent, #D4AF37);
+  color: #0F172A;
+}
+
+.mosaic-header-overlay h1 {
+  font-size: clamp(20px, 2.5vw, 32px);
+  color: #ffffff;
+  font-weight: 800;
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  margin-bottom: 4px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.property-location-tag {
+  font-size: 14px;
+  color: #e2e8f0;
+  font-weight: 500;
 }
 
 .image-expand-badge {
@@ -366,22 +377,22 @@ LIGHTBOX MODAL FOR FULL VIEW
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* 30% RIGHT STACKED IMAGES (MAX 2 TOP TO BOTTOM) */
+/* 30% RIGHT STACKED IMAGES (2 IMAGES VERTICAL) */
 .mosaic-side-30 {
-  flex: 0 0 calc(30% - 4px);
-  width: calc(30% - 4px);
+  flex: 0 0 calc(30% - 2px);
+  width: calc(30% - 2px);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   height: 100%;
 }
 
 .mosaic-sub-item {
   flex: 1;
-  height: calc(50% - 4px);
+  height: calc(50% - 2px);
   overflow: hidden;
   cursor: pointer;
-  background: #1e293b;
+  background: #000000;
 }
 
 .mosaic-sub-item img {
@@ -395,29 +406,49 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.04);
 }
 
-/* SUBSEQUENT IMAGES STRIP RIGHT BELOW MOSAIC */
-.additional-gallery-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
+/* HORIZONTAL SCROLL GALLERY STRIP (LEFT TO RIGHT) */
+.horizontal-gallery-container {
+  width: 100%;
+  background: #0f172a;
+  padding: 12px 0;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
 }
 
-.additional-thumb-item {
-  height: 95px;
+.horizontal-scroll-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-accent, #D4AF37) #1e293b;
+}
+
+.horizontal-scroll-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.horizontal-scroll-strip::-webkit-scrollbar-thumb {
+  background: var(--gold-accent, #D4AF37);
+  border-radius: 3px;
+}
+
+.horizontal-thumb-item {
+  flex: 0 0 220px;
+  height: 140px;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid #e2e8f0;
+  border: 2px solid transparent;
   transition: all 0.3s ease;
 }
 
-.additional-thumb-item:hover {
+.horizontal-thumb-item:hover {
   border-color: var(--gold-accent, #D4AF37);
-  transform: translateY(-2px);
+  transform: scale(1.02);
 }
 
-.additional-thumb-item img {
+.horizontal-thumb-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -425,7 +456,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 /* DETAILS CONTENT LAYOUT */
 .property-details {
-  padding: 40px 0 80px;
+  padding: 50px 0 80px;
   background: #f8fafc;
 }
 
@@ -758,7 +789,6 @@ LIGHTBOX MODAL FOR FULL VIEW
     margin-left: 0;
     margin-right: 0;
     width: 100%;
-    padding: 0;
   }
   .mosaic-main-70 {
     flex: 100%;
@@ -792,6 +822,10 @@ LIGHTBOX MODAL FOR FULL VIEW
   }
   .feature-box h4 {
     font-size: 18px;
+  }
+  .horizontal-thumb-item {
+    flex: 0 0 160px;
+    height: 110px;
   }
 }
 </style>
