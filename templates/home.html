@@ -267,7 +267,7 @@ Prestigious Real Estate | Qatar Properties
   font-size: 15px;
 }
 
-/* FEATURED PROPERTIES - FULL DISPLAY FIX */
+/* FEATURED PROPERTIES */
 .featured-properties {
   padding: 40px 0 80px;
 }
@@ -282,38 +282,29 @@ Prestigious Real Estate | Qatar Properties
   width: 100%;
   overflow-x: auto;
   scroll-behavior: smooth;
-  scrollbar-width: none; /* Hide scrollbar Firefox */
-  padding: 15px 0 25px;
-  
-  /* Enables CSS Scroll Snapping so cards snap into full view */
-  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 10px 0 20px;
 }
 
 .property-slider::-webkit-scrollbar {
-  display: none; /* Hide scrollbar Chrome/Safari */
+  display: none;
 }
 
 .property-track {
   display: flex;
-  gap: 24px;
-  /* Add padding inside the track so first/last cards don't touch edges */
-  padding: 0 4px;
+  gap: 20px;
 }
 
 .property-card {
-  /* Flex basis calculation taking gaps into account */
-  flex: 0 0 calc(33.333% - 16px);
   min-width: 300px;
   max-width: 380px;
+  flex: 0 0 calc(33.333% - 14px);
   background: #ffffff;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border-color);
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
   transition: var(--transition-smooth);
-  
-  /* Snapping align point */
-  scroll-snap-align: start;
 }
 
 .property-card:hover {
@@ -324,7 +315,6 @@ Prestigious Real Estate | Qatar Properties
 .property-image {
   position: relative;
   height: 220px;
-  width: 100%;
   overflow: hidden;
 }
 
@@ -339,19 +329,98 @@ Prestigious Real Estate | Qatar Properties
   transform: scale(1.06);
 }
 
-/* RESPONSIVE CARD WIDTHS FOR PERFECT ALIGNMENT */
-@media (max-width: 1024px) {
-  .property-card {
-    flex: 0 0 calc(50% - 12px); /* 2 full cards on tablets */
-  }
+.property-status {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--qatar-maroon);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
-@media (max-width: 640px) {
-  .property-card {
-    flex: 0 0 100%; /* 1 full card on mobile */
-    scroll-snap-align: center;
-  }
+.property-status.rent {
+  background: var(--navy-dark);
 }
+
+.property-info {
+  padding: 18px 16px;
+}
+
+.property-info h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-info .location {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.property-price {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--qatar-maroon);
+  margin-bottom: 16px;
+}
+
+.property-meta {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+}
+
+.property-info a {
+  display: inline-block;
+  color: var(--navy-dark);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+.property-info a:hover {
+  color: var(--qatar-maroon);
+  transform: translateX(4px);
+}
+
+.slider-btn {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: var(--navy-dark);
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: var(--transition-smooth);
+}
+
+.slider-btn:hover {
+  background: var(--qatar-maroon);
+  color: #ffffff;
+  border-color: var(--qatar-maroon);
+}
+
+.slider-btn.prev { left: -16px; }
+.slider-btn.next { right: -16px; }
 
 /* REDESIGNED EXPLORE ALL PROPERTIES BUTTON */
 .view-all {
@@ -844,30 +913,6 @@ Prestigious Real Estate | Qatar Properties
   }
   
   setInterval(nextSlide, 5000);
-
-  // Property Slider Smooth Arrow Navigation
-  const slider = document.querySelector('.property-slider');
-  const prevBtn = document.querySelector('.slider-btn.prev');
-  const nextBtn = document.querySelector('.slider-btn.next');
-
-  if (slider && prevBtn && nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      const card = slider.querySelector('.property-card');
-      if (card) {
-        // Scroll width = card width + 24px gap
-        const scrollAmount = card.offsetWidth + 24; 
-        slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    });
-
-    prevBtn.addEventListener('click', () => {
-      const card = slider.querySelector('.property-card');
-      if (card) {
-        const scrollAmount = card.offsetWidth + 24;
-        slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      }
-    });
-  }
 </script>
 
 {% endblock %}
