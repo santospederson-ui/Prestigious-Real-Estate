@@ -1,121 +1,244 @@
 {% extends "base.html" %}
 
 {% block title %}
-Luxury Property Locations in Qatar | Prestigious Real Estate
+Prestigious Real Estate | Qatar Properties
 {% endblock %}
 
 {% block content %}
 
-<!-- =========================
-     LOCATION HERO
-========================= -->
-<section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/locations/contact2.jpg') }}');">
-  <div class="page-overlay">
-    <div class="container">
-      <h1>Explore Prime Property Locations</h1>
-      <p>Discover the best communities in Qatar</p>
-    </div>
-  </div>
-</section>
-
-<!-- =========================
-     LOCATIONS SLIDESHOW (3 AT A TIME)
-========================= -->
-<section class="locations-section">
-  <div class="container">
-    <div class="section-title">
-      <h2>Popular Real Estate Locations</h2>
-      <p>Explore premium properties in Qatar's most desirable destinations</p>
-    </div>
-
-    <!-- MAIN SLIDESHOW CONTAINER -->
-    <div class="slideshow-wrapper" id="slideshowWrapper">
-      <div class="location-grid" id="locationGrid">
-        {% for location in locations %}
-          <div class="location-card">
-            {% if location.image %}
-              <img src="{{ location.image }}" alt="{{ location.name }}" loading="lazy">
-            {% else %}
-              <img src="{{ url_for('static', filename='images/contact/contact.jpg') }}" alt="{{ location.name or 'Location' }}" loading="lazy">
-            {% endif %}
-            
-            <div class="location-overlay">
-              <div class="overlay-content">
-                <h3>{{ location.name }}</h3>
-                <p>{{ location.description or 'Luxury waterfront apartments and exclusive lifestyle communities.' }}</p>
-                <a href="{{ url_for('properties', location=location.name) }}" class="location-btn">Explore →</a>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-
-      <!-- DOTS NAVIGATION -->
-      <div class="slideshow-controls">
-        <div class="dots-container" id="dotsContainer"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <style>
 /* ==================================
-   DESIGN SYSTEM & CONTAINER MARGINS
+HOME PAGE SPECIFIC LUXURY STYLES
 ================================== */
-.container {
-  padding-left: clamp(20px, 4vw, 50px);
-  padding-right: clamp(20px, 4vw, 50px);
+:root {
+  --hero-height: 80vh;
 }
 
-/* PAGE HERO */
-.page-hero {
-  min-height: 450px;
+/* HERO SECTION */
+.hero {
+  position: relative;
+  height: var(--hero-height);
+  min-height: 550px;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--navy-dark);
+}
+
+.hero-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  display: flex;
-  align-items: center;
-  position: relative;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 1.2s ease-in-out, transform 6s ease-out;
 }
 
-.page-overlay {
+.hero-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(31, 42, 68, 0.45) 0%, rgba(15, 23, 42, 0.85) 100%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(31, 42, 68, 0.4) 0%, rgba(15, 23, 42, 0.75) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
-}
-
-.page-overlay .container {
-  color: #ffffff;
-  position: relative;
-  z-index: 2;
   text-align: center;
+  padding: 0 24px;
+}
+
+.hero-content {
   max-width: 850px;
+  color: #ffffff;
+  z-index: 2;
 }
 
-.page-overlay h1 {
-  font-size: clamp(36px, 5vw, 56px);
-  margin-bottom: 18px;
-  font-weight: 800;
+.hero-content h1 {
   font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 800;
   line-height: 1.15;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
-.page-overlay p {
+.hero-content p {
   font-size: clamp(16px, 2vw, 20px);
-  margin-bottom: 0;
   color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 36px;
+  font-weight: 400;
 }
 
-/* LOCATIONS SECTION */
-.locations-section {
-  padding: 80px 0 100px 0;
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-buttons a {
+  padding: 14px 32px;
+  border-radius: 0; /* RECTANGULAR BUTTONS */
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition-smooth, all 0.3s ease);
+}
+
+.primary-btn {
+  background: var(--qatar-maroon, #8A1538);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(138, 21, 56, 0.35);
+}
+
+.primary-btn:hover {
+  background: var(--qatar-maroon-dark, #5c0e25);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(138, 21, 56, 0.45);
+}
+
+.outline-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.outline-btn:hover {
   background: #ffffff;
+  color: var(--navy-dark, #1F2A44);
+  transform: translateY(-2px);
 }
 
+/* SMART PROPERTY SEARCH */
+.search-box {
+  margin-top: -60px;
+  position: relative;
+  z-index: 20;
+  margin-bottom: 70px;
+}
+
+.search-card {
+  background: #ffffff;
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  padding: 36px 40px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.search-card h2 {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  color: var(--navy-dark, #1F2A44);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.search-card p {
+  color: var(--text-secondary, #64748b);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.smart-search-form {
+  width: 100%;
+}
+
+.smart-search-input {
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 2px solid var(--border-color, #e2e8f0);
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  padding: 6px 6px 6px 20px;
+  transition: var(--transition-smooth, all 0.3s ease);
+}
+
+.smart-search-input:focus-within {
+  border-color: var(--qatar-maroon, #8A1538);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(138, 21, 56, 0.1);
+}
+
+.smart-search-input i {
+  color: var(--text-secondary, #64748b);
+  font-size: 18px;
+  margin-right: 14px;
+}
+
+.smart-search-input input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 15px;
+  color: var(--text-primary, #1e293b);
+  outline: none;
+}
+
+.smart-search-input button {
+  background: var(--qatar-maroon, #8A1538);
+  color: #ffffff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-smooth, all 0.3s ease);
+}
+
+.smart-search-input button:hover {
+  background: var(--qatar-maroon-dark, #5c0e25);
+}
+
+.popular-searches {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  font-size: 13px;
+}
+
+.popular-searches span {
+  color: var(--text-secondary, #64748b);
+  font-weight: 600;
+}
+
+.popular-searches a {
+  color: var(--navy-dark, #1F2A44);
+  text-decoration: none;
+  background: #f1f5f9;
+  padding: 5px 14px;
+  border-radius: 0; /* RECTANGULAR TAGS */
+  font-weight: 500;
+  transition: var(--transition-smooth, all 0.3s ease);
+}
+
+.popular-searches a:hover {
+  background: var(--qatar-maroon, #8A1538);
+  color: #ffffff;
+}
+
+/* SECTION HEADINGS */
 .section-title {
   text-align: center;
   max-width: 650px;
@@ -123,64 +246,75 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 }
 
 .section-title h2 {
-  font-size: clamp(30px, 3.5vw, 42px);
+  font-family: var(--font-serif, 'Playfair Display', serif);
   color: var(--navy-dark, #1F2A44);
-  margin-bottom: 14px;
-  font-weight: 800;
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
 .section-title p {
-  font-size: 15px;
   color: var(--text-secondary, #64748b);
-  margin: 0;
+  font-size: 15px;
 }
 
-/* SLIDESHOW WRAPPER & GRID */
-.slideshow-wrapper {
+/* ==================================
+   FEATURED PROPERTIES SLIDESHOW (3 AT A TIME)
+================================== */
+.featured-properties {
+  padding: 40px 0 80px;
+}
+
+.property-slideshow-wrapper {
   position: relative;
   overflow: hidden;
 }
 
-.location-grid {
+.property-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  min-height: 420px;
+  gap: 28px;
+  min-height: 460px;
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.location-grid.fade-out {
+.property-grid-3.fade-out {
   opacity: 0;
 }
 
-.location-grid.fade-in {
+.property-grid-3.fade-in {
   opacity: 1;
 }
 
-/* RECTANGULAR LOCATION CARDS */
-.location-card {
-  position: relative;
+.property-card {
+  display: none; /* JS dynamically activates 3 active cards */
+  background: #ffffff;
+  border-radius: 0; /* STRICT RECTANGULAR DESIGN */
   overflow: hidden;
-  border-radius: 0; /* RECTANGULAR DESIGN */
-  height: 420px;
-  cursor: pointer;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+  border: 1px solid var(--border-color, #e2e8f0);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid var(--border-color, rgba(212, 175, 55, 0.25));
-  display: none; /* Controlled by JavaScript */
 }
 
-.location-card.active-card {
-  display: block;
+.property-card.active-card {
+  display: flex;
+  flex-direction: column;
 }
 
-.location-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.22);
+.property-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
   border-color: var(--gold-accent, #D4AF37);
 }
 
-.location-card img {
+.property-image {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 0; /* STRICT RECTANGULAR DESIGN */
+}
+
+.property-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -188,80 +322,128 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.location-card:hover img {
+.property-card:hover .property-image img {
   transform: scale(1.08);
 }
 
-.location-overlay {
+.property-status {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.6) 40%, rgba(15, 23, 42, 0.92) 100%);
+  top: 14px;
+  left: 14px;
+  background: var(--qatar-maroon, #8A1538);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 0; /* STRICT RECTANGULAR DESIGN */
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.property-status.rent {
+  background: var(--navy-dark, #1F2A44);
+}
+
+.property-info {
+  padding: 22px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 0;
-  color: #ffffff;
+  flex-grow: 1;
 }
 
-.overlay-content {
-  padding: 36px 30px;
-  transform: translateY(15px);
-  transition: transform 0.4s ease;
-}
-
-.location-card:hover .overlay-content {
-  transform: translateY(0);
-}
-
-.location-overlay h3 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  font-weight: 800;
-  color: #ffffff;
-}
-
-.location-overlay p {
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.location-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--gold-accent, #D4AF37);
-  color: var(--navy-dark, #1F2A44);
-  padding: 10px 24px;
-  border-radius: 0; /* RECTANGULAR BUTTON */
-  text-decoration: none;
+.property-info h3 {
+  font-size: 18px;
   font-weight: 700;
+  color: var(--navy-dark, #1F2A44);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-info .location {
   font-size: 13px;
-  transition: all 0.3s ease;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 14px;
 }
 
-.location-btn:hover {
-  background: #ffffff;
+.property-price {
+  font-size: 20px;
+  font-weight: 800;
   color: var(--qatar-maroon, #8A1538);
-  transform: translateX(6px);
+  margin-bottom: 16px;
 }
 
-/* PAGINATION CONTROLS */
+.property-meta {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 18px;
+  margin-top: auto;
+}
+
+.property-info a {
+  display: inline-block;
+  color: var(--navy-dark, #1F2A44);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition-smooth, all 0.3s ease);
+}
+
+.property-info a:hover {
+  color: var(--qatar-maroon, #8A1538);
+  transform: translateX(4px);
+}
+
+/* SLIDESHOW NAVIGATION BUTTONS & DOTS */
+.slider-btn {
+  background: #ffffff;
+  border: 1px solid var(--border-color, #e2e8f0);
+  width: 46px;
+  height: 46px;
+  border-radius: 0; /* RECTANGULAR BUTTONS */
+  font-size: 20px;
+  color: var(--navy-dark, #1F2A44);
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-btn:hover {
+  background: var(--qatar-maroon, #8A1538);
+  color: #ffffff;
+  border-color: var(--qatar-maroon, #8A1538);
+}
+
+.slider-btn.prev { left: 10px; }
+.slider-btn.next { right: 10px; }
+
 .slideshow-controls {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 35px;
 }
 
 .dots-container {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
 }
 
 .dot {
-  width: 35px;
+  width: 32px;
   height: 4px;
   background: #cbd5e1;
   border-radius: 0; /* RECTANGULAR DOT INDICATORS */
@@ -271,43 +453,524 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 
 .dot.active {
   background: var(--qatar-maroon, #8A1538);
-  width: 55px;
+  width: 52px;
+}
+
+/* VIEW ALL BUTTON */
+.view-all {
+  text-align: center;
+  margin-top: 45px;
+}
+
+.view-all a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 38px;
+  background: var(--qatar-maroon, #8A1538);
+  color: #ffffff;
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(138, 21, 56, 0.25);
+  border: 2px solid var(--qatar-maroon, #8A1538);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.view-all a:hover {
+  background: var(--qatar-maroon-dark, #5c0e25);
+  border-color: var(--qatar-maroon-dark, #5c0e25);
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(138, 21, 56, 0.38);
+}
+
+/* WHY CHOOSE US */
+.why-section {
+  background: #f1f5f9;
+  padding: 90px 0;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.why-card {
+  background: #ffffff;
+  padding: 36px 28px;
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  text-align: center;
+  border: 1px solid var(--border-color, #e2e8f0);
+  transition: var(--transition-smooth, all 0.3s ease);
+}
+
+.why-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.06);
+}
+
+.why-icon {
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+
+.why-card h3 {
+  font-size: 18px;
+  color: var(--navy-dark, #1F2A44);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.why-card p {
+  color: var(--text-secondary, #64748b);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* CATEGORIES SECTION */
+.categories-section {
+  padding: 90px 0;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.category-card {
+  position: relative;
+  height: 320px;
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  transition: transform 0.6s ease;
+}
+
+.category-card:hover img {
+  transform: scale(1.08);
+}
+
+.category-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(31, 42, 68, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  color: #ffffff;
+}
+
+.category-overlay h3 {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.category-overlay p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 16px;
+}
+
+.category-overlay a {
+  align-self: flex-start;
+  padding: 6px 18px;
+  background: var(--gold-accent, #D4AF37);
+  color: #ffffff;
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition-smooth, all 0.3s ease);
+}
+
+.category-overlay a:hover {
+  background: #b59226;
+}
+
+/* TESTIMONIALS */
+.testimonial-section {
+  background: #ffffff;
+  padding: 90px 0;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.testimonial-card {
+  background: #f8fafc;
+  padding: 32px;
+  border-radius: 0; /* RECTANGULAR DESIGN */
+  border: 1px solid var(--border-color, #e2e8f0);
+  position: relative;
+}
+
+.testimonial-card .stars {
+  color: var(--gold-accent, #D4AF37);
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+
+.testimonial-card p {
+  color: var(--text-primary, #1e293b);
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.testimonial-card h4 {
+  font-size: 15px;
+  color: var(--navy-dark, #1F2A44);
+  font-weight: 700;
+}
+
+.testimonial-card span {
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
 }
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
-  .location-grid {
+  .property-grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 640px) {
-  .location-grid {
+  .search-card {
+    padding: 24px 20px;
+  }
+
+  .smart-search-input {
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .smart-search-input input {
+    text-align: center;
+  }
+
+  .smart-search-input button {
+    width: 100%;
+  }
+
+  .property-grid-3 {
     grid-template-columns: 1fr;
+  }
+
+  .slider-btn {
+    display: none;
   }
 }
 </style>
 
 <!-- =========================
-     VANILLA JAVASCRIPT SLIDESHOW LOGIC
+HERO SECTION
+========================= -->
+<section class="hero">
+  <div class="hero-slider">
+    <div class="hero-slide active" style="background-image:url('{{ url_for('static', filename='images/home/contact.jpg') }}')"></div>
+    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/contact1.jpg') }}')"></div>
+    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/contact2.jpg') }}')"></div>
+    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/contact3.jpg') }}')"></div>
+  </div>
+
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <h1>Discover Exceptional<br>Properties Across Qatar</h1>
+      <p>Find premium residential and commercial properties designed for modern living.</p>
+      <div class="hero-buttons">
+        <a href="{{ url_for('properties') }}" class="primary-btn">Explore Properties</a>
+        <a href="{{ url_for('contact') }}" class="outline-btn">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+SMART PROPERTY SEARCH
+========================= -->
+<section class="search-box">
+  <div class="container">
+    <div class="search-card">
+      <h2>Find Your Dream Property</h2>
+      <p>Search by property type, location, features, lifestyle or any keyword.</p>
+      <form action="{{ url_for('properties') }}" method="GET" class="smart-search-form">
+        <div class="smart-search-input">
+          <i class="fas fa-search"></i>
+          <input type="text" name="search" placeholder="Search villas, apartments, studios, Lusail, sea view..." autocomplete="off">
+          <button type="submit">Search Properties</button>
+        </div>
+      </form>
+      <div class="popular-searches">
+        <span>Popular Searches:</span>
+        <a href="{{ url_for('properties', search='Villa') }}">Villas</a>
+        <a href="{{ url_for('properties', search='Apartment') }}">Apartments</a>
+        <a href="{{ url_for('properties', search='Studio') }}">Studio</a>
+        <a href="{{ url_for('properties', search='Office') }}">Office</a>
+        <a href="{{ url_for('properties', search='Lusail') }}">Lusail</a>
+        <a href="{{ url_for('properties', search='Rent') }}">For Rent</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+FEATURED PROPERTIES (3 AT A TIME SLIDESHOW)
+========================= -->
+<section class="featured-properties">
+  <div class="container">
+    <div class="section-title">
+      <h2>Featured Properties</h2>
+      <p>Discover exclusive residential and commercial properties selected for exceptional lifestyle and investment opportunities across Qatar.</p>
+    </div>
+
+    {% if properties %}
+    <div class="property-slideshow-wrapper" id="propertySlideshowWrapper">
+      <!-- NAVIGATION ARROWS -->
+      <button class="slider-btn prev" id="prevPropertyBtn" aria-label="Previous Properties">&#8249;</button>
+
+      <!-- 3-CARD BATCH CONTAINER -->
+      <div class="property-grid-3" id="propertyGrid">
+        {% for property in properties %}
+        <div class="property-card">
+          <div class="property-image">
+            {% if property.main_image %}
+              <img src="{{ property.main_image }}" alt="{{ property.title }}" loading="lazy">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="Property Image" loading="lazy">
+            {% endif %}
+            <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
+              {% if property.purpose == 'Rent' %}FOR RENT{% else %}FOR SALE{% endif %}
+            </span>
+          </div>
+
+          <div class="property-info">
+            <h3>{{ property.title }}</h3>
+            <p class="location">📍 {{ property.location }}</p>
+            <div class="property-price">
+              {% if property.price %}
+                QAR {{ "{:,.0f}".format(property.price) }}
+              {% else %}
+                Contact For Price
+              {% endif %}
+            </div>
+            <div class="property-meta">
+              {% if property.bedrooms %}<span>🛏 {{ property.bedrooms }} Beds</span>{% endif %}
+              {% if property.bathrooms %}<span>域 {{ property.bathrooms }} Baths</span>{% endif %}
+              {% if property.area %}<span>📐 {{ "{:,.0f}".format(property.area) }} sqm</span>{% endif %}
+            </div>
+            <a href="{{ url_for('property_details', id=property.id) }}">View Property Details →</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <button class="slider-btn next" id="nextPropertyBtn" aria-label="Next Properties">&#8250;</button>
+
+      <!-- PAGINATION DOTS -->
+      <div class="slideshow-controls">
+        <div class="dots-container" id="propertyDotsContainer"></div>
+      </div>
+    </div>
+    {% else %}
+    <div style="width:100%;text-align:center;padding:80px 20px;">
+      <h3>No Featured Properties Available</h3>
+      <p>Add properties from the admin dashboard to display them here.</p>
+    </div>
+    {% endif %}
+
+    <div class="view-all">
+      <a href="{{ url_for('properties') }}">Explore All Properties</a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+WHY CHOOSE US
+========================= -->
+<section class="why-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Why Choose Prestigious Real Estate</h2>
+      <p>Delivering exceptional property solutions across Qatar.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🏙️</div>
+        <h3>Qatar Market Expertise</h3>
+        <p>Deep understanding of Qatar's real estate market, locations and investment opportunities.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">🏢</div>
+        <h3>Luxury Development</h3>
+        <p>Connecting clients with premium residential and commercial developments.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">🤝</div>
+        <h3>Trusted Service</h3>
+        <p>Professional guidance built on transparency, trust and long-term relationships.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">👔</div>
+        <h3>Professional Team</h3>
+        <p>Experienced specialists dedicated to delivering the best property experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+PROPERTY CATEGORIES
+========================= -->
+<section class="categories-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Explore Property Categories</h2>
+      <p>Discover premium real estate opportunities designed for every lifestyle and investment goal.</p>
+    </div>
+
+    <div class="category-grid">
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/contact.jpg') }}" alt="Luxury Villas" loading="lazy">
+        <div class="category-overlay">
+          <h3>Luxury Villas</h3>
+          <p>Exclusive homes with modern designs and premium finishes.</p>
+          <a href="{{ url_for('properties', search='Villa') }}">Explore</a>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/contact1.jpg') }}" alt="Luxury Apartments" loading="lazy">
+        <div class="category-overlay">
+          <h3>Luxury Apartments</h3>
+          <p>Modern residences in Qatar's most desirable locations.</p>
+          <a href="{{ url_for('properties', search='Apartment') }}">Explore</a>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/contact2.jpg') }}" alt="Commercial Properties" loading="lazy">
+        <div class="category-overlay">
+          <h3>Commercial Properties</h3>
+          <p>Premium offices and business spaces for companies.</p>
+          <a href="{{ url_for('properties', search='Commercial') }}">Explore</a>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/contact3.jpg') }}" alt="Investment Properties" loading="lazy">
+        <div class="category-overlay">
+          <h3>Investment Properties</h3>
+          <p>Strategic opportunities for long-term growth.</p>
+          <a href="{{ url_for('properties', search='Investment') }}">Explore</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+TESTIMONIALS
+========================= -->
+<section class="testimonial-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>What Our Clients Say</h2>
+      <p>Trusted by clients looking for premium real estate solutions in Qatar.</p>
+    </div>
+
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"Prestigious Real Estate provided excellent guidance and helped us find the perfect property for our family."</p>
+        <h4>Mohammed A.</h4>
+        <span>Lusail Resident</span>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"Professional service, great market knowledge and a smooth buying experience."</p>
+        <h4>Sarah K.</h4>
+        <span>Property Investor</span>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"The team understood our requirements and found exactly what we were looking for."</p>
+        <h4>David O.</h4>
+        <span>Doha Client</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+JAVASCRIPT LOGIC
 ========================= -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.getElementById('locationGrid');
-  const wrapper = document.getElementById('slideshowWrapper');
-  const cards = Array.from(grid.querySelectorAll('.location-card'));
-  const dotsContainer = document.getElementById('dotsContainer');
-  
+  // 1. HERO SLIDESHOW LOGIC
+  let currentHeroSlide = 0;
+  const heroSlides = document.querySelectorAll('.hero-slide');
+
+  if (heroSlides.length > 0) {
+    function nextHeroSlide() {
+      heroSlides[currentHeroSlide].classList.remove('active');
+      currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+      heroSlides[currentHeroSlide].classList.add('active');
+    }
+    setInterval(nextHeroSlide, 5000);
+  }
+
+  // 2. FEATURED PROPERTIES 3-IMAGE BATCH SLIDESHOW
+  const grid = document.getElementById('propertyGrid');
+  const wrapper = document.getElementById('propertySlideshowWrapper');
+  const prevBtn = document.getElementById('prevPropertyBtn');
+  const nextBtn = document.getElementById('nextPropertyBtn');
+  const dotsContainer = document.getElementById('propertyDotsContainer');
+
+  if (!grid) return;
+
+  const cards = Array.from(grid.querySelectorAll('.property-card'));
   const CARDS_PER_SLIDE = 3;
-  const DISPLAY_TIME = 5000; // Time each 3-image set displays (5 seconds)
-  
+  const DISPLAY_TIME = 5000; // 5 seconds display duration
+
   if (cards.length === 0) return;
 
   const totalSlides = Math.ceil(cards.length / CARDS_PER_SLIDE);
   let currentSlide = 0;
   let slideTimer = null;
 
-  // 1. Build Indicator Dots
+  // Build Pagination Dots
   for (let i = 0; i < totalSlides; i++) {
     const dot = document.createElement('div');
     dot.classList.add('dot');
@@ -321,36 +984,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
 
-  // 2. Display specific group of 3 cards
+  // Display batch of 3 cards with fade effect
   function showSlide(slideIndex) {
     grid.classList.add('fade-out');
 
     setTimeout(() => {
-      // Hide all cards
+      // Hide all property cards
       cards.forEach(card => card.classList.remove('active-card'));
 
-      // Calculate start and end indices for 3 cards
+      // Calculate 3 active property indices
       const startIndex = slideIndex * CARDS_PER_SLIDE;
       const endIndex = startIndex + CARDS_PER_SLIDE;
 
-      // Activate the 3 cards in the current set
+      // Reveal active batch
       cards.slice(startIndex, endIndex).forEach(card => {
         card.classList.add('active-card');
       });
 
-      // Update active dots
+      // Update dot states
       dots.forEach((dot, idx) => {
         dot.classList.toggle('active', idx === slideIndex);
       });
 
       grid.classList.remove('fade-out');
       grid.classList.add('fade-in');
-    }, 300); // Sync with CSS opacity transition time
+    }, 300);
   }
 
-  // 3. Next Slide Logic
   function nextSlide() {
     currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
     showSlide(currentSlide);
   }
 
@@ -359,7 +1026,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlide(currentSlide);
   }
 
-  // 4. Timer Management
   function startTimer() {
     slideTimer = setInterval(nextSlide, DISPLAY_TIME);
   }
@@ -369,11 +1035,28 @@ document.addEventListener('DOMContentLoaded', () => {
     startTimer();
   }
 
-  // Pause on hover
-  wrapper.addEventListener('mouseenter', () => clearInterval(slideTimer));
-  wrapper.addEventListener('mouseleave', () => startTimer());
+  // Button Listeners
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetTimer();
+    });
+  }
 
-  // Initialize first batch of 3 images
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      resetTimer();
+    });
+  }
+
+  // Pause on hover
+  if (wrapper) {
+    wrapper.addEventListener('mouseenter', () => clearInterval(slideTimer));
+    wrapper.addEventListener('mouseleave', () => startTimer());
+  }
+
+  // Initialize first 3 properties
   showSlide(0);
   startTimer();
 });
