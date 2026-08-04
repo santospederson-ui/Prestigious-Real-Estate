@@ -280,11 +280,11 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .property-slider {
-  width: 100%;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding: 10px 0 20px;
+
+    width:100%;
+
+    overflow:hidden;
+
 }
 
 .property-slider::-webkit-scrollbar {
@@ -941,8 +941,68 @@ Prestigious Real Estate | Qatar Properties
 
     if (slider && prevBtn && nextBtn) {
       nextBtn.addEventListener('click', () => {
-        slider.scrollBy({ left: slider.offsetWidth, behavior: 'smooth' });
-      });
+       const slider = document.getElementById("propertySlider");
+
+const nextBtn = document.querySelector(".slider-btn.next");
+
+const prevBtn = document.querySelector(".slider-btn.prev");
+
+
+let currentPage = 0;
+
+
+const cardsPerPage = 4;
+
+
+const totalCards = document.querySelectorAll(".property-card").length;
+
+
+const totalPages = Math.ceil(totalCards / cardsPerPage);
+
+
+
+function moveSlider(){
+
+    const sliderWidth = slider.offsetWidth;
+
+    slider.scrollTo({
+
+        left: currentPage * sliderWidth,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+
+nextBtn.onclick = function(){
+
+    if(currentPage < totalPages-1){
+
+        currentPage++;
+
+        moveSlider();
+
+    }
+
+};
+
+
+
+prevBtn.onclick = function(){
+
+    if(currentPage > 0){
+
+        currentPage--;
+
+        moveSlider();
+
+    }
+
+};
+
       prevBtn.addEventListener('click', () => {
         slider.scrollBy({ left: -slider.offsetWidth, behavior: 'smooth' });
       });
