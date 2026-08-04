@@ -292,14 +292,14 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .property-track {
-  display: flex;
-  gap: 20px;
+   display:flex;
+  gap:24px;
 }
 
 /* PROPERTY CARD - FIXED 4 PER PAGE RECTANGLE */
 .property-card {
-  flex: 0 0 calc(25% - 15px);
-  min-width: calc(25% - 15px);
+   flex: 0 0 calc(33.333% - 16px);
+  min-width: calc(33.333% - 16px);
   scroll-snap-align: start;
   background: #ffffff;
   border-radius: 4px;
@@ -317,7 +317,7 @@ Prestigious Real Estate | Qatar Properties
 .property-image {
   position: relative;
   width: 100%;
-  height: 200px;
+   height:240px;
   overflow: hidden;
 }
 
@@ -970,7 +970,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(slider && nextBtn && prevBtn){
 
 
-        const cardsPerPage = 4;
+        const cardsPerPage = 3;
 
 
         const cards = document.querySelectorAll(".property-card");
