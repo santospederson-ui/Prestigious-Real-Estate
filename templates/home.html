@@ -951,7 +951,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(nextHeroSlide, 5000);
   }
 
-  // 2. FEATURED PROPERTIES 3-IMAGE BATCH SLIDESHOW
+  // 2. FEATURED PROPERTIES 3-IMAGE SLIDESHOW (WITH WRAP-AROUND PADDING)
   const grid = document.getElementById('propertyGrid');
   const wrapper = document.getElementById('propertySlideshowWrapper');
   const prevBtn = document.getElementById('prevPropertyBtn');
@@ -962,7 +962,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const cards = Array.from(grid.querySelectorAll('.property-card'));
   const CARDS_PER_SLIDE = 3;
-  const DISPLAY_TIME = 5000; // 5 seconds display duration
+  const DISPLAY_TIME = 5000; // 5 seconds per set
 
   if (cards.length === 0) return;
 
@@ -971,6 +971,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let slideTimer = null;
 
   // Build Pagination Dots
+  dotsContainer.innerHTML = '';
   for (let i = 0; i < totalSlides; i++) {
     const dot = document.createElement('div');
     dot.classList.add('dot');
@@ -984,24 +985,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
 
-  // Display batch of 3 cards with fade effect
+  // Display batch of 3 cards (Pads empty slots seamlessly)
   function showSlide(slideIndex) {
     grid.classList.add('fade-out');
 
     setTimeout(() => {
-      // Hide all property cards
-      cards.forEach(card => card.classList.remove('active-card'));
-
-      // Calculate 3 active property indices
-      const startIndex = slideIndex * CARDS_PER_SLIDE;
-      const endIndex = startIndex + CARDS_PER_SLIDE;
-
-      // Reveal active batch
-      cards.slice(startIndex, endIndex).forEach(card => {
-        card.classList.add('active-card');
+      // Deactivate all cards and reset orders
+      cards.forEach(card => {
+        card.classList.remove('active-card');
+        card.style.order = '';
       });
 
-      // Update dot states
+      // Activate 3 cards using modulo wrap-around
+      for (let i = 0; i < CARDS_PER_SLIDE; i++) {
+        const cardIndex = (slideIndex * CARDS_PER_SLIDE + i) % cards.length;
+        const card = cards[cardIndex];
+        
+        card.classList.add('active-card');
+        card.style.order = i; // Maintains exact visual 1 -> 2 -> 3 order
+      }
+
+      // Update active dot
       dots.forEach((dot, idx) => {
         dot.classList.toggle('active', idx === slideIndex);
       });
@@ -1050,13 +1054,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Pause on hover
+  // Pause on Hover
   if (wrapper) {
     wrapper.addEventListener('mouseenter', () => clearInterval(slideTimer));
     wrapper.addEventListener('mouseleave', () => startTimer());
   }
 
-  // Initialize first 3 properties
+  // Initialize
   showSlide(0);
   startTimer();
 });
