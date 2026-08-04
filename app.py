@@ -968,40 +968,56 @@ def property_details(id):
 
 
 
-    # =========================
-    # RELATED PROPERTIES
-    # =========================
+   # =========================
+# RELATED PROPERTIES
+# =========================
 
-    cursor.execute(
-        """
+# First, get similar properties
+cursor.execute(
+    """
+    SELECT *
+    FROM properties
+    WHERE id != %s
+      AND property_type = %s
+      AND purpose = %s
+      AND status = 'Available'
+    ORDER BY created_at DESC
+    LIMIT 6
+    """,
+    (
+        id,
+        property["property_type"],
+        property["purpose"]
+    )
+)
+
+related_properties = cursor.fetchall()
+
+
+# If fewer than 6 were found, fill the remaining slots
+remaining = 6 - len(related_properties)
+
+if remaining > 0:
+
+    existing_ids = [item["id"] for item in related_properties]
+    existing_ids.append(id)   # Exclude the current property
+
+    placeholders = ",".join(["%s"] * len(existing_ids))
+
+    sql = f"""
         SELECT *
         FROM properties
-
-        WHERE id != %s
-
-        AND property_type=%s
-
+        WHERE id NOT IN ({placeholders})
+          AND status='Available'
         ORDER BY created_at DESC
+        LIMIT %s
+    """
 
-        LIMIT 4
-        """,
-        (
-            id,
-            property["property_type"]
-        )
-    )
+    values = tuple(existing_ids + [remaining])
 
+    cursor.execute(sql, values)
 
-    related_properties = cursor.fetchall()
-
-
-
-
-
-
-    cursor.close()
-
-    conn.close()
+    related_properties.extend(cursor.fetchall())
 
 
 
