@@ -100,7 +100,7 @@ PROPERTY MAIN CONTENT SECTION
 ========================= -->
 
 <section class="property-details">
-  <div class="container">
+  <div class="container custom-tight-container">
 
     <!-- MAIN DETAILS GRID (DESCRIPTION CARDS + AGENT SIDEBAR) -->
     <div class="details-content-grid">
@@ -108,7 +108,7 @@ PROPERTY MAIN CONTENT SECTION
       <!-- LEFT COLUMN: DESCRIPTIONS & INFO -->
       <div class="details-main-column">
         
-        <!-- PRICE & KEY STATS CARD -->
+        <!-- PRICE, KEY STATS & AMENITIES CARD (COMBINED) -->
         <div class="details-card price-stats-card">
           <div class="price-header">
             <span class="label">Asking Price</span>
@@ -129,12 +129,18 @@ PROPERTY MAIN CONTENT SECTION
               <span>SQM</span>
             </div>
           </div>
-        </div>
 
-        <!-- PROPERTY DESCRIPTION CARD -->
-        <div class="details-card">
-          <h2 class="card-title">Property Overview</h2>
-          <p class="description-text">{{ property.description }}</p>
+          <!-- PROPERTY EXTRA FEATURES INSIDE ASKING PRICE CARD -->
+          {% if features %}
+            <div class="price-card-amenities">
+              <h4 class="sub-card-title">Property Amenities & Features</h4>
+              <div class="feature-list">
+                {% for feature in features %}
+                  <div class="feature-item">✓ {{ feature.feature_name }}</div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
         </div>
 
         <!-- PROPERTY INFORMATION LIST CARD -->
@@ -149,17 +155,11 @@ PROPERTY MAIN CONTENT SECTION
           </div>
         </div>
 
-        <!-- PROPERTY EXTRA FEATURES CARD -->
-        {% if features %}
-          <div class="details-card">
-            <h2 class="card-title">Property Amenities & Features</h2>
-            <div class="feature-list">
-              {% for feature in features %}
-                <div class="feature-item">✓ {{ feature.feature_name }}</div>
-              {% endfor %}
-            </div>
-          </div>
-        {% endif %}
+        <!-- PROPERTY OVERVIEW CARD (NOW BELOW INFORMATION CARD) -->
+        <div class="details-card">
+          <h2 class="card-title">Property Overview</h2>
+          <p class="description-text">{{ property.description }}</p>
+        </div>
 
         <!-- LOCATION CARD -->
         <div class="details-card">
@@ -192,7 +192,7 @@ RELATED PROPERTIES (UP TO 6)
 
 {% if related_properties %}
   <section class="related-properties">
-    <div class="container">
+    <div class="container custom-tight-container">
       <h2 class="section-title">Related Properties</h2>
       <div class="related-grid">
         {% for item in related_properties[:6] %}
@@ -248,8 +248,10 @@ LIGHTBOX MODAL FOR FULL VIEW
   }
 
   function closeLightbox() {
-    document.getElementById("imageLightbox");
-    modal.style.display = "none";
+    const modal = document.getElementById("imageLightbox");
+    if (modal) {
+      modal.style.display = "none";
+    }
   }
 
   window.onclick = function(event) {
@@ -277,6 +279,15 @@ LIGHTBOX MODAL FOR FULL VIEW
   background: #ffffff;
   width: 100%;
   overflow-x: hidden;
+}
+
+/* REDUCED LEFT AND RIGHT BORDER MARGINS */
+.custom-tight-container {
+  max-width: 1380px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* FULL-STRETCH MOSAIC GRID AT TOP EDGE */
@@ -315,7 +326,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.02);
 }
 
-/* ELEGANT OVERLAY FOR TITLE & STATUS AT TOP LEFT */
+/* OVERLAY FOR TITLE & STATUS AT TOP LEFT */
 .mosaic-header-overlay {
   position: absolute;
   top: 30px;
@@ -377,7 +388,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* 30% RIGHT STACKED IMAGES (2 IMAGES VERTICAL) */
+/* 30% RIGHT STACKED IMAGES */
 .mosaic-side-30 {
   flex: 0 0 calc(30% - 2px);
   width: calc(30% - 2px);
@@ -419,7 +430,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   gap: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 0 16px;
+  padding: 0 12px;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-accent, #D4AF37) #1e293b;
 }
@@ -456,33 +467,34 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 /* DETAILS CONTENT LAYOUT */
 .property-details {
-  padding: 50px 0 80px;
+  padding: 40px 0 60px;
   background: #f8fafc;
 }
 
 .details-content-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 36px;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
   align-items: start;
 }
 
+/* NARROWER LEFT/RIGHT PADDING FOR CARDS */
 .details-card {
   background: #ffffff;
-  padding: 32px;
-  border-radius: 20px;
+  padding: 24px 20px;
+  border-radius: 16px;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
   border: 1px solid #e2e8f0;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .card-title {
-  font-size: 22px;
+  font-size: 20px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-bottom: 20px;
-  padding-bottom: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
   border-bottom: 2px solid #f1f5f9;
 }
 
@@ -498,7 +510,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 .property-price {
-  font-size: 36px;
+  font-size: 34px;
   color: var(--qatar-maroon, #8A1538);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
@@ -508,77 +520,91 @@ LIGHTBOX MODAL FOR FULL VIEW
 .details-features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 24px;
-  padding-top: 20px;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
   border-top: 1px solid #f1f5f9;
 }
 
 .feature-box {
   background: #f8fafc;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 12px 8px;
+  border-radius: 10px;
   text-align: center;
   border: 1px solid #e2e8f0;
 }
 
 .feature-box h4 {
-  font-size: 24px;
+  font-size: 22px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
 }
 
 .feature-box span {
-  font-size: 12px;
+  font-size: 11px;
   color: #64748b;
   font-weight: 700;
   text-transform: uppercase;
 }
 
+/* AMENITIES SECTION INSIDE ASKING PRICE CARD */
+.price-card-amenities {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.sub-card-title {
+  font-size: 16px;
+  color: var(--navy-dark, #1F2A44);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.feature-item {
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-left: 3px solid var(--gold-accent, #D4AF37);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy-dark, #1F2A44);
+}
+
 .description-text {
   font-size: 15px;
-  line-height: 1.85;
+  line-height: 1.8;
   color: #475569;
 }
 
 .property-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
 }
 
 .info-item {
-  padding: 14px 18px;
+  padding: 12px 14px;
   background: #f8fafc;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid #e2e8f0;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .info-item strong {
   color: var(--navy-dark, #1F2A44);
 }
 
-.feature-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-.feature-item {
-  padding: 12px 16px;
-  background: #f8fafc;
-  border-left: 3px solid var(--gold-accent, #D4AF37);
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--navy-dark, #1F2A44);
-}
-
 .map-placeholder {
   background: #f8fafc;
-  padding: 50px 20px;
-  border-radius: 14px;
+  padding: 40px 16px;
+  border-radius: 12px;
   text-align: center;
   color: #64748b;
   border: 2px dashed #cbd5e1;
@@ -592,8 +618,8 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .agent-contact-card {
   background: #ffffff;
-  padding: 30px;
-  border-radius: 20px;
+  padding: 24px 18px;
+  border-radius: 16px;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
   border: 1px solid #e2e8f0;
   text-align: center;
@@ -601,23 +627,23 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 .agent-contact-card h3 {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .agent-contact-card p {
-  font-size: 14px;
+  font-size: 13px;
   color: #64748b;
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .agent-contact-card .primary-btn {
   display: block;
   width: 100%;
-  padding: 14px 20px;
+  padding: 12px 16px;
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
   border-radius: 30px;
@@ -635,28 +661,28 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 /* RELATED PROPERTIES GRID */
 .related-properties {
-  padding: 80px 0;
+  padding: 60px 0;
   background: #ffffff;
   border-top: 1px solid #e2e8f0;
 }
 
 .section-title {
-  font-size: 28px;
+  font-size: 26px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .related-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  gap: 20px;
 }
 
 .related-card {
   background: #ffffff;
-  border-radius: 18px;
+  border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
   border: 1px solid #e2e8f0;
@@ -664,12 +690,12 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 .related-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
 }
 
 .related-image {
-  height: 210px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -685,14 +711,14 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 .related-info {
-  padding: 22px;
+  padding: 18px 16px;
 }
 
 .related-info h3 {
-  font-size: 17px;
+  font-size: 16px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -701,14 +727,14 @@ LIGHTBOX MODAL FOR FULL VIEW
 .related-info .location-text {
   font-size: 13px;
   color: #64748b;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .related-info h4 {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--qatar-maroon, #8A1538);
   font-weight: 800;
-  margin: 10px 0;
+  margin: 8px 0;
   font-family: var(--font-serif, 'Playfair Display', serif);
 }
 
@@ -757,6 +783,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   font-size: 40px;
   font-weight: bold;
   cursor: pointer;
+  z-index: 10000;
   transition: color 0.3s ease;
 }
 
@@ -811,17 +838,17 @@ LIGHTBOX MODAL FOR FULL VIEW
     grid-template-columns: 1fr;
   }
   .details-card {
-    padding: 20px;
+    padding: 16px 12px;
   }
   .details-features {
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: 6px;
   }
   .feature-box {
-    padding: 10px 6px;
+    padding: 8px 4px;
   }
   .feature-box h4 {
-    font-size: 18px;
+    font-size: 16px;
   }
   .horizontal-thumb-item {
     flex: 0 0 160px;
