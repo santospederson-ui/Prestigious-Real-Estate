@@ -968,88 +968,79 @@ def property_details(id):
 
 
 
-# =========================
-# RELATED PROPERTIES
-# =========================
-
-cursor.execute(
-    """
-    SELECT *
-    FROM properties
-    WHERE id != %s
-      AND property_type = %s
-      AND purpose = %s
-      AND status='Available'
-    ORDER BY created_at DESC
-    LIMIT 6
-    """,
-    (
-        id,
-        property["property_type"],
-        property["purpose"]
-    )
-)
-
-related_properties = cursor.fetchall()
-
-
-# Fill remaining slots if fewer than 6
-remaining = 6 - len(related_properties)
-
-if remaining > 0:
-
-    existing_ids = [item["id"] for item in related_properties]
-    existing_ids.append(id)
-
-    placeholders = ",".join(["%s"] * len(existing_ids))
+    # =========================
+    # RELATED PROPERTIES
+    # =========================
 
     cursor.execute(
-        f"""
+        """
         SELECT *
         FROM properties
-        WHERE id NOT IN ({placeholders})
+        WHERE id != %s
+          AND property_type=%s
+          AND purpose=%s
           AND status='Available'
         ORDER BY created_at DESC
-        LIMIT %s
+        LIMIT 6
         """,
-        tuple(existing_ids + [remaining])
+        (
+            id,
+            property["property_type"],
+            property["purpose"]
+        )
     )
 
-    related_properties.extend(cursor.fetchall())
+    related_properties = cursor.fetchall()
 
+    remaining = 6 - len(related_properties)
 
-cursor.close()
-conn.close()
+    if remaining > 0:
 
+        existing_ids = [item["id"] for item in related_properties]
+        existing_ids.append(id)
 
-# =========================
-# SEO INFORMATION
-# =========================
+        placeholders = ",".join(["%s"] * len(existing_ids))
 
-seo_title = (
-    f"{property['title']} "
-    f"in {property['location']} | "
-    f"Prestigious Real Estate Qatar"
-)
+        cursor.execute(
+            f"""
+            SELECT *
+            FROM properties
+            WHERE id NOT IN ({placeholders})
+              AND status='Available'
+            ORDER BY created_at DESC
+            LIMIT %s
+            """,
+            tuple(existing_ids + [remaining])
+        )
 
-seo_description = (
-    f"{property['title']} located in "
-    f"{property['location']} Qatar. "
-    f"{property['property_type']} available for "
-    f"{property['purpose']}. "
-    f"View details, images and contact Prestigious Real Estate."
-)
+        related_properties.extend(cursor.fetchall())
 
+    cursor.close()
+    conn.close()
 
-return render_template(
-    "property_details.html",
-    property=property,
-    gallery_images=gallery_images,
-    features=features,
-    related_properties=related_properties,
-    seo_title=seo_title,
-    seo_description=seo_description
-)
+    seo_title = (
+        f"{property['title']} in "
+        f"{property['location']} | "
+        f"Prestigious Real Estate Qatar"
+    )
+
+    seo_description = (
+        f"{property['title']} located in "
+        f"{property['location']} Qatar. "
+        f"{property['property_type']} available for "
+        f"{property['purpose']}. "
+        f"View details, images and contact Prestigious Real Estate."
+    )
+
+    return render_template(
+        "property_details.html",
+        property=property,
+        gallery_images=gallery_images,
+        features=features,
+        related_properties=related_properties,
+        seo_title=seo_title,
+        seo_description=seo_description
+    )
 
 
 
