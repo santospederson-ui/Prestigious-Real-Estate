@@ -693,7 +693,7 @@ def home():
         SELECT *
         FROM properties
         ORDER BY id DESC
-        LIMIT 18
+        LIMIT 12
     """)
 
     properties = cursor.fetchall()
