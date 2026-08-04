@@ -14,9 +14,9 @@ Prestigious Real Estate | Qatar Properties
   --hero-height: 80vh;
 }
 
-/* CUSTOM TIGHT CONTAINER FOR REDUCED BORDER MARGINS */
-.custom-tight-container {
-  max-width: 1380px;
+/* EXPANDED CONTAINER FOR REDUCED LEFT/RIGHT MARGINS */
+.container {
+  max-width: 1540px;
   padding-left: 12px;
   padding-right: 12px;
   margin-left: auto;
@@ -70,7 +70,7 @@ Prestigious Real Estate | Qatar Properties
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 12px;
+  padding: 0 24px;
 }
 
 .hero-content {
@@ -147,7 +147,7 @@ Prestigious Real Estate | Qatar Properties
 .search-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 28px 20px;
+  padding: 36px 40px;
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
   border: 1px solid var(--border-color);
 }
@@ -292,15 +292,16 @@ Prestigious Real Estate | Qatar Properties
 
 .property-track {
   display: flex;
-  gap: 20px;
+  gap: 24px;
 }
 
+/* RECTANGULAR FLATTENED PROPERTY CARDS */
 .property-card {
-  min-width: 300px;
+  min-width: 320px;
   max-width: 380px;
-  flex: 0 0 calc(33.333% - 14px);
+  flex: 0 0 calc(33.333% - 16px);
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 0px; /* Sharp rectangular design */
   overflow: hidden;
   border: 1px solid var(--border-color);
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
@@ -336,7 +337,7 @@ Prestigious Real Estate | Qatar Properties
   background: var(--qatar-maroon);
   color: #ffffff;
   padding: 4px 12px;
-  border-radius: 6px;
+  border-radius: 2px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -347,7 +348,7 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .property-info {
-  padding: 18px 16px;
+  padding: 22px;
 }
 
 .property-info h3 {
@@ -375,7 +376,7 @@ Prestigious Real Estate | Qatar Properties
 
 .property-meta {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   padding: 12px 0;
   border-top: 1px solid #f1f5f9;
   border-bottom: 1px solid #f1f5f9;
@@ -419,8 +420,8 @@ Prestigious Real Estate | Qatar Properties
   border-color: var(--qatar-maroon);
 }
 
-.slider-btn.prev { left: -16px; }
-.slider-btn.next { right: -16px; }
+.slider-btn.prev { left: -22px; }
+.slider-btn.next { right: -22px; }
 
 /* REDESIGNED EXPLORE ALL PROPERTIES BUTTON */
 .view-all {
@@ -457,18 +458,18 @@ Prestigious Real Estate | Qatar Properties
 /* WHY CHOOSE US */
 .why-section {
   background: #f1f5f9;
-  padding: 80px 0;
+  padding: 90px 0;
 }
 
 .why-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
 }
 
 .why-card {
   background: #ffffff;
-  padding: 28px 20px;
+  padding: 36px 28px;
   border-radius: 16px;
   text-align: center;
   border: 1px solid var(--border-color);
@@ -482,7 +483,7 @@ Prestigious Real Estate | Qatar Properties
 
 .why-icon {
   font-size: 38px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .why-card h3 {
@@ -500,13 +501,13 @@ Prestigious Real Estate | Qatar Properties
 
 /* CATEGORIES SECTION */
 .categories-section {
-  padding: 80px 0;
+  padding: 90px 0;
 }
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
 }
 
 .category-card {
@@ -538,7 +539,7 @@ Prestigious Real Estate | Qatar Properties
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 24px 20px;
+  padding: 28px;
   color: #ffffff;
 }
 
@@ -574,19 +575,19 @@ Prestigious Real Estate | Qatar Properties
 /* TESTIMONIALS */
 .testimonial-section {
   background: #ffffff;
-  padding: 80px 0;
+  padding: 90px 0;
   border-top: 1px solid var(--border-color);
 }
 
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
 .testimonial-card {
   background: #f8fafc;
-  padding: 24px 20px;
+  padding: 32px;
   border-radius: 16px;
   border: 1px solid var(--border-color);
   position: relative;
@@ -620,13 +621,13 @@ Prestigious Real Estate | Qatar Properties
 /* RESPONSIVE DESIGN */
 @media (max-width: 992px) {
   .property-card {
-    flex: 0 0 calc(50% - 10px);
+    flex: 0 0 calc(50% - 12px);
   }
 }
 
 @media (max-width: 640px) {
   .search-card {
-    padding: 20px 14px;
+    padding: 24px 20px;
   }
   
   .smart-search-input {
@@ -682,7 +683,7 @@ Prestigious Real Estate | Qatar Properties
 ========================= -->
 
 <section class="search-box">
-  <div class="container custom-tight-container">
+  <div class="container">
     <div class="search-card">
       <h2>Find Your Dream Property</h2>
       <p>Search by property type, location, features, lifestyle or any keyword.</p>
@@ -711,7 +712,7 @@ Prestigious Real Estate | Qatar Properties
 ========================= -->
 
 <section class="featured-properties">
-  <div class="container custom-tight-container">
+  <div class="container">
     <div class="section-title">
       <h2>Featured Properties</h2>
       <p>Discover exclusive residential and commercial properties selected for exceptional lifestyle and investment opportunities across Qatar.</p>
@@ -780,7 +781,7 @@ Prestigious Real Estate | Qatar Properties
 ========================= -->
 
 <section class="why-section">
-  <div class="container custom-tight-container">
+  <div class="container">
     <div class="section-title">
       <h2>Why Choose Prestigious Real Estate</h2>
       <p>Delivering exceptional property solutions across Qatar.</p>
@@ -819,7 +820,7 @@ Prestigious Real Estate | Qatar Properties
 ========================= -->
 
 <section class="categories-section">
-  <div class="container custom-tight-container">
+  <div class="container">
     <div class="section-title">
       <h2>Explore Property Categories</h2>
       <p>Discover premium real estate opportunities designed for every lifestyle and investment goal.</p>
@@ -870,7 +871,7 @@ Prestigious Real Estate | Qatar Properties
 ========================= -->
 
 <section class="testimonial-section">
-  <div class="container custom-tight-container">
+  <div class="container">
     <div class="section-title">
       <h2>What Our Clients Say</h2>
       <p>Trusted by clients looking for premium real estate solutions in Qatar.</p>
