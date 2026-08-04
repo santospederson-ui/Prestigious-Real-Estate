@@ -14,15 +14,6 @@ Prestigious Real Estate | Qatar Properties
   --hero-height: 80vh;
 }
 
-/* CONTAINER WITH REDUCED SIDE MARGINS */
-.container {
-  max-width: 1440px;
-  padding-left: 12px;
-  padding-right: 12px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* HERO SECTION */
 .hero {
   position: relative;
@@ -52,7 +43,6 @@ Prestigious Real Estate | Qatar Properties
   opacity: 0;
   transform: scale(1.05);
   transition: opacity 1.2s ease-in-out, transform 6s ease-out;
-  will-change: opacity, transform;
 }
 
 .hero-slide.active {
@@ -268,7 +258,7 @@ Prestigious Real Estate | Qatar Properties
   font-size: 15px;
 }
 
-/* FEATURED PROPERTIES - OPTIMIZED 3 CARDS PER PAGE */
+/* FEATURED PROPERTIES */
 .featured-properties {
   padding: 40px 0 80px;
 }
@@ -282,7 +272,7 @@ Prestigious Real Estate | Qatar Properties
 .property-slider {
   width: 100%;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
   scrollbar-width: none;
   padding: 10px 0 20px;
 }
@@ -293,31 +283,30 @@ Prestigious Real Estate | Qatar Properties
 
 .property-track {
   display: flex;
-  gap: 16px;
+  gap: 24px;
 }
 
-/* PROPERTY CARD - EXACTLY 3 PER PAGE */
 .property-card {
-  flex: 0 0 calc((100% - 32px) / 3);
-  min-width: calc((100% - 32px) / 3);
-  scroll-snap-align: start;
+  min-width: 320px;
+  max-width: 380px;
+  flex: 0 0 calc(33.333% - 16px);
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 0; /* RECTANGULAR CARD */
   overflow: hidden;
   border: 1px solid var(--border-color);
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transition-smooth);
 }
 
 .property-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   box-shadow: 0 16px 30px rgba(15, 23, 42, 0.1);
 }
 
 .property-image {
   position: relative;
-  width: 100%;
-  height: 230px;
+  height: 220px;
+  border-radius: 0; /* RECTANGULAR IMAGE CONTAINER */
   overflow: hidden;
 }
 
@@ -325,12 +314,11 @@ Prestigious Real Estate | Qatar Properties
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .property-card:hover .property-image img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .property-status {
@@ -340,7 +328,7 @@ Prestigious Real Estate | Qatar Properties
   background: var(--qatar-maroon);
   color: #ffffff;
   padding: 4px 12px;
-  border-radius: 2px;
+  border-radius: 0; /* RECTANGULAR BADGE */
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -351,11 +339,11 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .property-info {
-  padding: 20px;
+  padding: 22px;
 }
 
 .property-info h3 {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--navy-dark);
   margin-bottom: 6px;
@@ -367,25 +355,25 @@ Prestigious Real Estate | Qatar Properties
 .property-info .location {
   font-size: 13px;
   color: var(--text-secondary);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .property-price {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--qatar-maroon);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .property-meta {
   display: flex;
-  gap: 10px;
-  padding: 10px 0;
+  gap: 14px;
+  padding: 12px 0;
   border-top: 1px solid #f1f5f9;
   border-bottom: 1px solid #f1f5f9;
   font-size: 12px;
   color: var(--text-secondary);
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .property-info a {
@@ -394,11 +382,12 @@ Prestigious Real Estate | Qatar Properties
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: var(--transition-smooth);
 }
 
 .property-info a:hover {
   color: var(--qatar-maroon);
+  transform: translateX(4px);
 }
 
 .slider-btn {
@@ -413,6 +402,7 @@ Prestigious Real Estate | Qatar Properties
   position: absolute;
   z-index: 10;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: var(--transition-smooth);
 }
 
 .slider-btn:hover {
@@ -421,10 +411,10 @@ Prestigious Real Estate | Qatar Properties
   border-color: var(--qatar-maroon);
 }
 
-.slider-btn.prev { left: -15px; }
-.slider-btn.next { right: -15px; }
+.slider-btn.prev { left: -22px; }
+.slider-btn.next { right: -22px; }
 
-/* EXPLORE ALL PROPERTIES BUTTON */
+/* REDESIGNED EXPLORE ALL PROPERTIES BUTTON */
 .view-all {
   text-align: center;
   margin-top: 45px;
@@ -445,7 +435,7 @@ Prestigious Real Estate | Qatar Properties
   text-decoration: none;
   box-shadow: 0 8px 24px rgba(138, 21, 56, 0.25);
   border: 2px solid var(--qatar-maroon);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view-all a:hover {
@@ -464,7 +454,7 @@ Prestigious Real Estate | Qatar Properties
 
 .why-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
 }
 
@@ -507,14 +497,14 @@ Prestigious Real Estate | Qatar Properties
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
 }
 
 .category-card {
   position: relative;
   height: 320px;
-  border-radius: 16px;
+  border-radius: 0; /* RECTANGULAR CATEGORY CARD */
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
@@ -562,10 +552,11 @@ Prestigious Real Estate | Qatar Properties
   padding: 6px 18px;
   background: var(--gold-accent);
   color: #ffffff;
-  border-radius: 6px;
+  border-radius: 0; /* RECTANGULAR BUTTON */
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
+  transition: var(--transition-smooth);
 }
 
 .category-overlay a:hover {
@@ -581,7 +572,7 @@ Prestigious Real Estate | Qatar Properties
 
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
@@ -618,14 +609,10 @@ Prestigious Real Estate | Qatar Properties
   color: var(--text-secondary);
 }
 
-/* RESPONSIVE DESIGN BREAKPOINTS */
+/* RESPONSIVE DESIGN */
 @media (max-width: 992px) {
   .property-card {
-    flex: 0 0 calc((100% - 16px) / 2);
-    min-width: calc((100% - 16px) / 2);
-  }
-  .why-grid, .category-grid {
-    grid-template-columns: repeat(2, 1fr);
+    flex: 0 0 calc(50% - 12px);
   }
 }
 
@@ -650,14 +637,10 @@ Prestigious Real Estate | Qatar Properties
 
   .property-card {
     flex: 0 0 100%;
-    min-width: 100%;
   }
   
   .slider-btn {
     display: none;
-  }
-  .why-grid, .category-grid, .testimonial-grid {
-    grid-template-columns: 1fr;
   }
 }
 </style>
@@ -727,8 +710,8 @@ Prestigious Real Estate | Qatar Properties
     </div>
 
     <div class="property-slider-container">
-      <button class="slider-btn prev" type="button" aria-label="Previous Properties">&#8249;</button>
-      <div class="property-slider" id="propertySlider">
+      <button class="slider-btn prev">&#8249;</button>
+      <div class="property-slider">
         <div class="property-track">
           {% if properties %}
             {% for property in properties %}
@@ -775,7 +758,7 @@ Prestigious Real Estate | Qatar Properties
           {% endif %}
         </div>
       </div>
-      <button class="slider-btn next" type="button" aria-label="Next Properties">&#8250;</button>
+      <button class="slider-btn next">&#8250;</button>
     </div>
 
     <div class="view-all">
@@ -911,34 +894,17 @@ Prestigious Real Estate | Qatar Properties
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // HERO SLIDER
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.hero-slide');
-
-    if (slides.length > 0) {
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 5000);
-    }
-
-    // PROPERTY SLIDER
-    const slider = document.getElementById("propertySlider");
-    const nextBtn = document.querySelector(".slider-btn.next");
-    const prevBtn = document.querySelector(".slider-btn.prev");
-
-    if (slider && nextBtn && prevBtn) {
-        nextBtn.addEventListener("click", () => {
-            slider.scrollBy({ left: slider.clientWidth, behavior: "smooth" });
-        });
-
-        prevBtn.addEventListener("click", () => {
-            slider.scrollBy({ left: -slider.clientWidth, behavior: "smooth" });
-        });
-    }
-});
+  // Hero Slideshow
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.hero-slide');
+  
+  function nextSlide() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }
+  
+  setInterval(nextSlide, 5000);
 </script>
 
 {% endblock %}
