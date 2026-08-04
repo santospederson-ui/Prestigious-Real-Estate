@@ -279,20 +279,32 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .property-slider {
-  width: 100%;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  padding: 10px 0 20px;
+
+  width:100%;
+  overflow:hidden;
+  padding:10px 0 20px;
+
 }
 
-.property-slider::-webkit-scrollbar {
-  display: none;
-}
 
 .property-track {
-  display: flex;
-  gap: 24px;
+
+  display:flex;
+  gap:20px;
+  transition:transform 0.6s ease;
+
+}
+
+
+.property-card {
+
+  flex:0 0 calc(25% - 15px);
+  background:#ffffff;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid var(--border-color);
+  box-shadow:0 6px 18px rgba(15,23,42,0.04);
+
 }
 
 /* RECTANGULAR FLATTENED PROPERTY CARDS */
@@ -621,7 +633,7 @@ Prestigious Real Estate | Qatar Properties
 /* RESPONSIVE DESIGN */
 @media (max-width: 992px) {
   .property-card {
-    flex: 0 0 calc(50% - 12px);
+    flex: 0 0 calc(50% - 10px);
   }
 }
 
@@ -721,7 +733,7 @@ Prestigious Real Estate | Qatar Properties
     <div class="property-slider-container">
       <button class="slider-btn prev">&#8249;</button>
       <div class="property-slider">
-        <div class="property-track">
+        <div class="property-track" id="propertyTrack">
           {% if properties %}
             {% for property in properties %}
               <div class="property-card">
@@ -901,6 +913,102 @@ Prestigious Real Estate | Qatar Properties
     </div>
   </div>
 </section>
+
+
+
+// =================================
+// FEATURED PROPERTY PAGINATION
+// =================================
+
+let propertyPosition = 0;
+
+const propertyTrack =
+document.getElementById("propertyTrack");
+
+
+const propertyCards =
+document.querySelectorAll(".property-card");
+
+
+const cardsPerSlide = 4;
+
+
+function moveProperties(direction){
+
+    if(!propertyTrack) return;
+
+
+    const totalSlides =
+    Math.ceil(propertyCards.length / cardsPerSlide);
+
+
+
+    propertyPosition += direction;
+
+
+
+    if(propertyPosition < 0){
+
+        propertyPosition = totalSlides - 1;
+
+    }
+
+
+
+    if(propertyPosition >= totalSlides){
+
+        propertyPosition = 0;
+
+    }
+
+
+
+    const cardWidth =
+    propertyCards[0].offsetWidth + 20;
+
+
+
+    const move =
+    propertyPosition *
+    cardWidth *
+    cardsPerSlide;
+
+
+
+    propertyTrack.style.transform =
+    `translateX(-${move}px)`;
+
+}
+
+
+
+// Button controls
+
+document
+.querySelector(".slider-btn.next")
+.addEventListener(
+"click",
+function(){
+
+moveProperties(1);
+
+});
+
+
+
+document
+.querySelector(".slider-btn.prev")
+.addEventListener(
+"click",
+function(){
+
+moveProperties(-1);
+
+});
+
+
+
+
 
 <script>
   // Hero Slideshow
