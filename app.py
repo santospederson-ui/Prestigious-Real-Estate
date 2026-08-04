@@ -968,11 +968,10 @@ def property_details(id):
 
 
 
-   # =========================
+# =========================
 # RELATED PROPERTIES
 # =========================
 
-# First, get similar properties
 cursor.execute(
     """
     SELECT *
@@ -980,7 +979,7 @@ cursor.execute(
     WHERE id != %s
       AND property_type = %s
       AND purpose = %s
-      AND status = 'Available'
+      AND status='Available'
     ORDER BY created_at DESC
     LIMIT 6
     """,
@@ -994,81 +993,63 @@ cursor.execute(
 related_properties = cursor.fetchall()
 
 
-# If fewer than 6 were found, fill the remaining slots
+# Fill remaining slots if fewer than 6
 remaining = 6 - len(related_properties)
 
 if remaining > 0:
 
     existing_ids = [item["id"] for item in related_properties]
-    existing_ids.append(id)   # Exclude the current property
+    existing_ids.append(id)
 
     placeholders = ",".join(["%s"] * len(existing_ids))
 
-    sql = f"""
+    cursor.execute(
+        f"""
         SELECT *
         FROM properties
         WHERE id NOT IN ({placeholders})
           AND status='Available'
         ORDER BY created_at DESC
         LIMIT %s
-    """
-
-    values = tuple(existing_ids + [remaining])
-
-    cursor.execute(sql, values)
+        """,
+        tuple(existing_ids + [remaining])
+    )
 
     related_properties.extend(cursor.fetchall())
 
 
+cursor.close()
+conn.close()
 
 
+# =========================
+# SEO INFORMATION
+# =========================
+
+seo_title = (
+    f"{property['title']} "
+    f"in {property['location']} | "
+    f"Prestigious Real Estate Qatar"
+)
+
+seo_description = (
+    f"{property['title']} located in "
+    f"{property['location']} Qatar. "
+    f"{property['property_type']} available for "
+    f"{property['purpose']}. "
+    f"View details, images and contact Prestigious Real Estate."
+)
 
 
-    # =========================
-    # SEO INFORMATION
-    # =========================
-
-
-    seo_title = (
-        f"{property['title']} "
-        f"in {property['location']} | "
-        f"Prestigious Real Estate Qatar"
-    )
-
-
-
-    seo_description = (
-        f"{property['title']} located in "
-        f"{property['location']} Qatar. "
-        f"{property['property_type']} "
-        f"available for {property['purpose']}. "
-        f"View details, images and contact "
-        f"Prestigious Real Estate."
-    )
-
-
-
-
-
-
-
-    return render_template(
-
-        "property_details.html",
-
-        property=property,
-
-        gallery_images=gallery_images,
-
-        features=features,
-
-        related_properties=related_properties,
-
-        seo_title=seo_title,
-
-        seo_description=seo_description
-
-    )
+return render_template(
+    "property_details.html",
+    property=property,
+    gallery_images=gallery_images,
+    features=features,
+    related_properties=related_properties,
+    seo_title=seo_title,
+    seo_description=seo_description
+)
 
 
 
