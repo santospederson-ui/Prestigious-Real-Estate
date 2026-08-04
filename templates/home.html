@@ -14,6 +14,15 @@ Prestigious Real Estate | Qatar Properties
   --hero-height: 80vh;
 }
 
+/* CONTAINER WITH BALANCED SIDE MARGINS */
+.container {
+  max-width: 1440px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* HERO SECTION */
 .hero {
   position: relative;
@@ -258,7 +267,7 @@ Prestigious Real Estate | Qatar Properties
   font-size: 15px;
 }
 
-/* FEATURED PROPERTIES */
+/* FEATURED PROPERTIES - UPDATED FOR EXACT 4 CARDS WITH CLEAN SNAPPING */
 .featured-properties {
   padding: 40px 0 80px;
 }
@@ -273,6 +282,7 @@ Prestigious Real Estate | Qatar Properties
   width: 100%;
   overflow-x: auto;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
   padding: 10px 0 20px;
 }
@@ -286,12 +296,13 @@ Prestigious Real Estate | Qatar Properties
   gap: 24px;
 }
 
+/* PROPERTY CARD - EXACT 4 ITEMS VISIBLE AT ONCE */
 .property-card {
-  min-width: 320px;
-  max-width: 380px;
-  flex: 0 0 calc(33.333% - 16px);
+  flex: 0 0 calc(25% - 18px);
+  min-width: 0;
+  scroll-snap-align: start;
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 0px; /* Sharp rectangular design */
   overflow: hidden;
   border: 1px solid var(--border-color);
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
@@ -306,6 +317,7 @@ Prestigious Real Estate | Qatar Properties
 .property-image {
   position: relative;
   height: 220px;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
 }
 
@@ -327,7 +339,7 @@ Prestigious Real Estate | Qatar Properties
   background: var(--qatar-maroon);
   color: #ffffff;
   padding: 4px 12px;
-  border-radius: 6px;
+  border-radius: 2px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -413,7 +425,7 @@ Prestigious Real Estate | Qatar Properties
 .slider-btn.prev { left: -22px; }
 .slider-btn.next { right: -22px; }
 
-/* REDESIGNED EXPLORE ALL PROPERTIES BUTTON */
+/* EXPLORE ALL PROPERTIES BUTTON */
 .view-all {
   text-align: center;
   margin-top: 45px;
@@ -608,7 +620,13 @@ Prestigious Real Estate | Qatar Properties
   color: var(--text-secondary);
 }
 
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE DESIGN BREAKPOINTS FOR CARDS */
+@media (max-width: 1200px) {
+  .property-card {
+    flex: 0 0 calc(33.333% - 16px);
+  }
+}
+
 @media (max-width: 992px) {
   .property-card {
     flex: 0 0 calc(50% - 12px);
@@ -904,6 +922,20 @@ Prestigious Real Estate | Qatar Properties
   }
   
   setInterval(nextSlide, 5000);
+
+  // Property Slider Prev/Next Controls for 4-Card Paging
+  const slider = document.querySelector('.property-slider');
+  const prevBtn = document.querySelector('.slider-btn.prev');
+  const nextBtn = document.querySelector('.slider-btn.next');
+
+  if (slider && prevBtn && nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+    });
+    prevBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: -slider.clientWidth, behavior: 'smooth' });
+    });
+  }
 </script>
 
 {% endblock %}
