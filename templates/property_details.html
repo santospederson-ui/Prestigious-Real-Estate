@@ -36,16 +36,61 @@ PROPERTY SEO STRUCTURED DATA
 </script>
 
 <!-- =========================
-PROPERTY HERO HEADER
+TOP MOSAIC GALLERY (NO HERO)
 ========================= -->
 
-<section class="property-detail-hero">
+<section class="top-mosaic-section">
   <div class="container">
-    <div class="hero-header-content">
+    
+    <div class="mosaic-header-info">
       <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">FOR {{ property.purpose|upper }}</span>
       <h1>{{ property.title }}</h1>
       <p class="property-location-tag">📍 {{ property.location }}</p>
     </div>
+
+    <!-- 70% / 30% DYNAMIC MOSAIC DISPLAY -->
+    <div class="mosaic-grid-wrapper">
+      
+      <!-- 70% LEFT MAIN FEATURED IMAGE -->
+      <div class="mosaic-main-70" onclick="openLightbox(0)">
+        {% if gallery_images %}
+          <img src="{{ gallery_images[0].image_name }}" alt="{{ property.title }} in {{ property.location }} Qatar" loading="lazy">
+        {% elif property.main_image %}
+          <img src="{{ property.main_image }}" alt="{{ property.title }} in {{ property.location }} Qatar" loading="lazy">
+        {% else %}
+          <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
+        {% endif %}
+        <div class="image-expand-badge">🔍 Click to Expand</div>
+      </div>
+
+      <!-- 30% RIGHT STACKED IMAGES (MAX 2 UP TO DOWN) -->
+      <div class="mosaic-side-30">
+        {% if gallery_images and gallery_images|length > 1 %}
+          <div class="mosaic-sub-item" onclick="openLightbox(1)">
+            <img src="{{ gallery_images[1].image_name }}" alt="{{ property.title }} photo 2" loading="lazy">
+          </div>
+        {% endif %}
+
+        {% if gallery_images and gallery_images|length > 2 %}
+          <div class="mosaic-sub-item" onclick="openLightbox(2)">
+            <img src="{{ gallery_images[2].image_name }}" alt="{{ property.title }} photo 3" loading="lazy">
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- ADDITIONAL GALLERY IMAGES (IF MORE THAN 3 IMAGES EXIST) -->
+    {% if gallery_images and gallery_images|length > 3 %}
+      <div class="additional-gallery-strip">
+        {% for image in gallery_images[3:] %}
+          <div class="additional-thumb-item" onclick="openLightbox({{ loop.index0 + 3 }})">
+            <img src="{{ image.image_name }}" alt="{{ property.title }} photo {{ loop.index + 3 }}" loading="lazy">
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
   </div>
 </section>
 
@@ -55,30 +100,6 @@ PROPERTY MAIN CONTENT SECTION
 
 <section class="property-details">
   <div class="container">
-    
-    <!-- MAIN HERO DISPLAY & GALLERY THUMBNAILS -->
-    <div class="gallery-hero-wrapper">
-      <div class="main-featured-image" onclick="openLightbox(0)">
-        {% if gallery_images %}
-          <img id="mainDisplayImg" src="{{ gallery_images[0].image_name }}" alt="{{ property.title }} in {{ property.location }} Qatar" loading="lazy">
-        {% elif property.main_image %}
-          <img id="mainDisplayImg" src="{{ property.main_image }}" alt="{{ property.title }} in {{ property.location }} Qatar" loading="lazy">
-        {% else %}
-          <img id="mainDisplayImg" src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
-        {% endif %}
-        <div class="image-expand-badge">🔍 Click to Expand</div>
-      </div>
-
-      {% if gallery_images %}
-        <div class="gallery-thumbnails-strip">
-          {% for image in gallery_images %}
-            <div class="thumb-item" onclick="openLightbox({{ loop.index0 }})">
-              <img src="{{ image.image_name }}" alt="{{ property.title }} photo {{ loop.index }}" loading="lazy">
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    </div>
 
     <!-- MAIN DETAILS GRID (DESCRIPTION CARDS + AGENT SIDEBAR) -->
     <div class="details-content-grid">
@@ -229,7 +250,6 @@ LIGHTBOX MODAL FOR FULL VIEW
     document.getElementById("imageLightbox").style.display = "none";
   }
 
-  // Close lightbox on outside click or escape key
   window.onclick = function(event) {
     const modal = document.getElementById("imageLightbox");
     if (event.target == modal) {
@@ -249,12 +269,13 @@ LIGHTBOX MODAL FOR FULL VIEW
    ULTRA-LUXURY PROPERTY DETAIL STYLES
 ================================== */
 
-.property-detail-hero {
-  background: linear-gradient(180deg, #1F2A44 0%, #0F172A 100%);
-  padding: 60px 0 50px;
-  text-align: center;
-  color: #ffffff;
-  border-bottom: 3px solid var(--gold-accent, #D4AF37);
+.top-mosaic-section {
+  padding: 40px 0 20px;
+  background: #ffffff;
+}
+
+.mosaic-header-info {
+  margin-bottom: 24px;
 }
 
 .property-status {
@@ -266,85 +287,119 @@ LIGHTBOX MODAL FOR FULL VIEW
   padding: 6px 18px;
   border-radius: 20px;
   letter-spacing: 1.5px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 14px rgba(138, 21, 56, 0.4);
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(138, 21, 56, 0.25);
 }
 
 .property-status.rent {
   background: var(--gold-accent, #D4AF37);
   color: #0F172A;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
 }
 
-.property-detail-hero h1 {
-  font-size: clamp(28px, 4vw, 44px);
-  margin: 8px 0 12px;
-  color: #ffffff;
+.mosaic-header-info h1 {
+  font-size: clamp(26px, 3.5vw, 40px);
+  color: var(--navy-dark, #1F2A44);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
+  margin-bottom: 6px;
 }
 
 .property-location-tag {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  color: #64748b;
+  font-weight: 500;
 }
 
-.property-details {
-  padding: 50px 0 80px;
-  background: #f8fafc;
-}
-
-/* GALLERY DISPLAY HERO */
-.gallery-hero-wrapper {
-  margin-bottom: 40px;
-}
-
-.main-featured-image {
-  position: relative;
+/* 70% LEFT / 30% RIGHT MOSAIC GRID LAYOUT */
+.mosaic-grid-wrapper {
+  display: flex;
+  gap: 16px;
   width: 100%;
   height: 520px;
-  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+/* 70% LEFT MAIN FEATURED IMAGE */
+.mosaic-main-70 {
+  flex: 0 0 70%;
+  width: 70%;
+  height: 100%;
+  position: relative;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.1);
-  border: 1px solid #e2e8f0;
   cursor: pointer;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e2e8f0;
   background: #1e293b;
 }
 
-.main-featured-image img {
+.mosaic-main-70 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.main-featured-image:hover img {
+.mosaic-main-70:hover img {
   transform: scale(1.02);
 }
 
 .image-expand-badge {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 16px;
+  right: 16px;
   background: rgba(15, 23, 42, 0.85);
   color: #ffffff;
-  padding: 8px 18px;
+  padding: 8px 16px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   backdrop-filter: blur(6px);
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-.gallery-thumbnails-strip {
+/* 30% RIGHT STACKED IMAGES (MAX 2 TOP TO BOTTOM) */
+.mosaic-side-30 {
+  flex: 0 0 calc(30% - 16px);
+  width: calc(30% - 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.mosaic-sub-item {
+  flex: 1;
+  height: calc(50% - 8px);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e2e8f0;
+  background: #1e293b;
+}
+
+.mosaic-sub-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.mosaic-sub-item:hover img {
+  transform: scale(1.04);
+}
+
+/* SUBSEQUENT IMAGES STRIP RIGHT BELOW MOSAIC */
+.additional-gallery-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 14px;
   margin-top: 16px;
 }
 
-.thumb-item {
-  height: 90px;
+.additional-thumb-item {
+  height: 95px;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -352,18 +407,23 @@ LIGHTBOX MODAL FOR FULL VIEW
   transition: all 0.3s ease;
 }
 
-.thumb-item:hover {
+.additional-thumb-item:hover {
   border-color: var(--gold-accent, #D4AF37);
   transform: translateY(-2px);
 }
 
-.thumb-item img {
+.additional-thumb-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
 /* DETAILS CONTENT LAYOUT */
+.property-details {
+  padding: 40px 0 80px;
+  background: #f8fafc;
+}
+
 .details-content-grid {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -537,7 +597,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: translateY(-2px);
 }
 
-/* RELATED PROPERTIES GRID (UP TO 6) */
+/* RELATED PROPERTIES GRID */
 .related-properties {
   padding: 80px 0;
   background: #ffffff;
@@ -670,6 +730,9 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 992px) {
+  .mosaic-grid-wrapper {
+    height: 400px;
+  }
   .details-content-grid {
     grid-template-columns: 1fr;
   }
@@ -681,10 +744,28 @@ LIGHTBOX MODAL FOR FULL VIEW
   }
 }
 
-@media (max-width: 640px) {
-  .main-featured-image {
-    height: 320px;
+@media (max-width: 768px) {
+  .mosaic-grid-wrapper {
+    flex-direction: column;
+    height: auto;
   }
+  .mosaic-main-70 {
+    flex: 100%;
+    width: 100%;
+    height: 300px;
+  }
+  .mosaic-side-30 {
+    flex: 100%;
+    width: 100%;
+    flex-direction: row;
+    height: 150px;
+  }
+  .mosaic-sub-item {
+    height: 100%;
+  }
+}
+
+@media (max-width: 640px) {
   .related-grid {
     grid-template-columns: 1fr;
   }
