@@ -87,6 +87,12 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
    LUXURY LOCATIONS PAGE STYLES
 ================================== */
 
+/* INCREASING MARGINS (PADDING) ON LEFT & RIGHT */
+.container {
+  padding-left: clamp(20px, 4vw, 50px);
+  padding-right: clamp(20px, 4vw, 50px);
+}
+
 /* PAGE HERO */
 .page-hero {
   min-height: 520px;
@@ -168,7 +174,7 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
 .location-card {
   position: relative;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 0; /* RECTANGULAR CARD */
   height: 400px;
   cursor: pointer;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
@@ -238,7 +244,7 @@ Luxury Property Locations in Qatar | Prestigious Real Estate
   background: var(--gold-accent, #D4AF37);
   color: var(--navy-dark, #1F2A44);
   padding: 10px 24px;
-  border-radius: 30px;
+  border-radius: 0; /* RECTANGULAR BUTTON */
   text-decoration: none;
   font-weight: 700;
   font-size: 13px;
