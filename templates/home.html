@@ -921,93 +921,122 @@ Prestigious Real Estate | Qatar Properties
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Hero Slideshow
+
+document.addEventListener('DOMContentLoaded', () => {
+
+
+    // ==========================
+    // HERO SLIDER
+    // ==========================
+
     let currentSlide = 0;
+
     const slides = document.querySelectorAll('.hero-slide');
-    
-    if (slides.length > 0) {
-      setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-      }, 5000);
-    }
-
-    // Optimized Slider Navigation without layout locking
-    const slider = document.getElementById('propertySlider');
-    const prevBtn = document.querySelector('.slider-btn.prev');
-    const nextBtn = document.querySelector('.slider-btn.next');
-
-    if (slider && prevBtn && nextBtn) {
-      nextBtn.addEventListener('click', () => {
-       const slider = document.getElementById("propertySlider");
-
-const nextBtn = document.querySelector(".slider-btn.next");
-
-const prevBtn = document.querySelector(".slider-btn.prev");
 
 
-let currentPage = 0;
+    if(slides.length > 0){
+
+        setInterval(()=>{
+
+            slides[currentSlide].classList.remove('active');
+
+            currentSlide++;
+
+            if(currentSlide >= slides.length){
+                currentSlide = 0;
+            }
+
+            slides[currentSlide].classList.add('active');
 
 
-const cardsPerPage = 3;
-
-
-const totalCards = document.querySelectorAll(".property-card").length;
-
-
-const totalPages = Math.ceil(totalCards / cardsPerPage);
-
-
-
-function moveSlider(){
-
-    const sliderWidth = slider.offsetWidth;
-
-    slider.scrollTo({
-
-        left: currentPage * sliderWidth,
-
-        behavior:"smooth"
-
-    });
-
-}
-
-
-
-nextBtn.onclick = function(){
-
-    if(currentPage < totalPages-1){
-
-        currentPage++;
-
-        moveSlider();
+        },5000);
 
     }
 
-};
+
+
+    // ==========================
+    // PROPERTY SLIDER
+    // ==========================
+
+
+    const slider = document.getElementById("propertySlider");
+
+    const nextBtn = document.querySelector(".slider-btn.next");
+
+    const prevBtn = document.querySelector(".slider-btn.prev");
+
+
+    if(slider && nextBtn && prevBtn){
+
+
+        const cardsPerPage = 4;
+
+
+        const cards = document.querySelectorAll(".property-card");
+
+
+        const totalPages = Math.ceil(cards.length / cardsPerPage);
+
+
+        let currentPage = 0;
 
 
 
-prevBtn.onclick = function(){
+        function moveSlider(){
 
-    if(currentPage > 0){
 
-        currentPage--;
+            slider.scrollTo({
 
-        moveSlider();
+                left: currentPage * slider.clientWidth,
+
+                behavior:"smooth"
+
+            });
+
+
+        }
+
+
+
+        nextBtn.addEventListener("click",()=>{
+
+
+            if(currentPage < totalPages-1){
+
+                currentPage++;
+
+                moveSlider();
+
+            }
+
+
+        });
+
+
+
+        prevBtn.addEventListener("click",()=>{
+
+
+            if(currentPage > 0){
+
+                currentPage--;
+
+                moveSlider();
+
+            }
+
+
+        });
+
+
 
     }
 
-};
 
-      prevBtn.addEventListener('click', () => {
-        slider.scrollBy({ left: -slider.offsetWidth, behavior: 'smooth' });
-      });
-    }
-  });
+});
+
+
 </script>
 
 {% endblock %}
