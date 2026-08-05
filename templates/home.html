@@ -315,7 +315,21 @@ HOME PAGE SPECIFIC LUXURY STYLES
   height: 240px;
   overflow: hidden;
   border-radius: 0;
-  background-color: #f4f6f9; /* Light grey container background */
+  background-color: #0f172a; /* Dark charcoal backdrop for image contrast */
+}
+
+  .property-image {
+  border-bottom: 2px solid var(--navy-dark, #1F2A44);
+}
+
+
+  .property-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.4) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .property-image img {
