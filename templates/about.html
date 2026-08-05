@@ -1,3 +1,8 @@
+Here is the updated code.
+
+The CSS rules for `.about-grid` and `.about-image` have been updated so that the image column takes up exactly 50% of the grid container width from left to right on desktop, while maintaining full responsiveness and all other existing styles.
+
+```html
 {% extends "base.html" %}
 
 {% block title %}
@@ -173,13 +178,14 @@ About Us | Prestigious Real Estate Qatar
 
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; /* 50% left for image, 50% right for content */
   gap: 60px;
   align-items: center;
 }
 
 .about-image {
   position: relative;
+  width: 100%; /* Ensures it fills 50% of the grid block */
 }
 
 .about-image img {
@@ -429,3 +435,10 @@ About Us | Prestigious Real Estate Qatar
 </style>
 
 {% endblock %}
+
+```
+
+### Key Changes Made
+
+* Set `grid-template-columns: 1fr 1fr;` on `.about-grid` to divide the section equally into two 50% columns (left for image, right for content).
+* Ensured `.about-image` and `.about-image img` span `width: 100%;` to fill the entire 50% section.
