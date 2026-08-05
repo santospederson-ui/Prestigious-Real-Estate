@@ -26,8 +26,14 @@ About Us | Prestigious Real Estate Qatar
 <section class="about-section">
   <div class="container">
     <div class="about-grid">
-      <div class="about-image">
-        <img src="{{ url_for('static', filename='images/about/about1.png') }}" alt="Prestigious Real Estate" loading="lazy">
+      <div class="about-image-column">
+        <div class="about-image">
+          <img src="{{ url_for('static', filename='images/about/about1.png') }}" alt="Prestigious Real Estate" loading="lazy">
+        </div>
+        <!-- Added second image card below the first -->
+        <div class="about-image" style="margin-top: 30px;">
+          <img src="{{ url_for('static', filename='images/about/about.webp') }}" alt="Prestigious Real Estate Interior" loading="lazy">
+        </div>
       </div>
 
       <div class="about-content">
@@ -43,10 +49,6 @@ About Us | Prestigious Real Estate Qatar
           <p>At Prestigious Real Estate, we believe every client deserves personalized attention and reliable advice. Whether you are buying, selling, renting, or investing, our experienced
                team is dedicated to helping you make confident decisions while delivering professional real estate services that create lasting value and long-term relationships.</p>
 
-          
-           
-
-           
         <div class="stats-grid">
           <div class="stat-item">
             <div class="stat-number">500+</div>
@@ -208,9 +210,14 @@ About Us | Prestigious Real Estate Qatar
     align-items:start;
 }
 
+.about-image-column {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+}
 
 .about-image{
-    align-self:start;
+    position: relative;
 }
 
 .about-image img {
@@ -425,12 +432,13 @@ About Us | Prestigious Real Estate Qatar
     gap: 36px;
   }
 
-  .about-image {
-    padding-left: 0;
+  .about-image-column {
+      padding-left: 0;
   }
 
   .about-image img {
-    height: 360px;
+    height: auto;
+    max-height: 360px;
   }
 
   .stats-grid {
@@ -458,7 +466,7 @@ About Us | Prestigious Real Estate Qatar
   }
 
   .about-image img {
-    height: 280px;
+    max-height: 280px;
   }
 }
 </style>
