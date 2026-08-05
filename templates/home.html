@@ -141,23 +141,23 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .search-card {
-  background: #ffffff;
-  border-radius: 0;
+  background: #1e293b;
+  border-radius: 4px;
   padding: 36px 40px;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
-  border: 1px solid var(--border-color, #e2e8f0);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid #334155;
 }
 
 .search-card h2 {
   font-family: var(--font-serif, 'Playfair Display', serif);
-  color: var(--navy-dark, #1F2A44);
+  color: #ffffff;
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .search-card p {
-  color: var(--text-secondary, #64748b);
+  color: #94a3b8;
   font-size: 14px;
   margin-bottom: 24px;
 }
@@ -169,21 +169,21 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .smart-search-input {
   display: flex;
   align-items: center;
-  background: #f8fafc;
-  border: 2px solid var(--border-color, #e2e8f0);
-  border-radius: 0;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 4px;
   padding: 6px 6px 6px 20px;
   transition: var(--transition-smooth, all 0.3s ease);
 }
 
 .smart-search-input:focus-within {
   border-color: var(--qatar-maroon, #8A1538);
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(138, 21, 56, 0.1);
+  background: #0f172a;
+  box-shadow: 0 0 0 4px rgba(138, 21, 56, 0.25);
 }
 
 .smart-search-input i {
-  color: var(--text-secondary, #64748b);
+  color: #94a3b8;
   font-size: 18px;
   margin-right: 14px;
 }
@@ -193,8 +193,12 @@ HOME PAGE SPECIFIC LUXURY STYLES
   background: transparent;
   width: 100%;
   font-size: 15px;
-  color: var(--text-primary, #1e293b);
+  color: #ffffff;
   outline: none;
+}
+
+.smart-search-input input::placeholder {
+  color: #64748b;
 }
 
 .smart-search-input button {
@@ -202,7 +206,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
   color: #ffffff;
   border: none;
   padding: 14px 28px;
-  border-radius: 0;
+  border-radius: 4px;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
@@ -224,44 +228,76 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .popular-searches span {
-  color: var(--text-secondary, #64748b);
+  color: #94a3b8;
   font-weight: 600;
 }
 
 .popular-searches a {
-  color: var(--navy-dark, #1F2A44);
+  color: #e2e8f0;
   text-decoration: none;
-  background: #f1f5f9;
+  background: #0f172a;
+  border: 1px solid #334155;
   padding: 5px 14px;
-  border-radius: 0;
+  border-radius: 4px;
   font-weight: 500;
   transition: var(--transition-smooth, all 0.3s ease);
 }
 
 .popular-searches a:hover {
   background: var(--qatar-maroon, #8A1538);
+  border-color: var(--qatar-maroon, #8A1538);
   color: #ffffff;
 }
 
-/* DARK CONTAINER ENCLOSING FEATURED PROPERTIES THROUGH CATEGORIES */
-.dark-section-wrapper {
+/* DARK WRAPPER FOR FEATURED PROPERTIES THROUGH CATEGORIES */
+.dark-content-section {
   background-color: #0f172a;
+  color: #f8fafc;
   padding-top: 60px;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
-/* SECTION HEADINGS (ADAPTED FOR DARK BACKGROUND) */
-.dark-section-wrapper .section-title h2 {
+/* SOFT GREY CONTAINER FOR SECTION TITLE HEADINGS */
+.section-title {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 50px auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px 32px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.section-title h2 {
   font-family: var(--font-serif, 'Playfair Display', serif);
   color: #ffffff;
   font-size: 34px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-.dark-section-wrapper .section-title p {
-  color: #94a3b8;
+.section-title p {
+  color: #cbd5e1;
   font-size: 15px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* LIGHT THEME SECTION TITLE (FOR TESTIMONIALS) */
+.testimonial-section .section-title {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.testimonial-section .section-title h2 {
+  color: var(--navy-dark, #1F2A44);
+}
+
+.testimonial-section .section-title p {
+  color: #64748b;
 }
 
 /* FEATURED PROPERTIES */
@@ -292,11 +328,11 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-card {
   display: none;
-  background: #ffffff;
-  border-radius: 0;
+  background: #1e293b;
+  border-radius: 4px;
   overflow: hidden;
-  border: 1px solid var(--border-color, #e2e8f0);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+  border: 1px solid #334155;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -307,7 +343,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.5);
   border-color: var(--gold-accent, #D4AF37);
 }
 
@@ -337,7 +373,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
   padding: 4px 12px;
-  border-radius: 0;
+  border-radius: 2px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -345,7 +381,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .property-status.rent {
-  background: var(--navy-dark, #1F2A44);
+  background: #334155;
 }
 
 .property-info {
@@ -358,7 +394,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .property-info h3 {
   font-size: 18px;
   font-weight: 700;
-  color: var(--navy-dark, #1F2A44);
+  color: #ffffff;
   margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
@@ -367,14 +403,14 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-info .location {
   font-size: 13px;
-  color: var(--text-secondary, #64748b);
+  color: #94a3b8;
   margin-bottom: 14px;
 }
 
 .property-price {
   font-size: 20px;
   font-weight: 800;
-  color: var(--qatar-maroon, #8A1538);
+  color: var(--gold-accent, #D4AF37);
   margin-bottom: 16px;
 }
 
@@ -382,17 +418,17 @@ HOME PAGE SPECIFIC LUXURY STYLES
   display: flex;
   gap: 14px;
   padding: 12px 0;
-  border-top: 1px solid #f1f5f9;
-  border-bottom: 1px solid #f1f5f9;
+  border-top: 1px solid #334155;
+  border-bottom: 1px solid #334155;
   font-size: 12px;
-  color: var(--text-secondary, #64748b);
+  color: #cbd5e1;
   margin-bottom: 18px;
   margin-top: auto;
 }
 
 .property-info a {
   display: inline-block;
-  color: var(--navy-dark, #1F2A44);
+  color: #f1f5f9;
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
@@ -400,24 +436,24 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .property-info a:hover {
-  color: var(--qatar-maroon, #8A1538);
+  color: var(--gold-accent, #D4AF37);
   transform: translateX(4px);
 }
 
 .slider-btn {
-  background: #ffffff;
-  border: 1px solid var(--border-color, #e2e8f0);
+  background: #1e293b;
+  border: 1px solid #334155;
   width: 46px;
   height: 46px;
-  border-radius: 0;
+  border-radius: 50%;
   font-size: 20px;
-  color: var(--navy-dark, #1F2A44);
+  color: #ffffff;
   cursor: pointer;
   position: absolute;
   top: 40%;
   transform: translateY(-50%);
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -449,7 +485,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
   width: 32px;
   height: 4px;
   background: #334155;
-  border-radius: 0;
+  border-radius: 2px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -472,12 +508,12 @@ HOME PAGE SPECIFIC LUXURY STYLES
   padding: 16px 38px;
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
-  border-radius: 0;
+  border-radius: 4px;
   font-weight: 800;
   font-size: 15px;
   letter-spacing: 0.3px;
   text-decoration: none;
-  box-shadow: 0 8px 24px rgba(138, 21, 56, 0.25);
+  box-shadow: 0 8px 24px rgba(138, 21, 56, 0.35);
   border: 2px solid var(--qatar-maroon, #8A1538);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -487,10 +523,10 @@ HOME PAGE SPECIFIC LUXURY STYLES
   border-color: var(--qatar-maroon-dark, #5c0e25);
   color: #ffffff;
   transform: translateY(-3px);
-  box-shadow: 0 14px 30px rgba(138, 21, 56, 0.38);
+  box-shadow: 0 14px 30px rgba(138, 21, 56, 0.5);
 }
 
-/* WHY CHOOSE US */
+/* WHY CHOOSE US (DARK THEME) */
 .why-section {
   background: #1e293b;
   padding: 90px 0;
@@ -505,17 +541,18 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .why-card {
-  background: #ffffff;
+  background: #0f172a;
   padding: 36px 28px;
-  border-radius: 0;
+  border-radius: 4px;
   text-align: center;
-  border: 1px solid var(--border-color, #e2e8f0);
+  border: 1px solid #334155;
   transition: var(--transition-smooth, all 0.3s ease);
 }
 
 .why-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+  border-color: var(--gold-accent, #D4AF37);
 }
 
 .why-icon {
@@ -525,18 +562,18 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .why-card h3 {
   font-size: 18px;
-  color: var(--navy-dark, #1F2A44);
+  color: #ffffff;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .why-card p {
-  color: var(--text-secondary, #64748b);
+  color: #94a3b8;
   font-size: 14px;
   line-height: 1.5;
 }
 
-/* CATEGORIES SECTION */
+/* CATEGORIES SECTION (DARK THEME) */
 .categories-section {
   padding: 90px 0;
 }
@@ -550,7 +587,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .category-card {
   position: relative;
   height: 320px;
-  border-radius: 0;
+  border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   border: 1px solid #334155;
@@ -574,7 +611,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(31, 42, 68, 0.15) 0%, rgba(15, 23, 42, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -591,7 +628,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .category-overlay p {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.95);
+  color: #cbd5e1;
   margin-bottom: 16px;
 }
 
@@ -599,8 +636,8 @@ HOME PAGE SPECIFIC LUXURY STYLES
   align-self: flex-start;
   padding: 6px 18px;
   background: var(--gold-accent, #D4AF37);
-  color: #ffffff;
-  border-radius: 0;
+  color: #0f172a;
+  border-radius: 2px;
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
@@ -608,7 +645,8 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .category-overlay a:hover {
-  background: #b59226;
+  background: #ffffff;
+  color: #0f172a;
 }
 
 /* TESTIMONIALS */
@@ -627,7 +665,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .testimonial-card {
   background: #f8fafc;
   padding: 32px;
-  border-radius: 0;
+  border-radius: 4px;
   border: 1px solid var(--border-color, #e2e8f0);
   position: relative;
 }
@@ -714,34 +752,34 @@ HOME PAGE SPECIFIC LUXURY STYLES
   </div>
 </section>
 
-<!-- SMART PROPERTY SEARCH -->
-<section class="search-box">
-  <div class="container">
-    <div class="search-card">
-      <h2>Find Your Dream Property</h2>
-      <p>Search by property type, location, features, lifestyle or any keyword.</p>
-      <form action="{{ url_for('properties') }}" method="GET" class="smart-search-form">
-        <div class="smart-search-input">
-          <i class="fas fa-search"></i>
-          <input type="text" name="search" placeholder="Search villas, apartments, studios, Lusail, sea view..." autocomplete="off">
-          <button type="submit">Search Properties</button>
+<!-- DARK CONTENT SECTION CONTAINER -->
+<div class="dark-content-section">
+
+  <!-- SMART PROPERTY SEARCH -->
+  <section class="search-box">
+    <div class="container">
+      <div class="search-card">
+        <h2>Find Your Dream Property</h2>
+        <p>Search by property type, location, features, lifestyle or any keyword.</p>
+        <form action="{{ url_for('properties') }}" method="GET" class="smart-search-form">
+          <div class="smart-search-input">
+            <i class="fas fa-search"></i>
+            <input type="text" name="search" placeholder="Search villas, apartments, studios, Lusail, sea view..." autocomplete="off">
+            <button type="submit">Search Properties</button>
+          </div>
+        </form>
+        <div class="popular-searches">
+          <span>Popular Searches:</span>
+          <a href="{{ url_for('properties', search='Villa') }}">Villas</a>
+          <a href="{{ url_for('properties', search='Apartment') }}">Apartments</a>
+          <a href="{{ url_for('properties', search='Studio') }}">Studio</a>
+          <a href="{{ url_for('properties', search='Office') }}">Office</a>
+          <a href="{{ url_for('properties', search='Lusail') }}">Lusail</a>
+          <a href="{{ url_for('properties', search='Rent') }}">For Rent</a>
         </div>
-      </form>
-      <div class="popular-searches">
-        <span>Popular Searches:</span>
-        <a href="{{ url_for('properties', search='Villa') }}">Villas</a>
-        <a href="{{ url_for('properties', search='Apartment') }}">Apartments</a>
-        <a href="{{ url_for('properties', search='Studio') }}">Studio</a>
-        <a href="{{ url_for('properties', search='Office') }}">Office</a>
-        <a href="{{ url_for('properties', search='Lusail') }}">Lusail</a>
-        <a href="{{ url_for('properties', search='Rent') }}">For Rent</a>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- DARK SECTION WRAPPER: FEATURED PROPERTIES THROUGH CATEGORIES -->
-<div class="dark-section-wrapper">
+  </section>
 
   <!-- FEATURED PROPERTIES -->
   <section class="featured-properties">
@@ -797,9 +835,9 @@ HOME PAGE SPECIFIC LUXURY STYLES
         </div>
       </div>
       {% else %}
-      <div style="width:100%;text-align:center;padding:80px 20px;color:#ffffff;">
+      <div style="width:100%;text-align:center;padding:80px 20px;">
         <h3>No Featured Properties Available</h3>
-        <p style="color:#94a3b8;">Add properties from the admin dashboard to display them here.</p>
+        <p>Add properties from the admin dashboard to display them here.</p>
       </div>
       {% endif %}
 
@@ -893,7 +931,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
     </div>
   </section>
 
-</div> <!-- END DARK SECTION WRAPPER -->
+</div> <!-- END DARK CONTENT SECTION CONTAINER -->
 
 <!-- TESTIMONIALS -->
 <section class="testimonial-section">
