@@ -1,5 +1,3 @@
-{% extends "base.html" %}
-
 {% block title %}
 About Us | Prestigious Real Estate Qatar
 {% endblock %}
@@ -43,6 +41,10 @@ About Us | Prestigious Real Estate Qatar
           <p>At Prestigious Real Estate, we believe every client deserves personalized attention and reliable advice. Whether you are buying, selling, renting, or investing, our experienced
                team is dedicated to helping you make confident decisions while delivering professional real estate services that create lasting value and long-term relationships.</p>
 
+          
+           
+
+           
         <div class="stats-grid">
           <div class="stat-item">
             <div class="stat-number">500+</div>
@@ -184,7 +186,7 @@ About Us | Prestigious Real Estate Qatar
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: flex-start; /* Aligns image to top of text column */
+  align-items: center;
   gap: 50px;
   width: 100%;
 }
@@ -192,7 +194,8 @@ About Us | Prestigious Real Estate Qatar
 .about-image {
   position: relative;
   width: 100%;
-  height: 440px;
+  height: 520px;
+  padding-left: 15px; /* Adds space shifting image slightly from the container edge */
 }
 
 .about-image img {
@@ -200,14 +203,14 @@ About Us | Prestigious Real Estate Qatar
   height: 100%;
   object-fit: cover;
   border-radius: 0;
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
   border: 1px solid var(--border-color, #e2e8f0);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 
 .about-image:hover img {
-  transform: translateY(-6px);
-  box-shadow: 0 25px 50px rgba(15, 23, 42, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 30px 65px rgba(15, 23, 42, 0.18);
 }
 
 .about-content h2 {
@@ -408,7 +411,11 @@ About Us | Prestigious Real Estate Qatar
   }
 
   .about-image {
-    height: 320px;
+    padding-left: 0;
+  }
+
+  .about-image img {
+    height: 360px;
   }
 
   .stats-grid {
@@ -435,8 +442,8 @@ About Us | Prestigious Real Estate Qatar
     min-height: 300px;
   }
 
-  .about-image {
-    height: 250px;
+  .about-image img {
+    height: 280px;
   }
 }
 </style>
