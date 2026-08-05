@@ -500,6 +500,10 @@ nav a:hover {
 
 
 
+/* =====================================
+   PROPERTY META
+===================================== */
+
 .property-meta {
 
     display:flex;
@@ -508,24 +512,60 @@ nav a:hover {
 
     flex-wrap:wrap;
 
-    margin:10px 0;
+    margin:15px 0;
 
 }
 
 
+.meta-item {
 
-.property-meta span {
+    display:flex;
 
-    background:#f7f7f7;
+    align-items:center;
 
-    padding:6px 10px;
+    gap:8px;
 
-    border-radius:20px;
+    background:rgba(255,255,255,0.08);
 
-    font-size:12px;
+    border:1px solid rgba(255,255,255,0.15);
+
+    padding:8px 12px;
+
+    border-radius:25px;
 
 }
 
+
+.meta-item svg {
+
+    width:18px;
+
+    height:18px;
+
+    stroke:var(--gold-accent);
+
+    color:var(--gold-accent);
+
+    flex-shrink:0;
+
+}
+
+
+.meta-item span {
+
+    background:none;
+
+    padding:0;
+
+    border-radius:0;
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
 
 
 
