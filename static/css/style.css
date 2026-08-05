@@ -506,7 +506,9 @@ nav a:hover {
 
 .property-meta {
 
-    display:flex;
+     display:flex;
+
+    align-items:center;
 
     gap:10px;
 
@@ -519,6 +521,7 @@ nav a:hover {
 
 .meta-item {
 
+    
     display:flex;
 
     align-items:center;
@@ -531,7 +534,7 @@ nav a:hover {
 
     padding:8px 12px;
 
-    border-radius:25px;
+    border-radius:25px;;
 
 }
 
