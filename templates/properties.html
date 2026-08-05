@@ -454,6 +454,9 @@ PROPERTY LIST
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
+  background: #f3f5f7;
+  border-top: 1px solid #dbe2ea;
 }
 
 .property-location {
@@ -471,59 +474,77 @@ PROPERTY LIST
   font-weight: 800;
   color: var(--navy-dark);
   margin-bottom: 18px;
-  line-height: 1.4;
+  line-height: 1.5;
+
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  height: 50px;
+
+  min-height: 56px;
 }
 
 .property-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-top: 1px solid #f1f5f9;
-  border-bottom: 1px solid #f1f5f9;
-  margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    margin-bottom: 22px;
 }
 
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
+.meta-item{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:14px 8px;
+
+    background:#ffffff;
+    border:1px solid #dde4ec;
+
+    transition:.3s ease;
 }
 
-.meta-item svg {
-  color: var(--navy-dark);
+.meta-item:hover{
+    border-color:var(--gold-accent);
+    box-shadow:0 8px 18px rgba(0,0,0,.06);
 }
 
-.details-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px;
-  background: var(--bg-page);
-  color: var(--navy-dark);
-  border-radius: 0;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 700;
-  border: 1px solid var(--border-light);
-  transition: all 0.25s ease;
-  margin-top: auto;
+.meta-item svg{
+    color:var(--qatar-maroon);
+    margin-bottom:8px;
+    width:18px;
+    height:18px;
 }
 
-.details-btn:hover {
-  background: var(--qatar-maroon);
-  color: #ffffff;
-  border-color: var(--qatar-maroon);
+  .meta-item span{
+    color:#1F2A44;
+    font-size:13px;
+    font-weight:700;
+}
+
+.details-btn{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+
+    padding:14px;
+
+    background:#1F2A44;
+    color:#fff;
+
+    border:none;
+
+    font-weight:700;
+    letter-spacing:.3px;
+
+    transition:.3s ease;
+}
+
+.details-btn:hover{
+    background:var(--qatar-maroon);
+    color:#fff;
 }
 
 /* EMPTY STATE */
