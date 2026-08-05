@@ -184,7 +184,7 @@ About Us | Prestigious Real Estate Qatar
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
+  align-items: flex-start; /* Aligns image to top of text column */
   gap: 50px;
   width: 100%;
 }
@@ -192,14 +192,14 @@ About Us | Prestigious Real Estate Qatar
 .about-image {
   position: relative;
   width: 100%;
-  height: 440px; /* Reduced fixed height for a sleek rectangular shape */
+  height: 440px;
 }
 
 .about-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0; /* Pure rectangular shape */
+  border-radius: 0;
   box-shadow: 0 15px 35px rgba(15, 23, 42, 0.1);
   border: 1px solid var(--border-color, #e2e8f0);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
