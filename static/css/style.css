@@ -505,7 +505,7 @@ nav a:hover {
 
     display:flex;
 
-    gap:10px;
+    gap:8px;
 
     flex-wrap:wrap;
 
@@ -535,15 +535,15 @@ nav a:hover {
 
     align-items:center;
 
-    gap:8px;
+    gap:6px;
 
     background:rgba(255,255,255,0.08);
 
     border:1px solid rgba(255,255,255,0.15);
 
-    padding:8px 12px;
+    padding:6px 10px;
 
-    border-radius:25px;
+    border-radius:20px;
 
 }
 
