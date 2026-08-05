@@ -567,7 +567,14 @@ nav a:hover {
 
 }
 
+/* PROPERTY META TEXT COLOR */
 
+.property-meta .meta-item span {
+    color: #ffffff !important;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+}
 
 
 
