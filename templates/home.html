@@ -137,27 +137,27 @@ HOME PAGE SPECIFIC LUXURY STYLES
   margin-top: -60px;
   position: relative;
   z-index: 20;
-  margin-bottom: 0;
+  margin-bottom: 70px;
 }
 
 .search-card {
-  background: #1e293b;
-  border-radius: 4px;
+  background: #ffffff;
+  border-radius: 0;
   padding: 36px 40px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  border: 1px solid #334155;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border-color, #e2e8f0);
 }
 
 .search-card h2 {
   font-family: var(--font-serif, 'Playfair Display', serif);
-  color: #ffffff;
+  color: var(--navy-dark, #1F2A44);
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .search-card p {
-  color: #94a3b8;
+  color: var(--text-secondary, #64748b);
   font-size: 14px;
   margin-bottom: 24px;
 }
@@ -169,21 +169,21 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .smart-search-input {
   display: flex;
   align-items: center;
-  background: #0f172a;
-  border: 2px solid #334155;
-  border-radius: 4px;
+  background: #f8fafc;
+  border: 2px solid var(--border-color, #e2e8f0);
+  border-radius: 0;
   padding: 6px 6px 6px 20px;
   transition: var(--transition-smooth, all 0.3s ease);
 }
 
 .smart-search-input:focus-within {
   border-color: var(--qatar-maroon, #8A1538);
-  background: #0f172a;
-  box-shadow: 0 0 0 4px rgba(138, 21, 56, 0.25);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(138, 21, 56, 0.1);
 }
 
 .smart-search-input i {
-  color: #94a3b8;
+  color: var(--text-secondary, #64748b);
   font-size: 18px;
   margin-right: 14px;
 }
@@ -193,12 +193,8 @@ HOME PAGE SPECIFIC LUXURY STYLES
   background: transparent;
   width: 100%;
   font-size: 15px;
-  color: #ffffff;
+  color: var(--text-primary, #1e293b);
   outline: none;
-}
-
-.smart-search-input input::placeholder {
-  color: #64748b;
 }
 
 .smart-search-input button {
@@ -206,7 +202,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
   color: #ffffff;
   border: none;
   padding: 14px 28px;
-  border-radius: 4px;
+  border-radius: 0;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
@@ -228,76 +224,43 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .popular-searches span {
-  color: #94a3b8;
+  color: var(--text-secondary, #64748b);
   font-weight: 600;
 }
 
 .popular-searches a {
-  color: #e2e8f0;
+  color: var(--navy-dark, #1F2A44);
   text-decoration: none;
-  background: #0f172a;
-  border: 1px solid #334155;
+  background: #f1f5f9;
   padding: 5px 14px;
-  border-radius: 4px;
+  border-radius: 0;
   font-weight: 500;
   transition: var(--transition-smooth, all 0.3s ease);
 }
 
 .popular-searches a:hover {
   background: var(--qatar-maroon, #8A1538);
-  border-color: var(--qatar-maroon, #8A1538);
   color: #ffffff;
 }
 
-/* DARK WRAPPER FOR FEATURED PROPERTIES THROUGH CATEGORIES */
-.dark-content-section {
-  background-color: #0f172a;
-  color: #f8fafc;
-  padding-top: 60px;
-  padding-bottom: 20px;
-}
-
-/* SOFT GREY CONTAINER FOR SECTION TITLE HEADINGS */
+/* SECTION HEADINGS */
 .section-title {
   text-align: center;
-  max-width: 720px;
+  max-width: 650px;
   margin: 0 auto 50px auto;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 24px 32px;
-  border-radius: 8px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .section-title h2 {
   font-family: var(--font-serif, 'Playfair Display', serif);
-  color: #ffffff;
+  color: var(--navy-dark, #1F2A44);
   font-size: 34px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .section-title p {
-  color: #cbd5e1;
+  color: var(--text-secondary, #64748b);
   font-size: 15px;
-  margin: 0;
-  line-height: 1.6;
-}
-
-/* LIGHT THEME SECTION TITLE (FOR TESTIMONIALS) */
-.testimonial-section .section-title {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-}
-
-.testimonial-section .section-title h2 {
-  color: var(--navy-dark, #1F2A44);
-}
-
-.testimonial-section .section-title p {
-  color: #64748b;
 }
 
 /* FEATURED PROPERTIES */
@@ -328,11 +291,11 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-card {
   display: none;
-  background: #1e293b;
-  border-radius: 4px;
+  background: #ffffff;
+  border-radius: 0;
   overflow: hidden;
-  border: 1px solid #334155;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color, #e2e8f0);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -343,7 +306,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
   border-color: var(--gold-accent, #D4AF37);
 }
 
@@ -373,7 +336,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
   padding: 4px 12px;
-  border-radius: 2px;
+  border-radius: 0;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -381,7 +344,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .property-status.rent {
-  background: #334155;
+  background: var(--navy-dark, #1F2A44);
 }
 
 .property-info {
@@ -394,7 +357,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .property-info h3 {
   font-size: 18px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--navy-dark, #1F2A44);
   margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
@@ -403,14 +366,14 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-info .location {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary, #64748b);
   margin-bottom: 14px;
 }
 
 .property-price {
   font-size: 20px;
   font-weight: 800;
-  color: var(--gold-accent, #D4AF37);
+  color: var(--qatar-maroon, #8A1538);
   margin-bottom: 16px;
 }
 
@@ -418,17 +381,17 @@ HOME PAGE SPECIFIC LUXURY STYLES
   display: flex;
   gap: 14px;
   padding: 12px 0;
-  border-top: 1px solid #334155;
-  border-bottom: 1px solid #334155;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
   font-size: 12px;
-  color: #cbd5e1;
+  color: var(--text-secondary, #64748b);
   margin-bottom: 18px;
   margin-top: auto;
 }
 
 .property-info a {
   display: inline-block;
-  color: #f1f5f9;
+  color: var(--navy-dark, #1F2A44);
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
@@ -436,24 +399,24 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .property-info a:hover {
-  color: var(--gold-accent, #D4AF37);
+  color: var(--qatar-maroon, #8A1538);
   transform: translateX(4px);
 }
 
 .slider-btn {
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: #ffffff;
+  border: 1px solid var(--border-color, #e2e8f0);
   width: 46px;
   height: 46px;
-  border-radius: 50%;
+  border-radius: 0;
   font-size: 20px;
-  color: #ffffff;
+  color: var(--navy-dark, #1F2A44);
   cursor: pointer;
   position: absolute;
   top: 40%;
   transform: translateY(-50%);
   z-index: 10;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -484,8 +447,8 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .dot {
   width: 32px;
   height: 4px;
-  background: #334155;
-  border-radius: 2px;
+  background: #cbd5e1;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -508,12 +471,12 @@ HOME PAGE SPECIFIC LUXURY STYLES
   padding: 16px 38px;
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
-  border-radius: 4px;
+  border-radius: 0;
   font-weight: 800;
   font-size: 15px;
   letter-spacing: 0.3px;
   text-decoration: none;
-  box-shadow: 0 8px 24px rgba(138, 21, 56, 0.35);
+  box-shadow: 0 8px 24px rgba(138, 21, 56, 0.25);
   border: 2px solid var(--qatar-maroon, #8A1538);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -523,15 +486,13 @@ HOME PAGE SPECIFIC LUXURY STYLES
   border-color: var(--qatar-maroon-dark, #5c0e25);
   color: #ffffff;
   transform: translateY(-3px);
-  box-shadow: 0 14px 30px rgba(138, 21, 56, 0.5);
+  box-shadow: 0 14px 30px rgba(138, 21, 56, 0.38);
 }
 
-/* WHY CHOOSE US (DARK THEME) */
+/* WHY CHOOSE US */
 .why-section {
-  background: #1e293b;
+  background: #f1f5f9;
   padding: 90px 0;
-  border-top: 1px solid #334155;
-  border-bottom: 1px solid #334155;
 }
 
 .why-grid {
@@ -541,18 +502,17 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .why-card {
-  background: #0f172a;
+  background: #ffffff;
   padding: 36px 28px;
-  border-radius: 4px;
+  border-radius: 0;
   text-align: center;
-  border: 1px solid #334155;
+  border: 1px solid var(--border-color, #e2e8f0);
   transition: var(--transition-smooth, all 0.3s ease);
 }
 
 .why-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-  border-color: var(--gold-accent, #D4AF37);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.06);
 }
 
 .why-icon {
@@ -562,18 +522,18 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .why-card h3 {
   font-size: 18px;
-  color: #ffffff;
+  color: var(--navy-dark, #1F2A44);
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .why-card p {
-  color: #94a3b8;
+  color: var(--text-secondary, #64748b);
   font-size: 14px;
   line-height: 1.5;
 }
 
-/* CATEGORIES SECTION (DARK THEME) */
+/* CATEGORIES SECTION */
 .categories-section {
   padding: 90px 0;
 }
@@ -587,10 +547,9 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .category-card {
   position: relative;
   height: 320px;
-  border-radius: 4px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-  border: 1px solid #334155;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .category-card img {
@@ -611,7 +570,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(31, 42, 68, 0.15) 0%, rgba(15, 23, 42, 0.75) 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -628,7 +587,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .category-overlay p {
   font-size: 13px;
-  color: #cbd5e1;
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 16px;
 }
 
@@ -636,8 +595,8 @@ HOME PAGE SPECIFIC LUXURY STYLES
   align-self: flex-start;
   padding: 6px 18px;
   background: var(--gold-accent, #D4AF37);
-  color: #0f172a;
-  border-radius: 2px;
+  color: #ffffff;
+  border-radius: 0;
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
@@ -645,8 +604,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 }
 
 .category-overlay a:hover {
-  background: #ffffff;
-  color: #0f172a;
+  background: #b59226;
 }
 
 /* TESTIMONIALS */
@@ -665,7 +623,7 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .testimonial-card {
   background: #f8fafc;
   padding: 32px;
-  border-radius: 4px;
+  border-radius: 0;
   border: 1px solid var(--border-color, #e2e8f0);
   position: relative;
 }
@@ -752,186 +710,181 @@ HOME PAGE SPECIFIC LUXURY STYLES
   </div>
 </section>
 
-<!-- DARK CONTENT SECTION CONTAINER -->
-<div class="dark-content-section">
-
-  <!-- SMART PROPERTY SEARCH -->
-  <section class="search-box">
-    <div class="container">
-      <div class="search-card">
-        <h2>Find Your Dream Property</h2>
-        <p>Search by property type, location, features, lifestyle or any keyword.</p>
-        <form action="{{ url_for('properties') }}" method="GET" class="smart-search-form">
-          <div class="smart-search-input">
-            <i class="fas fa-search"></i>
-            <input type="text" name="search" placeholder="Search villas, apartments, studios, Lusail, sea view..." autocomplete="off">
-            <button type="submit">Search Properties</button>
-          </div>
-        </form>
-        <div class="popular-searches">
-          <span>Popular Searches:</span>
-          <a href="{{ url_for('properties', search='Villa') }}">Villas</a>
-          <a href="{{ url_for('properties', search='Apartment') }}">Apartments</a>
-          <a href="{{ url_for('properties', search='Studio') }}">Studio</a>
-          <a href="{{ url_for('properties', search='Office') }}">Office</a>
-          <a href="{{ url_for('properties', search='Lusail') }}">Lusail</a>
-          <a href="{{ url_for('properties', search='Rent') }}">For Rent</a>
+<!-- SMART PROPERTY SEARCH -->
+<section class="search-box">
+  <div class="container">
+    <div class="search-card">
+      <h2>Find Your Dream Property</h2>
+      <p>Search by property type, location, features, lifestyle or any keyword.</p>
+      <form action="{{ url_for('properties') }}" method="GET" class="smart-search-form">
+        <div class="smart-search-input">
+          <i class="fas fa-search"></i>
+          <input type="text" name="search" placeholder="Search villas, apartments, studios, Lusail, sea view..." autocomplete="off">
+          <button type="submit">Search Properties</button>
         </div>
+      </form>
+      <div class="popular-searches">
+        <span>Popular Searches:</span>
+        <a href="{{ url_for('properties', search='Villa') }}">Villas</a>
+        <a href="{{ url_for('properties', search='Apartment') }}">Apartments</a>
+        <a href="{{ url_for('properties', search='Studio') }}">Studio</a>
+        <a href="{{ url_for('properties', search='Office') }}">Office</a>
+        <a href="{{ url_for('properties', search='Lusail') }}">Lusail</a>
+        <a href="{{ url_for('properties', search='Rent') }}">For Rent</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FEATURED PROPERTIES -->
-  <section class="featured-properties">
-    <div class="container">
-      <div class="section-title">
-        <h2>Featured Properties</h2>
-        <p>Discover exclusive residential and commercial properties selected for exceptional lifestyle and investment opportunities across Qatar.</p>
-      </div>
+<!-- FEATURED PROPERTIES -->
+<section class="featured-properties">
+  <div class="container">
+    <div class="section-title">
+      <h2>Featured Properties</h2>
+      <p>Discover exclusive residential and commercial properties selected for exceptional lifestyle and investment opportunities across Qatar.</p>
+    </div>
 
-      {% if properties %}
-      <div class="property-slideshow-wrapper" id="propertySlideshowWrapper">
-        <button class="slider-btn prev" id="prevPropertyBtn" aria-label="Previous Properties">&#8249;</button>
+    {% if properties %}
+    <div class="property-slideshow-wrapper" id="propertySlideshowWrapper">
+      <button class="slider-btn prev" id="prevPropertyBtn" aria-label="Previous Properties">&#8249;</button>
 
-        <div class="property-grid-3" id="propertyGrid">
-          {% for property in properties %}
-          <div class="property-card">
-            <div class="property-image">
-              {% if property.main_image %}
-                <img src="{{ property.main_image }}" alt="{{ property.title }}" loading="lazy">
+      <div class="property-grid-3" id="propertyGrid">
+        {% for property in properties %}
+        <div class="property-card">
+          <div class="property-image">
+            {% if property.main_image %}
+              <img src="{{ property.main_image }}" alt="{{ property.title }}" loading="lazy">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="Property Image" loading="lazy">
+            {% endif %}
+            <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
+              {% if property.purpose == 'Rent' %}FOR RENT{% else %}FOR SALE{% endif %}
+            </span>
+          </div>
+
+          <div class="property-info">
+            <h3>{{ property.title }}</h3>
+            <p class="location">📍 {{ property.location }}</p>
+            <div class="property-price">
+              {% if property.price %}
+                QAR {{ "{:,.0f}".format(property.price) }}
               {% else %}
-                <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="Property Image" loading="lazy">
+                Contact For Price
               {% endif %}
-              <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
-                {% if property.purpose == 'Rent' %}FOR RENT{% else %}FOR SALE{% endif %}
-              </span>
             </div>
-
-            <div class="property-info">
-              <h3>{{ property.title }}</h3>
-              <p class="location">📍 {{ property.location }}</p>
-              <div class="property-price">
-                {% if property.price %}
-                  QAR {{ "{:,.0f}".format(property.price) }}
-                {% else %}
-                  Contact For Price
-                {% endif %}
-              </div>
-              <div class="property-meta">
-                {% if property.bedrooms %}<span>🛏 {{ property.bedrooms }} Beds</span>{% endif %}
-                {% if property.bathrooms %}<span>🚿 {{ property.bathrooms }} Baths</span>{% endif %}
-                {% if property.area %}<span>📐 {{ "{:,.0f}".format(property.area) }} sqm</span>{% endif %}
-              </div>
-              <a href="{{ url_for('property_details', id=property.id) }}">View Property Details →</a>
+            <div class="property-meta">
+              {% if property.bedrooms %}<span>🛏 {{ property.bedrooms }} Beds</span>{% endif %}
+              {% if property.bathrooms %}<span>🚿 {{ property.bathrooms }} Baths</span>{% endif %}
+              {% if property.area %}<span>📐 {{ "{:,.0f}".format(property.area) }} sqm</span>{% endif %}
             </div>
+            <a href="{{ url_for('property_details', id=property.id) }}">View Property Details →</a>
           </div>
-          {% endfor %}
         </div>
-
-        <button class="slider-btn next" id="nextPropertyBtn" aria-label="Next Properties">&#8250;</button>
-
-        <div class="slideshow-controls">
-          <div class="dots-container" id="propertyDotsContainer"></div>
-        </div>
+        {% endfor %}
       </div>
-      {% else %}
-      <div style="width:100%;text-align:center;padding:80px 20px;">
-        <h3>No Featured Properties Available</h3>
-        <p>Add properties from the admin dashboard to display them here.</p>
-      </div>
-      {% endif %}
 
-      <div class="view-all">
-        <a href="{{ url_for('properties') }}">Explore All Properties</a>
+      <button class="slider-btn next" id="nextPropertyBtn" aria-label="Next Properties">&#8250;</button>
+
+      <div class="slideshow-controls">
+        <div class="dots-container" id="propertyDotsContainer"></div>
       </div>
     </div>
-  </section>
+    {% else %}
+    <div style="width:100%;text-align:center;padding:80px 20px;">
+      <h3>No Featured Properties Available</h3>
+      <p>Add properties from the admin dashboard to display them here.</p>
+    </div>
+    {% endif %}
 
-  <!-- WHY CHOOSE US -->
-  <section class="why-section">
-    <div class="container">
-      <div class="section-title">
-        <h2>Why Choose Prestigious Real Estate</h2>
-        <p>Delivering exceptional property solutions across Qatar.</p>
+    <div class="view-all">
+      <a href="{{ url_for('properties') }}">Explore All Properties</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Why Choose Prestigious Real Estate</h2>
+      <p>Delivering exceptional property solutions across Qatar.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🏙️</div>
+        <h3>Qatar Market Expertise</h3>
+        <p>Deep understanding of Qatar's real estate market, locations and investment opportunities.</p>
       </div>
 
-      <div class="why-grid">
-        <div class="why-card">
-          <div class="why-icon">🏙️</div>
-          <h3>Qatar Market Expertise</h3>
-          <p>Deep understanding of Qatar's real estate market, locations and investment opportunities.</p>
-        </div>
+      <div class="why-card">
+        <div class="why-icon">🏢</div>
+        <h3>Luxury Development</h3>
+        <p>Connecting clients with premium residential and commercial developments.</p>
+      </div>
 
-        <div class="why-card">
-          <div class="why-icon">🏢</div>
-          <h3>Luxury Development</h3>
-          <p>Connecting clients with premium residential and commercial developments.</p>
-        </div>
+      <div class="why-card">
+        <div class="why-icon">🤝</div>
+        <h3>Trusted Service</h3>
+        <p>Professional guidance built on transparency, trust and long-term relationships.</p>
+      </div>
 
-        <div class="why-card">
-          <div class="why-icon">🤝</div>
-          <h3>Trusted Service</h3>
-          <p>Professional guidance built on transparency, trust and long-term relationships.</p>
-        </div>
+      <div class="why-card">
+        <div class="why-icon">👔</div>
+        <h3>Professional Team</h3>
+        <p>Experienced specialists dedicated to delivering the best property experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="why-card">
-          <div class="why-icon">👔</div>
-          <h3>Professional Team</h3>
-          <p>Experienced specialists dedicated to delivering the best property experience.</p>
+<!-- PROPERTY CATEGORIES -->
+<section class="categories-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Explore Property Categories</h2>
+      <p>Discover premium real estate opportunities designed for every lifestyle and investment goal.</p>
+    </div>
+
+    <div class="category-grid">
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/home1.webp') }}" alt="Luxury Villas" loading="lazy">
+        <div class="category-overlay">
+          <h3>Luxury Villas</h3>
+          <p>Exclusive homes with modern designs and premium finishes.</p>
+          <a href="{{ url_for('properties', search='Villa') }}">Explore</a>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/home2.webp') }}" alt="Luxury Apartments" loading="lazy">
+        <div class="category-overlay">
+          <h3>Luxury Apartments</h3>
+          <p>Modern residences in Qatar's most desirable locations.</p>
+          <a href="{{ url_for('properties', search='Apartment') }}">Explore</a>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/home3.png') }}" alt="Commercial Properties" loading="lazy">
+        <div class="category-overlay">
+          <h3>Commercial Properties</h3>
+          <p>Premium offices and business spaces for companies.</p>
+          <a href="{{ url_for('properties', search='Commercial') }}">Explore</a>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="{{ url_for('static', filename='images/home/home4.png') }}" alt="Investment Properties" loading="lazy">
+        <div class="category-overlay">
+          <h3>Investment Properties</h3>
+          <p>Strategic opportunities for long-term growth.</p>
+          <a href="{{ url_for('properties', search='Investment') }}">Explore</a>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- PROPERTY CATEGORIES -->
-  <section class="categories-section">
-    <div class="container">
-      <div class="section-title">
-        <h2>Explore Property Categories</h2>
-        <p>Discover premium real estate opportunities designed for every lifestyle and investment goal.</p>
-      </div>
-
-      <div class="category-grid">
-        <div class="category-card">
-          <img src="{{ url_for('static', filename='images/home/home1.webp') }}" alt="Luxury Villas" loading="lazy">
-          <div class="category-overlay">
-            <h3>Luxury Villas</h3>
-            <p>Exclusive homes with modern designs and premium finishes.</p>
-            <a href="{{ url_for('properties', search='Villa') }}">Explore</a>
-          </div>
-        </div>
-
-        <div class="category-card">
-          <img src="{{ url_for('static', filename='images/home/home2.webp') }}" alt="Luxury Apartments" loading="lazy">
-          <div class="category-overlay">
-            <h3>Luxury Apartments</h3>
-            <p>Modern residences in Qatar's most desirable locations.</p>
-            <a href="{{ url_for('properties', search='Apartment') }}">Explore</a>
-          </div>
-        </div>
-
-        <div class="category-card">
-          <img src="{{ url_for('static', filename='images/home/home3.png') }}" alt="Commercial Properties" loading="lazy">
-          <div class="category-overlay">
-            <h3>Commercial Properties</h3>
-            <p>Premium offices and business spaces for companies.</p>
-            <a href="{{ url_for('properties', search='Commercial') }}">Explore</a>
-          </div>
-        </div>
-
-        <div class="category-card">
-          <img src="{{ url_for('static', filename='images/home/home4.png') }}" alt="Investment Properties" loading="lazy">
-          <div class="category-overlay">
-            <h3>Investment Properties</h3>
-            <p>Strategic opportunities for long-term growth.</p>
-            <a href="{{ url_for('properties', search='Investment') }}">Explore</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</div> <!-- END DARK CONTENT SECTION CONTAINER -->
+  </div>
+</section>
 
 <!-- TESTIMONIALS -->
 <section class="testimonial-section">
