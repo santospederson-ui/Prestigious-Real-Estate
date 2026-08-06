@@ -188,11 +188,17 @@ SPLIT INTERACTIVE & RELATED SECTION
 
         </div>
 
-        <!-- AGENT CONTACT BOX -->
+        <!-- STYLISH & COMPACT AGENT CONTACT CARD -->
         <div class="agent-contact-card">
-          <h3>Interested in this property?</h3>
-          <p>Schedule a private viewing or enquire about pricing details with our luxury property consultants.</p>
-          <a href="{{ url_for('contact') }}" class="primary-btn">Contact Agent</a>
+          <div class="contact-card-content">
+            <span class="contact-badge">DIRECT ENQUIRY</span>
+            <h3>Interested in this property?</h3>
+            <p>Schedule a private viewing or enquire with our luxury property consultants.</p>
+            <a href="{{ url_for('contact') }}" class="primary-btn">
+              <span>Contact Agent</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -203,7 +209,7 @@ SPLIT INTERACTIVE & RELATED SECTION
             <h2 class="section-title">Related Properties</h2>
             <div class="related-modern-grid">
               {% for item in related_properties[:6] %}
-                <div class="related-card-rect">
+                <a href="{{ url_for('property_details', id=item.id) }}" class="related-card-rect">
                   <div class="related-image-rect">
                     {% if item.main_image %}
                       <img src="{{ item.main_image }}" alt="{{ item.title }} in {{ item.location }} Qatar" loading="lazy">
@@ -212,7 +218,7 @@ SPLIT INTERACTIVE & RELATED SECTION
                     {% endif %}
                   </div>
 
-                  <!-- INFORMATION BOX PLACED BELOW THE IMAGE -->
+                  <!-- INFORMATION BOX -->
                   <div class="related-info-rect">
                     <div class="related-text-wrap">
                       <h3>{{ item.title }}</h3>
@@ -225,10 +231,9 @@ SPLIT INTERACTIVE & RELATED SECTION
                         <span class="meta-item"><i class="fas fa-bath"></i> {{ item.bathrooms }}</span>
                         <span class="meta-item"><i class="fas fa-ruler-combined"></i> {{ item.area }}m²</span>
                       </div>
-                      <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
                     </div>
                   </div>
-                </div>
+                </a>
               {% endfor %}
             </div>
           </div>
@@ -495,7 +500,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .modern-split-grid {
   display: grid;
-  grid-template-columns: 1fr 400px; /* LEFT MAIN FEATURE, RIGHT SIDEBAR */
+  grid-template-columns: 1fr 400px;
   gap: 32px;
   align-items: start;
 }
@@ -574,6 +579,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   gap: 16px;
 }
 
+/* FULL-CARD LINK STYLE */
 .related-card-rect {
   display: flex;
   flex-direction: column;
@@ -582,6 +588,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   overflow: hidden;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  text-decoration: none !important;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -590,7 +597,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* COMPACT SQUARE IMAGE THUMBNAIL */
 .related-image-rect {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -608,7 +614,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.06);
 }
 
-/* COMPACT INFORMATION BOX */
 .related-info-rect {
   padding: 12px;
   display: flex;
@@ -664,18 +669,6 @@ LIGHTBOX MODAL FOR FULL VIEW
 .related-meta .meta-item i {
   color: #D4AF37;
   margin-right: 3px;
-}
-
-.related-info-rect .view-link {
-  color: #ffffff !important;
-  text-decoration: none;
-  font-size: 11px;
-  font-weight: 700;
-  transition: color 0.2s;
-}
-
-.related-info-rect .view-link:hover {
-  color: #D4AF37 !important;
 }
 
 /* DETAILS CONTENT STYLES INSIDE ACCORDION */
@@ -776,47 +769,94 @@ LIGHTBOX MODAL FOR FULL VIEW
   border: 2px dashed #cbd5e1;
 }
 
+/* ==================================
+   STYLISH & COMPACT AGENT CONTACT CARD
+================================== */
+
 .agent-contact-card {
-  background: #ffffff;
-  padding: 20px 16px;
+  position: relative;
+  background: linear-gradient(135deg, #0F172A 0%, #1F2A44 100%);
+  padding: 20px 24px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  overflow: hidden;
+}
+
+.agent-contact-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #D4AF37 0%, #8A1538 100%);
+}
+
+.contact-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #D4AF37;
+  text-transform: uppercase;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 3px 8px;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
-  border: 1px solid #e2e8f0;
-  text-align: center;
-  border-top: 4px solid var(--qatar-maroon, #8A1538);
+  margin-bottom: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .agent-contact-card h3 {
-  font-size: 16px;
-  color: var(--navy-dark, #1F2A44);
-  font-weight: 800;
-  margin-bottom: 6px;
+  font-size: 17px;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 4px;
 }
 
 .agent-contact-card p {
   font-size: 12px;
-  color: #64748b;
-  line-height: 1.5;
+  color: #94a3b8;
+  line-height: 1.4;
   margin-bottom: 16px;
 }
 
 .agent-contact-card .primary-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background: var(--qatar-maroon, #8A1538);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #8A1538 0%, #6b102b 100%);
   color: #ffffff;
-  border-radius: 20px;
-  font-weight: 800;
+  border-radius: 25px;
+  font-weight: 700;
   font-size: 13px;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(138, 21, 56, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(138, 21, 56, 0.35);
   transition: all 0.3s ease;
 }
 
+.agent-contact-card .primary-btn i {
+  font-size: 11px;
+  transition: transform 0.25s ease;
+}
+
 .agent-contact-card .primary-btn:hover {
-  background: var(--navy-dark, #1F2A44);
+  background: linear-gradient(135deg, #D4AF37 0%, #b89528 100%);
+  color: #0F172A;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+}
+
+.agent-contact-card .primary-btn:hover i {
+  transform: translateX(4px);
 }
 
 /* LIGHTBOX MODAL STYLES */
@@ -895,6 +935,9 @@ LIGHTBOX MODAL FOR FULL VIEW
   }
   .related-modern-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  .agent-contact-card {
+    padding: 16px 18px;
   }
 }
 </style>
