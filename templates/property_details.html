@@ -40,11 +40,7 @@ TOP FULL-BLEED MOSAIC GALLERY
 ========================= -->
 
 <section class="top-mosaic-section">
-  
-  <!-- FULL STRETCH 70% / 30% DYNAMIC MOSAIC DISPLAY (TOP OF PAGE) -->
   <div class="mosaic-grid-wrapper full-stretch">
-    
-    <!-- 70% LEFT MAIN FEATURED IMAGE -->
     <div class="mosaic-main-70" onclick="openLightbox(0)">
       {% if gallery_images %}
         <img src="{{ gallery_images[0].image_name }}" alt="{{ property.title }} in {{ property.location }} Qatar" loading="lazy">
@@ -63,7 +59,6 @@ TOP FULL-BLEED MOSAIC GALLERY
       <div class="image-expand-badge">🔍 Click to Expand</div>
     </div>
 
-    <!-- 30% RIGHT STACKED IMAGES (MAX 2 UP TO DOWN) -->
     <div class="mosaic-side-30">
       {% if gallery_images and gallery_images|length > 1 %}
         <div class="mosaic-sub-item" onclick="openLightbox(1)">
@@ -77,10 +72,8 @@ TOP FULL-BLEED MOSAIC GALLERY
         </div>
       {% endif %}
     </div>
-
   </div>
 
-  <!-- ADDITIONAL GALLERY IMAGES: LEFT TO RIGHT HORIZONTAL SCROLL -->
   {% if gallery_images and gallery_images|length > 3 %}
     <div class="horizontal-gallery-container">
       <div class="horizontal-scroll-strip">
@@ -92,88 +85,153 @@ TOP FULL-BLEED MOSAIC GALLERY
       </div>
     </div>
   {% endif %}
-
 </section>
 
 <!-- =========================
-PROPERTY MAIN CONTENT SECTION
+SPLIT INTERACTIVE & RELATED SECTION
 ========================= -->
 
-<section class="property-details">
+<section class="modern-split-section">
   <div class="container custom-tight-container">
+    <div class="modern-split-grid">
 
-    <!-- MAIN DETAILS GRID (DESCRIPTION CARDS + AGENT SIDEBAR) -->
-    <div class="details-content-grid">
-      
-      <!-- LEFT COLUMN: DESCRIPTIONS & INFO -->
-      <div class="details-main-column">
-        
-        <!-- PRICE, KEY STATS & AMENITIES CARD (COMBINED) -->
-        <div class="details-card price-stats-card">
-          <div class="price-header">
-            <span class="label">Asking Price</span>
-            <h3 class="property-price">QAR {{ "{:,.0f}".format(property.price or 0) }}</h3>
+      <!-- LEFT COLUMN: RELATED PROPERTIES (STRETCHED LEFT, RECTANGULAR IMAGES) -->
+      <div class="split-left-column">
+        {% if related_properties %}
+          <div class="related-properties-modern">
+            <h2 class="section-title">Related Properties</h2>
+            <div class="related-modern-grid">
+              {% for item in related_properties[:6] %}
+                <div class="related-card-rect">
+                  <div class="related-image-rect">
+                    {% if item.main_image %}
+                      <img src="{{ item.main_image }}" alt="{{ item.title }} in {{ item.location }} Qatar" loading="lazy">
+                    {% else %}
+                      <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
+                    {% endif %}
+                  </div>
+
+                  <div class="related-info-rect">
+                    <h3>{{ item.title }}</h3>
+                    <p class="location-text">📍 {{ item.location }}</p>
+                    <h4>QAR {{ "{:,.0f}".format(item.price or 0) }}</h4>
+                    <div class="related-meta">
+                      <div class="meta-item">
+                        <i class="fas fa-bed"></i>
+                        <span>{{ item.bedrooms }} Beds</span>
+                      </div>
+                      <div class="meta-item">
+                        <i class="fas fa-bath"></i>
+                        <span>{{ item.bathrooms }} Baths</span>
+                      </div>
+                      <div class="meta-item">
+                        <i class="fas fa-ruler-combined"></i>
+                        <span>{{ item.area }} sqm</span>
+                      </div>
+                    </div>
+                    <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- RIGHT COLUMN: ACCORDION TABS -->
+      <div class="split-right-column">
+        <div class="interactive-accordion">
+          
+          <!-- ITEM 1: ASKING PRICE & FEATURES -->
+          <div class="accordion-item active">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Asking Price & Key Features</span>
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="price-header">
+                <span class="label">Asking Price</span>
+                <h3 class="property-price">QAR {{ "{:,.0f}".format(property.price or 0) }}</h3>
+              </div>
+              <div class="details-features">
+                <div class="feature-box">
+                  <h4>{{ property.bedrooms }}</h4>
+                  <span>Bedrooms</span>
+                </div>
+                <div class="feature-box">
+                  <h4>{{ property.bathrooms }}</h4>
+                  <span>Bathrooms</span>
+                </div>
+                <div class="feature-box">
+                  <h4>{{ property.area }}</h4>
+                  <span>SQM</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div class="details-features">
-            <div class="feature-box">
-              <h4>{{ property.bedrooms }}</h4>
-              <span>Bedrooms</span>
-            </div>
-            <div class="feature-box">
-              <h4>{{ property.bathrooms }}</h4>
-              <span>Bathrooms</span>
-            </div>
-            <div class="feature-box">
-              <h4>{{ property.area }}</h4>
-              <span>SQM</span>
-            </div>
-          </div>
-
-          <!-- PROPERTY EXTRA FEATURES INSIDE ASKING PRICE CARD -->
+          <!-- ITEM 2: AMENITIES -->
           {% if features %}
-            <div class="price-card-amenities">
-              <h4 class="sub-card-title">Property Amenities & Features</h4>
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Property Amenities & Features</span>
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </button>
+            <div class="accordion-content">
               <div class="feature-list">
                 {% for feature in features %}
                   <div class="feature-item">✓ {{ feature.feature_name }}</div>
                 {% endfor %}
               </div>
             </div>
+          </div>
           {% endif %}
-        </div>
 
-        <!-- PROPERTY INFORMATION LIST CARD -->
-        <div class="details-card">
-          <h2 class="card-title">Property Information</h2>
-          <div class="property-info-grid">
-            <div class="info-item"><strong>Type:</strong> <span>{{ property.property_type }}</span></div>
-            <div class="info-item"><strong>Purpose:</strong> <span>{{ property.purpose }}</span></div>
-            <div class="info-item"><strong>Address:</strong> <span>{{ property.address }}</span></div>
-            <div class="info-item"><strong>Furnished:</strong> <span>{{ property.furnished }}</span></div>
-            <div class="info-item"><strong>Status:</strong> <span>{{ property.status }}</span></div>
+          <!-- ITEM 3: PROPERTY INFORMATION -->
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Property Information</span>
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="property-info-grid">
+                <div class="info-item"><strong>Type:</strong> <span>{{ property.property_type }}</span></div>
+                <div class="info-item"><strong>Purpose:</strong> <span>{{ property.purpose }}</span></div>
+                <div class="info-item"><strong>Address:</strong> <span>{{ property.address }}</span></div>
+                <div class="info-item"><strong>Furnished:</strong> <span>{{ property.furnished }}</span></div>
+                <div class="info-item"><strong>Status:</strong> <span>{{ property.status }}</span></div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <!-- PROPERTY OVERVIEW CARD (NOW BELOW INFORMATION CARD) -->
-        <div class="details-card">
-          <h2 class="card-title">Property Overview</h2>
-          <p class="description-text">{{ property.description }}</p>
-        </div>
-
-        <!-- LOCATION CARD -->
-        <div class="details-card">
-          <h2 class="card-title">Property Location</h2>
-          <div class="map-placeholder">
-            📍 {{ property.location }}<br><br>
-            Google Map Integration Coming Soon
+          <!-- ITEM 4: OVERVIEW -->
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Property Overview</span>
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </button>
+            <div class="accordion-content">
+              <p class="description-text">{{ property.description }}</p>
+            </div>
           </div>
+
+          <!-- ITEM 5: MAP -->
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Property Map</span>
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="map-placeholder">
+                📍 {{ property.location }}<br><br>
+                Google Map Integration Coming Soon
+              </div>
+            </div>
+          </div>
+
         </div>
 
-      </div>
-
-      <!-- RIGHT COLUMN: QUICK CONTACT STICKY SIDEBAR -->
-      <div class="details-sidebar-column">
+        <!-- AGENT CONTACT BOX -->
         <div class="agent-contact-card">
           <h3>Interested in this property?</h3>
           <p>Schedule a private viewing or enquire about pricing details with our luxury property consultants.</p>
@@ -182,60 +240,8 @@ PROPERTY MAIN CONTENT SECTION
       </div>
 
     </div>
-
   </div>
 </section>
-
-<!-- =========================
-RELATED PROPERTIES (UP TO 6)
-========================= -->
-
-{% if related_properties %}
-  <section class="related-properties">
-    <div class="container custom-tight-container">
-      <h2 class="section-title">Related Properties</h2>
-      <div class="related-grid">
-        {% for item in related_properties[:6] %}
-          <div class="related-card">
-            <div class="related-image">
-              {% if item.main_image %}
-                <img src="{{ item.main_image }}" alt="{{ item.title }} in {{ item.location }} Qatar" loading="lazy">
-              {% else %}
-                <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
-              {% endif %}
-            </div>
-
-            <div class="related-info">
-              <h3>{{ item.title }}</h3>
-              <p class="location-text">📍 {{ item.location }}</p>
-              <h4>QAR {{ "{:,.0f}".format(item.price or 0) }}</h4>
-                 <div class="related-meta">
-
-                        <div class="meta-item">
-                            <i class="fas fa-bed"></i>
-                            <span>{{ item.bedrooms }} Bedrooms</span>
-                        </div>
-                    
-                        <div class="meta-item">
-                            <i class="fas fa-bath"></i>
-                            <span>{{ item.bathrooms }} Bathrooms</span>
-                        </div>
-                    
-                        <div class="meta-item">
-                            <i class="fas fa-ruler-combined"></i>
-                            <span>{{ item.area }} sqm</span>
-                        </div>
-                    
-                    </div>
-              
-              <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-{% endif %}
 
 <!-- =========================
 LIGHTBOX MODAL FOR FULL VIEW
@@ -247,7 +253,6 @@ LIGHTBOX MODAL FOR FULL VIEW
 </div>
 
 <script>
-  // Dynamic list of images for full-screen viewer
   const galleryImageUrls = [
     {% if gallery_images %}
       {% for img in gallery_images %}
@@ -285,6 +290,11 @@ LIGHTBOX MODAL FOR FULL VIEW
       closeLightbox();
     }
   });
+
+  function toggleAccordion(headerElement) {
+    const item = headerElement.parentElement;
+    item.classList.toggle('active');
+  }
 </script>
 
 <style>
@@ -300,7 +310,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   overflow-x: hidden;
 }
 
-/* REDUCED LEFT AND RIGHT BORDER MARGINS */
 .custom-tight-container {
   max-width: 1380px;
   padding-left: 12px;
@@ -309,7 +318,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   margin-right: auto;
 }
 
-/* FULL-STRETCH MOSAIC GRID AT TOP EDGE */
 .mosaic-grid-wrapper.full-stretch {
   display: flex;
   gap: 4px;
@@ -323,7 +331,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   box-sizing: border-box;
 }
 
-/* 70% LEFT MAIN FEATURED IMAGE */
 .mosaic-main-70 {
   flex: 0 0 calc(70% - 2px);
   width: calc(70% - 2px);
@@ -345,7 +352,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.02);
 }
 
-/* OVERLAY FOR TITLE & STATUS AT TOP LEFT */
 .mosaic-header-overlay {
   position: absolute;
   top: 30px;
@@ -407,7 +413,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* 30% RIGHT STACKED IMAGES */
 .mosaic-side-30 {
   flex: 0 0 calc(30% - 2px);
   width: calc(30% - 2px);
@@ -436,7 +441,6 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.04);
 }
 
-/* HORIZONTAL SCROLL GALLERY STRIP (LEFT TO RIGHT) */
 .horizontal-gallery-container {
   width: 100%;
   background: #0f172a;
@@ -484,136 +488,253 @@ LIGHTBOX MODAL FOR FULL VIEW
   object-fit: cover;
 }
 
-/* DETAILS CONTENT LAYOUT */
-.property-details {
+/* ==================================
+   SPLIT LAYOUT (LEFT RELATED, RIGHT TABS)
+================================== */
+
+.modern-split-section {
   padding: 40px 0 60px;
   background: #f8fafc;
 }
 
-.details-content-grid {
+.modern-split-grid {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 24px;
+  grid-template-columns: 1fr 420px;
+  gap: 32px;
   align-items: start;
 }
 
-/* NARROWER LEFT/RIGHT PADDING FOR CARDS */
-.details-card {
-  background: #ffffff;
-  padding: 24px 20px;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
-  border: 1px solid #e2e8f0;
-  margin-bottom: 20px;
+/* RIGHT COLUMN: ACCORDION */
+.interactive-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
-.card-title {
-  font-size: 20px;
+.accordion-item {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  overflow: hidden;
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy-dark, #1F2A44);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.accordion-header:hover {
+  background: #f1f5f9;
+}
+
+.accordion-item.active .accordion-header {
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  display: none;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+}
+
+/* RECTANGULAR RELATED PROPERTIES (LEFT COLUMN) */
+.section-title {
+  font-size: 24px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-bottom: 16px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #f1f5f9;
+  margin-bottom: 20px;
 }
 
-.price-stats-card {
-  border-top: 4px solid var(--gold-accent, #D4AF37);
+.related-modern-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.price-header .label {
+.related-card-rect {
+  display: flex;
+  background: #1F2A44;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.related-card-rect:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+.related-image-rect {
+  flex: 0 0 40%;
+  min-height: 180px;
+  overflow: hidden;
+}
+
+.related-image-rect img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.related-card-rect:hover .related-image-rect img {
+  transform: scale(1.05);
+}
+
+.related-info-rect {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #2d3748 0%, #1f2937 100%);
+}
+
+.related-info-rect h3 {
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.related-info-rect .location-text {
+  color: #d1d5db !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.related-info-rect h4 {
+  color: #D4AF37 !important;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 8px 0;
+}
+
+.related-info-rect .view-link {
+  display: inline-block;
+  align-self: flex-start;
+  color: #ffffff !important;
+  text-decoration: none;
   font-size: 13px;
+  font-weight: 700;
+  transition: color 0.3s;
+}
+
+.related-info-rect .view-link:hover {
+  color: #D4AF37 !important;
+}
+
+/* DETAILS CONTENT STYLES INSIDE ACCORDION */
+.price-header .label {
+  font-size: 12px;
   text-transform: uppercase;
   color: #64748b;
   font-weight: 700;
 }
 
 .property-price {
-  font-size: 34px;
+  font-size: 28px;
   color: var(--qatar-maroon, #8A1538);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .details-features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 20px;
-  padding-top: 16px;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid #f1f5f9;
 }
 
 .feature-box {
   background: #f8fafc;
-  padding: 12px 8px;
-  border-radius: 10px;
+  padding: 8px;
+  border-radius: 8px;
   text-align: center;
   border: 1px solid #e2e8f0;
 }
 
 .feature-box h4 {
-  font-size: 22px;
+  font-size: 18px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
 }
 
 .feature-box span {
-  font-size: 11px;
+  font-size: 10px;
   color: #64748b;
   font-weight: 700;
   text-transform: uppercase;
 }
 
-/* AMENITIES SECTION INSIDE ASKING PRICE CARD */
-.price-card-amenities {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px dashed #cbd5e1;
-}
-
-.sub-card-title {
-  font-size: 16px;
-  color: var(--navy-dark, #1F2A44);
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-
 .feature-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
 }
 
 .feature-item {
-  padding: 10px 12px;
+  padding: 8px 10px;
   background: #f8fafc;
   border-left: 3px solid var(--gold-accent, #D4AF37);
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--navy-dark, #1F2A44);
 }
 
 .description-text {
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: 14px;
+  line-height: 1.7;
   color: #475569;
 }
 
 .property-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
 .info-item {
-  padding: 12px 14px;
+  padding: 10px;
   background: #f8fafc;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #e2e8f0;
-  font-size: 13px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .info-item strong {
@@ -622,54 +743,49 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .map-placeholder {
   background: #f8fafc;
-  padding: 40px 16px;
-  border-radius: 12px;
+  padding: 24px 12px;
+  border-radius: 8px;
   text-align: center;
   color: #64748b;
+  font-size: 13px;
   border: 2px dashed #cbd5e1;
-}
-
-/* SIDEBAR */
-.details-sidebar-column {
-  position: sticky;
-  top: 100px;
 }
 
 .agent-contact-card {
   background: #ffffff;
-  padding: 24px 18px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  padding: 20px 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
   border: 1px solid #e2e8f0;
   text-align: center;
   border-top: 4px solid var(--qatar-maroon, #8A1538);
 }
 
 .agent-contact-card h3 {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .agent-contact-card p {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 .agent-contact-card .primary-btn {
   display: block;
   width: 100%;
-  padding: 12px 16px;
+  padding: 10px;
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
-  border-radius: 30px;
+  border-radius: 20px;
   font-weight: 800;
-  font-size: 14px;
+  font-size: 13px;
   text-decoration: none;
-  box-shadow: 0 6px 18px rgba(138, 21, 56, 0.25);
+  box-shadow: 0 4px 12px rgba(138, 21, 56, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -678,148 +794,27 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: translateY(-2px);
 }
 
-/* RELATED PROPERTIES GRID */
-.related-properties {
-  padding: 60px 0;
-  background: #ffffff;
-  border-top: 1px solid #e2e8f0;
+.related-meta {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 8px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.section-title {
-  font-size: 26px;
-  color: var(--navy-dark, #1F2A44);
-  font-weight: 800;
-  font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-bottom: 24px;
+.related-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ffffff;
+  font-size: 11px;
 }
 
-.related-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+.related-meta .meta-item i {
+  color: #D4AF37;
+  font-size: 12px;
 }
-
-.related-card{
-    background:#1F2A44;
-    border-radius:16px;
-    overflow:hidden;
-    border:1px solid #e2e8f0;
-    transition:.3s ease;
-    box-shadow:0 8px 24px rgba(0,0,0,.08);
-}
-
-.related-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 18px 40px rgba(0,0,0,.15);
-}
-
-.related-image{
-    height:220px;
-    overflow:hidden;
-}
-
-.related-image img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transition:.5s ease;
-}
-
-.related-card:hover .related-image img{
-    transform:scale(1.08);
-}
-
-.related-info{
-    padding:18px;
-    background:linear-gradient(180deg,#2d3748 0%,#1f2937 100%);
-}
-
-.related-info h3{
-    color:#ffffff !important;
-    font-size:18px;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.related-info .location-text{
-    color:#d1d5db !important;
-    font-size:13px;
-    font-weight:600;
-    margin-bottom:12px;
-}
-
-.related-info h4{
-    color:#D4AF37 !important;
-    font-size:20px;
-    font-weight:800;
-    margin:15px 0;
-}
-
-.related-info .view-link{
-    display:block;
-    text-align:center;
-    background:var(--qatar-maroon);
-    color:#ffffff !important;
-    text-decoration:none;
-    padding:12px;
-    font-weight:700;
-    border-radius:0;
-    transition:.3s;
-}
-
-.related-info .view-link:hover{
-    background:var(--qatar-maroon-dark);
-    color:#D4AF37 !important;
-}
-
-
-
-.related-meta{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:10px;
-    margin:15px 0;
-    padding:14px 0;
-    border-top:1px solid rgba(255,255,255,.12);
-    border-bottom:1px solid rgba(255,255,255,.12);
-}
-
-
-
-.related-meta .meta-item{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:#ffffff;
-    font-size:13px;
-    font-weight:600;
-}
-
-.related-meta .meta-item i{
-    color:#D4AF37;
-    font-size:16px;
-    width:18px;
-    text-align:center;
-}
-
-  
-.meta-box{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    color:#fff;
-    font-size:14px;
-    font-weight:600;
-}
-
-.meta-icon{
-    font-size:16px;
-    color:#D4AF37;
-}
-
-  
 
 /* LIGHTBOX MODAL STYLES */
 .lightbox-modal {
@@ -863,17 +858,11 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 992px) {
-  .mosaic-grid-wrapper.full-stretch {
-    height: 420px;
-  }
-  .details-content-grid {
+  .modern-split-grid {
     grid-template-columns: 1fr;
   }
-  .details-sidebar-column {
-    position: static;
-  }
-  .related-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .mosaic-grid-wrapper.full-stretch {
+    height: 420px;
   }
 }
 
@@ -901,28 +890,11 @@ LIGHTBOX MODAL FOR FULL VIEW
   .mosaic-sub-item {
     height: 100%;
   }
-}
-
-@media (max-width: 640px) {
-  .related-grid {
-    grid-template-columns: 1fr;
+  .related-card-rect {
+    flex-direction: column;
   }
-  .details-card {
-    padding: 16px 12px;
-  }
-  .details-features {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-  .feature-box {
-    padding: 8px 4px;
-  }
-  .feature-box h4 {
-    font-size: 16px;
-  }
-  .horizontal-thumb-item {
-    flex: 0 0 160px;
-    height: 110px;
+  .related-image-rect {
+    height: 180px;
   }
 }
 </style>
