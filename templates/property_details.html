@@ -95,7 +95,7 @@ SPLIT INTERACTIVE & RELATED SECTION
   <div class="container custom-tight-container">
     <div class="modern-split-grid">
 
-      <!-- LEFT COLUMN: RELATED PROPERTIES (SQUARE CONTAINER & IMAGE) -->
+      <!-- LEFT COLUMN: RELATED PROPERTIES (VERTICAL CARDS, INFO BELOW IMAGE) -->
       <div class="split-left-column">
         {% if related_properties %}
           <div class="related-properties-modern">
@@ -111,6 +111,7 @@ SPLIT INTERACTIVE & RELATED SECTION
                     {% endif %}
                   </div>
 
+                  <!-- INFORMATION BOX PLACED BELOW THE IMAGE -->
                   <div class="related-info-rect">
                     <div class="related-text-wrap">
                       <h3>{{ item.title }}</h3>
@@ -123,7 +124,7 @@ SPLIT INTERACTIVE & RELATED SECTION
                         <span class="meta-item"><i class="fas fa-bath"></i> {{ item.bathrooms }}</span>
                         <span class="meta-item"><i class="fas fa-ruler-combined"></i> {{ item.area }}m²</span>
                       </div>
-                      <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View →</a>
+                      <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
                     </div>
                   </div>
                 </div>
@@ -558,7 +559,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   display: block;
 }
 
-/* RELATED PROPERTIES (LEFT COLUMN - COMPRESSED SQUARE FORMAT) */
+/* RELATED PROPERTIES (VERTICAL STACKED CARDS) */
 .section-title {
   font-size: 24px;
   color: var(--navy-dark, #1F2A44);
@@ -568,32 +569,30 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 .related-modern-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .related-card-rect {
   display: flex;
+  flex-direction: column; /* STACKS IMAGE ABOVE INFO BOX */
   background: #1F2A44;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  height: 140px; /* MATCHES SQUARE IMAGE HEIGHT */
 }
 
 .related-card-rect:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
 }
 
-/* SQUARE IMAGE THUMBNAIL */
+/* SQUARE IMAGE THUMBNAIL (TOP) */
 .related-image-rect {
-  flex: 0 0 140px;
-  width: 140px;
-  height: 140px;
+  width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
 }
@@ -609,21 +608,21 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.06);
 }
 
-/* COMPRESSED INFO CARD */
+/* INFORMATION BOX (BELOW IMAGE) */
 .related-info-rect {
-  flex: 1;
-  padding: 12px 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 12px;
   background: linear-gradient(180deg, #2d3748 0%, #1f2937 100%);
+  flex: 1;
 }
 
 .related-text-wrap h3 {
   color: #ffffff !important;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -631,14 +630,14 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-text-wrap .location-text {
   color: #94a3b8 !important;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .related-text-wrap h4 {
   color: #D4AF37 !important;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 800;
   margin: 0;
 }
@@ -648,28 +647,29 @@ LIGHTBOX MODAL FOR FULL VIEW
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255,255,255,0.1);
-  padding-top: 6px;
+  padding-top: 10px;
+  margin-top: auto;
 }
 
 .related-meta {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .related-meta .meta-item {
   color: #cbd5e1;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .related-meta .meta-item i {
   color: #D4AF37;
-  margin-right: 3px;
+  margin-right: 4px;
 }
 
 .related-info-rect .view-link {
   color: #ffffff !important;
   text-decoration: none;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   transition: color 0.2s;
 }
@@ -893,13 +893,8 @@ LIGHTBOX MODAL FOR FULL VIEW
   .mosaic-sub-item {
     height: 100%;
   }
-  .related-card-rect {
-    height: 120px;
-  }
-  .related-image-rect {
-    flex: 0 0 120px;
-    width: 120px;
-    height: 120px;
+  .related-modern-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
 }
 </style>
