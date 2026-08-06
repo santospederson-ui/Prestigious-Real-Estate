@@ -524,7 +524,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 16px;
+  font-size: 20px; /* INCREASED FONT SIZE FOR MAJOR SUBHEADINGS */
   font-weight: 700;
   color: var(--navy-dark, #1F2A44);
   cursor: pointer;
@@ -559,9 +559,9 @@ LIGHTBOX MODAL FOR FULL VIEW
   display: block;
 }
 
-/* RELATED PROPERTIES (VERTICAL STACKED CARDS) */
+/* RELATED PROPERTIES (COMPACT VERTICAL STACKED CARDS) */
 .section-title {
-  font-size: 24px;
+  font-size: 30px; /* INCREASED FONT SIZE FOR MAJOR SUBHEADINGS */
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
@@ -570,27 +570,27 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-modern-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* REDUCED CARD WIDTH */
+  gap: 16px; /* SLIGHTLY TIGHTER GRID GAP */
 }
 
 .related-card-rect {
   display: flex;
-  flex-direction: column; /* STACKS IMAGE ABOVE INFO BOX */
+  flex-direction: column;
   background: #1F2A44;
-  border-radius: 12px;
+  border-radius: 10px; /* SLIGHTLY REDUCED RADIUS */
   overflow: hidden;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .related-card-rect:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* SQUARE IMAGE THUMBNAIL (TOP) */
+/* COMPACT SQUARE IMAGE THUMBNAIL */
 .related-image-rect {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -608,21 +608,21 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.06);
 }
 
-/* INFORMATION BOX (BELOW IMAGE) */
+/* COMPACT INFORMATION BOX */
 .related-info-rect {
-  padding: 16px;
+  padding: 12px; /* REDUCED PADDING FOR SMALLER CARD SIZE */
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   background: linear-gradient(180deg, #2d3748 0%, #1f2937 100%);
   flex: 1;
 }
 
 .related-text-wrap h3 {
   color: #ffffff !important;
-  font-size: 16px;
+  font-size: 14px; /* REDUCED FONT SIZE */
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -630,14 +630,14 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-text-wrap .location-text {
   color: #94a3b8 !important;
-  font-size: 12px;
+  font-size: 11px; /* REDUCED FONT SIZE */
   font-weight: 500;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .related-text-wrap h4 {
   color: #D4AF37 !important;
-  font-size: 17px;
+  font-size: 15px; /* REDUCED FONT SIZE */
   font-weight: 800;
   margin: 0;
 }
@@ -647,29 +647,29 @@ LIGHTBOX MODAL FOR FULL VIEW
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255,255,255,0.1);
-  padding-top: 10px;
+  padding-top: 8px;
   margin-top: auto;
 }
 
 .related-meta {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 .related-meta .meta-item {
   color: #cbd5e1;
-  font-size: 12px;
+  font-size: 11px; /* REDUCED META FONT SIZE */
 }
 
 .related-meta .meta-item i {
   color: #D4AF37;
-  margin-right: 4px;
+  margin-right: 3px;
 }
 
 .related-info-rect .view-link {
   color: #ffffff !important;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   transition: color 0.2s;
 }
@@ -894,7 +894,7 @@ LIGHTBOX MODAL FOR FULL VIEW
     height: 100%;
   }
   .related-modern-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 </style>
