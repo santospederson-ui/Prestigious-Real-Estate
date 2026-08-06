@@ -95,7 +95,7 @@ SPLIT INTERACTIVE & RELATED SECTION
   <div class="container custom-tight-container">
     <div class="modern-split-grid">
 
-      <!-- LEFT COLUMN: RELATED PROPERTIES -->
+      <!-- LEFT COLUMN: RELATED PROPERTIES (STRETCHED LEFT, RECTANGULAR IMAGES) -->
       <div class="split-left-column">
         {% if related_properties %}
           <div class="related-properties-modern">
@@ -112,19 +112,24 @@ SPLIT INTERACTIVE & RELATED SECTION
                   </div>
 
                   <div class="related-info-rect">
-                    <div class="related-text-wrap">
-                      <h3>{{ item.title }}</h3>
-                      <p class="location-text">📍 {{ item.location }}</p>
-                      <h4>QAR {{ "{:,.0f}".format(item.price or 0) }}</h4>
-                    </div>
-                    <div class="related-bottom-bar">
-                      <div class="related-meta">
-                        <span class="meta-item"><i class="fas fa-bed"></i> {{ item.bedrooms }}</span>
-                        <span class="meta-item"><i class="fas fa-bath"></i> {{ item.bathrooms }}</span>
-                        <span class="meta-item"><i class="fas fa-ruler-combined"></i> {{ item.area }} m²</span>
+                    <h3>{{ item.title }}</h3>
+                    <p class="location-text">📍 {{ item.location }}</p>
+                    <h4>QAR {{ "{:,.0f}".format(item.price or 0) }}</h4>
+                    <div class="related-meta">
+                      <div class="meta-item">
+                        <i class="fas fa-bed"></i>
+                        <span>{{ item.bedrooms }} Beds</span>
                       </div>
-                      <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View →</a>
+                      <div class="meta-item">
+                        <i class="fas fa-bath"></i>
+                        <span>{{ item.bathrooms }} Baths</span>
+                      </div>
+                      <div class="meta-item">
+                        <i class="fas fa-ruler-combined"></i>
+                        <span>{{ item.area }} sqm</span>
+                      </div>
                     </div>
+                    <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
                   </div>
                 </div>
               {% endfor %}
@@ -133,7 +138,7 @@ SPLIT INTERACTIVE & RELATED SECTION
         {% endif %}
       </div>
 
-      <!-- RIGHT COLUMN: EXPANDED ACCORDION TABS & CARDS -->
+      <!-- RIGHT COLUMN: ACCORDION TABS -->
       <div class="split-right-column">
         <div class="interactive-accordion">
           
@@ -484,7 +489,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 /* ==================================
-   SPLIT LAYOUT & RELATED PROPERTIES
+   SPLIT LAYOUT (LEFT RELATED, RIGHT TABS)
 ================================== */
 
 .modern-split-section {
@@ -494,36 +499,36 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .modern-split-grid {
   display: grid;
-  grid-template-columns: 1fr 520px;
+  grid-template-columns: 1fr 420px;
   gap: 32px;
   align-items: start;
 }
 
-/* RIGHT COLUMN: ACCORDION & AGENT CARD */
+/* RIGHT COLUMN: ACCORDION */
 .interactive-accordion {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   margin-bottom: 24px;
 }
 
 .accordion-item {
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
   overflow: hidden;
 }
 
 .accordion-header {
   width: 100%;
-  padding: 18px 24px;
+  padding: 16px 20px;
   background: #ffffff;
   border: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--navy-dark, #1F2A44);
   cursor: pointer;
@@ -550,7 +555,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .accordion-content {
   display: none;
-  padding: 24px;
+  padding: 20px;
   background: #ffffff;
 }
 
@@ -558,40 +563,39 @@ LIGHTBOX MODAL FOR FULL VIEW
   display: block;
 }
 
-/* RELATED PROPERTIES (LEFT COLUMN) */
+/* RECTANGULAR RELATED PROPERTIES (LEFT COLUMN) */
 .section-title {
-  font-size: 22px;
+  font-size: 24px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .related-modern-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
 .related-card-rect {
   display: flex;
   background: #1F2A44;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  height: 150px; /* INCREASED HEIGHT BY 50% (FROM 100px TO 150px) */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .related-card-rect:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
 }
 
 .related-image-rect {
-  flex: 0 0 87.5px; /* REDUCED WIDTH BY 50% (FROM 175px TO 87.5px) */
-  height: 100%;
+  flex: 0 0 40%;
+  min-height: 180px;
   overflow: hidden;
 }
 
@@ -599,75 +603,50 @@ LIGHTBOX MODAL FOR FULL VIEW
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .related-card-rect:hover .related-image-rect img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .related-info-rect {
   flex: 1;
-  padding: 12px 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background: linear-gradient(180deg, #2d3748 0%, #1f2937 100%);
 }
 
-.related-text-wrap h3 {
+.related-info-rect h3 {
   color: #ffffff !important;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.related-text-wrap .location-text {
-  color: #94a3b8 !important;
-  font-size: 12px;
-  font-weight: 500;
   margin-bottom: 4px;
 }
 
-.related-text-wrap h4 {
+.related-info-rect .location-text {
+  color: #d1d5db !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.related-info-rect h4 {
   color: #D4AF37 !important;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 800;
-  margin: 0;
-}
-
-.related-bottom-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: 8px;
-}
-
-.related-meta {
-  display: flex;
-  gap: 12px;
-}
-
-.related-meta .meta-item {
-  color: #cbd5e1;
-  font-size: 11px;
-}
-
-.related-meta .meta-item i {
-  color: #D4AF37;
-  margin-right: 3px;
+  margin: 8px 0;
 }
 
 .related-info-rect .view-link {
+  display: inline-block;
+  align-self: flex-start;
   color: #ffffff !important;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  transition: color 0.2s;
+  transition: color 0.3s;
 }
 
 .related-info-rect .view-link:hover {
@@ -676,45 +655,45 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 /* DETAILS CONTENT STYLES INSIDE ACCORDION */
 .price-header .label {
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   color: #64748b;
   font-weight: 700;
 }
 
 .property-price {
-  font-size: 32px;
+  font-size: 28px;
   color: var(--qatar-maroon, #8A1538);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .details-features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 16px;
-  padding-top: 16px;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid #f1f5f9;
 }
 
 .feature-box {
   background: #f8fafc;
-  padding: 12px 8px;
-  border-radius: 10px;
+  padding: 8px;
+  border-radius: 8px;
   text-align: center;
   border: 1px solid #e2e8f0;
 }
 
 .feature-box h4 {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
 }
 
 .feature-box span {
-  font-size: 11px;
+  font-size: 10px;
   color: #64748b;
   font-weight: 700;
   text-transform: uppercase;
@@ -722,38 +701,38 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .feature-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
 }
 
 .feature-item {
-  padding: 10px 12px;
+  padding: 8px 10px;
   background: #f8fafc;
   border-left: 3px solid var(--gold-accent, #D4AF37);
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--navy-dark, #1F2A44);
 }
 
 .description-text {
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: 14px;
+  line-height: 1.7;
   color: #475569;
 }
 
 .property-info-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
 .info-item {
-  padding: 12px;
+  padding: 10px;
   background: #f8fafc;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #e2e8f0;
-  font-size: 13px;
+  font-size: 12px;
   display: flex;
   justify-content: space-between;
 }
@@ -764,55 +743,77 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .map-placeholder {
   background: #f8fafc;
-  padding: 32px 16px;
-  border-radius: 10px;
+  padding: 24px 12px;
+  border-radius: 8px;
   text-align: center;
   color: #64748b;
-  font-size: 14px;
+  font-size: 13px;
   border: 2px dashed #cbd5e1;
 }
 
 .agent-contact-card {
   background: #ffffff;
-  padding: 24px;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  padding: 20px 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
   border: 1px solid #e2e8f0;
   text-align: center;
   border-top: 4px solid var(--qatar-maroon, #8A1538);
 }
 
 .agent-contact-card h3 {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .agent-contact-card p {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 .agent-contact-card .primary-btn {
   display: block;
   width: 100%;
-  padding: 12px 16px;
+  padding: 10px;
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
-  border-radius: 24px;
+  border-radius: 20px;
   font-weight: 800;
-  font-size: 14px;
+  font-size: 13px;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(138, 21, 56, 0.25);
+  box-shadow: 0 4px 12px rgba(138, 21, 56, 0.2);
   transition: all 0.3s ease;
 }
 
 .agent-contact-card .primary-btn:hover {
   background: var(--navy-dark, #1F2A44);
   transform: translateY(-2px);
+}
+
+.related-meta {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 8px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.related-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ffffff;
+  font-size: 11px;
+}
+
+.related-meta .meta-item i {
+  color: #D4AF37;
+  font-size: 12px;
 }
 
 /* LIGHTBOX MODAL STYLES */
@@ -856,7 +857,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 /* RESPONSIVE DESIGN */
-@media (max-width: 1024px) {
+@media (max-width: 992px) {
   .modern-split-grid {
     grid-template-columns: 1fr;
   }
@@ -889,11 +890,11 @@ LIGHTBOX MODAL FOR FULL VIEW
   .mosaic-sub-item {
     height: 100%;
   }
-  .property-info-grid {
-    grid-template-columns: 1fr;
+  .related-card-rect {
+    flex-direction: column;
   }
   .related-image-rect {
-    flex: 0 0 65px;
+    height: 180px;
   }
 }
 </style>
