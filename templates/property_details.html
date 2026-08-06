@@ -95,7 +95,7 @@ SPLIT INTERACTIVE & RELATED SECTION
   <div class="container custom-tight-container">
     <div class="modern-split-grid">
 
-      <!-- LEFT COLUMN: RELATED PROPERTIES (COMPACT RECTANGULAR CARDS) -->
+      <!-- LEFT COLUMN: RELATED PROPERTIES (ULTRA-COMPACT RECTANGULAR WITH LARGER IMAGES) -->
       <div class="split-left-column">
         {% if related_properties %}
           <div class="related-properties-modern">
@@ -484,7 +484,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 /* ==================================
-   SPLIT LAYOUT (EXPANDED RIGHT SIDE, COMPACT LEFT RELATED)
+   SPLIT LAYOUT (COMPACT LEFT CARDS WITH WIDER IMAGES)
 ================================== */
 
 .modern-split-section {
@@ -494,7 +494,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .modern-split-grid {
   display: grid;
-  grid-template-columns: 1fr 520px; /* INCREASED RIGHT SIDE CAPACITY */
+  grid-template-columns: 1fr 520px;
   gap: 32px;
   align-items: start;
 }
@@ -570,27 +570,27 @@ LIGHTBOX MODAL FOR FULL VIEW
 .related-modern-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .related-card-rect {
   display: flex;
   background: #1F2A44;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  height: 115px; /* DOWNSIZED HEIGHT */
+  height: 100px; /* REDUCED RECTANGLE HEIGHT */
 }
 
 .related-card-rect:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
 }
 
 .related-image-rect {
-  flex: 0 0 135px; /* REDUCED THUMBNAIL WIDTH */
+  flex: 0 0 175px; /* INCREASED IMAGE WIDTH */
   height: 100%;
   overflow: hidden;
 }
@@ -608,7 +608,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-info-rect {
   flex: 1;
-  padding: 10px 14px;
+  padding: 8px 12px; /* COMPACT INNER PADDING */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -617,9 +617,9 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-text-wrap h3 {
   color: #ffffff !important;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -629,12 +629,12 @@ LIGHTBOX MODAL FOR FULL VIEW
   color: #94a3b8 !important;
   font-size: 11px;
   font-weight: 500;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .related-text-wrap h4 {
   color: #D4AF37 !important;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   margin: 0;
 }
@@ -644,7 +644,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: 6px;
+  padding-top: 4px;
 }
 
 .related-meta {
@@ -654,7 +654,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-meta .meta-item {
   color: #cbd5e1;
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .related-meta .meta-item i {
@@ -665,7 +665,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 .related-info-rect .view-link {
   color: #ffffff !important;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   transition: color 0.2s;
 }
@@ -674,7 +674,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   color: #D4AF37 !important;
 }
 
-/* DETAILS CONTENT STYLES INSIDE ACCORDION (EXPANDED DENSITY) */
+/* DETAILS CONTENT STYLES INSIDE ACCORDION */
 .price-header .label {
   font-size: 13px;
   text-transform: uppercase;
@@ -891,6 +891,9 @@ LIGHTBOX MODAL FOR FULL VIEW
   }
   .property-info-grid {
     grid-template-columns: 1fr;
+  }
+  .related-image-rect {
+    flex: 0 0 130px;
   }
 }
 </style>
