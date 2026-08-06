@@ -95,47 +95,8 @@ SPLIT INTERACTIVE & RELATED SECTION
   <div class="container custom-tight-container">
     <div class="modern-split-grid">
 
-      <!-- LEFT COLUMN: RELATED PROPERTIES (VERTICAL CARDS, INFO BELOW IMAGE) -->
+      <!-- LEFT COLUMN: ACCORDION & MAIN DETAILS (MAJOR VIEW) -->
       <div class="split-left-column">
-        {% if related_properties %}
-          <div class="related-properties-modern">
-            <h2 class="section-title">Related Properties</h2>
-            <div class="related-modern-grid">
-              {% for item in related_properties[:6] %}
-                <div class="related-card-rect">
-                  <div class="related-image-rect">
-                    {% if item.main_image %}
-                      <img src="{{ item.main_image }}" alt="{{ item.title }} in {{ item.location }} Qatar" loading="lazy">
-                    {% else %}
-                      <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
-                    {% endif %}
-                  </div>
-
-                  <!-- INFORMATION BOX PLACED BELOW THE IMAGE -->
-                  <div class="related-info-rect">
-                    <div class="related-text-wrap">
-                      <h3>{{ item.title }}</h3>
-                      <p class="location-text">📍 {{ item.location }}</p>
-                      <h4>QAR {{ "{:,.0f}".format(item.price or 0) }}</h4>
-                    </div>
-                    <div class="related-bottom-bar">
-                      <div class="related-meta">
-                        <span class="meta-item"><i class="fas fa-bed"></i> {{ item.bedrooms }}</span>
-                        <span class="meta-item"><i class="fas fa-bath"></i> {{ item.bathrooms }}</span>
-                        <span class="meta-item"><i class="fas fa-ruler-combined"></i> {{ item.area }}m²</span>
-                      </div>
-                      <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-        {% endif %}
-      </div>
-
-      <!-- RIGHT COLUMN: ACCORDION TABS -->
-      <div class="split-right-column">
         <div class="interactive-accordion">
           
           <!-- ITEM 1: ASKING PRICE & FEATURES -->
@@ -233,6 +194,45 @@ SPLIT INTERACTIVE & RELATED SECTION
           <p>Schedule a private viewing or enquire about pricing details with our luxury property consultants.</p>
           <a href="{{ url_for('contact') }}" class="primary-btn">Contact Agent</a>
         </div>
+      </div>
+
+      <!-- RIGHT COLUMN: RELATED PROPERTIES (SIDEBAR VIEW) -->
+      <div class="split-right-column">
+        {% if related_properties %}
+          <div class="related-properties-modern">
+            <h2 class="section-title">Related Properties</h2>
+            <div class="related-modern-grid">
+              {% for item in related_properties[:6] %}
+                <div class="related-card-rect">
+                  <div class="related-image-rect">
+                    {% if item.main_image %}
+                      <img src="{{ item.main_image }}" alt="{{ item.title }} in {{ item.location }} Qatar" loading="lazy">
+                    {% else %}
+                      <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="No image available" loading="lazy">
+                    {% endif %}
+                  </div>
+
+                  <!-- INFORMATION BOX PLACED BELOW THE IMAGE -->
+                  <div class="related-info-rect">
+                    <div class="related-text-wrap">
+                      <h3>{{ item.title }}</h3>
+                      <p class="location-text">📍 {{ item.location }}</p>
+                      <h4>QAR {{ "{:,.0f}".format(item.price or 0) }}</h4>
+                    </div>
+                    <div class="related-bottom-bar">
+                      <div class="related-meta">
+                        <span class="meta-item"><i class="fas fa-bed"></i> {{ item.bedrooms }}</span>
+                        <span class="meta-item"><i class="fas fa-bath"></i> {{ item.bathrooms }}</span>
+                        <span class="meta-item"><i class="fas fa-ruler-combined"></i> {{ item.area }}m²</span>
+                      </div>
+                      <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
       </div>
 
     </div>
@@ -485,7 +485,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 /* ==================================
-   SPLIT LAYOUT & RELATED PROPERTIES
+   SPLIT LAYOUT (MAJOR LEFT, SIDEBAR RIGHT)
 ================================== */
 
 .modern-split-section {
@@ -495,12 +495,12 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .modern-split-grid {
   display: grid;
-  grid-template-columns: 1fr 480px;
+  grid-template-columns: 1fr 400px; /* LEFT MAIN FEATURE, RIGHT SIDEBAR */
   gap: 32px;
   align-items: start;
 }
 
-/* RIGHT COLUMN: ACCORDION */
+/* LEFT COLUMN: ACCORDION & CONTACT CARD */
 .interactive-accordion {
   display: flex;
   flex-direction: column;
@@ -524,7 +524,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 20px; /* INCREASED FONT SIZE FOR MAJOR SUBHEADINGS */
+  font-size: 20px;
   font-weight: 700;
   color: var(--navy-dark, #1F2A44);
   cursor: pointer;
@@ -559,9 +559,9 @@ LIGHTBOX MODAL FOR FULL VIEW
   display: block;
 }
 
-/* RELATED PROPERTIES (COMPACT VERTICAL STACKED CARDS) */
+/* RIGHT COLUMN: RELATED PROPERTIES */
 .section-title {
-  font-size: 30px; /* INCREASED FONT SIZE FOR MAJOR SUBHEADINGS */
+  font-size: 30px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
@@ -570,15 +570,15 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-modern-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* REDUCED CARD WIDTH */
-  gap: 16px; /* SLIGHTLY TIGHTER GRID GAP */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
 }
 
 .related-card-rect {
   display: flex;
   flex-direction: column;
   background: #1F2A44;
-  border-radius: 10px; /* SLIGHTLY REDUCED RADIUS */
+  border-radius: 10px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
@@ -610,7 +610,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 /* COMPACT INFORMATION BOX */
 .related-info-rect {
-  padding: 12px; /* REDUCED PADDING FOR SMALLER CARD SIZE */
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -620,7 +620,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-text-wrap h3 {
   color: #ffffff !important;
-  font-size: 14px; /* REDUCED FONT SIZE */
+  font-size: 14px;
   font-weight: 700;
   margin-bottom: 2px;
   white-space: nowrap;
@@ -630,14 +630,14 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-text-wrap .location-text {
   color: #94a3b8 !important;
-  font-size: 11px; /* REDUCED FONT SIZE */
+  font-size: 11px;
   font-weight: 500;
   margin-bottom: 4px;
 }
 
 .related-text-wrap h4 {
   color: #D4AF37 !important;
-  font-size: 15px; /* REDUCED FONT SIZE */
+  font-size: 15px;
   font-weight: 800;
   margin: 0;
 }
@@ -658,7 +658,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .related-meta .meta-item {
   color: #cbd5e1;
-  font-size: 11px; /* REDUCED META FONT SIZE */
+  font-size: 11px;
 }
 
 .related-meta .meta-item i {
@@ -894,7 +894,7 @@ LIGHTBOX MODAL FOR FULL VIEW
     height: 100%;
   }
   .related-modern-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
 }
 </style>
