@@ -209,22 +209,24 @@ RELATED PROPERTIES (UP TO 6)
               <h3>{{ item.title }}</h3>
               <p class="location-text">📍 {{ item.location }}</p>
               <h4>QAR {{ "{:,.0f}".format(item.price or 0) }}</h4>
-                  <div class="related-meta">
-                      <div class="meta-box">
-                          <span class="meta-icon">🛏</span>
-                          <span>{{ item.bedrooms }}</span>
-                      </div>
-                  
-                      <div class="meta-box">
-                          <span class="meta-icon">🛁</span>
-                          <span>{{ item.bathrooms }}</span>
-                      </div>
-                  
-                      <div class="meta-box">
-                          <span class="meta-icon">📐</span>
-                          <span>{{ item.area }} sqm</span>
-                      </div>
-                  </div>
+                 <div class="related-meta">
+
+                        <div class="meta-item">
+                            <i class="fas fa-bed"></i>
+                            <span>{{ item.bedrooms }} Bedrooms</span>
+                        </div>
+                    
+                        <div class="meta-item">
+                            <i class="fas fa-bath"></i>
+                            <span>{{ item.bathrooms }} Bathrooms</span>
+                        </div>
+                    
+                        <div class="meta-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>{{ item.area }} sqm</span>
+                        </div>
+                    
+                    </div>
               
               <a href="{{ url_for('property_details', id=item.id) }}" class="view-link">View Details →</a>
             </div>
@@ -776,12 +778,33 @@ LIGHTBOX MODAL FOR FULL VIEW
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin:18px 0;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:15px 0;
     padding:14px 0;
-    border-top:1px solid rgba(255,255,255,.10);
-    border-bottom:1px solid rgba(255,255,255,.10);
+    border-top:1px solid rgba(255,255,255,.12);
+    border-bottom:1px solid rgba(255,255,255,.12);
 }
 
+
+
+.related-meta .meta-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:600;
+}
+
+.related-meta .meta-item i{
+    color:#D4AF37;
+    font-size:16px;
+    width:18px;
+    text-align:center;
+}
+
+  
 .meta-box{
     display:flex;
     align-items:center;
