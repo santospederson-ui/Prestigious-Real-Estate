@@ -555,7 +555,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 
 .accordion-content {
   display: none;
-  padding: 20px;
+  padding: 28px;
   background: #ffffff;
 }
 
@@ -610,20 +610,20 @@ LIGHTBOX MODAL FOR FULL VIEW
   transform: scale(1.05);
 }
 
-.related-info-rect {
-  flex: 1;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: linear-gradient(180deg, #2d3748 0%, #1f2937 100%);
+.related-info-rect{
+    flex:1;
+    padding:12px 16px;
+    background:linear-gradient(180deg,#2d3748 0%,#1f2937 100%);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
 }
 
 .related-info-rect h3 {
   color: #ffffff !important;
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .related-info-rect .location-text {
@@ -636,7 +636,7 @@ LIGHTBOX MODAL FOR FULL VIEW
   color: #D4AF37 !important;
   font-size: 18px;
   font-weight: 800;
-  margin: 8px 0;
+  margin: 6px 0;
 }
 
 .related-info-rect .view-link {
@@ -662,7 +662,7 @@ LIGHTBOX MODAL FOR FULL VIEW
 }
 
 .property-price {
-  font-size: 28px;
+  font-size: 36px;
   color: var(--qatar-maroon, #8A1538);
   font-weight: 800;
   font-family: var(--font-serif, 'Playfair Display', serif);
@@ -672,28 +672,28 @@ LIGHTBOX MODAL FOR FULL VIEW
 .details-features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 14px;
-  padding-top: 12px;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
   border-top: 1px solid #f1f5f9;
 }
 
 .feature-box {
   background: #f8fafc;
-  padding: 8px;
+  padding:18px 10px;
   border-radius: 8px;
   text-align: center;
   border: 1px solid #e2e8f0;
 }
 
 .feature-box h4 {
-  font-size: 18px;
+  font-size: 24px;
   color: var(--navy-dark, #1F2A44);
   font-weight: 800;
 }
 
 .feature-box span {
-  font-size: 10px;
+  font-size: 12px;
   color: #64748b;
   font-weight: 700;
   text-transform: uppercase;
@@ -797,8 +797,8 @@ LIGHTBOX MODAL FOR FULL VIEW
 .related-meta {
   display: flex;
   gap: 8px;
-  margin: 8px 0;
-  padding: 8px 0;
+  margin: 6px 0;
+  padding: 6px 0;
   border-top: 1px solid rgba(255,255,255,0.1);
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -893,9 +893,10 @@ LIGHTBOX MODAL FOR FULL VIEW
   .related-card-rect {
     flex-direction: column;
   }
-  .related-image-rect {
-    height: 180px;
-  }
+  .related-image-rect{
+    flex:0 0 55%;
+    min-height:210px;
+}
 }
 </style>
 
