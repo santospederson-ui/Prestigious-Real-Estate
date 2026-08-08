@@ -438,11 +438,31 @@ FOOTER
 </div>
 
 <div>
-<h4>Services</h4>
-<p>Property Sales</p>
-<p>Property Leasing</p>
-<p>Property Management</p>
-<p>Real Estate Consultation</p>
+  <h4>Services</h4>
+
+  <p>
+    <a href="{{ url_for('properties', purpose='Sale') }}">
+      Property Sales
+    </a>
+  </p>
+
+  <p>
+    <a href="{{ url_for('properties', purpose='Rent') }}">
+      Property Leasing
+    </a>
+  </p>
+
+  <p>
+    <a href="{{ url_for('services') }}#property-management">
+      Property Management
+    </a>
+  </p>
+
+  <p>
+    <a href="{{ url_for('contact') }}">
+      Real Estate Consultation
+    </a>
+  </p>
 </div>
 
 <div>
