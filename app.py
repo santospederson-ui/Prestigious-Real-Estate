@@ -898,7 +898,7 @@ def property_search_suggestions():
 
     search = request.args.get("q", "").strip()
 
-    # Keep one-letter search
+    # Allow even one-character searches
     if not search:
         return jsonify({
             "results": []
@@ -970,7 +970,7 @@ def property_search_suggestions():
 
         values = [
 
-            # LEFT JOIN feature search
+            # LEFT JOIN
             keyword,
 
             # WHERE
