@@ -733,63 +733,56 @@ def properties():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        # =========================================================
-        # SEARCH / FILTER PARAMETERS
-        # =========================================================
+        # ==========================================================
+        # FILTERS
+        # ==========================================================
 
         property_type = request.args.get(
-            "property_type",
-            ""
+            "property_type", ""
         ).strip()
 
         purpose = request.args.get(
-            "purpose",
-            ""
+            "purpose", ""
         ).strip()
 
         location = request.args.get(
-            "location",
-            ""
+            "location", ""
         ).strip()
 
         search = request.args.get(
-            "search",
-            ""
+            "search", ""
         ).strip()
 
         bedrooms = request.args.get(
-            "bedrooms",
-            ""
+            "bedrooms", ""
         ).strip()
 
         bathrooms = request.args.get(
-            "bathrooms",
-            ""
-        ).strip()
-
-        furnished = request.args.get(
-            "furnished",
-            ""
+            "bathrooms", ""
         ).strip()
 
         min_price = request.args.get(
-            "min_price",
-            ""
+            "min_price", ""
         ).strip()
 
         max_price = request.args.get(
-            "max_price",
-            ""
+            "max_price", ""
         ).strip()
 
         min_area = request.args.get(
-            "min_area",
-            ""
+            "min_area", ""
         ).strip()
 
         max_area = request.args.get(
-            "max_area",
-            ""
+            "max_area", ""
+        ).strip()
+
+        furnished = request.args.get(
+            "furnished", ""
+        ).strip()
+
+        sort = request.args.get(
+            "sort", "newest"
         ).strip()
 
         page = request.args.get(
@@ -805,17 +798,14 @@ def properties():
 
         offset = (page - 1) * per_page
 
-        # =========================================================
-        # BUILD WHERE CLAUSE
-        # =========================================================
+        # ==========================================================
+        # BUILD WHERE CONDITIONS
+        # ==========================================================
 
         where = []
-
         values = []
 
-        # =========================================================
         # PROPERTY TYPE
-        # =========================================================
 
         if property_type:
 
@@ -827,9 +817,7 @@ def properties():
                 property_type
             )
 
-        # =========================================================
         # PURPOSE
-        # =========================================================
 
         if purpose:
 
@@ -841,20 +829,17 @@ def properties():
                 purpose
             )
 
-        # =========================================================
         # LOCATION
         #
-        # LIKE is intentionally used here.
+        # LIKE is used instead of = so that:
         #
-        # Example:
-        # Database:
-        # "Porto Arabia, The Pearl Qatar"
-        #
-        # Search:
         # "The Pearl"
         #
-        # This will now match.
-        # =========================================================
+        # can also find:
+        #
+        # "The Pearl, Porto Arabia"
+        # "The Pearl, Qatar"
+        #
 
         if location:
 
@@ -866,9 +851,151 @@ def properties():
                 "%" + location + "%"
             )
 
-        # =========================================================
-        # GENERAL SEARCH
-        # =========================================================
+        # BEDROOMS
+
+        if bedrooms:
+
+            try:
+
+                bedroom_value = int(
+                    bedrooms
+                )
+
+                if bedroom_value > 0:
+
+                    where.append(
+                        "p.bedrooms >= %s"
+                    )
+
+                    values.append(
+                        bedroom_value
+                    )
+
+            except ValueError:
+                pass
+
+        # BATHROOMS
+
+        if bathrooms:
+
+            try:
+
+                bathroom_value = int(
+                    bathrooms
+                )
+
+                if bathroom_value > 0:
+
+                    where.append(
+                        "p.bathrooms >= %s"
+                    )
+
+                    values.append(
+                        bathroom_value
+                    )
+
+            except ValueError:
+                pass
+
+        # MINIMUM PRICE
+
+        if min_price:
+
+            try:
+
+                min_price_value = float(
+                    min_price
+                )
+
+                where.append(
+                    "p.price >= %s"
+                )
+
+                values.append(
+                    min_price_value
+                )
+
+            except ValueError:
+                pass
+
+        # MAXIMUM PRICE
+
+        if max_price:
+
+            try:
+
+                max_price_value = float(
+                    max_price
+                )
+
+                where.append(
+                    "p.price <= %s"
+                )
+
+                values.append(
+                    max_price_value
+                )
+
+            except ValueError:
+                pass
+
+        # MINIMUM AREA
+
+        if min_area:
+
+            try:
+
+                min_area_value = float(
+                    min_area
+                )
+
+                where.append(
+                    "p.area >= %s"
+                )
+
+                values.append(
+                    min_area_value
+                )
+
+            except ValueError:
+                pass
+
+        # MAXIMUM AREA
+
+        if max_area:
+
+            try:
+
+                max_area_value = float(
+                    max_area
+                )
+
+                where.append(
+                    "p.area <= %s"
+                )
+
+                values.append(
+                    max_area_value
+                )
+
+            except ValueError:
+                pass
+
+        # FURNISHED
+
+        if furnished:
+
+            where.append(
+                "p.furnished = %s"
+            )
+
+            values.append(
+                furnished
+            )
+
+        # ==========================================================
+        # KEYWORD SEARCH
+        # ==========================================================
 
         if search:
 
@@ -907,230 +1034,22 @@ def properties():
                 keyword
             ])
 
-        # =========================================================
-        # BEDROOMS
-        #
-        # "3+" means 3 or more bedrooms.
-        # =========================================================
-
-        if bedrooms:
-
-            if bedrooms.endswith("+"):
-
-                bedroom_value = bedrooms.replace(
-                    "+",
-                    ""
-                )
-
-                try:
-
-                    bedroom_number = int(
-                        bedroom_value
-                    )
-
-                    where.append(
-                        "p.bedrooms >= %s"
-                    )
-
-                    values.append(
-                        bedroom_number
-                    )
-
-                except ValueError:
-                    pass
-
-            else:
-
-                try:
-
-                    bedroom_number = int(
-                        bedrooms
-                    )
-
-                    where.append(
-                        "p.bedrooms = %s"
-                    )
-
-                    values.append(
-                        bedroom_number
-                    )
-
-                except ValueError:
-                    pass
-
-        # =========================================================
-        # BATHROOMS
-        #
-        # "3+" means 3 or more bathrooms.
-        # =========================================================
-
-        if bathrooms:
-
-            if bathrooms.endswith("+"):
-
-                bathroom_value = bathrooms.replace(
-                    "+",
-                    ""
-                )
-
-                try:
-
-                    bathroom_number = int(
-                        bathroom_value
-                    )
-
-                    where.append(
-                        "p.bathrooms >= %s"
-                    )
-
-                    values.append(
-                        bathroom_number
-                    )
-
-                except ValueError:
-                    pass
-
-            else:
-
-                try:
-
-                    bathroom_number = int(
-                        bathrooms
-                    )
-
-                    where.append(
-                        "p.bathrooms = %s"
-                    )
-
-                    values.append(
-                        bathroom_number
-                    )
-
-                except ValueError:
-                    pass
-
-        # =========================================================
-        # FURNISHED
-        # =========================================================
-
-        if furnished:
-
-            where.append(
-                "p.furnished = %s"
-            )
-
-            values.append(
-                furnished
-            )
-
-        # =========================================================
-        # MINIMUM PRICE
-        # =========================================================
-
-        if min_price:
-
-            try:
-
-                min_price_value = float(
-                    min_price
-                )
-
-                where.append(
-                    "p.price >= %s"
-                )
-
-                values.append(
-                    min_price_value
-                )
-
-            except ValueError:
-                pass
-
-        # =========================================================
-        # MAXIMUM PRICE
-        # =========================================================
-
-        if max_price:
-
-            try:
-
-                max_price_value = float(
-                    max_price
-                )
-
-                where.append(
-                    "p.price <= %s"
-                )
-
-                values.append(
-                    max_price_value
-                )
-
-            except ValueError:
-                pass
-
-        # =========================================================
-        # MINIMUM AREA
-        # =========================================================
-
-        if min_area:
-
-            try:
-
-                min_area_value = float(
-                    min_area
-                )
-
-                where.append(
-                    "p.area >= %s"
-                )
-
-                values.append(
-                    min_area_value
-                )
-
-            except ValueError:
-                pass
-
-        # =========================================================
-        # MAXIMUM AREA
-        # =========================================================
-
-        if max_area:
-
-            try:
-
-                max_area_value = float(
-                    max_area
-                )
-
-                where.append(
-                    "p.area <= %s"
-                )
-
-                values.append(
-                    max_area_value
-                )
-
-            except ValueError:
-                pass
-
-        # =========================================================
-        # FINAL WHERE
-        # =========================================================
+        # ==========================================================
+        # WHERE SQL
+        # ==========================================================
 
         where_sql = ""
 
         if where:
 
             where_sql = (
-                "WHERE " +
-                " AND ".join(where)
+                "WHERE "
+                + " AND ".join(where)
             )
 
-        # =========================================================
-        # COUNT TOTAL RESULTS
-        # =========================================================
+        # ==========================================================
+        # COUNT RESULTS
+        # ==========================================================
 
         count_sql = f"""
             SELECT COUNT(*) AS total
@@ -1148,12 +1067,50 @@ def properties():
         total = cursor.fetchone()["total"]
 
         total_pages = (
-            total + per_page - 1
-        ) // per_page
+            (total + per_page - 1)
+            // per_page
+        )
 
-        # =========================================================
+        # ==========================================================
+        # SORTING
+        # ==========================================================
+        #
+        # IMPORTANT:
+        # We do NOT put the request value directly
+        # into SQL.
+        #
+        # This whitelist prevents SQL injection.
+        #
+
+        sort_options = {
+
+            "newest":
+                "p.created_at DESC",
+
+            "oldest":
+                "p.created_at ASC",
+
+            "price_low":
+                "p.price ASC",
+
+            "price_high":
+                "p.price DESC",
+
+            "area_low":
+                "p.area ASC",
+
+            "area_high":
+                "p.area DESC"
+        }
+
+        order_by = sort_options.get(
+            sort,
+            "p.created_at DESC"
+        )
+
+        # ==========================================================
         # GET PROPERTIES
-        # =========================================================
+        # ==========================================================
 
         sql = f"""
             SELECT *
@@ -1162,9 +1119,10 @@ def properties():
 
             {where_sql}
 
-            ORDER BY p.created_at DESC
+            ORDER BY {order_by}
 
-            LIMIT %s OFFSET %s
+            LIMIT %s
+            OFFSET %s
         """
 
         property_values = values.copy()
@@ -1181,9 +1139,9 @@ def properties():
 
         properties = cursor.fetchall()
 
-        # =========================================================
-        # RENDER
-        # =========================================================
+        # ==========================================================
+        # RETURN PAGE
+        # ==========================================================
 
         return render_template(
             "properties.html",
@@ -1191,43 +1149,36 @@ def properties():
             properties=properties,
 
             page=page,
-
             total_pages=total_pages,
+            total=total,
 
             property_type=property_type,
-
             purpose=purpose,
-
             location=location,
-
             search=search,
 
             bedrooms=bedrooms,
-
             bathrooms=bathrooms,
 
-            furnished=furnished,
-
             min_price=min_price,
-
             max_price=max_price,
 
             min_area=min_area,
+            max_area=max_area,
 
-            max_area=max_area
+            furnished=furnished,
+
+            sort=sort
         )
 
     except Exception as e:
 
         print(
-            "Properties route error:",
+            "Properties page error:",
             e
         )
 
-        return (
-            "Unable to load properties.",
-            500
-        )
+        return "Unable to load properties", 500
 
     finally:
 
