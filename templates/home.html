@@ -93,11 +93,12 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .hero-content h1 {
-  font-family: var(
-    --font-serif,
-    'Playfair Display',
-    serif
-  );
+  font-family:
+    var(
+      --font-serif,
+      'Playfair Display',
+      serif
+    );
 
   font-size: clamp(36px, 5vw, 62px);
 
@@ -233,68 +234,70 @@ Prestigious Real Estate | Qatar Properties
 
   font-size: 14px;
 
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 
 /* =========================================================
-   PROPERTY SEARCH FILTER TABS
+   PROPERTY SEARCH TYPE TABS
 ========================================================= */
 
-.search-filter-tabs {
+.search-purpose-tabs {
   display: flex;
 
   align-items: center;
 
   gap: 0;
 
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 
-  border-bottom: 1px solid var(--border-color);
+  border-bottom:
+    1px solid var(--border-color);
 }
 
-.search-filter-tab {
-  position: relative;
+.search-purpose-tab {
+  display: inline-flex;
 
-  border: none;
+  align-items: center;
 
-  background: transparent;
+  justify-content: center;
+
+  padding: 11px 22px;
 
   color: var(--text-secondary);
 
-  padding: 12px 24px;
+  background: transparent;
 
-  font-size: 14px;
+  border: none;
+
+  border-bottom:
+    3px solid transparent;
+
+  text-decoration: none;
+
+  font-size: 13px;
 
   font-weight: 700;
 
-  cursor: pointer;
+  transition:
+    all .25s ease;
 
-  transition: all .3s ease;
+  margin-bottom: -1px;
 }
 
-.search-filter-tab:hover {
+.search-purpose-tab:hover {
   color: var(--qatar-maroon);
+
+  background: #faf7f8;
 }
 
-.search-filter-tab.active {
+.search-purpose-tab.active {
   color: var(--qatar-maroon);
-}
 
-.search-filter-tab.active::after {
-  content: "";
+  border-bottom-color:
+    var(--qatar-maroon);
 
-  position: absolute;
-
-  left: 0;
-
-  right: 0;
-
-  bottom: -1px;
-
-  height: 3px;
-
-  background: var(--qatar-maroon);
+  background: #fff;
 }
 
 
@@ -1428,6 +1431,7 @@ Prestigious Real Estate | Qatar Properties
 @media (max-width: 1024px) {
 
   .property-grid-3 {
+
     grid-template-columns:
       repeat(2,1fr);
   }
@@ -1438,28 +1442,38 @@ Prestigious Real Estate | Qatar Properties
 @media (max-width: 640px) {
 
   .search-card {
+
     padding:
       24px 20px;
   }
 
-  /* MOBILE SEARCH TABS */
 
-  .search-filter-tabs {
-    width: 100%;
+  /* SEARCH TABS */
 
-    justify-content: center;
+  .search-purpose-tabs {
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
   }
 
-  .search-filter-tab {
+  .search-purpose-tabs::-webkit-scrollbar {
+
+    display: none;
+  }
+
+  .search-purpose-tab {
+
     flex: 1;
 
+    min-width: 110px;
+
     padding:
-      11px 8px;
+      10px 12px;
 
     font-size: 12px;
-
-    text-align: center;
   }
+
 
   .smart-search-input {
 
@@ -1471,6 +1485,7 @@ Prestigious Real Estate | Qatar Properties
   }
 
   .smart-search-input > i {
+
     display: none;
   }
 
@@ -1562,10 +1577,12 @@ Prestigious Real Estate | Qatar Properties
 @media (max-width: 400px) {
 
   .live-result-title {
+
     font-size: 13px;
   }
 
   .live-result-location {
+
     font-size: 11px;
   }
 
@@ -1662,52 +1679,50 @@ Prestigious Real Estate | Qatar Properties
       </p>
 
 
-      <!-- ===================================================
-           PROPERTY PURPOSE FILTER
-      =================================================== -->
+      <!-- =================================================
+           PROPERTY PURPOSE TABS
+      ================================================= -->
 
-      <div
-        class="search-filter-tabs"
-        id="searchFilterTabs">
+      <div class="search-purpose-tabs">
 
-        <button
-          type="button"
-          class="search-filter-tab active"
-          data-purpose="all">
+        <a
+          href="{{ url_for('properties') }}"
+          class="search-purpose-tab active">
+
           All Properties
-        </button>
 
-        <button
-          type="button"
-          class="search-filter-tab"
-          data-purpose="rent">
+        </a>
+
+
+        <a
+          href="{{ url_for('properties', purpose='Rent') }}"
+          class="search-purpose-tab">
+
           For Rent
-        </button>
 
-        <button
-          type="button"
-          class="search-filter-tab"
-          data-purpose="sale">
+        </a>
+
+
+        <a
+          href="{{ url_for('properties', purpose='Sale') }}"
+          class="search-purpose-tab">
+
           For Sale
-        </button>
+
+        </a>
 
       </div>
 
+
+      <!-- =================================================
+           SEARCH FORM
+      ================================================= -->
 
       <form
         action="{{ url_for('properties') }}"
         method="GET"
         class="smart-search-form"
         id="smartSearchForm">
-
-
-        <!-- Hidden purpose field -->
-
-        <input
-          type="hidden"
-          name="purpose"
-          id="searchPurpose"
-          value="all">
 
 
         <div class="search-wrapper">
@@ -1749,6 +1764,7 @@ Prestigious Real Estate | Qatar Properties
 
       <!-- =====================================================
            POPULAR SEARCHES
+           RENT REMOVED
       ===================================================== -->
 
       <div class="popular-searches">
@@ -1757,23 +1773,28 @@ Prestigious Real Estate | Qatar Properties
           Popular Searches:
         </span>
 
-        <a href="{{ url_for('properties', search='Villa') }}">
+        <a
+          href="{{ url_for('properties', search='Villa') }}">
           Villas
         </a>
 
-        <a href="{{ url_for('properties', search='Apartment') }}">
+        <a
+          href="{{ url_for('properties', search='Apartment') }}">
           Apartments
         </a>
 
-        <a href="{{ url_for('properties', search='Studio') }}">
+        <a
+          href="{{ url_for('properties', search='Studio') }}">
           Studio
         </a>
 
-        <a href="{{ url_for('properties', search='Office') }}">
+        <a
+          href="{{ url_for('properties', search='Office') }}">
           Office
         </a>
 
-        <a href="{{ url_for('properties', search='Lusail') }}">
+        <a
+          href="{{ url_for('properties', search='Lusail') }}">
           Lusail
         </a>
 
@@ -2394,129 +2415,13 @@ document.addEventListener(
 
 
     /* =====================================================
-       PROPERTY PURPOSE FILTER
+       LIVE DATABASE PROPERTY SEARCH
     ===================================================== */
-
-    const filterTabs =
-      document.querySelectorAll(
-        '.search-filter-tab'
-      );
-
-    const searchPurpose =
-      document.getElementById(
-        'searchPurpose'
-      );
 
     const searchInput =
       document.getElementById(
         'propertyLiveSearch'
       );
-
-
-    let selectedPurpose = 'all';
-
-
-    filterTabs.forEach(
-      function (tab) {
-
-        tab.addEventListener(
-          'click',
-          function () {
-
-            filterTabs.forEach(
-              function (item) {
-
-                item.classList.remove(
-                  'active'
-                );
-
-              }
-            );
-
-
-            this.classList.add(
-              'active'
-            );
-
-
-            selectedPurpose =
-              this.dataset.purpose ||
-              'all';
-
-
-            if (searchPurpose) {
-
-              searchPurpose.value =
-                selectedPurpose;
-
-            }
-
-
-            /*
-             * Update placeholder according
-             * to selected purpose.
-             */
-
-            if (searchInput) {
-
-              if (
-                selectedPurpose === 'rent'
-              ) {
-
-                searchInput.placeholder =
-                  'Search rental villas, apartments, studios, Lusail...';
-
-              }
-              else if (
-                selectedPurpose === 'sale'
-              ) {
-
-                searchInput.placeholder =
-                  'Search villas, apartments, land, Lusail...';
-
-              }
-              else {
-
-                searchInput.placeholder =
-                  'Search villas, apartments, studios, Lusail, sea view...';
-
-              }
-
-            }
-
-
-            /*
-             * If the user has already typed
-             * something, immediately refresh
-             * the live search using the new
-             * purpose.
-             */
-
-            if (
-              searchInput &&
-              searchInput.value.trim().length > 0
-            ) {
-
-              clearTimeout(
-                searchTimer
-              );
-
-              performLiveSearch(
-                searchInput.value.trim()
-              );
-
-            }
-
-          }
-        );
-
-      }
-    );
-
-
-    /* =====================================================
-       LIVE DATABASE PROPERTY SEARCH
-    ===================================================== */
 
     const resultsBox =
       document.getElementById(
@@ -2624,33 +2529,12 @@ document.addEventListener(
           data.results.length === 0
         ) {
 
-          let purposeText =
-            'properties';
-
-          if (
-            selectedPurpose === 'rent'
-          ) {
-
-            purposeText =
-              'rental properties';
-
-          }
-          else if (
-            selectedPurpose === 'sale'
-          ) {
-
-            purposeText =
-              'properties for sale';
-
-          }
-
-
           resultsBox.innerHTML = `
 
             <div class="search-no-results">
 
               <strong>
-                No ${purposeText} found
+                No properties found
               </strong>
 
               No matching property was found
@@ -2706,6 +2590,7 @@ document.addEventListener(
                 ).toLocaleString();
 
             }
+
             else {
 
               price =
@@ -2750,9 +2635,11 @@ document.addEventListener(
                   <div
                     class="live-result-title"
                   >
+
                     ${escapeHTML(
                       property.title
                     )}
+
                   </div>
 
 
@@ -2775,8 +2662,11 @@ document.addEventListener(
                     <span
                       class="live-result-price"
                     >
+
                       ${price}
+
                     </span>
+
 
                     ${
                       property.property_type
@@ -2790,6 +2680,7 @@ document.addEventListener(
                       : ''
                     }
 
+
                     ${
                       property.bedrooms
                       ? `
@@ -2802,6 +2693,7 @@ document.addEventListener(
                       `
                       : ''
                     }
+
 
                     ${
                       property.area
@@ -2827,9 +2719,11 @@ document.addEventListener(
                     ${badgeClass}
                   "
                 >
+
                   FOR ${escapeHTML(
                     purpose
                   ).toUpperCase()}
+
                 </span>
 
               </a>
@@ -2885,25 +2779,8 @@ document.addEventListener(
         showLoading();
 
 
-        /*
-         * Send the selected purpose to
-         * the backend.
-         *
-         * all  = all properties
-         * rent = rental properties
-         * sale = properties for sale
-         */
-
-        const searchURL =
-          `/property_search_suggestions?q=${
-            encodeURIComponent(keyword)
-          }&purpose=${
-            encodeURIComponent(selectedPurpose)
-          }`;
-
-
         fetch(
-          searchURL,
+          `/property_search_suggestions?q=${encodeURIComponent(keyword)}`,
           {
             method: 'GET',
 
@@ -3007,6 +2884,12 @@ document.addEventListener(
           }
 
 
+          /*
+             Wait briefly after the user
+             stops typing before querying
+             the database.
+          */
+
           searchTimer =
             setTimeout(
               function () {
@@ -3016,7 +2899,7 @@ document.addEventListener(
                 );
 
               },
-              10
+              250
             );
 
         }
@@ -3034,9 +2917,6 @@ document.addEventListener(
           if (
             !event.target.closest(
               '.search-wrapper'
-            ) &&
-            !event.target.closest(
-              '.search-filter-tabs'
             )
           ) {
 
@@ -3148,7 +3028,6 @@ document.addEventListener(
         document.createElement(
           'div'
         );
-
 
       dot.classList.add(
         'dot'
