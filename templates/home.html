@@ -342,7 +342,7 @@ Prestigious Real Estate | Qatar Properties
 
   gap: 28px;
 
-  min-height: 460px;
+  min-height: 430px;
 
   transition:
     opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -472,24 +472,24 @@ Prestigious Real Estate | Qatar Properties
 
 
 /* ==================================
-   SECOND RECTANGLE - PROPERTY INFO
+   SECOND RECTANGLE
+   SHORTER + TITLE/PRICE SAME LINE
 ================================== */
 
 .property-info {
   position: relative;
 
-  padding: 22px;
-
   /*
-     Extra top space so the title does not
-     collide with the price.
+     Reduced height.
+     Title and price now sit directly
+     on the same top horizontal line.
   */
-  padding-top: 58px;
+  min-height: 135px;
+
+  padding: 18px 20px 16px;
 
   display: flex;
   flex-direction: column;
-
-  flex-grow: 1;
 
   background: #1F2A44;
 
@@ -498,34 +498,7 @@ Prestigious Real Estate | Qatar Properties
 
 
 /* ==================================
-   PRICE
-   TOP RIGHT OF SECOND RECTANGLE
-================================== */
-
-.property-info .property-price {
-  position: absolute;
-
-  top: 16px;
-  right: 20px;
-
-  color: #D4AF37;
-
-  font-size: 19px;
-
-  font-weight: 800;
-
-  line-height: 1.2;
-
-  white-space: nowrap;
-
-  margin: 0;
-
-  z-index: 2;
-}
-
-
-/* ==================================
-   PROPERTY TITLE
+   TITLE - TOP LEFT
 ================================== */
 
 .property-info h3 {
@@ -535,13 +508,52 @@ Prestigious Real Estate | Qatar Properties
 
   color: #ffffff;
 
-  margin: 0 0 6px 0;
+  margin: 0;
+
+  padding-right: 145px;
+
+  line-height: 1.25;
 
   white-space: nowrap;
 
   overflow: hidden;
 
   text-overflow: ellipsis;
+
+  /*
+     Keeps title on the same vertical
+     starting line as the price.
+  */
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ==================================
+   PRICE - TOP RIGHT
+================================== */
+
+.property-info .property-price {
+  position: absolute;
+
+  top: 18px;
+  right: 20px;
+
+  color: #D4AF37;
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  line-height: 1.25;
+
+  white-space: nowrap;
+
+  margin: 0;
+
+  z-index: 2;
+
+  text-align: right;
 }
 
 
@@ -554,7 +566,9 @@ Prestigious Real Estate | Qatar Properties
 
   color: rgba(255,255,255,.75);
 
-  margin-bottom: 14px;
+  margin: 8px 0 0;
+
+  line-height: 1.35;
 }
 
 
@@ -567,11 +581,11 @@ Prestigious Real Estate | Qatar Properties
 
   flex-wrap: wrap;
 
-  gap: 10px;
+  gap: 8px;
 
   border: none;
 
-  padding: 12px 0 0;
+  padding: 10px 0 0;
 
   margin-top: auto;
 }
@@ -585,11 +599,11 @@ Prestigious Real Estate | Qatar Properties
 
   color: #f8fafc;
 
-  padding: 8px 12px;
+  padding: 6px 10px;
 
   border-radius: 6px;
 
-  font-size: 12px;
+  font-size: 11px;
 
   font-weight: 600;
 }
@@ -666,7 +680,7 @@ Prestigious Real Estate | Qatar Properties
 
   justify-content: center;
 
-  margin-top: 35px;
+  margin-top: 30px;
 }
 
 .dots-container {
@@ -1090,42 +1104,54 @@ Prestigious Real Estate | Qatar Properties
   /* MOBILE SECOND RECTANGLE */
 
   .property-info {
-    padding: 18px;
+    min-height: 125px;
 
-    padding-top: 54px;
+    padding: 16px 16px 14px;
   }
 
 
-  /* MOBILE PRICE TOP RIGHT */
-
-  .property-info .property-price {
-    top: 14px;
-
-    right: 16px;
-
-    font-size: 17px;
-  }
-
+  /* MOBILE TITLE - TOP LEFT */
 
   .property-info h3 {
     font-size: 17px;
+
+    padding-right: 125px;
+
+    line-height: 1.25;
+  }
+
+
+  /* MOBILE PRICE - TOP RIGHT */
+
+  .property-info .property-price {
+    top: 16px;
+
+    right: 16px;
+
+    font-size: 16px;
+
+    line-height: 1.25;
   }
 
 
   .property-info .location {
     font-size: 12px;
+
+    margin-top: 7px;
   }
 
 
   .property-meta {
     gap: 6px;
+
+    padding-top: 8px;
   }
 
 
   .property-meta span {
-    padding: 7px 9px;
+    padding: 6px 8px;
 
-    font-size: 11px;
+    font-size: 10px;
   }
 
 }
@@ -1381,6 +1407,13 @@ Prestigious Real Estate | Qatar Properties
           <div class="property-info">
 
 
+            <!-- TITLE TOP LEFT -->
+
+            <h3>
+              {{ property.title }}
+            </h3>
+
+
             <!-- PRICE TOP RIGHT -->
 
             <div class="property-price">
@@ -1398,15 +1431,14 @@ Prestigious Real Estate | Qatar Properties
             </div>
 
 
-            <h3>
-              {{ property.title }}
-            </h3>
-
+            <!-- LOCATION -->
 
             <p class="location">
               📍 {{ property.location }}
             </p>
 
+
+            <!-- PROPERTY DETAILS -->
 
             <div class="property-meta">
 
