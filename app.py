@@ -888,124 +888,115 @@ def properties():
 
 
 
-# ============================================================
-# FAST LIVE PROPERTY SEARCH API
-# Used by homepage smart search autocomplete
-# ============================================================
-
 @app.route("/property_search_suggestions")
 def property_search_suggestions():
 
     search = request.args.get("q", "").strip()
 
-    # Ignore empty searches
+    # Do not search for empty/very short requests
     if not search:
-        return jsonify({"results": []})
-
-    # Optional: don't query database for extremely short terms
-    if len(search) < 2:
-        return jsonify({"results": []})
-
-    conn = None
-    cursor = None
-
-    try:
-
-        conn = get_db_connection()
-
-        cursor = conn.cursor(dictionary=True)
-
-        keyword = "%" + search + "%"
-
-        sql = """
-            SELECT
-                p.id,
-                p.title,
-                p.property_type,
-                p.purpose,
-                p.location,
-                p.price,
-                p.bedrooms,
-                p.bathrooms,
-                p.area,
-                p.main_image
-
-            FROM properties p
-
-            WHERE
-                p.title LIKE %s
-
-                OR p.property_type LIKE %s
-
-                OR p.location LIKE %s
-
-                OR p.purpose LIKE %s
-
-                OR p.address LIKE %s
-
-                OR EXISTS (
-                    SELECT 1
-                    FROM property_features pf
-                    WHERE
-                        pf.property_id = p.id
-                        AND pf.feature_name LIKE %s
-                )
-
-            ORDER BY
-                CASE
-                    WHEN p.title LIKE %s THEN 1
-                    WHEN p.location LIKE %s THEN 2
-                    WHEN p.property_type LIKE %s THEN 3
-                    WHEN p.purpose LIKE %s THEN 4
-                    ELSE 5
-                END,
-                p.created_at DESC
-
-            LIMIT 6
-        """
-
-        values = (
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-
-            keyword,
-            keyword,
-            keyword,
-            keyword
-        )
-
-        cursor.execute(sql, values)
-
-        results = cursor.fetchall()
-
         return jsonify({
-            "results": results
+            "results": []
         })
 
-    except Exception as e:
+    conn = get_db_connection()
 
-        print(
-            "PROPERTY LIVE SEARCH ERROR:",
-            e
-        )
+    cursor = conn.cursor(dictionary=True)
 
-        return jsonify({
-            "results": [],
-            "error": "Search failed"
-        }), 500
+    keyword = "%" + search + "%"
 
-    finally:
+    sql = """
+        SELECT
+            p.id,
+            p.title,
+            p.property_type,
+            p.purpose,
+            p.location,
+            p.price,
+            p.bedrooms,
+            p.bathrooms,
+            p.area,
+            p.main_image
 
-        if cursor:
-            cursor.close()
+        FROM properties p
 
-        if conn:
-            conn.close()
+        WHERE
+            p.title LIKE %s
 
+            OR p.property_type LIKE %s
+
+            OR p.location LIKE %s
+
+            OR p.purpose LIKE %s
+
+            OR p.address LIKE %s
+
+            OR p.description LIKE %s
+
+            OR p.furnished LIKE %s
+
+            OR EXISTS (
+                SELECT 1
+                FROM property_features pf
+
+                WHERE
+                    pf.property_id = p.id
+
+                    AND pf.feature_name LIKE %s
+            )
+
+        ORDER BY
+            CASE
+
+                WHEN p.title LIKE %s
+                THEN 1
+
+                WHEN p.location LIKE %s
+                THEN 2
+
+                WHEN p.property_type LIKE %s
+                THEN 3
+
+                ELSE 4
+
+            END,
+
+            p.created_at DESC
+
+        LIMIT 8
+    """
+
+    values = [
+
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+
+        keyword,
+        keyword,
+        keyword
+
+    ]
+
+    cursor.execute(
+        sql,
+        values
+    )
+
+    results = cursor.fetchall()
+
+    cursor.close()
+
+    conn.close()
+
+    return jsonify({
+        "results": results
+    })
 
 
 
