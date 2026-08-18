@@ -1,17 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}
-Prestigious Real Estate | Qatar Properties
+Prestigious Real Estate | Qatar Luxury Properties
 {% endblock %}
 
 {% block content %}
 
 <style>
-
 /* =========================================================
-   HOME PAGE
+   PRESTIGIOUS REAL ESTATE HOME & LIVE SEARCH STYLES
 ========================================================= */
-
 :root {
   --qatar-maroon: #8A1538;
   --qatar-maroon-dark: #670D28;
@@ -22,11 +20,9 @@ Prestigious Real Estate | Qatar Properties
   --border-color: #e2e8f0;
 }
 
-
 /* =========================================================
-   HERO
+   HERO SECTION
 ========================================================= */
-
 .hero {
   position: relative;
   height: 80vh;
@@ -48,13 +44,10 @@ Prestigious Real Estate | Qatar Properties
   inset: 0;
   width: 100%;
   height: 100%;
-
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-
   opacity: 0;
-
   transition: opacity 1.2s ease-in-out;
 }
 
@@ -62,27 +55,18 @@ Prestigious Real Estate | Qatar Properties
   opacity: 1;
 }
 
-
-/* =========================================================
-   HERO OVERLAY
-========================================================= */
-
 .hero-overlay {
   position: absolute;
   inset: 0;
-
   background: linear-gradient(
     180deg,
-    rgba(15, 23, 42, 0.10) 0%,
-    rgba(15, 23, 42, 0.25) 100%
+    rgba(15, 23, 42, 0.20) 0%,
+    rgba(15, 23, 42, 0.60) 100%
   );
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
-
   padding: 0 24px;
 }
 
@@ -93,153 +77,94 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .hero-content h1 {
-  font-family: var(
-    --font-serif,
-    'Playfair Display',
-    serif
-  );
-
+  font-family: var(--font-serif, 'Playfair Display', serif);
   font-size: clamp(36px, 5vw, 62px);
-
   font-weight: 800;
-
   line-height: 1.15;
-
   margin-bottom: 20px;
-
-  text-shadow:
-    0 2px 15px rgba(0,0,0,.7),
-    0 4px 30px rgba(0,0,0,.5);
+  text-shadow: 0 2px 15px rgba(0,0,0,.7), 0 4px 30px rgba(0,0,0,.5);
 }
 
 .hero-content p {
   font-size: clamp(16px, 2vw, 20px);
-
   color: white;
-
   margin-bottom: 36px;
-
   font-weight: 500;
-
-  text-shadow:
-    0 2px 10px rgba(0,0,0,.8);
+  text-shadow: 0 2px 10px rgba(0,0,0,.8);
 }
 
 .hero-buttons {
   display: flex;
-
   gap: 16px;
-
   justify-content: center;
-
   flex-wrap: wrap;
 }
 
 .hero-buttons a {
   padding: 14px 32px;
-
-  border-radius: 0;
-
+  border-radius: 6px;
   font-size: 15px;
-
   font-weight: 700;
-
   text-decoration: none;
-
   transition: all .3s ease;
 }
 
 .primary-btn {
   background: var(--qatar-maroon);
-
   color: white;
-
-  box-shadow:
-    0 8px 20px rgba(138,21,56,.4);
+  box-shadow: 0 8px 20px rgba(138,21,56,.4);
 }
 
 .primary-btn:hover {
   background: var(--qatar-maroon-dark);
-
   transform: translateY(-2px);
+  color: white;
 }
 
 .outline-btn {
   background: rgba(15,23,42,.35);
-
   color: white;
-
   border: 2px solid white;
-
   backdrop-filter: blur(4px);
 }
 
 .outline-btn:hover {
   background: white;
-
   color: var(--navy-dark);
-
   transform: translateY(-2px);
 }
 
-
 /* =========================================================
-   SMART SEARCH
+   SMART LIVE SEARCH CONTAINER
 ========================================================= */
-
 .search-box {
   margin-top: -60px;
-
   position: relative;
-
   z-index: 50;
-
   margin-bottom: 70px;
 }
 
 .search-card {
   background: white;
-
-  border-radius: 0;
-
+  border-radius: 14px;
   padding: 36px 40px;
-
-  box-shadow:
-    0 20px 40px rgba(15,23,42,.08);
-
-  border:
-    1px solid var(--border-color);
+  box-shadow: 0 20px 45px rgba(15,23,42,.10);
+  border: 1px solid var(--border-color);
 }
 
 .search-card h2 {
-  font-family:
-    var(
-      --font-serif,
-      'Playfair Display',
-      serif
-    );
-
+  font-family: var(--font-serif, 'Playfair Display', serif);
   color: var(--navy-dark);
-
   font-size: 26px;
-
   font-weight: 700;
-
   margin-bottom: 6px;
 }
 
 .search-card p {
   color: var(--text-secondary);
-
   font-size: 14px;
-
   margin-bottom: 24px;
 }
-
-
-/* =========================================================
-   SEARCH FORM
-========================================================= */
 
 .smart-search-form {
   width: 100%;
@@ -247,58 +172,38 @@ Prestigious Real Estate | Qatar Properties
 
 .search-wrapper {
   position: relative;
-
   width: 100%;
 }
 
 .smart-search-input {
   display: flex;
-
   align-items: center;
-
   background: #f8fafc;
-
-  border:
-    2px solid var(--border-color);
-
-  padding:
-    6px 6px 6px 20px;
-
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 6px 6px 6px 18px;
   transition: all .3s ease;
 }
 
 .smart-search-input:focus-within {
-  border-color:
-    var(--qatar-maroon);
-
+  border-color: var(--qatar-maroon);
   background: white;
-
-  box-shadow:
-    0 0 0 4px
-    rgba(138,21,56,.10);
+  box-shadow: 0 0 0 4px rgba(138,21,56,.10);
 }
 
 .smart-search-input > i {
   color: var(--text-secondary);
-
   font-size: 18px;
-
   margin-right: 14px;
 }
 
 .smart-search-input input {
   border: none;
-
   background: transparent;
-
   width: 100%;
-
   font-size: 15px;
-
   color: var(--text-primary);
-
   outline: none;
-
   min-width: 0;
 }
 
@@ -306,63 +211,53 @@ Prestigious Real Estate | Qatar Properties
   color: #94a3b8;
 }
 
+.search-spinner {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-top-color: var(--qatar-maroon);
+  border-radius: 50%;
+  animation: spinSearch 0.6s linear infinite;
+  margin-right: 12px;
+}
+
+@keyframes spinSearch {
+  to { transform: rotate(360deg); }
+}
+
 .smart-search-input button {
-  background:
-    var(--qatar-maroon);
-
+  background: var(--qatar-maroon);
   color: white;
-
   border: none;
-
   padding: 14px 28px;
-
-  border-radius: 0;
-
+  border-radius: 8px;
   font-weight: 700;
-
   font-size: 14px;
-
   cursor: pointer;
-
   white-space: nowrap;
-
   transition: all .3s ease;
 }
 
 .smart-search-input button:hover {
-  background:
-    var(--qatar-maroon-dark);
+  background: var(--qatar-maroon-dark);
 }
 
-
 /* =========================================================
-   LIVE SEARCH RESULTS
+   LIVE RESULTS POPUP PANEL
 ========================================================= */
-
 .live-search-results {
-
   position: absolute;
-
-  top: calc(100% + 6px);
-
+  top: calc(100% + 8px);
   left: 0;
-
   right: 0;
-
   background: white;
-
-  border:
-    1px solid var(--border-color);
-
-  box-shadow:
-    0 18px 40px rgba(15,23,42,.16);
-
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 18px 45px rgba(15,23,42,.18);
   z-index: 1000;
-
   display: none;
-
-  max-height: 430px;
-
+  max-height: 440px;
   overflow-y: auto;
 }
 
@@ -370,1230 +265,665 @@ Prestigious Real Estate | Qatar Properties
   display: block;
 }
 
-
-/* =========================================================
-   SEARCH RESULT ITEM
-========================================================= */
-
 .live-result-item {
-
   display: flex;
-
   align-items: center;
-
   gap: 14px;
-
-  padding: 13px 16px;
-
-  border-bottom:
-    1px solid #f1f5f9;
-
+  padding: 13px 18px;
+  border-bottom: 1px solid #f1f5f9;
   text-decoration: none;
-
   color: inherit;
-
   cursor: pointer;
-
-  transition:
-    background .2s ease;
+  transition: background .2s ease;
 }
 
 .live-result-item:last-child {
   border-bottom: none;
 }
 
-.live-result-item:hover {
+.live-result-item:hover,
+.live-result-item.selected {
   background: #f8fafc;
 }
 
-
-/* RESULT IMAGE */
-
 .live-result-image {
-
-  width: 62px;
-
-  height: 55px;
-
+  width: 66px;
+  height: 56px;
   flex-shrink: 0;
-
   overflow: hidden;
-
+  border-radius: 8px;
   background: #e2e8f0;
 }
 
 .live-result-image img {
-
   width: 100%;
-
   height: 100%;
-
   object-fit: cover;
 }
 
-
-/* RESULT INFORMATION */
-
 .live-result-info {
-
   min-width: 0;
-
   flex: 1;
 }
 
 .live-result-title {
-
-  font-size: 14px;
-
-  font-weight: 800;
-
+  font-size: 14.5px;
+  font-weight: 700;
   color: var(--navy-dark);
-
-  margin-bottom: 4px;
-
+  margin-bottom: 3px;
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
 
+.live-result-title mark,
+.live-result-location mark {
+  background: #fef08a;
+  color: #854d0e;
+  padding: 0 3px;
+  border-radius: 3px;
+}
+
 .live-result-location {
-
-  font-size: 12px;
-
+  font-size: 12.5px;
   color: var(--text-secondary);
-
   margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .live-result-details {
-
   display: flex;
-
   align-items: center;
-
-  gap: 8px;
-
+  gap: 10px;
   flex-wrap: wrap;
-
-  font-size: 11px;
-
+  font-size: 11.5px;
   color: #64748b;
 }
 
 .live-result-price {
-
-  color:
-    var(--qatar-maroon);
-
+  color: var(--qatar-maroon);
   font-weight: 800;
 }
 
-
-/* RESULT BADGE */
-
 .live-result-badge {
-
-  align-self: flex-start;
-
-  padding: 4px 8px;
-
-  font-size: 9px;
-
+  align-self: center;
+  padding: 4px 10px;
+  font-size: 10px;
   font-weight: 800;
-
   color: white;
-
   white-space: nowrap;
-
-  background:
-    var(--qatar-maroon);
+  border-radius: 4px;
+  background: var(--qatar-maroon);
 }
 
 .live-result-badge.rent {
-  background:
-    var(--navy-dark);
+  background: var(--navy-dark);
 }
 
-
-/* =========================================================
-   SEARCH STATES
-========================================================= */
-
-.search-state {
-
-  padding: 20px;
-
-  text-align: center;
-
-  color: var(--text-secondary);
-
-  font-size: 13px;
-}
-
-.search-state i {
-  margin-right: 6px;
-}
-
+.search-state,
 .search-no-results {
-
-  padding: 24px;
-
+  padding: 26px 20px;
   text-align: center;
-
   color: var(--text-secondary);
+  font-size: 13.5px;
 }
 
 .search-no-results strong {
-
   display: block;
-
   color: var(--navy-dark);
-
-  margin-bottom: 5px;
+  font-size: 15px;
+  margin-bottom: 4px;
 }
 
-
-/* =========================================================
-   POPULAR SEARCHES
-========================================================= */
-
 .popular-searches {
-
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   flex-wrap: wrap;
-
   margin-top: 20px;
-
   font-size: 13px;
 }
 
 .popular-searches span {
-
-  color:
-    var(--text-secondary);
-
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
 .popular-searches a {
-
-  color:
-    var(--navy-dark);
-
+  color: var(--navy-dark);
   text-decoration: none;
-
   background: #f1f5f9;
-
   padding: 5px 14px;
-
-  border-radius: 0;
-
+  border-radius: 20px;
   font-weight: 500;
-
-  transition: all .3s ease;
+  transition: all .2s ease;
 }
 
 .popular-searches a:hover {
-
-  background:
-    var(--qatar-maroon);
-
+  background: var(--qatar-maroon);
   color: white;
 }
 
-
 /* =========================================================
-   SECTION TITLE
+   FEATURED PROPERTIES SECTION
 ========================================================= */
-
 .section-title {
-
   text-align: center;
-
   max-width: 650px;
-
-  margin:
-    0 auto 50px auto;
+  margin: 0 auto 50px auto;
 }
 
 .section-title h2 {
-
-  font-family:
-    var(
-      --font-serif,
-      'Playfair Display',
-      serif
-    );
-
-  color:
-    var(--navy-dark);
-
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  color: var(--navy-dark);
   font-size: 34px;
-
   font-weight: 700;
-
   margin-bottom: 12px;
 }
 
 .section-title p {
-
-  color:
-    var(--text-secondary);
-
+  color: var(--text-secondary);
   font-size: 15px;
 }
 
-
-/* =========================================================
-   FEATURED PROPERTIES
-========================================================= */
-
 .featured-properties {
-
-  padding:
-    40px 0 80px;
+  padding: 40px 0 80px;
 }
 
 .property-slideshow-wrapper {
-
   position: relative;
-
   overflow: hidden;
 }
 
 .property-grid-3 {
-
   display: grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
+  grid-template-columns: repeat(3,1fr);
   gap: 28px;
-
   min-height: 430px;
-
-  transition:
-    opacity .6s
-    cubic-bezier(.4,0,.2,1);
+  transition: opacity .6s cubic-bezier(.4,0,.2,1);
 }
 
-.property-grid-3.fade-out {
-  opacity: 0;
-}
-
-.property-grid-3.fade-in {
-  opacity: 1;
-}
-
-
-/* =========================================================
-   PROPERTY CARD
-========================================================= */
+.property-grid-3.fade-out { opacity: 0; }
+.property-grid-3.fade-in { opacity: 1; }
 
 .property-card {
-
   display: none;
-
   background: white;
-
   overflow: hidden;
-
-  border:
-    1px solid var(--border-color);
-
-  box-shadow:
-    0 6px 18px
-    rgba(15,23,42,.04);
-
-  transition:
-    all .4s ease;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 18px rgba(15,23,42,.04);
+  transition: all .4s ease;
 }
 
 .property-card.active-card {
-
   display: flex;
-
   flex-direction: column;
 }
 
 .property-card:hover {
-
-  transform:
-    translateY(-6px);
-
-  box-shadow:
-    0 16px 30px
-    rgba(15,23,42,.12);
-
-  border-color:
-    var(--gold-accent);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 30px rgba(15,23,42,.12);
+  border-color: var(--gold-accent);
 }
 
-
-/* =========================================================
-   FEATURED IMAGE
-========================================================= */
-
 .property-image-link {
-
   display: block;
-
   width: 100%;
-
   text-decoration: none;
-
   color: inherit;
 }
 
 .property-image {
-
   position: relative;
-
   height: 240px;
-
   overflow: hidden;
-
   background: #f4f6f9;
 }
 
 .property-image img {
-
   width: 100%;
-
   height: 100%;
-
   object-fit: cover;
-
-  transition:
-    transform .6s ease;
+  transition: transform .6s ease;
 }
 
-.property-image-link:hover
-.property-image img {
-
-  transform:
-    scale(1.08);
+.property-image-link:hover .property-image img {
+  transform: scale(1.08);
 }
-
-
-/* =========================================================
-   STATUS
-========================================================= */
 
 .property-status {
-
   position: absolute;
-
   top: 14px;
-
   left: 14px;
-
-  background:
-    var(--qatar-maroon);
-
+  background: var(--qatar-maroon);
   color: white;
-
-  padding:
-    4px 12px;
-
+  padding: 4px 12px;
   font-size: 11px;
-
   font-weight: 800;
-
+  border-radius: 4px;
   letter-spacing: .5px;
 }
 
 .property-status.rent {
-
-  background:
-    var(--navy-dark);
+  background: var(--navy-dark);
 }
 
-
-/* =========================================================
-   FEATURED PROPERTY INFO
-========================================================= */
-
 .property-info {
-
   position: relative;
-
   min-height: 135px;
-
-  padding:
-    18px 20px 16px;
-
+  padding: 18px 20px 16px;
   display: flex;
-
   flex-direction: column;
-
-  background:
-    #1F2A44;
-
+  background: #1F2A44;
   color: white;
 }
 
 .property-info h3 {
-
   font-size: 18px;
-
   font-weight: 700;
-
   color: white;
-
   margin: 0;
-
   padding-right: 145px;
-
   line-height: 1.25;
-
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
 
 .property-price {
-
   position: absolute;
-
   top: 18px;
-
   right: 20px;
-
-  color:
-    var(--gold-accent);
-
+  color: var(--gold-accent);
   font-size: 18px;
-
   font-weight: 800;
-
   white-space: nowrap;
 }
 
 .property-info .location {
-
   font-size: 13px;
-
-  color:
-    rgba(255,255,255,.75);
-
-  margin:
-    8px 0 0;
+  color: rgba(255,255,255,.75);
+  margin: 8px 0 0;
 }
 
 .property-meta {
-
   display: flex;
-
   flex-wrap: wrap;
-
   gap: 8px;
-
-  padding:
-    10px 0 0;
-
+  padding: 10px 0 0;
   margin-top: auto;
 }
 
 .property-meta span {
-
-  background:
-    rgba(255,255,255,.08);
-
-  border:
-    1px solid rgba(255,255,255,.12);
-
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
   color: #f8fafc;
-
-  padding:
-    6px 10px;
-
+  padding: 6px 10px;
   border-radius: 6px;
-
   font-size: 11px;
-
   font-weight: 600;
 }
 
-
-/* =========================================================
-   SLIDER BUTTONS
-========================================================= */
-
 .slider-btn {
-
   background: white;
-
-  border:
-    1px solid var(--border-color);
-
+  border: 1px solid var(--border-color);
   width: 46px;
-
   height: 46px;
-
+  border-radius: 50%;
   font-size: 20px;
-
-  color:
-    var(--navy-dark);
-
+  color: var(--navy-dark);
   cursor: pointer;
-
   position: absolute;
-
   top: 40%;
-
-  transform:
-    translateY(-50%);
-
+  transform: translateY(-50%);
   z-index: 10;
-
-  box-shadow:
-    0 4px 12px rgba(0,0,0,.1);
-
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
   transition: all .3s ease;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 }
 
 .slider-btn:hover {
-
-  background:
-    var(--qatar-maroon);
-
+  background: var(--qatar-maroon);
   color: white;
-
-  border-color:
-    var(--qatar-maroon);
+  border-color: var(--qatar-maroon);
 }
 
-.slider-btn.prev {
-  left: 10px;
-}
-
-.slider-btn.next {
-  right: 10px;
-}
-
-
-/* =========================================================
-   DOTS
-========================================================= */
+.slider-btn.prev { left: 10px; }
+.slider-btn.next { right: 10px; }
 
 .slideshow-controls {
-
   display: flex;
-
   justify-content: center;
-
   margin-top: 30px;
 }
 
 .dots-container {
-
   display: flex;
-
   gap: 10px;
-
   align-items: center;
 }
 
 .dot {
-
   width: 32px;
-
   height: 4px;
-
   background: #cbd5e1;
-
+  border-radius: 2px;
   cursor: pointer;
-
   transition: all .3s ease;
 }
 
 .dot.active {
-
-  background:
-    var(--qatar-maroon);
-
+  background: var(--qatar-maroon);
   width: 52px;
 }
 
-
-/* =========================================================
-   VIEW ALL
-========================================================= */
-
 .view-all {
-
   text-align: center;
-
   margin-top: 45px;
 }
 
 .view-all a {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 10px;
-
-  padding:
-    16px 38px;
-
-  background:
-    var(--qatar-maroon);
-
+  padding: 16px 38px;
+  background: var(--qatar-maroon);
   color: white;
-
   font-weight: 800;
-
+  border-radius: 6px;
   font-size: 15px;
-
   text-decoration: none;
-
   transition: all .3s ease;
 }
 
 .view-all a:hover {
-
-  background:
-    var(--qatar-maroon-dark);
-
-  transform:
-    translateY(-3px);
+  background: var(--qatar-maroon-dark);
+  transform: translateY(-3px);
+  color: white;
 }
-
 
 /* =========================================================
    WHY SECTION
 ========================================================= */
-
 .why-section {
-
-  background:
-    #f1f5f9;
-
-  padding:
-    90px 0;
+  background: #f1f5f9;
+  padding: 90px 0;
 }
 
 .why-grid {
-
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit,minmax(240px,1fr));
-
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
   gap: 24px;
 }
 
 .why-card {
-
   background: white;
-
-  padding:
-    36px 28px;
-
+  padding: 36px 28px;
   text-align: center;
-
-  border:
-    1px solid var(--border-color);
-
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
   transition: all .3s ease;
 }
 
 .why-card:hover {
-
-  transform:
-    translateY(-5px);
-
-  box-shadow:
-    0 12px 25px rgba(0,0,0,.06);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,.06);
 }
 
 .why-icon {
-
   font-size: 38px;
-
   margin-bottom: 20px;
 }
 
 .why-card h3 {
-
   font-size: 18px;
-
-  color:
-    var(--navy-dark);
-
+  color: var(--navy-dark);
   margin-bottom: 10px;
 }
 
 .why-card p {
-
-  color:
-    var(--text-secondary);
-
+  color: var(--text-secondary);
   font-size: 14px;
-
   line-height: 1.5;
 }
 
-
 /* =========================================================
-   CATEGORIES
+   CATEGORIES SECTION
 ========================================================= */
-
 .categories-section {
-
-  padding:
-    90px 0;
+  padding: 90px 0;
 }
 
 .category-grid {
-
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit,minmax(260px,1fr));
-
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
   gap: 24px;
 }
 
 .category-card {
-
   position: relative;
-
   height: 320px;
-
   overflow: hidden;
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,.08);
-
-  background:
-    #f4f6f9;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  background: #f4f6f9;
 }
 
 .category-card img {
-
   width: 100%;
-
   height: 100%;
-
   object-fit: cover;
-
-  transition:
-    transform .6s ease;
+  transition: transform .6s ease;
 }
 
 .category-card:hover img {
-
-  transform:
-    scale(1.08);
+  transform: scale(1.08);
 }
 
 .category-overlay {
-
   position: absolute;
-
   inset: 0;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(31,42,68,.15),
-      rgba(15,23,42,.75)
-    );
-
+  background: linear-gradient(
+    180deg,
+    rgba(31,42,68,.15),
+    rgba(15,23,42,.75)
+  );
   display: flex;
-
   flex-direction: column;
-
   justify-content: flex-end;
-
   padding: 28px;
-
   color: white;
 }
 
 .category-overlay h3 {
-
-  font-family:
-    var(
-      --font-serif,
-      'Playfair Display',
-      serif
-    );
-
+  font-family: var(--font-serif, 'Playfair Display', serif);
   font-size: 22px;
-
   margin-bottom: 6px;
 }
 
 .category-overlay p {
-
   font-size: 13px;
-
-  color:
-    rgba(255,255,255,.95);
-
+  color: rgba(255,255,255,.95);
   margin-bottom: 16px;
 }
 
 .category-overlay a {
-
   align-self: flex-start;
-
-  padding:
-    6px 18px;
-
-  background:
-    var(--gold-accent);
-
+  padding: 6px 18px;
+  background: var(--gold-accent);
   color: white;
-
   font-size: 12px;
-
   font-weight: 700;
-
+  border-radius: 4px;
   text-decoration: none;
 }
 
 .category-overlay a:hover {
-
-  background:
-    #b59226;
+  background: #b59226;
+  color: white;
 }
 
-
 /* =========================================================
-   TESTIMONIALS
+   TESTIMONIALS SECTION
 ========================================================= */
-
 .testimonial-section {
-
   background: white;
-
-  padding:
-    90px 0;
-
-  border-top:
-    1px solid var(--border-color);
+  padding: 90px 0;
+  border-top: 1px solid var(--border-color);
 }
 
 .testimonial-grid {
-
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit,minmax(300px,1fr));
-
+  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
   gap: 24px;
 }
 
 .testimonial-card {
-
-  background:
-    #f8fafc;
-
-  padding:
-    32px;
-
-  border:
-    1px solid var(--border-color);
+  background: #f8fafc;
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
 }
 
 .testimonial-card .stars {
-
-  color:
-    var(--gold-accent);
-
+  color: var(--gold-accent);
   font-size: 16px;
-
   margin-bottom: 14px;
 }
 
 .testimonial-card p {
-
-  color:
-    var(--text-primary);
-
+  color: var(--text-primary);
   font-size: 14px;
-
   font-style: italic;
-
   margin-bottom: 20px;
-
   line-height: 1.6;
 }
 
 .testimonial-card h4 {
-
   font-size: 15px;
-
-  color:
-    var(--navy-dark);
+  color: var(--navy-dark);
+  margin-bottom: 2px;
 }
 
 .testimonial-card span {
-
   font-size: 12px;
-
-  color:
-    var(--text-secondary);
+  color: var(--text-secondary);
 }
-
 
 /* =========================================================
    RESPONSIVE
 ========================================================= */
-
 @media (max-width: 1024px) {
-
   .property-grid-3 {
-    grid-template-columns:
-      repeat(2,1fr);
+    grid-template-columns: repeat(2,1fr);
   }
-
 }
 
-
 @media (max-width: 640px) {
-
   .search-card {
-    padding:
-      24px 20px;
+    padding: 24px 20px;
   }
-
   .smart-search-input {
-
     flex-direction: column;
-
     padding: 12px;
-
     gap: 12px;
   }
-
   .smart-search-input > i {
     display: none;
   }
-
   .smart-search-input input {
-
     text-align: center;
-
     width: 100%;
-
     padding: 6px;
   }
-
   .smart-search-input button {
-
     width: 100%;
   }
-
   .live-search-results {
-
     max-height: 360px;
   }
-
   .live-result-item {
-
-    padding:
-      11px 12px;
-
+    padding: 11px 12px;
     gap: 10px;
   }
-
   .live-result-image {
-
     width: 55px;
-
     height: 50px;
   }
-
   .live-result-badge {
-
     display: none;
   }
-
   .property-grid-3 {
-
     grid-template-columns: 1fr;
   }
-
   .slider-btn {
-
     display: none;
   }
-
   .property-image {
-
     height: 230px;
   }
-
   .property-info {
-
     min-height: 125px;
-
-    padding:
-      16px;
+    padding: 16px;
   }
-
   .property-info h3 {
-
     font-size: 17px;
-
     padding-right: 125px;
   }
-
   .property-price {
-
     top: 16px;
-
     right: 16px;
-
     font-size: 16px;
   }
-
 }
-
-
-/* =========================================================
-   VERY SMALL SCREEN
-========================================================= */
-
-@media (max-width: 400px) {
-
-  .live-result-title {
-    font-size: 13px;
-  }
-
-  .live-result-location {
-    font-size: 11px;
-  }
-
-}
-
 </style>
 
-
 <!-- =======================================================
-     HERO
+     HERO SLIDER
 ======================================================= -->
-
 <section class="hero">
-
   <div class="hero-slider">
-
-    <div
-      class="hero-slide active"
-      style="background-image:url('{{ url_for('static', filename='images/home/home1.webp') }}')">
-    </div>
-
-    <div
-      class="hero-slide"
-      style="background-image:url('{{ url_for('static', filename='images/home/home2.webp') }}')">
-    </div>
-
-    <div
-      class="hero-slide"
-      style="background-image:url('{{ url_for('static', filename='images/home/home3.png') }}')">
-    </div>
-
-    <div
-      class="hero-slide"
-      style="background-image:url('{{ url_for('static', filename='images/home/home4.png') }}')">
-    </div>
-
+    <div class="hero-slide active" style="background-image:url('{{ url_for('static', filename='images/home/home1.webp') }}')"></div>
+    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/home2.webp') }}')"></div>
+    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/home3.png') }}')"></div>
+    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/home4.png') }}')"></div>
   </div>
-
 
   <div class="hero-overlay">
-
     <div class="hero-content">
-
-      <h1>
-        Discover Exceptional<br>
-        Properties Across Qatar
-      </h1>
-
-      <p>
-        Find premium residential and commercial properties
-        designed for modern living.
-      </p>
-
+      <h1>Discover Exceptional<br>Properties Across Qatar</h1>
+      <p>Find premium residential and commercial properties designed for modern living.</p>
       <div class="hero-buttons">
-
-        <a
-          href="{{ url_for('properties') }}"
-          class="primary-btn">
-          Explore Properties
-        </a>
-
-        <a
-          href="{{ url_for('contact') }}"
-          class="outline-btn">
-          Contact Us
-        </a>
-
+        <a href="{{ url_for('properties') }}" class="primary-btn">Explore Properties</a>
+        <a href="{{ url_for('contact') }}" class="outline-btn">Contact Us</a>
       </div>
-
     </div>
-
   </div>
-
 </section>
 
-
 <!-- =======================================================
-     SMART LIVE SEARCH
+     SMART LIVE DATABASE SEARCH
 ======================================================= -->
-
 <section class="search-box">
-
   <div class="container">
-
     <div class="search-card">
-
-      <h2>
-        Find Your Dream Property
-      </h2>
-
-      <p>
-        Search by property type, location, features,
-        lifestyle or any keyword.
-      </p>
-
+      <h2>Find Your Dream Property</h2>
+      <p>Search in real-time by property type, location, features, lifestyle or any keyword.</p>
 
       <form
         action="{{ url_for('properties') }}"
         method="GET"
         class="smart-search-form"
-        id="smartSearchForm">
-
-
+        id="smartSearchForm"
+      >
         <div class="search-wrapper">
-
-
           <div class="smart-search-input">
-
             <i class="fas fa-search"></i>
 
             <input
@@ -1602,1526 +932,566 @@ Prestigious Real Estate | Qatar Properties
               name="search"
               placeholder="Search villas, apartments, studios, Lusail, sea view..."
               autocomplete="off"
-              spellcheck="false">
+              spellcheck="false"
+            >
+
+            <div class="search-spinner" id="searchSpinner"></div>
 
             <button type="submit">
               Search Properties
             </button>
-
           </div>
-
 
           <!-- =================================================
-               LIVE RESULTS
+               LIVE SEARCH RESULTS DROPDOWN
           ================================================= -->
-
-          <div
-            id="liveSearchResults"
-            class="live-search-results">
-          </div>
-
-
+          <div id="liveSearchResults" class="live-search-results"></div>
         </div>
-
       </form>
 
-
       <!-- =====================================================
-           POPULAR SEARCHES
+           POPULAR SEARCH PILLS
       ===================================================== -->
-
       <div class="popular-searches">
-
-        <span>
-          Popular Searches:
-        </span>
-
-        <a href="{{ url_for('properties', search='Villa') }}">
-          Villas
-        </a>
-
-        <a href="{{ url_for('properties', search='Apartment') }}">
-          Apartments
-        </a>
-
-        <a href="{{ url_for('properties', search='Studio') }}">
-          Studio
-        </a>
-
-        <a href="{{ url_for('properties', search='Office') }}">
-          Office
-        </a>
-
-        <a href="{{ url_for('properties', search='Lusail') }}">
-          Lusail
-        </a>
-
-        <a href="{{ url_for('properties', search='Rent') }}">
-          For Rent
-        </a>
-
+        <span>Popular Searches:</span>
+        <a href="{{ url_for('properties', search='Villa') }}">Villas</a>
+        <a href="{{ url_for('properties', search='Apartment') }}">Apartments</a>
+        <a href="{{ url_for('properties', search='Studio') }}">Studio</a>
+        <a href="{{ url_for('properties', search='Office') }}">Office</a>
+        <a href="{{ url_for('properties', search='Lusail') }}">Lusail</a>
+        <a href="{{ url_for('properties', search='Rent') }}">For Rent</a>
       </div>
-
     </div>
-
   </div>
-
 </section>
 
-
 <!-- =======================================================
-     FEATURED PROPERTIES
+     FEATURED PROPERTIES SECTION
 ======================================================= -->
-
 <section class="featured-properties">
-
   <div class="container">
-
     <div class="section-title">
-
-      <h2>
-        Featured Properties
-      </h2>
-
-      <p>
-        Discover exclusive residential and commercial properties
-        selected for exceptional lifestyle and investment
-        opportunities across Qatar.
-      </p>
-
+      <h2>Featured Properties</h2>
+      <p>Discover exclusive residential and commercial properties selected for exceptional lifestyle and investment opportunities across Qatar.</p>
     </div>
 
-
     {% if properties %}
+    <div class="property-slideshow-wrapper" id="propertySlideshowWrapper">
+      <button class="slider-btn prev" id="prevPropertyBtn" aria-label="Previous Properties">&#8249;</button>
 
-    <div
-      class="property-slideshow-wrapper"
-      id="propertySlideshowWrapper">
-
-
-      <button
-        class="slider-btn prev"
-        id="prevPropertyBtn"
-        aria-label="Previous Properties">
-
-        &#8249;
-
-      </button>
-
-
-      <div
-        class="property-grid-3"
-        id="propertyGrid">
-
-
+      <div class="property-grid-3" id="propertyGrid">
         {% for property in properties %}
-
         <div class="property-card">
-
-
           <a
             href="{{ url_for('property_details', id=property.id) }}"
             class="property-image-link"
-            aria-label="View {{ property.title }}">
-
+            aria-label="View {{ property.title }}"
+          >
             <div class="property-image">
-
               {% if property.main_image %}
-
-              <img
-                src="{{ property.main_image }}"
-                alt="{{ property.title }}"
-                loading="lazy">
-
+                <img src="{{ property.main_image }}" alt="{{ property.title }}" loading="lazy">
               {% else %}
-
-              <img
-                src="{{ url_for('static', filename='images/no-image.png') }}"
-                alt="Property Image"
-                loading="lazy">
-
+                <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="Property Image" loading="lazy">
               {% endif %}
 
-
-              <span
-                class="property-status
-                {% if property.purpose == 'Rent' %}
-                rent
-                {% endif %}">
-
-                {% if property.purpose == 'Rent' %}
-                  FOR RENT
-                {% else %}
-                  FOR SALE
-                {% endif %}
-
+              <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
+                {% if property.purpose == 'Rent' %}FOR RENT{% else %}FOR SALE{% endif %}
               </span>
-
             </div>
-
           </a>
 
-
           <div class="property-info">
-
-            <h3>
-              {{ property.title }}
-            </h3>
-
-
+            <h3>{{ property.title }}</h3>
             <div class="property-price">
-
               {% if property.price %}
-
                 QAR {{ "{:,.0f}".format(property.price) }}
-
               {% else %}
-
                 Contact For Price
-
               {% endif %}
-
             </div>
 
-
-            <p class="location">
-              📍 {{ property.location }}
-            </p>
-
+            <p class="location">📍 {{ property.location }}</p>
 
             <div class="property-meta">
-
               {% if property.bedrooms %}
-
-              <span>
-                🛏 {{ property.bedrooms }} Beds
-              </span>
-
+                <span>🛏 {{ property.bedrooms }} Beds</span>
               {% endif %}
-
-
               {% if property.bathrooms %}
-
-              <span>
-                🚿 {{ property.bathrooms }} Baths
-              </span>
-
+                <span>🚿 {{ property.bathrooms }} Baths</span>
               {% endif %}
-
-
               {% if property.area %}
-
-              <span>
-                📐 {{ "{:,.0f}".format(property.area) }} sqm
-              </span>
-
+                <span>📐 {{ "{:,.0f}".format(property.area) }} sqm</span>
               {% endif %}
-
             </div>
-
           </div>
-
         </div>
-
         {% endfor %}
-
       </div>
 
-
-      <button
-        class="slider-btn next"
-        id="nextPropertyBtn"
-        aria-label="Next Properties">
-
-        &#8250;
-
-      </button>
-
+      <button class="slider-btn next" id="nextPropertyBtn" aria-label="Next Properties">&#8250;</button>
 
       <div class="slideshow-controls">
-
-        <div
-          class="dots-container"
-          id="propertyDotsContainer">
-        </div>
-
+        <div class="dots-container" id="propertyDotsContainer"></div>
       </div>
-
     </div>
-
-
     {% else %}
-
-    <div
-      style="
-        width:100%;
-        text-align:center;
-        padding:80px 20px;
-      ">
-
-      <h3>
-        No Featured Properties Available
-      </h3>
-
-      <p>
-        Add properties from the admin dashboard
-        to display them here.
-      </p>
-
+    <div style="width:100%; text-align:center; padding:80px 20px;">
+      <h3>No Featured Properties Available</h3>
+      <p>Add properties from the admin dashboard to display them here.</p>
     </div>
-
     {% endif %}
 
-
     <div class="view-all">
-
-      <a href="{{ url_for('properties') }}">
-        Explore All Properties
-      </a>
-
+      <a href="{{ url_for('properties') }}">Explore All Properties</a>
     </div>
-
   </div>
-
 </section>
-
 
 <!-- =======================================================
      WHY CHOOSE US
 ======================================================= -->
-
 <section class="why-section">
-
   <div class="container">
-
     <div class="section-title">
-
-      <h2>
-        Why Choose Prestigious Real Estate
-      </h2>
-
-      <p>
-        Delivering exceptional property solutions across Qatar.
-      </p>
-
+      <h2>Why Choose Prestigious Real Estate</h2>
+      <p>Delivering exceptional property solutions across Qatar.</p>
     </div>
-
 
     <div class="why-grid">
-
-
       <div class="why-card">
-
-        <div class="why-icon">
-          🏙️
-        </div>
-
-        <h3>
-          Qatar Market Expertise
-        </h3>
-
-        <p>
-          Deep understanding of Qatar's real estate market,
-          locations and investment opportunities.
-        </p>
-
+        <div class="why-icon">🏙️</div>
+        <h3>Qatar Market Expertise</h3>
+        <p>Deep understanding of Qatar's real estate market, locations and investment opportunities.</p>
       </div>
 
-
       <div class="why-card">
-
-        <div class="why-icon">
-          🏢
-        </div>
-
-        <h3>
-          Luxury Development
-        </h3>
-
-        <p>
-          Connecting clients with premium residential
-          and commercial developments.
-        </p>
-
+        <div class="why-icon">🏢</div>
+        <h3>Luxury Development</h3>
+        <p>Connecting clients with premium residential and commercial developments.</p>
       </div>
 
-
       <div class="why-card">
-
-        <div class="why-icon">
-          🤝
-        </div>
-
-        <h3>
-          Trusted Service
-        </h3>
-
-        <p>
-          Professional guidance built on transparency,
-          trust and long-term relationships.
-        </p>
-
+        <div class="why-icon">🤝</div>
+        <h3>Trusted Service</h3>
+        <p>Professional guidance built on transparency, trust and long-term relationships.</p>
       </div>
 
-
       <div class="why-card">
-
-        <div class="why-icon">
-          👔
-        </div>
-
-        <h3>
-          Professional Team
-        </h3>
-
-        <p>
-          Experienced specialists dedicated to delivering
-          the best property experience.
-        </p>
-
+        <div class="why-icon">👔</div>
+        <h3>Professional Team</h3>
+        <p>Experienced specialists dedicated to delivering the best property experience.</p>
       </div>
-
     </div>
-
   </div>
-
 </section>
-
 
 <!-- =======================================================
      PROPERTY CATEGORIES
 ======================================================= -->
-
 <section class="categories-section">
-
   <div class="container">
-
     <div class="section-title">
-
-      <h2>
-        Explore Property Categories
-      </h2>
-
-      <p>
-        Discover premium real estate opportunities designed
-        for every lifestyle and investment goal.
-      </p>
-
+      <h2>Explore Property Categories</h2>
+      <p>Discover premium real estate opportunities designed for every lifestyle and investment goal.</p>
     </div>
-
 
     <div class="category-grid">
-
-
       <div class="category-card">
-
-        <img
-          src="{{ url_for('static', filename='images/home/home1.webp') }}"
-          alt="Luxury Villas"
-          loading="lazy">
-
+        <img src="{{ url_for('static', filename='images/home/home1.webp') }}" alt="Luxury Villas" loading="lazy">
         <div class="category-overlay">
-
-          <h3>
-            Luxury Villas
-          </h3>
-
-          <p>
-            Exclusive homes with modern designs
-            and premium finishes.
-          </p>
-
-          <a href="{{ url_for('properties', search='Villa') }}">
-            Explore
-          </a>
-
+          <h3>Luxury Villas</h3>
+          <p>Exclusive homes with modern designs and premium finishes.</p>
+          <a href="{{ url_for('properties', search='Villa') }}">Explore</a>
         </div>
-
       </div>
 
-
       <div class="category-card">
-
-        <img
-          src="{{ url_for('static', filename='images/home/home2.webp') }}"
-          alt="Luxury Apartments"
-          loading="lazy">
-
+        <img src="{{ url_for('static', filename='images/home/home2.webp') }}" alt="Luxury Apartments" loading="lazy">
         <div class="category-overlay">
-
-          <h3>
-            Luxury Apartments
-          </h3>
-
-          <p>
-            Modern residences in Qatar's most
-            desirable locations.
-          </p>
-
-          <a href="{{ url_for('properties', search='Apartment') }}">
-            Explore
-          </a>
-
+          <h3>Luxury Apartments</h3>
+          <p>Modern residences in Qatar's most desirable locations.</p>
+          <a href="{{ url_for('properties', search='Apartment') }}">Explore</a>
         </div>
-
       </div>
 
-
       <div class="category-card">
-
-        <img
-          src="{{ url_for('static', filename='images/home/home3.png') }}"
-          alt="Commercial Properties"
-          loading="lazy">
-
+        <img src="{{ url_for('static', filename='images/home/home3.png') }}" alt="Commercial Properties" loading="lazy">
         <div class="category-overlay">
-
-          <h3>
-            Commercial Properties
-          </h3>
-
-          <p>
-            Premium offices and business spaces
-            for companies.
-          </p>
-
-          <a href="{{ url_for('properties', search='Commercial') }}">
-            Explore
-          </a>
-
+          <h3>Commercial Properties</h3>
+          <p>Premium offices and business spaces for companies.</p>
+          <a href="{{ url_for('properties', search='Commercial') }}">Explore</a>
         </div>
-
       </div>
 
-
       <div class="category-card">
-
-        <img
-          src="{{ url_for('static', filename='images/home/home4.png') }}"
-          alt="Investment Properties"
-          loading="lazy">
-
+        <img src="{{ url_for('static', filename='images/home/home4.png') }}" alt="Investment Properties" loading="lazy">
         <div class="category-overlay">
-
-          <h3>
-            Investment Properties
-          </h3>
-
-          <p>
-            Strategic opportunities for
-            long-term growth.
-          </p>
-
-          <a href="{{ url_for('properties', search='Investment') }}">
-            Explore
-          </a>
-
+          <h3>Investment Properties</h3>
+          <p>Strategic opportunities for long-term growth.</p>
+          <a href="{{ url_for('properties', search='Investment') }}">Explore</a>
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </section>
-
 
 <!-- =======================================================
      TESTIMONIALS
 ======================================================= -->
-
 <section class="testimonial-section">
-
   <div class="container">
-
     <div class="section-title">
-
-      <h2>
-        What Our Clients Say
-      </h2>
-
-      <p>
-        Trusted by clients looking for premium real estate
-        solutions in Qatar.
-      </p>
-
+      <h2>What Our Clients Say</h2>
+      <p>Trusted by clients looking for premium real estate solutions in Qatar.</p>
     </div>
-
 
     <div class="testimonial-grid">
-
-
       <div class="testimonial-card">
-
-        <div class="stars">
-          ★★★★★
-        </div>
-
-        <p>
-          "Prestigious Real Estate provided excellent guidance
-          and helped us find the perfect property for our family."
-        </p>
-
-        <h4>
-          Mohammed A.
-        </h4>
-
-        <span>
-          Lusail Resident
-        </span>
-
+        <div class="stars">★★★★★</div>
+        <p>"Prestigious Real Estate provided excellent guidance and helped us find the perfect property for our family."</p>
+        <h4>Mohammed A.</h4>
+        <span>Lusail Resident</span>
       </div>
 
-
       <div class="testimonial-card">
-
-        <div class="stars">
-          ★★★★★
-        </div>
-
-        <p>
-          "Professional service, great market knowledge
-          and a smooth buying experience."
-        </p>
-
-        <h4>
-          Sarah K.
-        </h4>
-
-        <span>
-          Property Investor
-        </span>
-
+        <div class="stars">★★★★★</div>
+        <p>"Professional service, great market knowledge and a smooth buying experience."</p>
+        <h4>Sarah K.</h4>
+        <span>Property Investor</span>
       </div>
 
-
       <div class="testimonial-card">
-
-        <div class="stars">
-          ★★★★★
-        </div>
-
-        <p>
-          "The team understood our requirements and found
-          exactly what we were looking for."
-        </p>
-
-        <h4>
-          David O.
-        </h4>
-
-        <span>
-          Doha Client
-        </span>
-
+        <div class="stars">★★★★★</div>
+        <p>"The team understood our requirements and found exactly what we were looking for."</p>
+        <h4>David O.</h4>
+        <span>Doha Client</span>
       </div>
-
     </div>
-
   </div>
-
 </section>
 
-
 <!-- =======================================================
-     JAVASCRIPT
+     JAVASCRIPT & LIVE SEARCH ENGINE
 ======================================================= -->
-
 <script>
+document.addEventListener('DOMContentLoaded', function () {
 
-document.addEventListener(
-  'DOMContentLoaded',
-  function () {
+  /* =====================================================
+     1. HERO BACKGROUND SLIDESHOW
+  ===================================================== */
+  let currentHeroSlide = 0;
+  const heroSlides = document.querySelectorAll('.hero-slide');
+  if (heroSlides.length > 0) {
+    setInterval(function () {
+      heroSlides[currentHeroSlide].classList.remove('active');
+      currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+      heroSlides[currentHeroSlide].classList.add('active');
+    }, 5000);
+  }
 
+  /* =====================================================
+     2. INSTANT DATABASE LIVE SEARCH ENGINE
+  ===================================================== */
+  const searchInput = document.getElementById('propertyLiveSearch');
+  const resultsBox = document.getElementById('liveSearchResults');
+  const spinner = document.getElementById('searchSpinner');
 
-    /* =====================================================
-       HERO SLIDESHOW
-    ===================================================== */
+  let searchTimer = null;
+  let currentController = null;
+  let activeIndex = -1;
 
-    let currentHeroSlide = 0;
+  if (searchInput && resultsBox) {
 
-    const heroSlides =
-      document.querySelectorAll(
-        '.hero-slide'
-      );
-
-    if (heroSlides.length > 0) {
-
-      setInterval(
-        function () {
-
-          heroSlides[
-            currentHeroSlide
-          ].classList.remove(
-            'active'
-          );
-
-          currentHeroSlide =
-            (
-              currentHeroSlide + 1
-            ) %
-            heroSlides.length;
-
-          heroSlides[
-            currentHeroSlide
-          ].classList.add(
-            'active'
-          );
-
-        },
-        5000
-      );
-
+    function escapeHTML(value) {
+      if (value === null || value === undefined) return '';
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
+    function highlightKeyword(text, keyword) {
+      if (!text || !keyword) return escapeHTML(text);
+      const escapedText = escapeHTML(text);
+      const cleanKeyword = keyword.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      if (!cleanKeyword) return escapedText;
+      const regex = new RegExp(`(${cleanKeyword})`, 'gi');
+      return escapedText.replace(regex, '<mark>$1</mark>');
+    }
 
-    /* =====================================================
-       LIVE DATABASE PROPERTY SEARCH
-    ===================================================== */
+    function showSpinner(show) {
+      if (spinner) {
+        spinner.style.display = show ? 'inline-block' : 'none';
+      }
+    }
 
-    const searchInput =
-      document.getElementById(
-        'propertyLiveSearch'
-      );
+    function clearResults() {
+      resultsBox.innerHTML = '';
+      resultsBox.classList.remove('show');
+      showSpinner(false);
+      activeIndex = -1;
+    }
 
-    const resultsBox =
-      document.getElementById(
-        'liveSearchResults'
-      );
+    function renderResults(data, query) {
+      showSpinner(false);
 
-    let searchTimer = null;
+      if (!data || !data.results || data.results.length === 0) {
+        resultsBox.innerHTML = `
+          <div class="search-no-results">
+            <strong>No properties found</strong>
+            No properties matching "<b>${escapeHTML(query)}</b>" were found.
+          </div>
+        `;
+        resultsBox.classList.add('show');
+        return;
+      }
 
-    let currentController = null;
+      let html = '';
+      data.results.forEach(function (property) {
+        const purpose = property.purpose || 'Sale';
+        const badgeClass = purpose.toLowerCase() === 'rent' ? 'rent' : '';
 
-
-    if (searchInput && resultsBox) {
-
-
-      /* ===================================================
-         ESCAPE HTML
-      =================================================== */
-
-      function escapeHTML(value) {
-
-        if (value === null ||
-            value === undefined) {
-
-          return '';
-
+        let priceText = 'Contact For Price';
+        if (property.price !== null && property.price !== undefined && property.price !== '') {
+          priceText = 'QAR ' + Number(property.price).toLocaleString();
         }
 
-        return String(value)
-          .replace(
-            /&/g,
-            '&amp;'
-          )
-          .replace(
-            /</g,
-            '&lt;'
-          )
-          .replace(
-            />/g,
-            '&gt;'
-          )
-          .replace(
-            /"/g,
-            '&quot;'
-          )
-          .replace(
-            /'/g,
-            '&#039;'
-          );
+        let imageSrc = property.main_image;
+        if (!imageSrc) {
+          imageSrc = "{{ url_for('static', filename='images/no-image.png') }}";
+        } else if (!imageSrc.startsWith('http') && !imageSrc.startsWith('/')) {
+          imageSrc = "{{ url_for('static', filename='') }}" + imageSrc;
+        }
 
-      }
-
-
-      /* ===================================================
-         SHOW LOADING
-      =================================================== */
-
-      function showLoading() {
-
-  resultsBox.classList.add(
-    'show'
-  );
-
-}
-
-
-      /* ===================================================
-         CLEAR RESULTS
-      =================================================== */
-
-      function clearResults() {
-
-        resultsBox.innerHTML = '';
-
-        resultsBox.classList.remove(
-          'show'
-        );
-
-      }
-
-
-      /* ===================================================
-         RENDER RESULTS
-      =================================================== */
-
-      function renderResults(data) {
-
-
-        if (!data ||
-            !data.results ||
-            data.results.length === 0) {
-
-          resultsBox.innerHTML = `
-
-            <div class="search-no-results">
-
-              <strong>
-                No properties found
-              </strong>
-
-              No matching property was found
-              for "<b>${escapeHTML(
-                searchInput.value
-              )}</b>".
-
+        html += `
+          <a href="/property/${property.id}" class="live-result-item" tabindex="0">
+            <div class="live-result-image">
+              <img src="${escapeHTML(imageSrc)}" alt="${escapeHTML(property.title)}" onerror="this.src='{{ url_for('static', filename='images/no-image.png') }}'">
             </div>
 
-          `;
-
-          resultsBox.classList.add(
-            'show'
-          );
-
-          return;
-
-        }
-
-
-        let html = '';
-
-
-        data.results.forEach(
-          function (property) {
-
-
-            const purpose =
-              property.purpose ||
-              'Sale';
-
-
-            const badgeClass =
-              purpose.toLowerCase() ===
-              'rent'
-                ? 'rent'
-                : '';
-
-
-            let price = '';
-
-            if (
-              property.price !== null &&
-              property.price !== undefined &&
-              property.price !== ''
-            ) {
-
-              price =
-                'QAR ' +
-                Number(
-                  property.price
-                ).toLocaleString();
-
-            }
-            else {
-
-              price =
-                'Contact For Price';
-
-            }
-
-
-            const image =
-              property.main_image ||
-              "{{ url_for(
-                'static',
-                filename='images/no-image.png'
-              ) }}";
-
-
-            html += `
-
-              <a
-                href="/property/${property.id}"
-                class="live-result-item"
-              >
-
-                <div
-                  class="live-result-image"
-                >
-
-                  <img
-                    src="${escapeHTML(image)}"
-                    alt="${escapeHTML(
-                      property.title
-                    )}"
-                  >
-
-                </div>
-
-
-                <div
-                  class="live-result-info"
-                >
-
-                  <div
-                    class="live-result-title"
-                  >
-                    ${escapeHTML(
-                      property.title
-                    )}
-                  </div>
-
-
-                  <div
-                    class="live-result-location"
-                  >
-
-                    📍
-                    ${escapeHTML(
-                      property.location || ''
-                    )}
-
-                  </div>
-
-
-                  <div
-                    class="live-result-details"
-                  >
-
-                    <span
-                      class="live-result-price"
-                    >
-                      ${price}
-                    </span>
-
-                    ${
-                      property.property_type
-                      ? `
-                        <span>
-                          ${escapeHTML(
-                            property.property_type
-                          )}
-                        </span>
-                      `
-                      : ''
-                    }
-
-                    ${
-                      property.bedrooms
-                      ? `
-                        <span>
-                          🛏
-                          ${escapeHTML(
-                            property.bedrooms
-                          )}
-                        </span>
-                      `
-                      : ''
-                    }
-
-                    ${
-                      property.area
-                      ? `
-                        <span>
-                          📐
-                          ${escapeHTML(
-                            property.area
-                          )} sqm
-                        </span>
-                      `
-                      : ''
-                    }
-
-                  </div>
-
-                </div>
-
-
-                <span
-                  class="
-                    live-result-badge
-                    ${badgeClass}
-                  "
-                >
-                  FOR ${escapeHTML(
-                    purpose
-                  ).toUpperCase()}
-                </span>
-
-              </a>
-
-            `;
-
-          }
-        );
-
-
-        resultsBox.innerHTML = html;
-
-        resultsBox.classList.add(
-          'show'
-        );
-
-      }
-
-
-      /* ===================================================
-         PERFORM SEARCH
-      =================================================== */
-
-      function performLiveSearch(
-        keyword
-      ) {
-
-
-        keyword =
-          keyword.trim();
-
-
-        if (keyword.length < 1) {
-
-          clearResults();
-
-          return;
-
-        }
-
-
-        if (currentController) {
-
-          currentController.abort();
-
-        }
-
-
-        currentController =
-          new AbortController();
-
-
-        showLoading();
-
-
-        fetch(
-          `/property_search_suggestions?q=${encodeURIComponent(keyword)}`,
-          {
-            method: 'GET',
-
-            headers: {
-              'X-Requested-With':
-                'XMLHttpRequest'
-            },
-
-            signal:
-              currentController.signal
-          }
-        )
-
-        .then(
-          function (response) {
-
-            if (!response.ok) {
-
-              throw new Error(
-                'Search request failed'
-              );
-
-            }
-
-            return response.json();
-
-          }
-        )
-
-        .then(
-          function (data) {
-
-            renderResults(data);
-
-          }
-        )
-
-        .catch(
-          function (error) {
-
-            if (
-              error.name ===
-              'AbortError'
-            ) {
-
-              return;
-
-            }
-
-
-            resultsBox.innerHTML = `
-
-              <div class="search-state">
-
-                Unable to search properties.
-
-                Please try again.
-
+            <div class="live-result-info">
+              <div class="live-result-title">
+                ${highlightKeyword(property.title, query)}
               </div>
 
-            `;
+              <div class="live-result-location">
+                📍 ${highlightKeyword(property.location || 'Doha, Qatar', query)}
+              </div>
 
-            resultsBox.classList.add(
-              'show'
-            );
+              <div class="live-result-details">
+                <span class="live-result-price">${priceText}</span>
+                ${property.property_type ? `<span>${escapeHTML(property.property_type)}</span>` : ''}
+                ${property.bedrooms ? `<span>🛏 ${escapeHTML(property.bedrooms)} Beds</span>` : ''}
+                ${property.bathrooms ? `<span>🚿 ${escapeHTML(property.bathrooms)} Baths</span>` : ''}
+                ${property.area ? `<span>📐 ${Number(property.area).toLocaleString()} sqm</span>` : ''}
+              </div>
+            </div>
 
-            console.error(
-              error
-            );
+            <span class="live-result-badge ${badgeClass}">
+              FOR ${escapeHTML(purpose).toUpperCase()}
+            </span>
+          </a>
+        `;
+      });
 
-          }
-        );
-
-      }
-
-
-      /* ===================================================
-         INPUT EVENT
-      =================================================== */
-
-      searchInput.addEventListener(
-        'input',
-        function () {
-
-
-          clearTimeout(
-            searchTimer
-          );
-
-
-          const value =
-            this.value.trim();
-
-
-          if (value.length === 0) {
-
-            clearResults();
-
-            return;
-
-          }
-
-
-          /*
-             Wait 250ms after the user
-             stops typing before querying
-             the database.
-          */
-
-          searchTimer =
-            setTimeout(
-              function () {
-
-                performLiveSearch(
-                  value
-                );
-
-              },
-              5
-            );
-
-        }
-      );
-
-
-      /* ===================================================
-         CLOSE WHEN CLICKING OUTSIDE
-      =================================================== */
-
-      document.addEventListener(
-        'click',
-        function (event) {
-
-          if (
-            !event.target.closest(
-              '.search-wrapper'
-            )
-          ) {
-
-            clearResults();
-
-          }
-
-        }
-      );
-
-
-      /* ===================================================
-         KEYBOARD ESC
-      =================================================== */
-
-      searchInput.addEventListener(
-        'keydown',
-        function (event) {
-
-          if (
-            event.key === 'Escape'
-          ) {
-
-            clearResults();
-
-            this.blur();
-
-          }
-
-        }
-      );
-
+      resultsBox.innerHTML = html;
+      resultsBox.classList.add('show');
+      activeIndex = -1;
     }
 
+    function performLiveSearch(keyword) {
+      keyword = keyword.trim();
+      if (keyword.length < 1) {
+        clearResults();
+        return;
+      }
 
-    /* =====================================================
-       FEATURED PROPERTY SLIDESHOW
-    ===================================================== */
+      if (currentController) {
+        currentController.abort();
+      }
+      currentController = new AbortController();
 
-    const grid =
-      document.getElementById(
-        'propertyGrid'
-      );
+      showSpinner(true);
 
-    const wrapper =
-      document.getElementById(
-        'propertySlideshowWrapper'
-      );
+      fetch(`/property_search_suggestions?q=${encodeURIComponent(keyword)}`, {
+        method: 'GET',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        signal: currentController.signal
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Search failed');
+        return response.json();
+      })
+      .then(data => {
+        renderResults(data, keyword);
+      })
+      .catch(error => {
+        if (error.name === 'AbortError') return;
+        showSpinner(false);
+        resultsBox.innerHTML = `
+          <div class="search-state">
+            Unable to fetch property suggestions. Please press search.
+          </div>
+        `;
+        resultsBox.classList.add('show');
+      });
+    }
 
-    const prevBtn =
-      document.getElementById(
-        'prevPropertyBtn'
-      );
+    /* Fast 120ms debounce */
+    searchInput.addEventListener('input', function () {
+      clearTimeout(searchTimer);
+      const val = this.value;
+      if (val.trim().length === 0) {
+        clearResults();
+        return;
+      }
+      searchTimer = setTimeout(() => {
+        performLiveSearch(val);
+      }, 120);
+    });
 
-    const nextBtn =
-      document.getElementById(
-        'nextPropertyBtn'
-      );
+    /* Keyboard navigation inside suggestions */
+    searchInput.addEventListener('keydown', function (e) {
+      const items = resultsBox.querySelectorAll('.live-result-item');
+      if (!resultsBox.classList.contains('show') || items.length === 0) {
+        if (e.key === 'Escape') {
+          clearResults();
+          this.blur();
+        }
+        return;
+      }
 
-    const dotsContainer =
-      document.getElementById(
-        'propertyDotsContainer'
-      );
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeIndex = (activeIndex + 1) % items.length;
+        updateItemSelection(items);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeIndex = (activeIndex - 1 + items.length) % items.length;
+        updateItemSelection(items);
+      } else if (e.key === 'Enter') {
+        if (activeIndex > -1 && items[activeIndex]) {
+          e.preventDefault();
+          items[activeIndex].click();
+        }
+      } else if (e.key === 'Escape') {
+        clearResults();
+        this.blur();
+      }
+    });
 
+    function updateItemSelection(items) {
+      items.forEach((item, idx) => {
+        item.classList.toggle('selected', idx === activeIndex);
+        if (idx === activeIndex) {
+          item.scrollIntoView({ block: 'nearest' });
+        }
+      });
+    }
 
-    if (!grid) return;
+    /* Close on click outside */
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.search-wrapper')) {
+        clearResults();
+      }
+    });
+  }
 
+  /* =====================================================
+     3. FEATURED PROPERTY SLIDESHOW
+  ===================================================== */
+  const grid = document.getElementById('propertyGrid');
+  const wrapper = document.getElementById('propertySlideshowWrapper');
+  const prevBtn = document.getElementById('prevPropertyBtn');
+  const nextBtn = document.getElementById('nextPropertyBtn');
+  const dotsContainer = document.getElementById('propertyDotsContainer');
 
-    const cards =
-      Array.from(
-        grid.querySelectorAll(
-          '.property-card'
-        )
-      );
-
-
+  if (grid) {
+    const cards = Array.from(grid.querySelectorAll('.property-card'));
     const CARDS_PER_SLIDE = 3;
-
     const DISPLAY_TIME = 5000;
 
+    if (cards.length > 0) {
+      const totalSlides = Math.ceil(cards.length / CARDS_PER_SLIDE);
+      let currentSlide = 0;
+      let slideTimer = null;
 
-    if (
-      cards.length === 0
-    ) return;
-
-
-    const totalSlides =
-      Math.ceil(
-        cards.length /
-        CARDS_PER_SLIDE
-      );
-
-
-    let currentSlide = 0;
-
-    let slideTimer = null;
-
-
-    dotsContainer.innerHTML = '';
-
-
-    for (
-      let i = 0;
-      i < totalSlides;
-      i++
-    ) {
-
-      const dot =
-        document.createElement(
-          'div'
-        );
-
-      dot.classList.add(
-        'dot'
-      );
-
-
-      if (i === 0) {
-
-        dot.classList.add(
-          'active'
-        );
-
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', function () {
+          goToSlide(i);
+          resetTimer();
+        });
+        dotsContainer.appendChild(dot);
       }
 
+      const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
 
-      dot.addEventListener(
-        'click',
-        function () {
+      function showSlide(slideIndex) {
+        grid.classList.add('fade-out');
+        setTimeout(function () {
+          cards.forEach(card => {
+            card.classList.remove('active-card');
+            card.style.order = '';
+          });
 
-          goToSlide(i);
-
-          resetTimer();
-
-        }
-      );
-
-
-      dotsContainer.appendChild(
-        dot
-      );
-
-    }
-
-
-    const dots =
-      Array.from(
-        dotsContainer.querySelectorAll(
-          '.dot'
-        )
-      );
-
-
-    function showSlide(
-      slideIndex
-    ) {
-
-      grid.classList.add(
-        'fade-out'
-      );
-
-
-      setTimeout(
-        function () {
-
-
-          cards.forEach(
-            function (card) {
-
-              card.classList.remove(
-                'active-card'
-              );
-
-              card.style.order = '';
-
-            }
-          );
-
-
-          for (
-            let i = 0;
-            i < CARDS_PER_SLIDE;
-            i++
-          ) {
-
-
-            const cardIndex =
-              (
-                slideIndex *
-                CARDS_PER_SLIDE +
-                i
-              ) %
-              cards.length;
-
-
-            cards[cardIndex]
-              .classList.add(
-                'active-card'
-              );
-
-
-            cards[cardIndex]
-              .style.order = i;
-
+          for (let i = 0; i < CARDS_PER_SLIDE; i++) {
+            const cardIndex = (slideIndex * CARDS_PER_SLIDE + i) % cards.length;
+            cards[cardIndex].classList.add('active-card');
+            cards[cardIndex].style.order = i;
           }
 
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === slideIndex);
+          });
 
-          dots.forEach(
-            function (
-              dot,
-              index
-            ) {
+          grid.classList.remove('fade-out');
+          grid.classList.add('fade-in');
+        }, 300);
+      }
 
-              dot.classList.toggle(
-                'active',
-                index === slideIndex
-              );
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+      }
 
-            }
-          );
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        showSlide(currentSlide);
+      }
 
+      function goToSlide(index) {
+        currentSlide = index;
+        showSlide(currentSlide);
+      }
 
-          grid.classList.remove(
-            'fade-out'
-          );
+      function startTimer() {
+        slideTimer = setInterval(nextSlide, DISPLAY_TIME);
+      }
 
-          grid.classList.add(
-            'fade-in'
-          );
+      function resetTimer() {
+        clearInterval(slideTimer);
+        startTimer();
+      }
 
+      if (nextBtn) nextBtn.addEventListener('click', function () { nextSlide(); resetTimer(); });
+      if (prevBtn) prevBtn.addEventListener('click', function () { prevSlide(); resetTimer(); });
 
-        },
-        300
-      );
+      if (wrapper) {
+        wrapper.addEventListener('mouseenter', () => clearInterval(slideTimer));
+        wrapper.addEventListener('mouseleave', () => startTimer());
+      }
 
-    }
-
-
-    function nextSlide() {
-
-      currentSlide =
-        (
-          currentSlide + 1
-        ) %
-        totalSlides;
-
-      showSlide(
-        currentSlide
-      );
-
-    }
-
-
-    function prevSlide() {
-
-      currentSlide =
-        (
-          currentSlide -
-          1 +
-          totalSlides
-        ) %
-        totalSlides;
-
-      showSlide(
-        currentSlide
-      );
-
-    }
-
-
-    function goToSlide(
-      index
-    ) {
-
-      currentSlide = index;
-
-      showSlide(
-        currentSlide
-      );
-
-    }
-
-
-    function startTimer() {
-
-      slideTimer =
-        setInterval(
-          nextSlide,
-          DISPLAY_TIME
-        );
-
-    }
-
-
-    function resetTimer() {
-
-      clearInterval(
-        slideTimer
-      );
-
+      showSlide(0);
       startTimer();
-
     }
-
-
-    if (nextBtn) {
-
-      nextBtn.addEventListener(
-        'click',
-        function () {
-
-          nextSlide();
-
-          resetTimer();
-
-        }
-      );
-
-    }
-
-
-    if (prevBtn) {
-
-      prevBtn.addEventListener(
-        'click',
-        function () {
-
-          prevSlide();
-
-          resetTimer();
-
-        }
-      );
-
-    }
-
-
-    if (wrapper) {
-
-      wrapper.addEventListener(
-        'mouseenter',
-        function () {
-
-          clearInterval(
-            slideTimer
-          );
-
-        }
-      );
-
-
-      wrapper.addEventListener(
-        'mouseleave',
-        function () {
-
-          startTimer();
-
-        }
-      );
-
-    }
-
-
-    showSlide(0);
-
-    startTimer();
-
   }
-);
-
+});
 </script>
 
 {% endblock %}
