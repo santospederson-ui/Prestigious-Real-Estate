@@ -45,7 +45,6 @@
 
     <div class="property-gallery">
 
-        <!-- MAIN IMAGE -->
         <div class="gallery-main" onclick="openLightbox(0)">
 
             {% if gallery_images %}
@@ -73,16 +72,13 @@
 
             {% endif %}
 
-
             <div class="gallery-gradient"></div>
-
 
             <div class="gallery-status">
                 <span class="{% if property.purpose == 'Rent' %}rent{% endif %}">
                     FOR {{ property.purpose|upper }}
                 </span>
             </div>
-
 
             <div class="gallery-expand">
                 <i class="fas fa-expand"></i>
@@ -92,7 +88,6 @@
         </div>
 
 
-        <!-- SIDE IMAGES -->
         <div class="gallery-side">
 
             {% if gallery_images and gallery_images|length > 1 %}
@@ -101,13 +96,11 @@
                 class="gallery-side-image"
                 onclick="openLightbox(1)"
             >
-
                 <img
                     src="{{ gallery_images[1].image_name }}"
                     alt="{{ property.title }} image 2"
                     loading="lazy"
                 >
-
             </div>
 
             {% else %}
@@ -129,7 +122,6 @@
                     alt="{{ property.title }} image 3"
                     loading="lazy"
                 >
-
 
                 {% if gallery_images|length > 3 %}
 
@@ -158,7 +150,6 @@
     </div>
 
 
-    <!-- THUMBNAILS -->
     {% if gallery_images and gallery_images|length > 3 %}
 
     <div class="property-thumbnails">
@@ -198,17 +189,13 @@
 
         <div class="property-main-layout">
 
-
             <!-- =================================================
                  LEFT COLUMN
             ================================================= -->
 
             <main class="property-main-column">
 
-
-                <!-- =================================================
-                     PROPERTY HEADER
-                ================================================= -->
+                <!-- PROPERTY HEADER -->
 
                 <div class="property-heading-card">
 
@@ -259,16 +246,16 @@
                         </div>
 
 
-                        <!-- PRICE -->
-
                         <div class="property-price-block">
 
                             <span class="price-label">
+
                                 {% if property.purpose == "Rent" %}
                                     RENTAL PRICE
                                 {% else %}
                                     ASKING PRICE
                                 {% endif %}
+
                             </span>
 
 
@@ -298,15 +285,9 @@
                     </div>
 
 
-
-                    <!-- =================================================
-                         QUICK SUMMARY
-                    ================================================= -->
+                    <!-- QUICK SUMMARY -->
 
                     <div class="quick-property-summary">
-
-
-                        <!-- BEDROOMS -->
 
                         <div class="summary-item">
 
@@ -315,7 +296,6 @@
                             </div>
 
                             <div>
-
                                 <strong>
                                     {{ property.bedrooms or 0 }}
                                 </strong>
@@ -323,13 +303,10 @@
                                 <span>
                                     Bedrooms
                                 </span>
-
                             </div>
 
                         </div>
 
-
-                        <!-- BATHROOMS -->
 
                         <div class="summary-item">
 
@@ -338,7 +315,6 @@
                             </div>
 
                             <div>
-
                                 <strong>
                                     {{ property.bathrooms or 0 }}
                                 </strong>
@@ -346,13 +322,10 @@
                                 <span>
                                     Bathrooms
                                 </span>
-
                             </div>
 
                         </div>
 
-
-                        <!-- AREA -->
 
                         <div class="summary-item">
 
@@ -361,7 +334,6 @@
                             </div>
 
                             <div>
-
                                 <strong>
                                     {{ property.area or 0 }}
                                 </strong>
@@ -369,13 +341,10 @@
                                 <span>
                                     SQM
                                 </span>
-
                             </div>
 
                         </div>
 
-
-                        <!-- PARKING -->
 
                         <div class="summary-item">
 
@@ -384,7 +353,6 @@
                             </div>
 
                             <div>
-
                                 <strong>
                                     {{ property.parking or 0 }}
                                 </strong>
@@ -392,7 +360,6 @@
                                 <span>
                                     Parking
                                 </span>
-
                             </div>
 
                         </div>
@@ -431,7 +398,6 @@
 
 
                     <div class="information-grid">
-
 
                         <div class="information-item">
 
@@ -695,10 +661,10 @@
 
 
                 <!-- =================================================
-                     LOCATION
+                     GOOGLE MAP
                 ================================================= -->
 
-                <section class="property-section-card">
+                <section class="property-section-card property-location-card">
 
                     <div class="section-heading">
 
@@ -713,7 +679,7 @@
                             </h2>
 
                             <p>
-                                {{ property.location }}
+                                {{ property.location or "Qatar" }}
                             </p>
 
                         </div>
@@ -721,35 +687,75 @@
                     </div>
 
 
-                    <div class="property-map">
+                    <!--
+                        The address is passed into JavaScript and
+                        converted into a Google Maps query.
 
-                        <div class="map-inner">
+                        This allows every property to display its
+                        own location automatically.
+                    -->
 
-                            <i class="fas fa-map-location-dot"></i>
+                    <div
+                        id="propertyGoogleMap"
+                        class="property-google-map"
+                    >
+
+                        <div class="map-loading">
+
+                            <div class="map-loading-icon">
+                                <i class="fas fa-location-dot"></i>
+                            </div>
 
                             <strong>
-                                {{ property.location }}
+                                Loading property location...
                             </strong>
 
-                            {% if property.address %}
-
                             <span>
-                                {{ property.address }}
+                                {{ property.address or property.location or "Qatar" }}
                             </span>
-
-                            {% else %}
-
-                            <span>
-                                Qatar
-                            </span>
-
-                            {% endif %}
-
-                            <small>
-                                Google Map integration coming soon
-                            </small>
 
                         </div>
+
+                    </div>
+
+
+                    <div class="map-footer">
+
+                        <div class="map-address">
+
+                            <i class="fas fa-location-dot"></i>
+
+                            <span>
+
+                                {% if property.address %}
+
+                                    {{ property.address }},
+                                    {{ property.location }}
+
+                                {% else %}
+
+                                    {{ property.location or "Qatar" }}
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            id="openGoogleMaps"
+                            href="#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="open-map-button"
+                        >
+
+                            <i class="fas fa-arrow-up-right-from-square"></i>
+
+                            Open in Google Maps
+
+                        </a>
 
                     </div>
 
@@ -772,11 +778,13 @@
                 <div class="sidebar-price-card">
 
                     <span>
+
                         {% if property.purpose == "Rent" %}
                             RENTAL PRICE
                         {% else %}
                             ASKING PRICE
                         {% endif %}
+
                     </span>
 
 
@@ -796,12 +804,14 @@
                         <i class="fas fa-location-dot"></i>
 
                         <span>
+
                             {{ property.location }}
 
                             {% if property.address %}
                                 <br>
                                 {{ property.address }}
                             {% endif %}
+
                         </span>
 
                     </div>
@@ -861,7 +871,6 @@
                             href="{{ url_for('property_details', id=item.id) }}"
                             class="related-property-card"
                         >
-
 
                             <div class="related-property-image">
 
@@ -1028,6 +1037,173 @@
 
 <script>
 
+/* =========================================================
+   GOOGLE MAP
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const mapContainer =
+        document.getElementById("propertyGoogleMap");
+
+    const openMapButton =
+        document.getElementById("openGoogleMaps");
+
+
+    if (!mapContainer) {
+        return;
+    }
+
+
+    /*
+        Build the property location from the existing
+        database fields.
+
+        Address is preferred because it is usually more
+        specific than location.
+    */
+
+    const propertyAddress =
+        {{ (property.address or "")|tojson }};
+
+    const propertyLocation =
+        {{ (property.location or "")|tojson }};
+
+
+    let mapQuery = "";
+
+
+    if (propertyAddress && propertyLocation) {
+
+        mapQuery =
+            propertyAddress +
+            ", " +
+            propertyLocation +
+            ", Qatar";
+
+    }
+
+    else if (propertyAddress) {
+
+        mapQuery =
+            propertyAddress +
+            ", Qatar";
+
+    }
+
+    else if (propertyLocation) {
+
+        mapQuery =
+            propertyLocation +
+            ", Qatar";
+
+    }
+
+    else {
+
+        mapQuery = "Qatar";
+
+    }
+
+
+    /*
+        Encode the address so spaces, commas and special
+        characters do not break the URL.
+    */
+
+    const encodedQuery =
+        encodeURIComponent(mapQuery);
+
+
+    /*
+        Google Maps normal web search URL.
+        This does not require us to expose an API key
+        in this page.
+    */
+
+    const googleMapsUrl =
+        "https://www.google.com/maps/search/?api=1&query="
+        + encodedQuery;
+
+
+    /*
+        Set the external Google Maps button.
+    */
+
+    if (openMapButton) {
+
+        openMapButton.href =
+            googleMapsUrl;
+
+    }
+
+
+    /*
+        Google Maps embedded view.
+
+        The standard maps URL with output=embed
+        displays the requested property location.
+    */
+
+    const iframe =
+        document.createElement("iframe");
+
+
+    iframe.src =
+        "https://www.google.com/maps?q="
+        + encodedQuery
+        + "&output=embed";
+
+
+    iframe.title =
+        "Google Map showing "
+        + mapQuery;
+
+
+    iframe.loading =
+        "lazy";
+
+
+    iframe.referrerPolicy =
+        "no-referrer-when-downgrade";
+
+
+    iframe.allowFullscreen =
+        true;
+
+
+    iframe.style.width =
+        "100%";
+
+
+    iframe.style.height =
+        "100%";
+
+
+    iframe.style.border =
+        "0";
+
+
+    iframe.style.display =
+        "block";
+
+
+    /*
+        Replace loading message with the actual map.
+    */
+
+    mapContainer.innerHTML = "";
+
+    mapContainer.appendChild(iframe);
+
+});
+
+
+
+/* =========================================================
+   GALLERY
+========================================================= */
+
 const galleryImageUrls = [
 
     {% if gallery_images %}
@@ -1053,13 +1229,17 @@ let currentLightboxIndex = 0;
 
 function normalizeGalleryIndex(index) {
 
-    const total = galleryImageUrls.length;
+    const total =
+        galleryImageUrls.length;
 
     if (!total) {
         return 0;
     }
 
-    return ((index % total) + total) % total;
+    return (
+        (index % total) +
+        total
+    ) % total;
 
 }
 
@@ -1074,19 +1254,27 @@ function openLightbox(index) {
     currentLightboxIndex =
         normalizeGalleryIndex(index);
 
-    const modal =
-        document.getElementById("imageLightbox");
 
-    modal.style.display = "flex";
+    const modal =
+        document.getElementById(
+            "imageLightbox"
+        );
+
+
+    modal.style.display =
+        "flex";
+
 
     modal.setAttribute(
         "aria-hidden",
         "false"
     );
 
+
     document.body.classList.add(
         "lightbox-open"
     );
+
 
     updateLightboxImage();
 
@@ -1100,15 +1288,23 @@ function updateLightboxImage() {
         return;
     }
 
+
     const image =
-        document.getElementById("lightboxImg");
+        document.getElementById(
+            "lightboxImg"
+        );
+
 
     const counter =
-        document.getElementById("lightboxCounter");
+        document.getElementById(
+            "lightboxCounter"
+        );
 
 
     image.src =
-        galleryImageUrls[currentLightboxIndex];
+        galleryImageUrls[
+            currentLightboxIndex
+        ];
 
 
     counter.textContent =
@@ -1126,14 +1322,17 @@ function nextImage(event) {
         event.stopPropagation();
     }
 
+
     if (!galleryImageUrls.length) {
         return;
     }
+
 
     currentLightboxIndex =
         normalizeGalleryIndex(
             currentLightboxIndex + 1
         );
+
 
     updateLightboxImage();
 
@@ -1147,14 +1346,17 @@ function previousImage(event) {
         event.stopPropagation();
     }
 
+
     if (!galleryImageUrls.length) {
         return;
     }
+
 
     currentLightboxIndex =
         normalizeGalleryIndex(
             currentLightboxIndex - 1
         );
+
 
     updateLightboxImage();
 
@@ -1165,18 +1367,25 @@ function previousImage(event) {
 function closeLightbox() {
 
     const modal =
-        document.getElementById("imageLightbox");
+        document.getElementById(
+            "imageLightbox"
+        );
+
 
     if (!modal) {
         return;
     }
 
-    modal.style.display = "none";
+
+    modal.style.display =
+        "none";
+
 
     modal.setAttribute(
         "aria-hidden",
         "true"
     );
+
 
     document.body.classList.remove(
         "lightbox-open"
@@ -1191,7 +1400,9 @@ document.addEventListener(
     function(event) {
 
         const modal =
-            document.getElementById("imageLightbox");
+            document.getElementById(
+                "imageLightbox"
+            );
 
 
         if (
@@ -1234,7 +1445,9 @@ document.addEventListener(
 
 
 const lightbox =
-    document.getElementById("imageLightbox");
+    document.getElementById(
+        "imageLightbox"
+    );
 
 
 if (lightbox) {
@@ -1283,8 +1496,10 @@ if (lightboxImageArea) {
                 return;
             }
 
+
             touchStartX =
                 event.touches[0].clientX;
+
 
             touchStartY =
                 event.touches[0].clientY;
@@ -1302,11 +1517,14 @@ if (lightboxImageArea) {
                 return;
             }
 
+
             touchEndX =
                 event.changedTouches[0].clientX;
 
+
             touchEndY =
                 event.changedTouches[0].clientY;
+
 
             handleSwipe();
 
@@ -1321,10 +1539,13 @@ if (lightboxImageArea) {
 function handleSwipe() {
 
     const distanceX =
-        touchEndX - touchStartX;
+        touchEndX -
+        touchStartX;
+
 
     const distanceY =
-        touchEndY - touchStartY;
+        touchEndY -
+        touchStartY;
 
 
     if (
@@ -1346,7 +1567,9 @@ function handleSwipe() {
 
         nextImage();
 
-    } else {
+    }
+
+    else {
 
         previousImage();
 
@@ -2039,11 +2262,18 @@ function handleSwipe() {
 
 
 /* =========================================================
-   MAP
+   GOOGLE MAP
 ========================================================= */
 
-.property-map {
-    min-height: 230px;
+.property-location-card {
+    overflow: hidden;
+}
+
+
+.property-google-map {
+    width: 100%;
+    height: 390px;
+    min-height: 390px;
     border-radius: 12px;
     overflow: hidden;
     background:
@@ -2052,40 +2282,106 @@ function handleSwipe() {
             #e9eef3,
             #dbe3ea
         );
+    position: relative;
 }
 
-.map-inner {
-    min-height: 230px;
+
+.property-google-map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+
+.map-loading {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     text-align: center;
     color: #475569;
     padding: 20px;
-    box-sizing: border-box;
 }
 
-.map-inner i {
-    font-size: 36px;
+
+.map-loading-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(138,21,56,.08);
     color: #8A1538;
+    font-size: 22px;
     margin-bottom: 5px;
 }
 
-.map-inner strong {
+
+.map-loading strong {
     color: #1f2937;
-    font-size: 17px;
+    font-size: 15px;
 }
 
-.map-inner span {
+
+.map-loading span {
     color: #64748b;
-    font-size: 12px;
+    font-size: 11px;
+    max-width: 400px;
 }
 
-.map-inner small {
-    color: #94a3b8;
-    margin-top: 12px;
+
+.map-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-top: 14px;
+}
+
+
+.map-address {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+.map-address i {
+    color: #8A1538;
+    margin-top: 2px;
+}
+
+
+.open-map-button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #8A1538;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-size: 11px;
+    font-weight: 800;
+    transition:
+        background .2s ease,
+        transform .2s ease;
+}
+
+
+.open-map-button:hover {
+    background: #6b102b;
+    transform: translateY(-1px);
 }
 
 
@@ -2633,6 +2929,24 @@ body.lightbox-open {
         width: 100%;
     }
 
+
+    /* GOOGLE MAP MOBILE */
+
+    .property-google-map {
+        height: 300px;
+        min-height: 300px;
+    }
+
+    .map-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .open-map-button {
+        width: 100%;
+    }
+
+
     .related-properties-list {
         grid-template-columns: 1fr;
     }
@@ -2715,6 +3029,11 @@ body.lightbox-open {
 
     .related-property-card {
         grid-template-columns: 95px 1fr;
+    }
+
+    .property-google-map {
+        height: 270px;
+        min-height: 270px;
     }
 
 }
