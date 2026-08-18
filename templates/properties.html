@@ -6,95 +6,710 @@ Properties | Prestigious Real Estate
 
 {% block content %}
 
-<!-- =========================
-PAGE HERO
-========================= -->
+<!-- =========================================================
+     PAGE HERO
+========================================================= -->
 
-<section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/uploads/properties/properties.png') }}');">
+<section
+  class="page-hero"
+  style="background-image:url('{{ url_for('static', filename='images/uploads/properties/properties.png') }}');"
+>
+
   <div class="page-overlay">
+
     <div class="container">
+
       <div class="hero-text-content">
-        <span class="hero-badge">Real Estate Portfolio</span>
-        <h1>Our Properties</h1>
-        <p>Discover premium residential and commercial properties for rent and sale in Qatar</p>
+
+        <span class="hero-badge">
+          Real Estate Portfolio
+        </span>
+
+        <h1>
+          Find Your Perfect Property
+        </h1>
+
+        <p>
+          Discover premium residential and commercial properties
+          for sale and rent across Qatar.
+        </p>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- =========================
-PROPERTY FILTER
-========================= -->
 
-<section class="property-filter-section">
+<!-- =========================================================
+     ADVANCED PROPERTY SEARCH
+========================================================= -->
+
+<section class="advanced-search-section">
+
   <div class="container">
 
-    <form class="filter-box" method="GET" action="{{ url_for('properties') }}">
+    <div class="advanced-search-box">
 
-      <div class="filter-group">
-        <label class="filter-label">Type</label>
-        <select name="property_type">
-          <option value="">All Property Types</option>
-          <option value="Villa" {% if request.args.get('property_type') == 'Villa' %}selected{% endif %}>Villa</option>
-          <option value="Apartment" {% if request.args.get('property_type') == 'Apartment' %}selected{% endif %}>Apartment</option>
-          <option value="Office" {% if request.args.get('property_type') == 'Office' %}selected{% endif %}>Office</option>
-          <option value="Commercial Building" {% if request.args.get('property_type') == 'Commercial Building' %}selected{% endif %}>Commercial Building</option>
-        </select>
+      <!-- SEARCH HEADER -->
+
+      <div class="search-header">
+
+        <div>
+
+          <span class="search-kicker">
+            PROPERTY SEARCH
+          </span>
+
+          <h2>
+            Find a property that suits you
+          </h2>
+
+        </div>
+
+        <a
+          href="{{ url_for('properties') }}"
+          class="clear-search"
+        >
+          Clear All
+        </a>
+
       </div>
 
-      <div class="filter-group">
-        <label class="filter-label">Purpose</label>
-        <select name="purpose">
-          <option value="">Sale & Rent</option>
-          <option value="Sale" {% if request.args.get('purpose') == 'Sale' %}selected{% endif %}>For Sale</option>
-          <option value="Rent" {% if request.args.get('purpose') == 'Rent' %}selected{% endif %}>For Rent</option>
-        </select>
-      </div>
 
-      <div class="filter-group">
-        <label class="filter-label">Location</label>
-        <select name="location">
-          <option value="">All Locations</option>
-          <option value="Doha" {% if request.args.get('location') == 'Doha' %}selected{% endif %}>Doha</option>
-          <option value="Lusail" {% if request.args.get('location') == 'Lusail' %}selected{% endif %}>Lusail</option>
-          <option value="The Pearl" {% if request.args.get('location') == 'The Pearl' %}selected{% endif %}>The Pearl</option>
-          <option value="West Bay" {% if request.args.get('location') == 'West Bay' %}selected{% endif %}>West Bay</option>
-          <option value="Al Wakrah" {% if request.args.get('location') == 'Al Wakrah' %}selected{% endif %}>Al Wakrah</option>
-        </select>
-      </div>
+      <!-- SEARCH FORM -->
 
-      <button type="submit" class="filter-submit-btn">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             width="18"
-             height="18"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2.5"
-             stroke-linecap="round"
-             stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.3-4.3"/>
-        </svg>
-        <span>Search</span>
-      </button>
+      <form
+        method="GET"
+        action="{{ url_for('properties') }}"
+        class="advanced-search-form"
+        id="propertySearchForm"
+      >
 
-    </form>
+
+        <!-- =================================================
+             KEYWORD SEARCH
+        ================================================== -->
+
+        <div class="search-field keyword-field">
+
+          <label>
+            Search
+          </label>
+
+          <div class="input-wrapper">
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+
+            <input
+              type="text"
+              name="search"
+              id="propertySearchInput"
+              value="{{ request.args.get('search', '') }}"
+              placeholder="Search property, area or keyword..."
+              autocomplete="off"
+            />
+
+            <button
+              type="button"
+              class="search-clear-btn"
+              id="clearKeyword"
+              aria-label="Clear search"
+            >
+              ×
+            </button>
+
+          </div>
+
+          <!-- LIVE SUGGESTIONS -->
+
+          <div
+            class="search-suggestions"
+            id="searchSuggestions"
+          ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             PURPOSE
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Purpose
+          </label>
+
+          <div class="select-wrapper">
+
+            <select name="purpose">
+
+              <option value="">
+                Sale & Rent
+              </option>
+
+              <option
+                value="Sale"
+                {% if request.args.get('purpose') == 'Sale' %}
+                  selected
+                {% endif %}
+              >
+                For Sale
+              </option>
+
+              <option
+                value="Rent"
+                {% if request.args.get('purpose') == 'Rent' %}
+                  selected
+                {% endif %}
+              >
+                For Rent
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PROPERTY TYPE
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Property Type
+          </label>
+
+          <div class="select-wrapper">
+
+            <select name="property_type">
+
+              <option value="">
+                All Property Types
+              </option>
+
+              <option
+                value="Villa"
+                {% if request.args.get('property_type') == 'Villa' %}
+                  selected
+                {% endif %}
+              >
+                Villa
+              </option>
+
+              <option
+                value="Apartment"
+                {% if request.args.get('property_type') == 'Apartment' %}
+                  selected
+                {% endif %}
+              >
+                Apartment
+              </option>
+
+              <option
+                value="Office"
+                {% if request.args.get('property_type') == 'Office' %}
+                  selected
+                {% endif %}
+              >
+                Office
+              </option>
+
+              <option
+                value="Commercial Building"
+                {% if request.args.get('property_type') == 'Commercial Building' %}
+                  selected
+                {% endif %}
+              >
+                Commercial Building
+              </option>
+
+              <option
+                value="Townhouse"
+                {% if request.args.get('property_type') == 'Townhouse' %}
+                  selected
+                {% endif %}
+              >
+                Townhouse
+              </option>
+
+              <option
+                value="Penthouse"
+                {% if request.args.get('property_type') == 'Penthouse' %}
+                  selected
+                {% endif %}
+              >
+                Penthouse
+              </option>
+
+              <option
+                value="Land"
+                {% if request.args.get('property_type') == 'Land' %}
+                  selected
+                {% endif %}
+              >
+                Land
+              </option>
+
+              <option
+                value="Shop"
+                {% if request.args.get('property_type') == 'Shop' %}
+                  selected
+                {% endif %}
+              >
+                Shop
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LOCATION
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Location
+          </label>
+
+          <div class="select-wrapper">
+
+            <select name="location">
+
+              <option value="">
+                All Locations
+              </option>
+
+              <option
+                value="Doha"
+                {% if request.args.get('location') == 'Doha' %}
+                  selected
+                {% endif %}
+              >
+                Doha
+              </option>
+
+              <option
+                value="Lusail"
+                {% if request.args.get('location') == 'Lusail' %}
+                  selected
+                {% endif %}
+              >
+                Lusail
+              </option>
+
+              <option
+                value="The Pearl"
+                {% if request.args.get('location') == 'The Pearl' %}
+                  selected
+                {% endif %}
+              >
+                The Pearl
+              </option>
+
+              <option
+                value="West Bay"
+                {% if request.args.get('location') == 'West Bay' %}
+                  selected
+                {% endif %}
+              >
+                West Bay
+              </option>
+
+              <option
+                value="Al Wakrah"
+                {% if request.args.get('location') == 'Al Wakrah' %}
+                  selected
+                {% endif %}
+              >
+                Al Wakrah
+              </option>
+
+              <option
+                value="Al Rayyan"
+                {% if request.args.get('location') == 'Al Rayyan' %}
+                  selected
+                {% endif %}
+              >
+                Al Rayyan
+              </option>
+
+              <option
+                value="Al Khor"
+                {% if request.args.get('location') == 'Al Khor' %}
+                  selected
+                {% endif %}
+              >
+                Al Khor
+              </option>
+
+              <option
+                value="Umm Salal"
+                {% if request.args.get('location') == 'Umm Salal' %}
+                  selected
+                {% endif %}
+              >
+                Umm Salal
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BEDROOMS
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Bedrooms
+          </label>
+
+          <div class="select-wrapper">
+
+            <select name="bedrooms">
+
+              <option value="">
+                Any Bedrooms
+              </option>
+
+              <option
+                value="1"
+                {% if request.args.get('bedrooms') == '1' %}
+                  selected
+                {% endif %}
+              >
+                1 Bedroom
+              </option>
+
+              <option
+                value="2"
+                {% if request.args.get('bedrooms') == '2' %}
+                  selected
+                {% endif %}
+              >
+                2 Bedrooms
+              </option>
+
+              <option
+                value="3"
+                {% if request.args.get('bedrooms') == '3' %}
+                  selected
+                {% endif %}
+              >
+                3 Bedrooms
+              </option>
+
+              <option
+                value="4"
+                {% if request.args.get('bedrooms') == '4' %}
+                  selected
+                {% endif %}
+              >
+                4 Bedrooms
+              </option>
+
+              <option
+                value="5"
+                {% if request.args.get('bedrooms') == '5' %}
+                  selected
+                {% endif %}
+              >
+                5+ Bedrooms
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BATHROOMS
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Bathrooms
+          </label>
+
+          <div class="select-wrapper">
+
+            <select name="bathrooms">
+
+              <option value="">
+                Any Bathrooms
+              </option>
+
+              <option
+                value="1"
+                {% if request.args.get('bathrooms') == '1' %}
+                  selected
+                {% endif %}
+              >
+                1+ Bathroom
+              </option>
+
+              <option
+                value="2"
+                {% if request.args.get('bathrooms') == '2' %}
+                  selected
+                {% endif %}
+              >
+                2+ Bathrooms
+              </option>
+
+              <option
+                value="3"
+                {% if request.args.get('bathrooms') == '3' %}
+                  selected
+                {% endif %}
+              >
+                3+ Bathrooms
+              </option>
+
+              <option
+                value="4"
+                {% if request.args.get('bathrooms') == '4' %}
+                  selected
+                {% endif %}
+              >
+                4+ Bathrooms
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MIN PRICE
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Minimum Price
+          </label>
+
+          <div class="price-input-wrapper">
+
+            <span>
+              QAR
+            </span>
+
+            <input
+              type="number"
+              name="min_price"
+              value="{{ request.args.get('min_price', '') }}"
+              placeholder="Min price"
+              min="0"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAX PRICE
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Maximum Price
+          </label>
+
+          <div class="price-input-wrapper">
+
+            <span>
+              QAR
+            </span>
+
+            <input
+              type="number"
+              name="max_price"
+              value="{{ request.args.get('max_price', '') }}"
+              placeholder="Max price"
+              min="0"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FURNISHED
+        ================================================== -->
+
+        <div class="search-field">
+
+          <label>
+            Furnished
+          </label>
+
+          <div class="select-wrapper">
+
+            <select name="furnished">
+
+              <option value="">
+                Any
+              </option>
+
+              <option
+                value="Yes"
+                {% if request.args.get('furnished') == 'Yes' %}
+                  selected
+                {% endif %}
+              >
+                Furnished
+              </option>
+
+              <option
+                value="No"
+                {% if request.args.get('furnished') == 'No' %}
+                  selected
+                {% endif %}
+              >
+                Unfurnished
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SEARCH BUTTON
+        ================================================== -->
+
+        <div class="search-action">
+
+          <button
+            type="submit"
+            class="advanced-search-btn"
+          >
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+
+            <span>
+              Search Properties
+            </span>
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
 
   </div>
+
 </section>
 
-<!-- =========================
-PROPERTY LIST
-========================= -->
+
+<!-- =========================================================
+     PROPERTY RESULTS
+========================================================= -->
 
 <section class="properties-section">
+
   <div class="container">
 
-    <div class="section-title">
-      <h2>Available Properties</h2>
-      <p>Explore our exclusive collection of luxury real estate listings across Qatar</p>
+
+    <!-- RESULT HEADER -->
+
+    <div class="results-header">
+
+      <div>
+
+        <span class="results-kicker">
+          PROPERTY COLLECTION
+        </span>
+
+        <h2>
+          Available Properties
+        </h2>
+
+        <p>
+          Explore our exclusive collection of premium properties
+          across Qatar.
+        </p>
+
+      </div>
+
+      {% if properties %}
+
+        <div class="result-count">
+
+          <strong>
+            {{ properties|length }}
+          </strong>
+
+          <span>
+            Properties Found
+          </span>
+
+        </div>
+
+      {% endif %}
+
     </div>
+
+
+    <!-- =====================================================
+         PROPERTY GRID
+    ====================================================== -->
 
     <div class="property-grid">
 
@@ -102,85 +717,145 @@ PROPERTY LIST
 
         <div class="property-card">
 
-          <!-- CLICKABLE PROPERTY IMAGE -->
+          <!-- PROPERTY IMAGE -->
 
-          <a href="{{ url_for('property_details', id=property.id) }}"
-             class="property-image-link">
+          <a
+            href="{{ url_for('property_details', id=property.id) }}"
+            class="property-image-link"
+          >
 
             <div class="property-image-wrapper">
 
               {% if property.main_image %}
 
-                <img src="{{ property.main_image }}"
-                     alt="{{ property.title }}"
-                     loading="lazy">
+                <img
+                  src="{{ property.main_image }}"
+                  alt="{{ property.title }}"
+                  loading="lazy"
+                >
 
               {% else %}
 
-                <img src="{{ url_for('static', filename='images/no-image.jpg') }}"
-                     alt="No Image Available"
-                     loading="lazy">
+                <img
+                  src="{{ url_for('static', filename='images/no-image.jpg') }}"
+                  alt="No Image Available"
+                  loading="lazy"
+                >
 
               {% endif %}
 
-              <div class="property-badge {% if property.purpose == 'Rent' %}badge-rent{% else %}badge-sale{% endif %}">
+
+              <!-- PURPOSE BADGE -->
+
+              <div
+                class="property-badge
+                {% if property.purpose == 'Rent' %}
+                  badge-rent
+                {% else %}
+                  badge-sale
+                {% endif %}"
+              >
+
                 FOR {{ property.purpose|upper }}
+
               </div>
 
             </div>
 
           </a>
 
-          <!-- =========================
-          SECOND RECTANGLE
-          ========================= -->
+
+          <!-- =================================================
+               PROPERTY INFORMATION
+          ================================================== -->
 
           <div class="property-info">
 
-            <!-- PRICE — TOP RIGHT OF SECOND RECTANGLE -->
+
+            <!-- PRICE -->
 
             <div class="property-price-tag">
+
               QAR {{ "{:,.0f}".format(property.price or 0) }}
+
             </div>
+
+
+            <!-- LOCATION -->
 
             <div class="property-location">
 
-              <svg xmlns="http://www.w3.org/2000/svg"
-                   width="15"
-                   height="15"
-                   viewBox="0 0 24 24"
-                   fill="none"
-                   stroke="currentColor"
-                   stroke-width="2"
-                   stroke-linecap="round"
-                   stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
 
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
+
+                <circle
+                  cx="12"
+                  cy="10"
+                  r="3"
+                />
 
               </svg>
 
-              <span>{{ property.location }}</span>
+              <span>
+                {{ property.location }}
+              </span>
 
             </div>
 
+
+            <!-- TITLE -->
+
             <h3 class="property-title">
+
               {{ property.title }}
+
             </h3>
+
+
+            <!-- PROPERTY TYPE -->
+
+            {% if property.property_type %}
+
+              <div class="property-type-label">
+
+                {{ property.property_type }}
+
+              </div>
+
+            {% endif %}
+
+
+            <!-- PROPERTY META -->
 
             <div class="property-meta">
 
+
+              <!-- BEDROOMS -->
+
               <div class="meta-item">
 
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="16"
-                     height="16"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
 
                   <path d="M2 4v16"/>
                   <path d="M2 8h18a2 2 0 0 1 2 2v10"/>
@@ -195,21 +870,29 @@ PROPERTY LIST
 
               </div>
 
+
+              <!-- BATHROOMS -->
+
               <div class="meta-item">
 
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="16"
-                     height="16"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
 
-                  <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L6 9"/>
-                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                  <path d="M15 6 12.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L12 9"/>
+                  <path d="M4 12h16"/>
+                  <path d="M6 12V6a2 2 0 0 1 2-2h2"/>
+                  <path d="M10 4h2"/>
+                  <path d="M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
+                  <path d="M8 18v2"/>
+                  <path d="M16 18v2"/>
 
                 </svg>
 
@@ -219,23 +902,30 @@ PROPERTY LIST
 
               </div>
 
+
+              <!-- AREA -->
+
               <div class="meta-item">
 
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="16"
-                     height="16"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
 
-                  <rect width="18"
-                        height="18"
-                        x="3"
-                        y="3"
-                        rx="2"/>
+                  <rect
+                    width="18"
+                    height="18"
+                    x="3"
+                    y="3"
+                    rx="2"
+                  />
 
                   <path d="M3 9h18"/>
                   <path d="M9 21V9"/>
@@ -254,28 +944,47 @@ PROPERTY LIST
 
         </div>
 
+
       {% else %}
+
+
+        <!-- =================================================
+             EMPTY RESULTS
+        ================================================== -->
 
         <div class="empty-properties-card">
 
-          <div class="empty-icon">🏠</div>
+          <div class="empty-icon">
+            🏠
+          </div>
 
-          <h3>No Properties Found</h3>
+          <h3>
+            No Properties Found
+          </h3>
 
           <p>
-            We couldn't find any properties matching your search criteria.
-            Try adjusting your filters.
+            We couldn't find any properties matching your
+            search criteria.
           </p>
 
+          <a
+            href="{{ url_for('properties') }}"
+            class="reset-results-btn"
+          >
+            View All Properties
+          </a>
+
         </div>
+
 
       {% endfor %}
 
     </div>
 
-    <!-- =========================
-    PAGINATION
-    ========================= -->
+
+    <!-- =====================================================
+         PAGINATION
+    ====================================================== -->
 
     {% if total_pages > 1 %}
 
@@ -283,14 +992,25 @@ PROPERTY LIST
 
         <div class="pagination">
 
+
           {% if page > 1 %}
 
-            <a href="{{ url_for('properties',
-                               page=page-1,
-                               property_type=property_type,
-                               purpose=purpose,
-                               location=location) }}"
-               class="pagination-link nav-btn">
+            <a
+              href="{{ url_for(
+                'properties',
+                page=page-1,
+                property_type=property_type,
+                purpose=purpose,
+                location=location,
+                search=request.args.get('search', ''),
+                bedrooms=request.args.get('bedrooms', ''),
+                bathrooms=request.args.get('bathrooms', ''),
+                min_price=request.args.get('min_price', ''),
+                max_price=request.args.get('max_price', ''),
+                furnished=request.args.get('furnished', '')
+              ) }}"
+              class="pagination-link nav-btn"
+            >
               ← Previous
             </a>
 
@@ -302,18 +1022,35 @@ PROPERTY LIST
 
           {% endif %}
 
+
           <div class="pagination-indicator">
-            Page <strong>{{ page }}</strong> of {{ total_pages }}
+
+            Page
+            <strong>{{ page }}</strong>
+            of
+            <strong>{{ total_pages }}</strong>
+
           </div>
+
 
           {% if page < total_pages %}
 
-            <a href="{{ url_for('properties',
-                               page=page+1,
-                               property_type=property_type,
-                               purpose=purpose,
-                               location=location) }}"
-               class="pagination-link nav-btn">
+            <a
+              href="{{ url_for(
+                'properties',
+                page=page+1,
+                property_type=property_type,
+                purpose=purpose,
+                location=location,
+                search=request.args.get('search', ''),
+                bedrooms=request.args.get('bedrooms', ''),
+                bathrooms=request.args.get('bathrooms', ''),
+                min_price=request.args.get('min_price', ''),
+                max_price=request.args.get('max_price', ''),
+                furnished=request.args.get('furnished', '')
+              ) }}"
+              class="pagination-link nav-btn"
+            >
               Next →
             </a>
 
@@ -324,6 +1061,7 @@ PROPERTY LIST
             </span>
 
           {% endif %}
+
 
         </div>
 
@@ -331,399 +1069,1154 @@ PROPERTY LIST
 
     {% endif %}
 
+
   </div>
+
 </section>
+
+
+<!-- =========================================================
+     STYLES
+========================================================= -->
 
 <style>
 
-/* ==================================
-   DESIGN SYSTEM & QATAR MAROON PALETTE
-================================== */
+/* =========================================================
+   DESIGN TOKENS
+========================================================= */
 
 :root {
+
   --qatar-maroon: #8A1538;
   --qatar-maroon-dark: #670D28;
-  --qatar-maroon-light: rgba(138, 21, 56, 0.08);
+  --qatar-maroon-light: rgba(138,21,56,.08);
+
   --gold-accent: #D4AF37;
+
   --navy-dark: #1F2A44;
+
   --text-dark: #0f172a;
   --text-muted: #64748b;
+
   --border-light: #e2e8f0;
+
   --bg-page: #f8fafc;
+
+  --white: #ffffff;
+
 }
 
-/* CONTAINER */
+
+/* =========================================================
+   CONTAINER
+========================================================= */
 
 .container {
-  padding-left: clamp(20px, 4vw, 50px);
-  padding-right: clamp(20px, 4vw, 50px);
+
+  padding-left: clamp(20px,4vw,50px);
+  padding-right: clamp(20px,4vw,50px);
+
 }
 
-/* PAGE HERO */
+
+/* =========================================================
+   HERO
+========================================================= */
 
 .page-hero {
-  min-height: 380px;
+
+  min-height: 390px;
+
   background-size: cover;
   background-position: center;
+
   position: relative;
+
   display: flex;
   align-items: center;
+
 }
+
 
 .page-overlay {
+
   position: absolute;
+
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.35) 0%,
-    rgba(15, 23, 42, 0.15) 100%
-  );
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(15,23,42,.72) 0%,
+      rgba(15,23,42,.42) 50%,
+      rgba(15,23,42,.20) 100%
+    );
+
   display: flex;
   align-items: center;
+
 }
+
 
 .hero-text-content {
-  color: white;
-  max-width: 650px;
+
+  color: #ffffff;
+
+  max-width: 720px;
+
 }
+
 
 .hero-badge {
+
   display: inline-block;
-  background: rgba(138, 21, 56, 0.85);
+
+  background: rgba(138,21,56,.92);
+
   border: 1px solid var(--gold-accent);
+
   color: #ffffff;
-  padding: 5px 14px;
-  border-radius: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
+
+  padding: 6px 14px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+
   text-transform: uppercase;
-  margin-bottom: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+
+  margin-bottom: 16px;
+
 }
+
 
 .hero-text-content h1 {
-  font-size: 46px;
+
+  font-size: clamp(36px,5vw,54px);
+
   font-weight: 800;
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+
+  margin: 0 0 12px;
+
+  line-height: 1.1;
+
+  letter-spacing: -.8px;
+
+  text-shadow:
+    0 3px 10px rgba(0,0,0,.55);
+
 }
+
 
 .hero-text-content p {
+
   font-size: 17px;
+
   color: #ffffff;
+
   margin: 0;
-  line-height: 1.6;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+
+  line-height: 1.7;
+
+  max-width: 620px;
+
+  text-shadow:
+    0 2px 6px rgba(0,0,0,.5);
+
 }
 
-/* FILTER SECTION */
 
-.property-filter-section {
+/* =========================================================
+   ADVANCED SEARCH SECTION
+========================================================= */
+
+.advanced-search-section {
+
   position: relative;
-  z-index: 10;
-  margin-top: -40px;
-  padding-bottom: 30px;
+
+  z-index: 20;
+
+  margin-top: -70px;
+
+  padding-bottom: 45px;
+
 }
 
-.filter-box {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr) 140px;
-  gap: 16px;
-  padding: 24px;
+
+.advanced-search-box {
+
   background: #ffffff;
-  border-radius: 0;
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+
   border: 1px solid var(--border-light);
-  align-items: end;
+
+  box-shadow:
+    0 20px 50px rgba(15,23,42,.12);
+
+  padding: 28px;
+
 }
 
-.filter-group {
+
+/* =========================================================
+   SEARCH HEADER
+========================================================= */
+
+.search-header {
+
   display: flex;
-  flex-direction: column;
-}
 
-.filter-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--navy-dark);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-}
+  justify-content: space-between;
 
-.filter-box select {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1.5px solid var(--border-light);
-  border-radius: 0;
-  font-size: 14px;
-  color: var(--text-dark);
-  background: var(--bg-page);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px;
-}
-
-.filter-box select:focus {
-  outline: none;
-  border-color: var(--qatar-maroon);
-  background-color: #ffffff;
-  box-shadow: 0 0 0 4px var(--qatar-maroon-light);
-}
-
-.filter-submit-btn {
-  height: 48px;
-  padding: 0 20px;
-  background: var(--qatar-maroon);
-  color: white;
-  border: none;
-  border-radius: 0;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
   align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid var(--border-light);
+
+}
+
+
+.search-kicker {
+
+  display: block;
+
+  color: var(--qatar-maroon);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+
+  margin-bottom: 5px;
+
+}
+
+
+.search-header h2 {
+
+  margin: 0;
+
+  color: var(--navy-dark);
+
+  font-size: 23px;
+
+  font-weight: 800;
+
+}
+
+
+.clear-search {
+
+  color: var(--qatar-maroon);
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+}
+
+
+.clear-search:hover {
+
+  text-decoration: underline;
+
+}
+
+
+/* =========================================================
+   SEARCH GRID
+========================================================= */
+
+.advanced-search-form {
+
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr
+    1fr;
+
+  gap: 18px;
+
+}
+
+
+.search-field {
+
+  min-width: 0;
+
+}
+
+
+.search-field label {
+
+  display: block;
+
+  color: var(--navy-dark);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: .65px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 8px;
+
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.input-wrapper,
+.select-wrapper,
+.price-input-wrapper {
+
+  position: relative;
+
+  width: 100%;
+
+}
+
+
+.input-wrapper {
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+.input-wrapper > svg {
+
+  position: absolute;
+
+  left: 14px;
+
+  color: var(--text-muted);
+
+  pointer-events: none;
+
+}
+
+
+.input-wrapper input,
+.search-field select,
+.price-input-wrapper input {
+
+  width: 100%;
+
+  height: 48px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d8dee8;
+
+  background: #f8fafc;
+
+  color: var(--text-dark);
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  outline: none;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+
+}
+
+
+.input-wrapper input {
+
+  padding:
+    0 42px
+    0 42px;
+
+}
+
+
+.search-field select {
+
+  appearance: none;
+
+  cursor: pointer;
+
+  padding:
+    0 40px
+    0 14px;
+
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+
+  background-repeat: no-repeat;
+
+  background-position:
+    right 14px center;
+
+}
+
+
+.input-wrapper input:focus,
+.search-field select:focus,
+.price-input-wrapper input:focus {
+
+  border-color: var(--qatar-maroon);
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px var(--qatar-maroon-light);
+
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.price-input-wrapper {
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+.price-input-wrapper span {
+
+  position: absolute;
+
+  left: 13px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  pointer-events: none;
+
+}
+
+
+.price-input-wrapper input {
+
+  padding:
+    0 12px
+    0 48px;
+
+}
+
+
+/* =========================================================
+   CLEAR KEYWORD
+========================================================= */
+
+.search-clear-btn {
+
+  position: absolute;
+
+  right: 10px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border: none;
+
+  background: transparent;
+
+  color: #94a3b8;
+
+  font-size: 22px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  display: none;
+
+}
+
+
+.search-clear-btn:hover {
+
+  color: var(--qatar-maroon);
+
+}
+
+
+/* =========================================================
+   LIVE SUGGESTIONS
+========================================================= */
+
+.search-suggestions {
+
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  top: calc(100% + 6px);
+
+  background: #ffffff;
+
+  border: 1px solid var(--border-light);
+
+  box-shadow:
+    0 15px 35px rgba(15,23,42,.15);
+
+  z-index: 999;
+
+  display: none;
+
+  max-height: 390px;
+
+  overflow-y: auto;
+
+}
+
+
+.keyword-field {
+
+  position: relative;
+
+}
+
+
+.suggestion-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 15px;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  text-decoration: none;
+
+  color: var(--text-dark);
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease;
+
+}
+
+
+.suggestion-item:hover {
+
+  background: #f8fafc;
+
+}
+
+
+.suggestion-image {
+
+  width: 52px;
+
+  height: 45px;
+
+  object-fit: cover;
+
+  flex-shrink: 0;
+
+  background: #e2e8f0;
+
+}
+
+
+.suggestion-details {
+
+  min-width: 0;
+
+  flex: 1;
+
+}
+
+
+.suggestion-title {
+
+  display: block;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  color: var(--navy-dark);
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+}
+
+
+.suggestion-location {
+
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 11px;
+
+  color: var(--text-muted);
+
+}
+
+
+.suggestion-price {
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: var(--qatar-maroon);
+
+  white-space: nowrap;
+
+}
+
+
+.suggestion-empty {
+
+  padding: 18px;
+
+  text-align: center;
+
+  font-size: 13px;
+
+  color: var(--text-muted);
+
+}
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+.search-action {
+
+  grid-column: 1 / -1;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-top: 3px;
+
+}
+
+
+.advanced-search-btn {
+
+  min-height: 50px;
+
+  padding: 0 25px;
+
+  display: inline-flex;
+
+  align-items: center;
+
   justify-content: center;
-  gap: 8px;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(138, 21, 56, 0.25);
+
+  gap: 9px;
+
+  border: none;
+
+  background: var(--qatar-maroon);
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 18px rgba(138,21,56,.25);
+
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+
 }
 
-.filter-submit-btn:hover {
+
+.advanced-search-btn:hover {
+
   background: var(--qatar-maroon-dark);
+
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(138, 21, 56, 0.35);
+
+  box-shadow:
+    0 12px 25px rgba(138,21,56,.32);
+
 }
 
-/* PROPERTIES SECTION */
+
+/* =========================================================
+   PROPERTIES SECTION
+========================================================= */
 
 .properties-section {
-  padding: 60px 0 90px 0;
+
+  padding:
+    35px
+    0
+    90px;
+
   background: var(--bg-page);
+
 }
 
-.section-title {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 45px auto;
+
+/* =========================================================
+   RESULTS HEADER
+========================================================= */
+
+.results-header {
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin-bottom: 35px;
+
 }
 
-.section-title h2 {
-  font-size: 34px;
-  color: var(--navy-dark);
+
+.results-kicker {
+
+  display: block;
+
+  color: var(--qatar-maroon);
+
+  font-size: 11px;
+
   font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: -0.5px;
+
+  letter-spacing: 1.4px;
+
+  margin-bottom: 5px;
+
 }
 
-.section-title p {
-  color: var(--text-muted);
-  font-size: 15px;
+
+.results-header h2 {
+
+  margin: 0 0 7px;
+
+  color: var(--navy-dark);
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+}
+
+
+.results-header p {
+
   margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 14px;
+
 }
 
-/* PROPERTY GRID */
+
+.result-count {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border-light);
+
+  font-size: 12px;
+
+  color: var(--text-muted);
+
+  white-space: nowrap;
+
+}
+
+
+.result-count strong {
+
+  color: var(--qatar-maroon);
+
+  font-size: 17px;
+
+}
+
+
+/* =========================================================
+   PROPERTY GRID
+========================================================= */
 
 .property-grid {
+
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fill,minmax(330px,1fr));
+
   gap: 30px;
+
 }
 
-/* PROPERTY CARD */
+
+/* =========================================================
+   PROPERTY CARD
+========================================================= */
 
 .property-card {
+
   background: #ffffff;
-  border-radius: 0;
+
   overflow: hidden;
+
   border: 1px solid var(--border-light);
-  transition: all 0.3s ease;
+
   display: flex;
+
   flex-direction: column;
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease,
+    border-color .3s ease;
+
 }
+
 
 .property-card:hover {
+
   transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-  border-color: rgba(138, 21, 56, 0.2);
+
+  box-shadow:
+    0 18px 40px rgba(15,23,42,.10);
+
+  border-color:
+    rgba(138,21,56,.25);
+
 }
 
-/* CLICKABLE IMAGE LINK */
+
+/* =========================================================
+   PROPERTY IMAGE
+========================================================= */
 
 .property-image-link {
+
   display: block;
+
   text-decoration: none;
+
   color: inherit;
+
 }
 
-/* IMAGE */
 
 .property-image-wrapper {
+
   position: relative;
+
   height: 230px;
+
   overflow: hidden;
+
   background: #e2e8f0;
-  border-radius: 0;
+
 }
+
 
 .property-image-wrapper img {
+
   width: 100%;
+
   height: 100%;
+
   object-fit: cover;
-  transition: transform 0.5s ease;
-  border-radius: 0;
+
+  display: block;
+
+  transition:
+    transform .5s ease;
+
 }
 
-.property-card:hover .property-image-wrapper img {
+
+.property-card:hover
+.property-image-wrapper img {
+
   transform: scale(1.06);
+
 }
 
-/* PROPERTY BADGE */
+
+/* =========================================================
+   BADGE
+========================================================= */
 
 .property-badge {
+
   position: absolute;
+
   top: 16px;
+
   left: 16px;
-  padding: 5px 12px;
-  border-radius: 0;
-  font-size: 11px;
+
+  padding: 6px 12px;
+
+  color: #ffffff;
+
+  font-size: 10px;
+
   font-weight: 800;
-  letter-spacing: 0.5px;
-  color: white;
-  z-index: 2;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+  letter-spacing: .7px;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,.15);
+
 }
+
 
 .badge-sale {
+
   background: var(--qatar-maroon);
+
 }
+
 
 .badge-rent {
+
   background: var(--navy-dark);
+
 }
 
-/* ==================================
-   SECOND RECTANGLE
-================================== */
+
+/* =========================================================
+   PROPERTY INFO
+========================================================= */
 
 .property-info {
+
   position: relative;
 
-  padding: 14px 20px 16px 20px;
+  padding: 15px 20px 17px;
 
   display: flex;
+
   flex-direction: column;
+
   flex-grow: 1;
 
-  background: linear-gradient(
-    180deg,
-    #2d3748 0%,
-    #1f2937 100%
-  );
+  background:
+    linear-gradient(
+      180deg,
+      #2d3748 0%,
+      #1f2937 100%
+    );
 
   color: #f8fafc;
+
 }
 
-/* ==================================
-   PRICE — TOP RIGHT OF SECOND RECTANGLE
-================================== */
+
+/* =========================================================
+   PRICE
+========================================================= */
 
 .property-price-tag {
+
   position: absolute;
 
   top: 12px;
+
   right: 14px;
 
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(15,23,42,.96);
 
   color: #ffffff;
 
   padding: 6px 11px;
 
-  border-radius: 0;
-
   font-size: 14px;
+
   font-weight: 800;
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255,255,255,.18);
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-
-  z-index: 5;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.18);
 
   white-space: nowrap;
+
 }
 
-/* LOCATION */
+
+/* =========================================================
+   LOCATION
+========================================================= */
 
 .property-location {
+
   display: flex;
+
   align-items: center;
+
   gap: 6px;
 
-  color: #d4af37;
+  color: var(--gold-accent);
 
   font-size: 13px;
+
   font-weight: 700;
 
   margin-bottom: 5px;
 
-  /* Gives room for the price badge */
   padding-right: 145px;
+
 }
+
 
 .property-location svg {
-  color: #d4af37;
+
+  color: var(--gold-accent);
+
   flex-shrink: 0;
+
 }
 
-/* TITLE */
+
+/* =========================================================
+   TITLE
+========================================================= */
 
 .property-title {
+
   font-size: 18px;
+
   font-weight: 800;
 
   color: #ffffff;
 
-  margin-bottom: 10px;
+  margin:
+    0 0 7px;
 
   line-height: 1.35;
 
   display: -webkit-box;
+
   -webkit-line-clamp: 2;
+
   -webkit-box-orient: vertical;
 
   overflow: hidden;
 
-  height: 48px;
+  min-height: 48px;
+
 }
 
-/* META */
+
+/* =========================================================
+   PROPERTY TYPE
+========================================================= */
+
+.property-type-label {
+
+  display: inline-flex;
+
+  align-self: flex-start;
+
+  color: #cbd5e1;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  margin-bottom: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+
+}
+
+
+/* =========================================================
+   META
+========================================================= */
 
 .property-meta {
+
   display: flex;
+
   align-items: center;
-  justify-content: flex-start;
 
   gap: 10px;
 
-  padding: 8px 0;
+  padding:
+    8px 0;
 
-  border-top: 1px solid rgba(255,255,255,.12);
-  border-bottom: 1px solid rgba(255,255,255,.12);
+  border-top:
+    1px solid rgba(255,255,255,.12);
 
-  margin-bottom: 0;
+  border-bottom:
+    1px solid rgba(255,255,255,.12);
+
 }
 
+
 .meta-item {
+
   display: flex;
+
   align-items: center;
 
   gap: 3px;
@@ -731,35 +2224,42 @@ PROPERTY LIST
   color: rgba(255,255,255,.88);
 
   font-size: 13px;
+
   font-weight: 600;
+
 }
 
-.meta-item:hover {
-  border-color: var(--gold-accent);
-  box-shadow: 0 8px 18px rgba(0,0,0,.06);
-}
 
 .meta-item svg {
-  color: #d4af37;
 
-  margin-bottom: 0;
+  color: var(--gold-accent);
 
   width: 17px;
+
   height: 17px;
 
   flex-shrink: 0;
+
 }
+
 
 .meta-item span {
+
   color: #ffffff;
 
-  font-size: 13px;
+  font-size: 12px;
+
   font-weight: 700;
+
 }
 
-/* EMPTY STATE */
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
 
 .empty-properties-card {
+
   grid-column: 1 / -1;
 
   text-align: center;
@@ -768,40 +2268,89 @@ PROPERTY LIST
 
   background: #ffffff;
 
-  border-radius: 0;
-
   border: 1px dashed var(--border-light);
+
 }
+
 
 .empty-icon {
-  font-size: 40px;
+
+  font-size: 42px;
+
   margin-bottom: 12px;
+
 }
+
 
 .empty-properties-card h3 {
-  font-size: 20px;
+
+  font-size: 21px;
+
   color: var(--navy-dark);
-  font-weight: 700;
-  margin-bottom: 6px;
+
+  font-weight: 800;
+
+  margin: 0 0 7px;
+
 }
+
 
 .empty-properties-card p {
+
   color: var(--text-muted);
+
   font-size: 14px;
-  margin: 0;
+
+  margin: 0 0 20px;
+
 }
 
-/* PAGINATION */
+
+.reset-results-btn {
+
+  display: inline-flex;
+
+  padding: 11px 18px;
+
+  background: var(--qatar-maroon);
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+}
+
+
+.reset-results-btn:hover {
+
+  background: var(--qatar-maroon-dark);
+
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
 
 .pagination-container {
+
   display: flex;
+
   justify-content: center;
 
   margin-top: 50px;
+
 }
 
+
 .pagination {
+
   display: inline-flex;
+
   align-items: center;
 
   gap: 14px;
@@ -810,192 +2359,710 @@ PROPERTY LIST
 
   padding: 8px 16px;
 
-  border-radius: 0;
-
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
-
   border: 1px solid var(--border-light);
+
+  box-shadow:
+    0 4px 20px rgba(15,23,42,.05);
+
 }
 
-.pagination-link {
-  padding: 10px 18px;
 
-  border-radius: 0;
+.pagination-link {
+
+  padding: 10px 18px;
 
   text-decoration: none;
 
-  font-size: 14px;
+  font-size: 13px;
+
   font-weight: 700;
 
-  transition: all 0.2s ease;
 }
+
 
 .pagination-link.nav-btn {
+
   background: var(--qatar-maroon);
+
   color: #ffffff;
+
 }
+
 
 .pagination-link.nav-btn:hover {
+
   background: var(--qatar-maroon-dark);
-  transform: translateY(-1px);
+
 }
+
 
 .pagination-link.disabled {
+
   background: var(--bg-page);
+
   color: #cbd5e1;
-  cursor: not-allowed;
+
 }
+
 
 .pagination-indicator {
-  font-size: 14px;
+
+  font-size: 13px;
+
   color: var(--text-muted);
-  padding: 0 10px;
+
+  padding: 0 8px;
+
 }
+
 
 .pagination-indicator strong {
+
   color: var(--navy-dark);
-}
-
-/* ==================================
-   RESPONSIVE
-================================== */
-
-@media (max-width: 1024px) {
-
-  .filter-box {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .filter-submit-btn {
-    grid-column: span 2;
-  }
 
 }
 
-@media (max-width: 768px) {
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .advanced-search-form {
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+  }
+
+  .keyword-field {
+
+    grid-column:
+      span 2;
+
+  }
+
+  .search-action {
+
+    grid-column:
+      1 / -1;
+
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
 
   .page-hero {
+
+    min-height: 330px;
+
+  }
+
+  .advanced-search-section {
+
+    margin-top: -35px;
+
+  }
+
+  .advanced-search-form {
+
+    grid-template-columns:
+      repeat(2,1fr);
+
+  }
+
+  .keyword-field {
+
+    grid-column:
+      1 / -1;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .page-hero {
+
     min-height: 300px;
+
   }
 
   .hero-text-content h1 {
-    font-size: 32px;
+
+    font-size: 34px;
+
   }
 
-  .property-filter-section {
-    margin-top: -20px;
+  .hero-text-content p {
+
+    font-size: 14px;
+
   }
 
-  .filter-box {
+
+  .advanced-search-section {
+
+    margin-top: -25px;
+
+    padding-bottom: 25px;
+
+  }
+
+
+  .advanced-search-box {
+
+    padding: 19px;
+
+  }
+
+
+  .search-header {
+
+    align-items: flex-start;
+
+    margin-bottom: 20px;
+
+  }
+
+
+  .search-header h2 {
+
+    font-size: 19px;
+
+  }
+
+
+  .advanced-search-form {
+
     grid-template-columns: 1fr;
-    padding: 18px;
+
+    gap: 14px;
+
   }
 
-  .filter-submit-btn {
-    grid-column: span 1;
+
+  .keyword-field {
+
+    grid-column: auto;
+
   }
+
+
+  .search-action {
+
+    grid-column: auto;
+
+    margin-top: 4px;
+
+  }
+
+
+  .advanced-search-btn {
+
+    width: 100%;
+
+  }
+
+
+  .results-header {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    margin-bottom: 25px;
+
+  }
+
+
+  .results-header h2 {
+
+    font-size: 27px;
+
+  }
+
 
   .property-grid {
+
     grid-template-columns: 1fr;
+
+    gap: 22px;
+
   }
 
-  /* MOBILE IMAGE */
 
   .property-image-wrapper {
+
     height: 220px;
+
   }
 
-  /* MOBILE SECOND RECTANGLE */
 
   .property-info {
-    padding: 12px 16px 13px 16px;
+
+    padding:
+      13px 16px 14px;
+
   }
 
-  /* MOBILE PRICE */
 
   .property-price-tag {
+
     top: 10px;
-    right: 12px;
+
+    right: 11px;
 
     padding: 5px 9px;
 
-    font-size: 13px;
+    font-size: 12px;
+
   }
 
-  /* MOBILE LOCATION */
 
   .property-location {
-    margin-bottom: 4px;
-    padding-right: 125px;
+
+    padding-right: 120px;
 
     font-size: 12px;
+
   }
 
-  /* MOBILE TITLE */
 
   .property-title {
-    margin-bottom: 8px;
-
-    height: 44px;
 
     font-size: 17px;
+
   }
 
-  /* MOBILE META */
 
   .property-meta {
+
     gap: 7px;
-    padding: 7px 0;
+
   }
+
 
   .meta-item {
-    font-size: 12px;
-    gap: 2px;
+
+    font-size: 11px;
+
   }
 
-  .meta-item svg {
-    width: 15px;
-    height: 15px;
-  }
 
   .meta-item span {
-    font-size: 12px;
+
+    font-size: 11px;
+
+  }
+
+
+  .pagination {
+
+    width: 100%;
+
+    justify-content: space-between;
+
+  }
+
+
+  .pagination-link {
+
+    padding: 9px 11px;
+
+  }
+
+
+  .pagination-indicator {
+
+    font-size: 11px;
+
   }
 
 }
 
-/* VERY SMALL PHONES */
 
-@media (max-width: 400px) {
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
 
-  .property-price-tag {
-    top: 9px;
-    right: 10px;
+@media (max-width: 380px) {
 
-    padding: 5px 8px;
+  .advanced-search-box {
 
-    font-size: 12px;
+    padding: 15px;
+
   }
 
-  .property-location {
-    padding-right: 110px;
-    font-size: 11px;
-  }
-
-  .property-title {
-    font-size: 16px;
-  }
 
   .property-meta {
+
     gap: 5px;
+
   }
 
+
+  .meta-item svg {
+
+    width: 14px;
+
+    height: 14px;
+
+  }
+
+
   .meta-item span {
-    font-size: 11px;
+
+    font-size: 10px;
+
   }
 
 }
 
 </style>
+
+
+<!-- =========================================================
+     LIVE SEARCH JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+  const input =
+    document.getElementById("propertySearchInput");
+
+  const suggestions =
+    document.getElementById("searchSuggestions");
+
+  const clearButton =
+    document.getElementById("clearKeyword");
+
+
+  let searchTimer = null;
+
+
+  /* =======================================================
+     SHOW / HIDE CLEAR BUTTON
+  ======================================================== */
+
+  function updateClearButton() {
+
+    if (input.value.trim().length > 0) {
+
+      clearButton.style.display = "block";
+
+    } else {
+
+      clearButton.style.display = "none";
+
+    }
+
+  }
+
+
+  /* =======================================================
+     FORMAT PRICE
+  ======================================================== */
+
+  function formatPrice(price) {
+
+    if (
+      price === null ||
+      price === undefined ||
+      price === ""
+    ) {
+
+      return "";
+
+    }
+
+    const number =
+      Number(price);
+
+    if (Number.isNaN(number)) {
+
+      return "";
+
+    }
+
+    return "QAR " +
+      number.toLocaleString("en-US", {
+        maximumFractionDigits: 0
+      });
+
+  }
+
+
+  /* =======================================================
+     ESCAPE HTML
+  ======================================================== */
+
+  function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+
+      return "";
+
+    }
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =======================================================
+     DISPLAY SUGGESTIONS
+  ======================================================== */
+
+  function displaySuggestions(results) {
+
+    suggestions.innerHTML = "";
+
+    if (!results || results.length === 0) {
+
+      suggestions.innerHTML = `
+        <div class="suggestion-empty">
+          No matching properties found
+        </div>
+      `;
+
+      suggestions.style.display = "block";
+
+      return;
+
+    }
+
+
+    results.forEach(function (property) {
+
+
+      const item =
+        document.createElement("a");
+
+
+      item.className =
+        "suggestion-item";
+
+
+      item.href =
+        `/property/${property.id}`;
+
+
+      const image =
+        property.main_image ||
+        "/static/images/no-image.jpg";
+
+
+      item.innerHTML = `
+
+        <img
+          class="suggestion-image"
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(property.title || "Property")}"
+        >
+
+        <div class="suggestion-details">
+
+          <span class="suggestion-title">
+            ${escapeHtml(property.title || "Property")}
+          </span>
+
+          <span class="suggestion-location">
+            ${escapeHtml(property.location || "")}
+            ${property.property_type
+              ? " • " + escapeHtml(property.property_type)
+              : ""
+            }
+          </span>
+
+        </div>
+
+        <div class="suggestion-price">
+
+          ${formatPrice(property.price)}
+
+        </div>
+
+      `;
+
+
+      suggestions.appendChild(item);
+
+    });
+
+
+    suggestions.style.display = "block";
+
+  }
+
+
+  /* =======================================================
+     LIVE SEARCH
+  ======================================================== */
+
+  input.addEventListener("input", function () {
+
+
+    updateClearButton();
+
+
+    const query =
+      input.value.trim();
+
+
+    clearTimeout(searchTimer);
+
+
+    if (!query) {
+
+      suggestions.innerHTML = "";
+
+      suggestions.style.display = "none";
+
+      return;
+
+    }
+
+
+    searchTimer =
+      setTimeout(function () {
+
+
+        fetch(
+          `/property_search_suggestions?q=${encodeURIComponent(query)}`
+        )
+
+        .then(function(response) {
+
+          if (!response.ok) {
+
+            throw new Error(
+              "Search request failed"
+            );
+
+          }
+
+          return response.json();
+
+        })
+
+        .then(function(data) {
+
+          displaySuggestions(
+            data.results || []
+          );
+
+        })
+
+        .catch(function(error) {
+
+          console.error(
+            "Property search error:",
+            error
+          );
+
+          suggestions.style.display =
+            "none";
+
+        });
+
+
+      }, 250);
+
+  });
+
+
+  /* =======================================================
+     CLEAR SEARCH
+  ======================================================== */
+
+  clearButton.addEventListener(
+    "click",
+    function () {
+
+      input.value = "";
+
+      suggestions.innerHTML = "";
+
+      suggestions.style.display = "none";
+
+      updateClearButton();
+
+      input.focus();
+
+    }
+  );
+
+
+  /* =======================================================
+     CLOSE SUGGESTIONS WHEN CLICKING OUTSIDE
+  ======================================================== */
+
+  document.addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        !event.target.closest(".keyword-field")
+      ) {
+
+        suggestions.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     ESC KEY
+  ======================================================== */
+
+  document.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (event.key === "Escape") {
+
+        suggestions.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     INITIAL STATE
+  ======================================================== */
+
+  updateClearButton();
+
+
+});
+
+</script>
 
 {% endblock %}
