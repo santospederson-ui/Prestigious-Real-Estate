@@ -2276,79 +2276,508 @@ document.addEventListener(
     }
 
 
-    /* =====================================================
-       LIVE DATABASE PROPERTY SEARCH
-    ===================================================== */
+   /* =====================================================
+   FAST LIVE DATABASE PROPERTY SEARCH
+===================================================== */
 
-    const searchInput =
-      document.getElementById(
-        'propertyLiveSearch'
-      );
+const searchInput =
+  document.getElementById(
+    'propertyLiveSearch'
+  );
 
-    const resultsBox =
-      document.getElementById(
-        'liveSearchResults'
-      );
+const resultsBox =
+  document.getElementById(
+    'liveSearchResults'
+  );
 
-    let searchTimer = null;
+let searchTimer = null;
 
-    let currentController = null;
-
-
-    if (searchInput && resultsBox) {
+let currentController = null;
 
 
-      /* ===================================================
-         ESCAPE HTML
-      =================================================== */
+/*
+   Small browser cache.
 
-      function escapeHTML(value) {
+   Example:
 
-        if (value === null ||
-            value === undefined) {
+   "villa" -> cached results
 
-          return '';
+   This prevents unnecessary requests when
+   the same search is repeated.
+*/
+const searchCache = new Map();
+
+
+/*
+   Maximum number of cached searches.
+
+   Prevents the browser cache from growing
+   indefinitely.
+*/
+const MAX_CACHE_SIZE = 20;
+
+
+if (searchInput && resultsBox) {
+
+
+  /* ===================================================
+     ESCAPE HTML
+  =================================================== */
+
+  function escapeHTML(value) {
+
+    if (
+      value === null ||
+      value === undefined
+    ) {
+      return '';
+    }
+
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+  }
+
+
+  /* ===================================================
+     SHOW LOADING
+  =================================================== */
+
+  function showLoading() {
+
+    resultsBox.innerHTML = `
+
+      <div class="search-state">
+
+        <i class="fas fa-spinner fa-spin"></i>
+
+        Searching properties...
+
+      </div>
+
+    `;
+
+    resultsBox.classList.add('show');
+
+  }
+
+
+  /* ===================================================
+     CLEAR RESULTS
+  =================================================== */
+
+  function clearResults() {
+
+    resultsBox.innerHTML = '';
+
+    resultsBox.classList.remove('show');
+
+  }
+
+
+  /* ===================================================
+     RENDER RESULTS
+  =================================================== */
+
+  function renderResults(data) {
+
+    if (
+      !data ||
+      !data.results ||
+      data.results.length === 0
+    ) {
+
+      resultsBox.innerHTML = `
+
+        <div class="search-no-results">
+
+          <strong>
+            No properties found
+          </strong>
+
+          No matching property was found
+          for "<b>${escapeHTML(
+            searchInput.value
+          )}</b>".
+
+        </div>
+
+      `;
+
+      resultsBox.classList.add('show');
+
+      return;
+
+    }
+
+
+    let html = '';
+
+
+    data.results.forEach(
+      function(property) {
+
+        const purpose =
+          property.purpose || 'Sale';
+
+
+        const badgeClass =
+          purpose.toLowerCase() === 'rent'
+            ? 'rent'
+            : '';
+
+
+        let price = 'Contact For Price';
+
+
+        if (
+          property.price !== null &&
+          property.price !== undefined &&
+          property.price !== ''
+        ) {
+
+          price =
+            'QAR ' +
+            Number(
+              property.price
+            ).toLocaleString();
 
         }
 
-        return String(value)
-          .replace(
-            /&/g,
-            '&amp;'
-          )
-          .replace(
-            /</g,
-            '&lt;'
-          )
-          .replace(
-            />/g,
-            '&gt;'
-          )
-          .replace(
-            /"/g,
-            '&quot;'
-          )
-          .replace(
-            /'/g,
-            '&#039;'
-          );
+
+        const image =
+          property.main_image ||
+          "{{ url_for(
+              'static',
+              filename='images/no-image.png'
+          ) }}";
+
+
+        html += `
+
+          <a
+            href="/property/${property.id}"
+            class="live-result-item"
+          >
+
+            <div class="live-result-image">
+
+              <img
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(
+                  property.title
+                )}"
+                loading="lazy"
+              >
+
+            </div>
+
+
+            <div class="live-result-info">
+
+              <div class="live-result-title">
+
+                ${escapeHTML(
+                  property.title
+                )}
+
+              </div>
+
+
+              <div class="live-result-location">
+
+                📍
+                ${escapeHTML(
+                  property.location || ''
+                )}
+
+              </div>
+
+
+              <div class="live-result-details">
+
+                <span class="live-result-price">
+
+                  ${price}
+
+                </span>
+
+
+                ${
+                  property.property_type
+                  ? `
+                    <span>
+                      ${escapeHTML(
+                        property.property_type
+                      )}
+                    </span>
+                  `
+                  : ''
+                }
+
+
+                ${
+                  property.bedrooms
+                  ? `
+                    <span>
+                      🛏
+                      ${escapeHTML(
+                        property.bedrooms
+                      )}
+                    </span>
+                  `
+                  : ''
+                }
+
+
+                ${
+                  property.area
+                  ? `
+                    <span>
+                      📐
+                      ${escapeHTML(
+                        property.area
+                      )}
+                      sqm
+                    </span>
+                  `
+                  : ''
+                }
+
+              </div>
+
+            </div>
+
+
+            <span
+              class="
+                live-result-badge
+                ${badgeClass}
+              "
+            >
+
+              FOR
+              ${escapeHTML(
+                purpose
+              ).toUpperCase()}
+
+            </span>
+
+          </a>
+
+        `;
 
       }
+    );
 
 
-      /* ===================================================
-         SHOW LOADING
-      =================================================== */
+    resultsBox.innerHTML = html;
 
-      function showLoading() {
+    resultsBox.classList.add('show');
+
+  }
+
+
+  /* ===================================================
+     CACHE RESULTS
+  =================================================== */
+
+  function saveToCache(
+    keyword,
+    data
+  ) {
+
+    /*
+       If cache is full,
+       remove the oldest item.
+    */
+
+    if (
+      searchCache.size >=
+      MAX_CACHE_SIZE
+    ) {
+
+      const firstKey =
+        searchCache.keys().next().value;
+
+      searchCache.delete(
+        firstKey
+      );
+
+    }
+
+
+    searchCache.set(
+      keyword,
+      data
+    );
+
+  }
+
+
+  /* ===================================================
+     PERFORM LIVE SEARCH
+  =================================================== */
+
+  function performLiveSearch(
+    keyword
+  ) {
+
+    keyword =
+      keyword.trim().toLowerCase();
+
+
+    if (
+      keyword.length < 2
+    ) {
+
+      clearResults();
+
+      return;
+
+    }
+
+
+    /*
+       Check browser cache first.
+    */
+
+    if (
+      searchCache.has(keyword)
+    ) {
+
+      renderResults(
+        searchCache.get(keyword)
+      );
+
+      return;
+
+    }
+
+
+    /*
+       Cancel previous request.
+    */
+
+    if (
+      currentController
+    ) {
+
+      currentController.abort();
+
+    }
+
+
+    currentController =
+      new AbortController();
+
+
+    showLoading();
+
+
+    fetch(
+      `/property_search_suggestions?q=${encodeURIComponent(
+        keyword
+      )}`,
+      {
+        method: 'GET',
+
+        headers: {
+          'X-Requested-With':
+            'XMLHttpRequest'
+        },
+
+        signal:
+          currentController.signal,
+
+        /*
+           Tell browser that this request
+           should not be unnecessarily cached
+           by the browser.
+        */
+        cache: 'no-store'
+      }
+    )
+
+    .then(
+      function(response) {
+
+        if (!response.ok) {
+
+          throw new Error(
+            'Search request failed'
+          );
+
+        }
+
+        return response.json();
+
+      }
+    )
+
+    .then(
+      function(data) {
+
+        /*
+           Save result in browser cache.
+        */
+
+        saveToCache(
+          keyword,
+          data
+        );
+
+
+        /*
+           Only render if the input
+           still contains this search.
+        */
+
+        if (
+          searchInput.value
+            .trim()
+            .toLowerCase() ===
+          keyword
+        ) {
+
+          renderResults(
+            data
+          );
+
+        }
+
+      }
+    )
+
+    .catch(
+      function(error) {
+
+        /*
+           Ignore intentionally
+           cancelled requests.
+        */
+
+        if (
+          error.name ===
+          'AbortError'
+        ) {
+
+          return;
+
+        }
+
 
         resultsBox.innerHTML = `
 
           <div class="search-state">
 
-            <i class="fas fa-spinner fa-spin"></i>
+            Unable to search properties.
 
-            Searching properties...
+            Please try again.
 
           </div>
 
@@ -2358,445 +2787,121 @@ document.addEventListener(
           'show'
         );
 
-      }
 
-
-      /* ===================================================
-         CLEAR RESULTS
-      =================================================== */
-
-      function clearResults() {
-
-        resultsBox.innerHTML = '';
-
-        resultsBox.classList.remove(
-          'show'
+        console.error(
+          'Live search error:',
+          error
         );
 
       }
+    );
 
+  }
 
-      /* ===================================================
-         RENDER RESULTS
-      =================================================== */
 
-      function renderResults(data) {
+  /* ===================================================
+     INPUT EVENT
+  =================================================== */
 
+  searchInput.addEventListener(
+    'input',
+    function() {
 
-        if (!data ||
-            !data.results ||
-            data.results.length === 0) {
+      clearTimeout(
+        searchTimer
+      );
 
-          resultsBox.innerHTML = `
 
-            <div class="search-no-results">
+      const value =
+        this.value.trim();
 
-              <strong>
-                No properties found
-              </strong>
 
-              No matching property was found
-              for "<b>${escapeHTML(
-                searchInput.value
-              )}</b>".
-
-            </div>
-
-          `;
-
-          resultsBox.classList.add(
-            'show'
-          );
-
-          return;
-
-        }
-
-
-        let html = '';
-
-
-        data.results.forEach(
-          function (property) {
-
-
-            const purpose =
-              property.purpose ||
-              'Sale';
-
-
-            const badgeClass =
-              purpose.toLowerCase() ===
-              'rent'
-                ? 'rent'
-                : '';
-
-
-            let price = '';
-
-            if (
-              property.price !== null &&
-              property.price !== undefined &&
-              property.price !== ''
-            ) {
-
-              price =
-                'QAR ' +
-                Number(
-                  property.price
-                ).toLocaleString();
-
-            }
-            else {
-
-              price =
-                'Contact For Price';
-
-            }
-
-
-            const image =
-              property.main_image ||
-              "{{ url_for(
-                'static',
-                filename='images/no-image.png'
-              ) }}";
-
-
-            html += `
-
-              <a
-                href="/property/${property.id}"
-                class="live-result-item"
-              >
-
-                <div
-                  class="live-result-image"
-                >
-
-                  <img
-                    src="${escapeHTML(image)}"
-                    alt="${escapeHTML(
-                      property.title
-                    )}"
-                  >
-
-                </div>
-
-
-                <div
-                  class="live-result-info"
-                >
-
-                  <div
-                    class="live-result-title"
-                  >
-                    ${escapeHTML(
-                      property.title
-                    )}
-                  </div>
-
-
-                  <div
-                    class="live-result-location"
-                  >
-
-                    📍
-                    ${escapeHTML(
-                      property.location || ''
-                    )}
-
-                  </div>
-
-
-                  <div
-                    class="live-result-details"
-                  >
-
-                    <span
-                      class="live-result-price"
-                    >
-                      ${price}
-                    </span>
-
-                    ${
-                      property.property_type
-                      ? `
-                        <span>
-                          ${escapeHTML(
-                            property.property_type
-                          )}
-                        </span>
-                      `
-                      : ''
-                    }
-
-                    ${
-                      property.bedrooms
-                      ? `
-                        <span>
-                          🛏
-                          ${escapeHTML(
-                            property.bedrooms
-                          )}
-                        </span>
-                      `
-                      : ''
-                    }
-
-                    ${
-                      property.area
-                      ? `
-                        <span>
-                          📐
-                          ${escapeHTML(
-                            property.area
-                          )} sqm
-                        </span>
-                      `
-                      : ''
-                    }
-
-                  </div>
-
-                </div>
-
-
-                <span
-                  class="
-                    live-result-badge
-                    ${badgeClass}
-                  "
-                >
-                  FOR ${escapeHTML(
-                    purpose
-                  ).toUpperCase()}
-                </span>
-
-              </a>
-
-            `;
-
-          }
-        );
-
-
-        resultsBox.innerHTML = html;
-
-        resultsBox.classList.add(
-          'show'
-        );
-
-      }
-
-
-      /* ===================================================
-         PERFORM SEARCH
-      =================================================== */
-
-      function performLiveSearch(
-        keyword
+      if (
+        value.length === 0
       ) {
 
-
-        keyword =
-          keyword.trim();
-
-
-        if (keyword.length < 1) {
-
-          clearResults();
-
-          return;
-
-        }
-
-
-        if (currentController) {
+        if (
+          currentController
+        ) {
 
           currentController.abort();
 
         }
 
+        clearResults();
 
-        currentController =
-          new AbortController();
-
-
-        showLoading();
-
-
-        fetch(
-          `/property_search_suggestions?q=${encodeURIComponent(keyword)}`,
-          {
-            method: 'GET',
-
-            headers: {
-              'X-Requested-With':
-                'XMLHttpRequest'
-            },
-
-            signal:
-              currentController.signal
-          }
-        )
-
-        .then(
-          function (response) {
-
-            if (!response.ok) {
-
-              throw new Error(
-                'Search request failed'
-              );
-
-            }
-
-            return response.json();
-
-          }
-        )
-
-        .then(
-          function (data) {
-
-            renderResults(data);
-
-          }
-        )
-
-        .catch(
-          function (error) {
-
-            if (
-              error.name ===
-              'AbortError'
-            ) {
-
-              return;
-
-            }
-
-
-            resultsBox.innerHTML = `
-
-              <div class="search-state">
-
-                Unable to search properties.
-
-                Please try again.
-
-              </div>
-
-            `;
-
-            resultsBox.classList.add(
-              'show'
-            );
-
-            console.error(
-              error
-            );
-
-          }
-        );
+        return;
 
       }
 
 
-      /* ===================================================
-         INPUT EVENT
-      =================================================== */
+      /*
+         300ms debounce.
 
-      searchInput.addEventListener(
-        'input',
-        function () {
+         The database is queried only after
+         the user pauses typing.
+      */
 
+      searchTimer =
+        setTimeout(
+          function() {
 
-          clearTimeout(
-            searchTimer
-          );
-
-
-          const value =
-            this.value.trim();
-
-
-          if (value.length === 0) {
-
-            clearResults();
-
-            return;
-
-          }
-
-
-          /*
-             Wait 250ms after the user
-             stops typing before querying
-             the database.
-          */
-
-          searchTimer =
-            setTimeout(
-              function () {
-
-                performLiveSearch(
-                  value
-                );
-
-              },
-              250
+            performLiveSearch(
+              value
             );
 
-        }
-      );
-
-
-      /* ===================================================
-         CLOSE WHEN CLICKING OUTSIDE
-      =================================================== */
-
-      document.addEventListener(
-        'click',
-        function (event) {
-
-          if (
-            !event.target.closest(
-              '.search-wrapper'
-            )
-          ) {
-
-            clearResults();
-
-          }
-
-        }
-      );
-
-
-      /* ===================================================
-         KEYBOARD ESC
-      =================================================== */
-
-      searchInput.addEventListener(
-        'keydown',
-        function (event) {
-
-          if (
-            event.key === 'Escape'
-          ) {
-
-            clearResults();
-
-            this.blur();
-
-          }
-
-        }
-      );
+          },
+          300
+        );
 
     }
+  );
+
+
+  /* ===================================================
+     CLOSE WHEN CLICKING OUTSIDE
+  =================================================== */
+
+  document.addEventListener(
+    'click',
+    function(event) {
+
+      if (
+        !event.target.closest(
+          '.search-wrapper'
+        )
+      ) {
+
+        clearResults();
+
+      }
+
+    }
+  );
+
+
+  /* ===================================================
+     ESC KEY
+  =================================================== */
+
+  searchInput.addEventListener(
+    'keydown',
+    function(event) {
+
+      if (
+        event.key === 'Escape'
+      ) {
+
+        clearResults();
+
+        this.blur();
+
+      }
+
+    }
+  );
+
+}
 
 
     /* =====================================================
