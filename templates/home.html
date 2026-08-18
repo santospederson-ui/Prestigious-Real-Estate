@@ -8,13 +8,18 @@ Prestigious Real Estate | Qatar Properties
 
 <style>
 /* ==================================
-HOME PAGE SPECIFIC LUXURY STYLES
+   HOME PAGE SPECIFIC LUXURY STYLES
 ================================== */
+
 :root {
   --hero-height: 80vh;
 }
 
-/* HERO SECTION */
+
+/* ==================================
+   HERO SECTION
+================================== */
+
 .hero {
   position: relative;
   height: var(--hero-height);
@@ -52,18 +57,29 @@ HOME PAGE SPECIFIC LUXURY STYLES
   opacity: 1;
 }
 
-/* ULTRA-LIGHT GRADIENT OVERLAY FOR MAXIMUM PHOTO BRIGHTNESS */
+
+/* ==================================
+   HERO OVERLAY
+================================== */
+
 .hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.25) 100%);
+
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.1) 0%,
+    rgba(15, 23, 42, 0.25) 100%
+  );
+
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+
   padding: 0 24px;
 }
 
@@ -79,7 +95,10 @@ HOME PAGE SPECIFIC LUXURY STYLES
   font-weight: 800;
   line-height: 1.15;
   margin-bottom: 20px;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7), 0 4px 30px rgba(0, 0, 0, 0.5);
+
+  text-shadow:
+    0 2px 15px rgba(0, 0, 0, 0.7),
+    0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .hero-content p {
@@ -87,7 +106,9 @@ HOME PAGE SPECIFIC LUXURY STYLES
   color: #ffffff;
   margin-bottom: 36px;
   font-weight: 500;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .hero-buttons {
@@ -123,7 +144,9 @@ HOME PAGE SPECIFIC LUXURY STYLES
   color: #ffffff;
   border: 2px solid #ffffff;
   backdrop-filter: blur(4px);
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+
+  text-shadow:
+    0 1px 4px rgba(0,0,0,0.5);
 }
 
 .outline-btn:hover {
@@ -132,7 +155,11 @@ HOME PAGE SPECIFIC LUXURY STYLES
   transform: translateY(-2px);
 }
 
-/* SMART PROPERTY SEARCH */
+
+/* ==================================
+   SMART PROPERTY SEARCH
+================================== */
+
 .search-box {
   margin-top: -60px;
   position: relative;
@@ -144,7 +171,10 @@ HOME PAGE SPECIFIC LUXURY STYLES
   background: #ffffff;
   border-radius: 0;
   padding: 36px 40px;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 0.08);
+
   border: 1px solid var(--border-color, #e2e8f0);
 }
 
@@ -169,17 +199,24 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .smart-search-input {
   display: flex;
   align-items: center;
+
   background: #f8fafc;
+
   border: 2px solid var(--border-color, #e2e8f0);
   border-radius: 0;
+
   padding: 6px 6px 6px 20px;
-  transition: var(--transition-smooth, all 0.3s ease);
+
+  transition:
+    var(--transition-smooth, all 0.3s ease);
 }
 
 .smart-search-input:focus-within {
   border-color: var(--qatar-maroon, #8A1538);
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(138, 21, 56, 0.1);
+
+  box-shadow:
+    0 0 0 4px rgba(138, 21, 56, 0.1);
 }
 
 .smart-search-input i {
@@ -201,13 +238,19 @@ HOME PAGE SPECIFIC LUXURY STYLES
   background: var(--qatar-maroon, #8A1538);
   color: #ffffff;
   border: none;
+
   padding: 14px 28px;
+
   border-radius: 0;
+
   font-weight: 700;
   font-size: 14px;
+
   cursor: pointer;
   white-space: nowrap;
-  transition: var(--transition-smooth, all 0.3s ease);
+
+  transition:
+    var(--transition-smooth, all 0.3s ease);
 }
 
 .smart-search-input button:hover {
@@ -219,7 +262,9 @@ HOME PAGE SPECIFIC LUXURY STYLES
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+
   margin-top: 20px;
+
   font-size: 13px;
 }
 
@@ -231,11 +276,17 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .popular-searches a {
   color: var(--navy-dark, #1F2A44);
   text-decoration: none;
+
   background: #f1f5f9;
+
   padding: 5px 14px;
+
   border-radius: 0;
+
   font-weight: 500;
-  transition: var(--transition-smooth, all 0.3s ease);
+
+  transition:
+    var(--transition-smooth, all 0.3s ease);
 }
 
 .popular-searches a:hover {
@@ -243,7 +294,11 @@ HOME PAGE SPECIFIC LUXURY STYLES
   color: #ffffff;
 }
 
-/* SECTION HEADINGS */
+
+/* ==================================
+   SECTION HEADINGS
+================================== */
+
 .section-title {
   text-align: center;
   max-width: 650px;
@@ -253,8 +308,10 @@ HOME PAGE SPECIFIC LUXURY STYLES
 .section-title h2 {
   font-family: var(--font-serif, 'Playfair Display', serif);
   color: var(--navy-dark, #1F2A44);
+
   font-size: 34px;
   font-weight: 700;
+
   margin-bottom: 12px;
 }
 
@@ -263,7 +320,11 @@ HOME PAGE SPECIFIC LUXURY STYLES
   font-size: 15px;
 }
 
-/* FEATURED PROPERTIES */
+
+/* ==================================
+   FEATURED PROPERTIES
+================================== */
+
 .featured-properties {
   padding: 40px 0 80px;
 }
@@ -275,10 +336,16 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-grid-3 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
   gap: 28px;
+
   min-height: 460px;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  transition:
+    opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .property-grid-3.fade-out {
@@ -289,14 +356,27 @@ HOME PAGE SPECIFIC LUXURY STYLES
   opacity: 1;
 }
 
+
+/* ==================================
+   PROPERTY CARD
+================================== */
+
 .property-card {
   display: none;
+
   background: #ffffff;
+
   border-radius: 0;
+
   overflow: hidden;
+
   border: 1px solid var(--border-color, #e2e8f0);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow:
+    0 6px 18px rgba(15, 23, 42, 0.04);
+
+  transition:
+    all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .property-card.active-card {
@@ -306,268 +386,492 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .property-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
-  border-color: var(--gold-accent, #D4AF37);
+
+  box-shadow:
+    0 16px 30px rgba(15, 23, 42, 0.12);
+
+  border-color:
+    var(--gold-accent, #D4AF37);
+}
+
+
+/* ==================================
+   CLICKABLE PROPERTY IMAGE
+================================== */
+
+.property-image-link {
+  display: block;
+  width: 100%;
+
+  text-decoration: none;
+  color: inherit;
+
+  cursor: pointer;
 }
 
 .property-image {
   position: relative;
+
   height: 240px;
+
   overflow: hidden;
+
   border-radius: 0;
-  background-color: #f4f6f9; /* Light grey container background */
+
+  background-color: #f4f6f9;
 }
 
 .property-image img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
   border-radius: 0;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  transition:
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.property-card:hover .property-image img {
+.property-image-link:hover .property-image img {
   transform: scale(1.08);
 }
 
+
+/* ==================================
+   PROPERTY STATUS
+================================== */
+
 .property-status {
   position: absolute;
+
   top: 14px;
   left: 14px;
-  background: var(--qatar-maroon, #8A1538);
+
+  background:
+    var(--qatar-maroon, #8A1538);
+
   color: #ffffff;
+
   padding: 4px 12px;
+
   border-radius: 0;
+
   font-size: 11px;
   font-weight: 800;
+
   letter-spacing: 0.5px;
+
   z-index: 2;
 }
 
 .property-status.rent {
-  background: var(--navy-dark, #1F2A44);
+  background:
+    var(--navy-dark, #1F2A44);
 }
 
-.property-info{
-    padding:22px;
-    display:flex;
-    flex-direction:column;
-    flex-grow:1;
 
-    background:#1F2A44;
-    color:#fff;
+/* ==================================
+   SECOND RECTANGLE - PROPERTY INFO
+================================== */
+
+.property-info {
+  position: relative;
+
+  padding: 22px;
+
+  /*
+     Extra top space so the title does not
+     collide with the price.
+  */
+  padding-top: 58px;
+
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+
+  background: #1F2A44;
+
+  color: #ffffff;
 }
+
+
+/* ==================================
+   PRICE
+   TOP RIGHT OF SECOND RECTANGLE
+================================== */
+
+.property-info .property-price {
+  position: absolute;
+
+  top: 16px;
+  right: 20px;
+
+  color: #D4AF37;
+
+  font-size: 19px;
+
+  font-weight: 800;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
+
+  margin: 0;
+
+  z-index: 2;
+}
+
+
+/* ==================================
+   PROPERTY TITLE
+================================== */
+
 .property-info h3 {
   font-size: 18px;
+
   font-weight: 700;
-   color:#fff;
-  margin-bottom: 6px;
+
+  color: #ffffff;
+
+  margin: 0 0 6px 0;
+
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
+
+/* ==================================
+   PROPERTY LOCATION
+================================== */
+
 .property-info .location {
   font-size: 13px;
-  color:rgba(255,255,255,.75);
+
+  color: rgba(255,255,255,.75);
+
   margin-bottom: 14px;
 }
 
-.property-price {
-  font-size: 20px;
-  font-weight: 800;
-   color:#D4AF37;
-  margin-bottom: 16px;
+
+/* ==================================
+   PROPERTY META
+================================== */
+
+.property-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  border: none;
+
+  padding: 12px 0 0;
+
+  margin-top: auto;
 }
 
-.property-meta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    border:none;
-    padding:12px 0;
+.property-meta span {
+  background:
+    rgba(255,255,255,.08);
+
+  border:
+    1px solid rgba(255,255,255,.12);
+
+  color: #f8fafc;
+
+  padding: 8px 12px;
+
+  border-radius: 6px;
+
+  font-size: 12px;
+
+  font-weight: 600;
 }
 
-.property-meta span{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.12);
-    color:#f8fafc;
-    padding:8px 12px;
-    border-radius:6px;
-    font-size:12px;
-    font-weight:600;
-}
 
-.property-info a {
-  display: inline-block;
-  color:#fff;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: var(--transition-smooth, all 0.3s ease);
-}
-
-.property-info a:hover {
-  color:#D4AF37;
-  transform: translateX(4px);
-}
+/* ==================================
+   SLIDER BUTTONS
+================================== */
 
 .slider-btn {
   background: #ffffff;
-  border: 1px solid var(--border-color, #e2e8f0);
+
+  border:
+    1px solid var(--border-color, #e2e8f0);
+
   width: 46px;
   height: 46px;
+
   border-radius: 0;
+
   font-size: 20px;
-  color: var(--navy-dark, #1F2A44);
+
+  color:
+    var(--navy-dark, #1F2A44);
+
   cursor: pointer;
+
   position: absolute;
+
   top: 40%;
+
   transform: translateY(-50%);
+
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.1);
+
+  transition:
+    all 0.3s ease;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 }
 
 .slider-btn:hover {
-  background: var(--qatar-maroon, #8A1538);
+  background:
+    var(--qatar-maroon, #8A1538);
+
   color: #ffffff;
-  border-color: var(--qatar-maroon, #8A1538);
+
+  border-color:
+    var(--qatar-maroon, #8A1538);
 }
 
-.slider-btn.prev { left: 10px; }
-.slider-btn.next { right: 10px; }
+.slider-btn.prev {
+  left: 10px;
+}
+
+.slider-btn.next {
+  right: 10px;
+}
+
+
+/* ==================================
+   SLIDESHOW CONTROLS
+================================== */
 
 .slideshow-controls {
   display: flex;
+
   justify-content: center;
+
   margin-top: 35px;
 }
 
 .dots-container {
   display: flex;
+
   gap: 10px;
+
   align-items: center;
 }
 
 .dot {
   width: 32px;
   height: 4px;
+
   background: #cbd5e1;
+
   border-radius: 0;
+
   cursor: pointer;
-  transition: all 0.3s ease;
+
+  transition:
+    all 0.3s ease;
 }
 
 .dot.active {
-  background: var(--qatar-maroon, #8A1538);
+  background:
+    var(--qatar-maroon, #8A1538);
+
   width: 52px;
 }
 
+
+/* ==================================
+   VIEW ALL
+================================== */
+
 .view-all {
   text-align: center;
+
   margin-top: 45px;
 }
 
 .view-all a {
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 10px;
+
   padding: 16px 38px;
-  background: var(--qatar-maroon, #8A1538);
+
+  background:
+    var(--qatar-maroon, #8A1538);
+
   color: #ffffff;
+
   border-radius: 0;
+
   font-weight: 800;
+
   font-size: 15px;
+
   letter-spacing: 0.3px;
+
   text-decoration: none;
-  box-shadow: 0 8px 24px rgba(138, 21, 56, 0.25);
-  border: 2px solid var(--qatar-maroon, #8A1538);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow:
+    0 8px 24px rgba(138, 21, 56, 0.25);
+
+  border:
+    2px solid var(--qatar-maroon, #8A1538);
+
+  transition:
+    all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view-all a:hover {
-  background: var(--qatar-maroon-dark, #5c0e25);
-  border-color: var(--qatar-maroon-dark, #5c0e25);
+  background:
+    var(--qatar-maroon-dark, #5c0e25);
+
+  border-color:
+    var(--qatar-maroon-dark, #5c0e25);
+
   color: #ffffff;
+
   transform: translateY(-3px);
-  box-shadow: 0 14px 30px rgba(138, 21, 56, 0.38);
+
+  box-shadow:
+    0 14px 30px rgba(138, 21, 56, 0.38);
 }
 
-/* WHY CHOOSE US */
+
+/* ==================================
+   WHY CHOOSE US
+================================== */
+
 .why-section {
   background: #f1f5f9;
+
   padding: 90px 0;
 }
 
 .why-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(240px, 1fr));
+
   gap: 24px;
 }
 
 .why-card {
   background: #ffffff;
+
   padding: 36px 28px;
+
   border-radius: 0;
+
   text-align: center;
-  border: 1px solid var(--border-color, #e2e8f0);
-  transition: var(--transition-smooth, all 0.3s ease);
+
+  border:
+    1px solid var(--border-color, #e2e8f0);
+
+  transition:
+    var(--transition-smooth, all 0.3s ease);
 }
 
 .why-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.06);
+
+  box-shadow:
+    0 12px 25px rgba(0,0,0,0.06);
 }
 
 .why-icon {
   font-size: 38px;
+
   margin-bottom: 20px;
 }
 
 .why-card h3 {
   font-size: 18px;
-  color: var(--navy-dark, #1F2A44);
+
+  color:
+    var(--navy-dark, #1F2A44);
+
   font-weight: 700;
+
   margin-bottom: 10px;
 }
 
 .why-card p {
-  color: var(--text-secondary, #64748b);
+  color:
+    var(--text-secondary, #64748b);
+
   font-size: 14px;
+
   line-height: 1.5;
 }
 
-/* CATEGORIES SECTION */
+
+/* ==================================
+   CATEGORIES SECTION
+================================== */
+
 .categories-section {
   padding: 90px 0;
 }
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(260px, 1fr));
+
   gap: 24px;
 }
 
 .category-card {
   position: relative;
+
   height: 320px;
+
   border-radius: 0;
+
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  background-color: #f4f6f9; /* Contrast background for category image container */
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.08);
+
+  background-color: #f4f6f9;
 }
 
 .category-card img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
   border-radius: 0;
-  transition: transform 0.6s ease;
+
+  transition:
+    transform 0.6s ease;
 }
 
 .category-card:hover img {
@@ -576,480 +880,1334 @@ HOME PAGE SPECIFIC LUXURY STYLES
 
 .category-overlay {
   position: absolute;
+
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(31, 42, 68, 0.15) 0%, rgba(15, 23, 42, 0.75) 100%);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(31, 42, 68, 0.15) 0%,
+      rgba(15, 23, 42, 0.75) 100%
+    );
+
   display: flex;
+
   flex-direction: column;
+
   justify-content: flex-end;
+
   padding: 28px;
+
   color: #ffffff;
 }
 
 .category-overlay h3 {
-  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-family:
+    var(--font-serif, 'Playfair Display', serif);
+
   font-size: 22px;
+
   font-weight: 700;
+
   margin-bottom: 6px;
 }
 
 .category-overlay p {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.95);
+
+  color:
+    rgba(255, 255, 255, 0.95);
+
   margin-bottom: 16px;
 }
 
 .category-overlay a {
   align-self: flex-start;
+
   padding: 6px 18px;
-  background: var(--gold-accent, #D4AF37);
+
+  background:
+    var(--gold-accent, #D4AF37);
+
   color: #ffffff;
+
   border-radius: 0;
+
   font-size: 12px;
+
   font-weight: 700;
+
   text-decoration: none;
-  transition: var(--transition-smooth, all 0.3s ease);
+
+  transition:
+    var(--transition-smooth, all 0.3s ease);
 }
 
 .category-overlay a:hover {
   background: #b59226;
 }
 
-/* TESTIMONIALS */
+
+/* ==================================
+   TESTIMONIALS
+================================== */
+
 .testimonial-section {
   background: #ffffff;
+
   padding: 90px 0;
-  border-top: 1px solid var(--border-color, #e2e8f0);
+
+  border-top:
+    1px solid var(--border-color, #e2e8f0);
 }
 
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(300px, 1fr));
+
   gap: 24px;
 }
 
 .testimonial-card {
   background: #f8fafc;
+
   padding: 32px;
+
   border-radius: 0;
-  border: 1px solid var(--border-color, #e2e8f0);
+
+  border:
+    1px solid var(--border-color, #e2e8f0);
+
   position: relative;
 }
 
 .testimonial-card .stars {
-  color: var(--gold-accent, #D4AF37);
+  color:
+    var(--gold-accent, #D4AF37);
+
   font-size: 16px;
+
   margin-bottom: 14px;
 }
 
 .testimonial-card p {
-  color: var(--text-primary, #1e293b);
+  color:
+    var(--text-primary, #1e293b);
+
   font-size: 14px;
+
   font-style: italic;
+
   margin-bottom: 20px;
+
   line-height: 1.6;
 }
 
 .testimonial-card h4 {
   font-size: 15px;
-  color: var(--navy-dark, #1F2A44);
+
+  color:
+    var(--navy-dark, #1F2A44);
+
   font-weight: 700;
 }
 
 .testimonial-card span {
   font-size: 12px;
-  color: var(--text-secondary, #64748b);
+
+  color:
+    var(--text-secondary, #64748b);
 }
 
 
-/* RESPONSIVE DESIGN */
+/* ==================================
+   RESPONSIVE DESIGN
+================================== */
+
 @media (max-width: 1024px) {
+
   .property-grid-3 {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(2, 1fr);
   }
+
 }
+
+
+/* ==================================
+   MOBILE
+================================== */
 
 @media (max-width: 640px) {
+
   .search-card {
     padding: 24px 20px;
   }
 
+
   .smart-search-input {
     flex-direction: column;
+
     padding: 12px;
+
     gap: 12px;
   }
+
 
   .smart-search-input input {
     text-align: center;
   }
 
+
   .smart-search-input button {
     width: 100%;
   }
+
 
   .property-grid-3 {
     grid-template-columns: 1fr;
   }
 
+
   .slider-btn {
     display: none;
   }
+
+
+  /* MOBILE IMAGE */
+
+  .property-image {
+    height: 230px;
+  }
+
+
+  /* MOBILE SECOND RECTANGLE */
+
+  .property-info {
+    padding: 18px;
+
+    padding-top: 54px;
+  }
+
+
+  /* MOBILE PRICE TOP RIGHT */
+
+  .property-info .property-price {
+    top: 14px;
+
+    right: 16px;
+
+    font-size: 17px;
+  }
+
+
+  .property-info h3 {
+    font-size: 17px;
+  }
+
+
+  .property-info .location {
+    font-size: 12px;
+  }
+
+
+  .property-meta {
+    gap: 6px;
+  }
+
+
+  .property-meta span {
+    padding: 7px 9px;
+
+    font-size: 11px;
+  }
+
 }
 </style>
 
-<!-- HERO SECTION -->
+
+<!-- ==================================
+     HERO SECTION
+================================== -->
+
 <section class="hero">
+
   <div class="hero-slider">
-    <div class="hero-slide active" style="background-image:url('{{ url_for('static', filename='images/home/home1.webp') }}')"></div>
-    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/home2.webp') }}')"></div>
-    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/home3.png') }}')"></div>
-    <div class="hero-slide" style="background-image:url('{{ url_for('static', filename='images/home/home4.png') }}')"></div>
+
+    <div
+      class="hero-slide active"
+      style="background-image:url('{{ url_for('static', filename='images/home/home1.webp') }}')">
+    </div>
+
+    <div
+      class="hero-slide"
+      style="background-image:url('{{ url_for('static', filename='images/home/home2.webp') }}')">
+    </div>
+
+    <div
+      class="hero-slide"
+      style="background-image:url('{{ url_for('static', filename='images/home/home3.png') }}')">
+    </div>
+
+    <div
+      class="hero-slide"
+      style="background-image:url('{{ url_for('static', filename='images/home/home4.png') }}')">
+    </div>
+
   </div>
+
 
   <div class="hero-overlay">
+
     <div class="hero-content">
-      <h1>Discover Exceptional<br>Properties Across Qatar</h1>
-      <p>Find premium residential and commercial properties designed for modern living.</p>
+
+      <h1>
+        Discover Exceptional<br>
+        Properties Across Qatar
+      </h1>
+
+      <p>
+        Find premium residential and commercial properties designed for modern living.
+      </p>
+
       <div class="hero-buttons">
-        <a href="{{ url_for('properties') }}" class="primary-btn">Explore Properties</a>
-        <a href="{{ url_for('contact') }}" class="outline-btn">Contact Us</a>
+
+        <a
+          href="{{ url_for('properties') }}"
+          class="primary-btn">
+          Explore Properties
+        </a>
+
+        <a
+          href="{{ url_for('contact') }}"
+          class="outline-btn">
+          Contact Us
+        </a>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- SMART PROPERTY SEARCH -->
+
+<!-- ==================================
+     SMART PROPERTY SEARCH
+================================== -->
+
 <section class="search-box">
+
   <div class="container">
+
     <div class="search-card">
-      <h2>Find Your Dream Property</h2>
-      <p>Search by property type, location, features, lifestyle or any keyword.</p>
-      <form action="{{ url_for('properties') }}" method="GET" class="smart-search-form">
+
+      <h2>
+        Find Your Dream Property
+      </h2>
+
+      <p>
+        Search by property type, location, features, lifestyle or any keyword.
+      </p>
+
+      <form
+        action="{{ url_for('properties') }}"
+        method="GET"
+        class="smart-search-form">
+
         <div class="smart-search-input">
+
           <i class="fas fa-search"></i>
-          <input type="text" name="search" placeholder="Search villas, apartments, studios, Lusail, sea view..." autocomplete="off">
-          <button type="submit">Search Properties</button>
+
+          <input
+            type="text"
+            name="search"
+            placeholder="Search villas, apartments, studios, Lusail, sea view..."
+            autocomplete="off">
+
+          <button type="submit">
+            Search Properties
+          </button>
+
         </div>
+
       </form>
+
+
       <div class="popular-searches">
-        <span>Popular Searches:</span>
-        <a href="{{ url_for('properties', search='Villa') }}">Villas</a>
-        <a href="{{ url_for('properties', search='Apartment') }}">Apartments</a>
-        <a href="{{ url_for('properties', search='Studio') }}">Studio</a>
-        <a href="{{ url_for('properties', search='Office') }}">Office</a>
-        <a href="{{ url_for('properties', search='Lusail') }}">Lusail</a>
-        <a href="{{ url_for('properties', search='Rent') }}">For Rent</a>
+
+        <span>
+          Popular Searches:
+        </span>
+
+        <a href="{{ url_for('properties', search='Villa') }}">
+          Villas
+        </a>
+
+        <a href="{{ url_for('properties', search='Apartment') }}">
+          Apartments
+        </a>
+
+        <a href="{{ url_for('properties', search='Studio') }}">
+          Studio
+        </a>
+
+        <a href="{{ url_for('properties', search='Office') }}">
+          Office
+        </a>
+
+        <a href="{{ url_for('properties', search='Lusail') }}">
+          Lusail
+        </a>
+
+        <a href="{{ url_for('properties', search='Rent') }}">
+          For Rent
+        </a>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- FEATURED PROPERTIES -->
+
+<!-- ==================================
+     FEATURED PROPERTIES
+================================== -->
+
 <section class="featured-properties">
+
   <div class="container">
+
     <div class="section-title">
-      <h2>Featured Properties</h2>
-      <p>Discover exclusive residential and commercial properties selected for exceptional lifestyle and investment opportunities across Qatar.</p>
+
+      <h2>
+        Featured Properties
+      </h2>
+
+      <p>
+        Discover exclusive residential and commercial properties selected for exceptional lifestyle and investment opportunities across Qatar.
+      </p>
+
     </div>
+
 
     {% if properties %}
-    <div class="property-slideshow-wrapper" id="propertySlideshowWrapper">
-      <button class="slider-btn prev" id="prevPropertyBtn" aria-label="Previous Properties">&#8249;</button>
 
-      <div class="property-grid-3" id="propertyGrid">
+    <div
+      class="property-slideshow-wrapper"
+      id="propertySlideshowWrapper">
+
+
+      <button
+        class="slider-btn prev"
+        id="prevPropertyBtn"
+        aria-label="Previous Properties">
+
+        &#8249;
+
+      </button>
+
+
+      <div
+        class="property-grid-3"
+        id="propertyGrid">
+
+
         {% for property in properties %}
+
         <div class="property-card">
-          <div class="property-image">
-            {% if property.main_image %}
-              <img src="{{ property.main_image }}" alt="{{ property.title }}" loading="lazy">
-            {% else %}
-              <img src="{{ url_for('static', filename='images/no-image.png') }}" alt="Property Image" loading="lazy">
-            {% endif %}
-            <span class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
-              {% if property.purpose == 'Rent' %}FOR RENT{% else %}FOR SALE{% endif %}
-            </span>
-          </div>
+
+
+          <!-- ==================================
+               CLICKABLE IMAGE
+          ================================== -->
+
+          <a
+            href="{{ url_for('property_details', id=property.id) }}"
+            class="property-image-link"
+            aria-label="View {{ property.title }}">
+
+            <div class="property-image">
+
+
+              {% if property.main_image %}
+
+              <img
+                src="{{ property.main_image }}"
+                alt="{{ property.title }}"
+                loading="lazy">
+
+              {% else %}
+
+              <img
+                src="{{ url_for('static', filename='images/no-image.png') }}"
+                alt="Property Image"
+                loading="lazy">
+
+              {% endif %}
+
+
+              <span
+                class="property-status {% if property.purpose == 'Rent' %}rent{% endif %}">
+
+                {% if property.purpose == 'Rent' %}
+                  FOR RENT
+                {% else %}
+                  FOR SALE
+                {% endif %}
+
+              </span>
+
+
+            </div>
+
+          </a>
+
+
+          <!-- ==================================
+               SECOND RECTANGLE
+          ================================== -->
 
           <div class="property-info">
-            <h3>{{ property.title }}</h3>
-            <p class="location">📍 {{ property.location }}</p>
+
+
+            <!-- PRICE TOP RIGHT -->
+
             <div class="property-price">
+
               {% if property.price %}
+
                 QAR {{ "{:,.0f}".format(property.price) }}
+
               {% else %}
+
                 Contact For Price
+
               {% endif %}
+
             </div>
+
+
+            <h3>
+              {{ property.title }}
+            </h3>
+
+
+            <p class="location">
+              📍 {{ property.location }}
+            </p>
+
+
             <div class="property-meta">
-              {% if property.bedrooms %}<span>🛏 {{ property.bedrooms }} Beds</span>{% endif %}
-              {% if property.bathrooms %}<span>🚿 {{ property.bathrooms }} Baths</span>{% endif %}
-              {% if property.area %}<span>📐 {{ "{:,.0f}".format(property.area) }} sqm</span>{% endif %}
+
+              {% if property.bedrooms %}
+
+              <span>
+                🛏 {{ property.bedrooms }} Beds
+              </span>
+
+              {% endif %}
+
+
+              {% if property.bathrooms %}
+
+              <span>
+                🚿 {{ property.bathrooms }} Baths
+              </span>
+
+              {% endif %}
+
+
+              {% if property.area %}
+
+              <span>
+                📐 {{ "{:,.0f}".format(property.area) }} sqm
+              </span>
+
+              {% endif %}
+
             </div>
-            <a href="{{ url_for('property_details', id=property.id) }}">View Property Details →</a>
+
+
           </div>
+
         </div>
+
         {% endfor %}
+
+
       </div>
 
-      <button class="slider-btn next" id="nextPropertyBtn" aria-label="Next Properties">&#8250;</button>
+
+      <button
+        class="slider-btn next"
+        id="nextPropertyBtn"
+        aria-label="Next Properties">
+
+        &#8250;
+
+      </button>
+
 
       <div class="slideshow-controls">
-        <div class="dots-container" id="propertyDotsContainer"></div>
+
+        <div
+          class="dots-container"
+          id="propertyDotsContainer">
+        </div>
+
       </div>
+
+
     </div>
+
+
     {% else %}
-    <div style="width:100%;text-align:center;padding:80px 20px;">
-      <h3>No Featured Properties Available</h3>
-      <p>Add properties from the admin dashboard to display them here.</p>
+
+    <div
+      style="
+        width:100%;
+        text-align:center;
+        padding:80px 20px;
+      ">
+
+      <h3>
+        No Featured Properties Available
+      </h3>
+
+      <p>
+        Add properties from the admin dashboard to display them here.
+      </p>
+
     </div>
+
     {% endif %}
 
+
     <div class="view-all">
-      <a href="{{ url_for('properties') }}">Explore All Properties</a>
+
+      <a href="{{ url_for('properties') }}">
+        Explore All Properties
+      </a>
+
     </div>
+
+
   </div>
+
 </section>
 
-<!-- WHY CHOOSE US -->
+
+<!-- ==================================
+     WHY CHOOSE US
+================================== -->
+
 <section class="why-section">
+
   <div class="container">
+
     <div class="section-title">
-      <h2>Why Choose Prestigious Real Estate</h2>
-      <p>Delivering exceptional property solutions across Qatar.</p>
+
+      <h2>
+        Why Choose Prestigious Real Estate
+      </h2>
+
+      <p>
+        Delivering exceptional property solutions across Qatar.
+      </p>
+
     </div>
+
 
     <div class="why-grid">
-      <div class="why-card">
-        <div class="why-icon">🏙️</div>
-        <h3>Qatar Market Expertise</h3>
-        <p>Deep understanding of Qatar's real estate market, locations and investment opportunities.</p>
-      </div>
+
 
       <div class="why-card">
-        <div class="why-icon">🏢</div>
-        <h3>Luxury Development</h3>
-        <p>Connecting clients with premium residential and commercial developments.</p>
+
+        <div class="why-icon">
+          🏙️
+        </div>
+
+        <h3>
+          Qatar Market Expertise
+        </h3>
+
+        <p>
+          Deep understanding of Qatar's real estate market, locations and investment opportunities.
+        </p>
+
       </div>
 
-      <div class="why-card">
-        <div class="why-icon">🤝</div>
-        <h3>Trusted Service</h3>
-        <p>Professional guidance built on transparency, trust and long-term relationships.</p>
-      </div>
 
       <div class="why-card">
-        <div class="why-icon">👔</div>
-        <h3>Professional Team</h3>
-        <p>Experienced specialists dedicated to delivering the best property experience.</p>
+
+        <div class="why-icon">
+          🏢
+        </div>
+
+        <h3>
+          Luxury Development
+        </h3>
+
+        <p>
+          Connecting clients with premium residential and commercial developments.
+        </p>
+
       </div>
+
+
+      <div class="why-card">
+
+        <div class="why-icon">
+          🤝
+        </div>
+
+        <h3>
+          Trusted Service
+        </h3>
+
+        <p>
+          Professional guidance built on transparency, trust and long-term relationships.
+        </p>
+
+      </div>
+
+
+      <div class="why-card">
+
+        <div class="why-icon">
+          👔
+        </div>
+
+        <h3>
+          Professional Team
+        </h3>
+
+        <p>
+          Experienced specialists dedicated to delivering the best property experience.
+        </p>
+
+      </div>
+
+
     </div>
+
   </div>
+
 </section>
 
-<!-- PROPERTY CATEGORIES -->
+
+<!-- ==================================
+     PROPERTY CATEGORIES
+================================== -->
+
 <section class="categories-section">
+
   <div class="container">
+
     <div class="section-title">
-      <h2>Explore Property Categories</h2>
-      <p>Discover premium real estate opportunities designed for every lifestyle and investment goal.</p>
+
+      <h2>
+        Explore Property Categories
+      </h2>
+
+      <p>
+        Discover premium real estate opportunities designed for every lifestyle and investment goal.
+      </p>
+
     </div>
+
 
     <div class="category-grid">
-      <div class="category-card">
-        <img src="{{ url_for('static', filename='images/home/home1.webp') }}" alt="Luxury Villas" loading="lazy">
-        <div class="category-overlay">
-          <h3>Luxury Villas</h3>
-          <p>Exclusive homes with modern designs and premium finishes.</p>
-          <a href="{{ url_for('properties', search='Villa') }}">Explore</a>
-        </div>
-      </div>
+
 
       <div class="category-card">
-        <img src="{{ url_for('static', filename='images/home/home2.webp') }}" alt="Luxury Apartments" loading="lazy">
+
+        <img
+          src="{{ url_for('static', filename='images/home/home1.webp') }}"
+          alt="Luxury Villas"
+          loading="lazy">
+
         <div class="category-overlay">
-          <h3>Luxury Apartments</h3>
-          <p>Modern residences in Qatar's most desirable locations.</p>
-          <a href="{{ url_for('properties', search='Apartment') }}">Explore</a>
+
+          <h3>
+            Luxury Villas
+          </h3>
+
+          <p>
+            Exclusive homes with modern designs and premium finishes.
+          </p>
+
+          <a href="{{ url_for('properties', search='Villa') }}">
+            Explore
+          </a>
+
         </div>
+
       </div>
 
-      <div class="category-card">
-        <img src="{{ url_for('static', filename='images/home/home3.png') }}" alt="Commercial Properties" loading="lazy">
-        <div class="category-overlay">
-          <h3>Commercial Properties</h3>
-          <p>Premium offices and business spaces for companies.</p>
-          <a href="{{ url_for('properties', search='Commercial') }}">Explore</a>
-        </div>
-      </div>
 
       <div class="category-card">
-        <img src="{{ url_for('static', filename='images/home/home4.png') }}" alt="Investment Properties" loading="lazy">
+
+        <img
+          src="{{ url_for('static', filename='images/home/home2.webp') }}"
+          alt="Luxury Apartments"
+          loading="lazy">
+
         <div class="category-overlay">
-          <h3>Investment Properties</h3>
-          <p>Strategic opportunities for long-term growth.</p>
-          <a href="{{ url_for('properties', search='Investment') }}">Explore</a>
+
+          <h3>
+            Luxury Apartments
+          </h3>
+
+          <p>
+            Modern residences in Qatar's most desirable locations.
+          </p>
+
+          <a href="{{ url_for('properties', search='Apartment') }}">
+            Explore
+          </a>
+
         </div>
+
       </div>
+
+
+      <div class="category-card">
+
+        <img
+          src="{{ url_for('static', filename='images/home/home3.png') }}"
+          alt="Commercial Properties"
+          loading="lazy">
+
+        <div class="category-overlay">
+
+          <h3>
+            Commercial Properties
+          </h3>
+
+          <p>
+            Premium offices and business spaces for companies.
+          </p>
+
+          <a href="{{ url_for('properties', search='Commercial') }}">
+            Explore
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="category-card">
+
+        <img
+          src="{{ url_for('static', filename='images/home/home4.png') }}"
+          alt="Investment Properties"
+          loading="lazy">
+
+        <div class="category-overlay">
+
+          <h3>
+            Investment Properties
+          </h3>
+
+          <p>
+            Strategic opportunities for long-term growth.
+          </p>
+
+          <a href="{{ url_for('properties', search='Investment') }}">
+            Explore
+          </a>
+
+        </div>
+
+      </div>
+
+
     </div>
+
   </div>
+
 </section>
 
-<!-- TESTIMONIALS -->
+
+<!-- ==================================
+     TESTIMONIALS
+================================== -->
+
 <section class="testimonial-section">
+
   <div class="container">
+
     <div class="section-title">
-      <h2>What Our Clients Say</h2>
-      <p>Trusted by clients looking for premium real estate solutions in Qatar.</p>
+
+      <h2>
+        What Our Clients Say
+      </h2>
+
+      <p>
+        Trusted by clients looking for premium real estate solutions in Qatar.
+      </p>
+
     </div>
+
 
     <div class="testimonial-grid">
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"Prestigious Real Estate provided excellent guidance and helped us find the perfect property for our family."</p>
-        <h4>Mohammed A.</h4>
-        <span>Lusail Resident</span>
-      </div>
+
 
       <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"Professional service, great market knowledge and a smooth buying experience."</p>
-        <h4>Sarah K.</h4>
-        <span>Property Investor</span>
+
+        <div class="stars">
+          ★★★★★
+        </div>
+
+        <p>
+          "Prestigious Real Estate provided excellent guidance and helped us find the perfect property for our family."
+        </p>
+
+        <h4>
+          Mohammed A.
+        </h4>
+
+        <span>
+          Lusail Resident
+        </span>
+
       </div>
 
+
       <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"The team understood our requirements and found exactly what we were looking for."</p>
-        <h4>David O.</h4>
-        <span>Doha Client</span>
+
+        <div class="stars">
+          ★★★★★
+        </div>
+
+        <p>
+          "Professional service, great market knowledge and a smooth buying experience."
+        </p>
+
+        <h4>
+          Sarah K.
+        </h4>
+
+        <span>
+          Property Investor
+        </span>
+
       </div>
+
+
+      <div class="testimonial-card">
+
+        <div class="stars">
+          ★★★★★
+        </div>
+
+        <p>
+          "The team understood our requirements and found exactly what we were looking for."
+        </p>
+
+        <h4>
+          David O.
+        </h4>
+
+        <span>
+          Doha Client
+        </span>
+
+      </div>
+
+
     </div>
+
   </div>
+
 </section>
 
+
+<!-- ==================================
+     JAVASCRIPT
+================================== -->
+
 <script>
+
 document.addEventListener('DOMContentLoaded', () => {
-  // HERO SLIDESHOW
+
+
+  /* ==================================
+     HERO SLIDESHOW
+  ================================== */
+
   let currentHeroSlide = 0;
-  const heroSlides = document.querySelectorAll('.hero-slide');
+
+  const heroSlides =
+    document.querySelectorAll('.hero-slide');
+
 
   if (heroSlides.length > 0) {
+
     function nextHeroSlide() {
-      heroSlides[currentHeroSlide].classList.remove('active');
-      currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
-      heroSlides[currentHeroSlide].classList.add('active');
+
+      heroSlides[currentHeroSlide]
+        .classList.remove('active');
+
+      currentHeroSlide =
+        (currentHeroSlide + 1) %
+        heroSlides.length;
+
+      heroSlides[currentHeroSlide]
+        .classList.add('active');
+
     }
+
     setInterval(nextHeroSlide, 5000);
+
   }
 
-  // FEATURED PROPERTIES SLIDESHOW
-  const grid = document.getElementById('propertyGrid');
-  const wrapper = document.getElementById('propertySlideshowWrapper');
-  const prevBtn = document.getElementById('prevPropertyBtn');
-  const nextBtn = document.getElementById('nextPropertyBtn');
-  const dotsContainer = document.getElementById('propertyDotsContainer');
+
+  /* ==================================
+     FEATURED PROPERTIES SLIDESHOW
+  ================================== */
+
+  const grid =
+    document.getElementById('propertyGrid');
+
+  const wrapper =
+    document.getElementById(
+      'propertySlideshowWrapper'
+    );
+
+  const prevBtn =
+    document.getElementById(
+      'prevPropertyBtn'
+    );
+
+  const nextBtn =
+    document.getElementById(
+      'nextPropertyBtn'
+    );
+
+  const dotsContainer =
+    document.getElementById(
+      'propertyDotsContainer'
+    );
+
 
   if (!grid) return;
 
-  const cards = Array.from(grid.querySelectorAll('.property-card'));
+
+  const cards =
+    Array.from(
+      grid.querySelectorAll('.property-card')
+    );
+
+
   const CARDS_PER_SLIDE = 3;
+
   const DISPLAY_TIME = 5000;
+
 
   if (cards.length === 0) return;
 
-  const totalSlides = Math.ceil(cards.length / CARDS_PER_SLIDE);
+
+  const totalSlides =
+    Math.ceil(
+      cards.length /
+      CARDS_PER_SLIDE
+    );
+
+
   let currentSlide = 0;
+
   let slideTimer = null;
 
+
+  /* ==================================
+     CREATE DOTS
+  ================================== */
+
   dotsContainer.innerHTML = '';
-  for (let i = 0; i < totalSlides; i++) {
-    const dot = document.createElement('div');
+
+
+  for (
+    let i = 0;
+    i < totalSlides;
+    i++
+  ) {
+
+    const dot =
+      document.createElement('div');
+
     dot.classList.add('dot');
-    if (i === 0) dot.classList.add('active');
-    dot.addEventListener('click', () => {
-      goToSlide(i);
-      resetTimer();
-    });
+
+
+    if (i === 0) {
+
+      dot.classList.add('active');
+
+    }
+
+
+    dot.addEventListener(
+      'click',
+      () => {
+
+        goToSlide(i);
+
+        resetTimer();
+
+      }
+    );
+
+
     dotsContainer.appendChild(dot);
+
   }
 
-  const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
+
+  const dots =
+    Array.from(
+      dotsContainer.querySelectorAll('.dot')
+    );
+
+
+  /* ==================================
+     SHOW SLIDE
+  ================================== */
 
   function showSlide(slideIndex) {
+
     grid.classList.add('fade-out');
 
+
     setTimeout(() => {
+
       cards.forEach(card => {
-        card.classList.remove('active-card');
+
+        card.classList.remove(
+          'active-card'
+        );
+
         card.style.order = '';
+
       });
 
-      for (let i = 0; i < CARDS_PER_SLIDE; i++) {
-        const cardIndex = (slideIndex * CARDS_PER_SLIDE + i) % cards.length;
-        const card = cards[cardIndex];
-        
-        card.classList.add('active-card');
+
+      for (
+        let i = 0;
+        i < CARDS_PER_SLIDE;
+        i++
+      ) {
+
+        const cardIndex =
+          (
+            slideIndex *
+            CARDS_PER_SLIDE +
+            i
+          ) %
+          cards.length;
+
+
+        const card =
+          cards[cardIndex];
+
+
+        card.classList.add(
+          'active-card'
+        );
+
+
         card.style.order = i;
+
       }
 
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === slideIndex);
-      });
 
-      grid.classList.remove('fade-out');
-      grid.classList.add('fade-in');
+      dots.forEach(
+        (dot, idx) => {
+
+          dot.classList.toggle(
+            'active',
+            idx === slideIndex
+          );
+
+        }
+      );
+
+
+      grid.classList.remove(
+        'fade-out'
+      );
+
+      grid.classList.add(
+        'fade-in'
+      );
+
+
     }, 300);
+
   }
+
+
+  /* ==================================
+     NEXT SLIDE
+  ================================== */
 
   function nextSlide() {
-    currentSlide = (currentSlide + 1) % totalSlides;
+
+    currentSlide =
+      (currentSlide + 1) %
+      totalSlides;
+
     showSlide(currentSlide);
+
   }
+
+
+  /* ==================================
+     PREVIOUS SLIDE
+  ================================== */
 
   function prevSlide() {
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+
+    currentSlide =
+      (
+        currentSlide -
+        1 +
+        totalSlides
+      ) %
+      totalSlides;
+
     showSlide(currentSlide);
+
   }
+
+
+  /* ==================================
+     GO TO SLIDE
+  ================================== */
 
   function goToSlide(index) {
+
     currentSlide = index;
+
     showSlide(currentSlide);
+
   }
+
+
+  /* ==================================
+     TIMER
+  ================================== */
 
   function startTimer() {
-    slideTimer = setInterval(nextSlide, DISPLAY_TIME);
+
+    slideTimer =
+      setInterval(
+        nextSlide,
+        DISPLAY_TIME
+      );
+
   }
+
 
   function resetTimer() {
+
     clearInterval(slideTimer);
+
     startTimer();
+
   }
+
+
+  /* ==================================
+     NEXT BUTTON
+  ================================== */
 
   if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      nextSlide();
-      resetTimer();
-    });
+
+    nextBtn.addEventListener(
+      'click',
+      () => {
+
+        nextSlide();
+
+        resetTimer();
+
+      }
+    );
+
   }
+
+
+  /* ==================================
+     PREVIOUS BUTTON
+  ================================== */
 
   if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      prevSlide();
-      resetTimer();
-    });
+
+    prevBtn.addEventListener(
+      'click',
+      () => {
+
+        prevSlide();
+
+        resetTimer();
+
+      }
+    );
+
   }
+
+
+  /* ==================================
+     PAUSE ON DESKTOP HOVER
+  ================================== */
 
   if (wrapper) {
-    wrapper.addEventListener('mouseenter', () => clearInterval(slideTimer));
-    wrapper.addEventListener('mouseleave', () => startTimer());
+
+    wrapper.addEventListener(
+      'mouseenter',
+      () => {
+
+        clearInterval(slideTimer);
+
+      }
+    );
+
+
+    wrapper.addEventListener(
+      'mouseleave',
+      () => {
+
+        startTimer();
+
+      }
+    );
+
   }
 
+
+  /* ==================================
+     INITIAL SLIDE
+  ================================== */
+
   showSlide(0);
+
   startTimer();
+
 });
+
 </script>
 
 {% endblock %}
