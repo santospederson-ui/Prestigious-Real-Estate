@@ -1,35 +1,22 @@
 {% extends "base.html" %}
 
-
 {% block title %}
-
 Add Property | Prestigious Real Estate Admin
-
 {% endblock %}
-
-
-
 
 {% block content %}
 
-
-
 <section class="admin-form-section">
-
 
 <div class="container">
 
-
 <div class="admin-form-card">
-
-
 
 <div class="form-header">
 
 <h1>
 Add New Property
 </h1>
-
 
 <p>
 Create a premium property listing for Qatar market
@@ -38,26 +25,14 @@ Create a premium property listing for Qatar market
 </div>
 
 
-
-
-
-
-
 <form method="POST"
-enctype="multipart/form-data">
-
-
-
+      enctype="multipart/form-data">
 
 
 <div class="form-grid">
 
 
-
-
-
 <div>
-
 <label>
 Property Title
 </label>
@@ -71,45 +46,29 @@ required>
 </div>
 
 
-
-
-
-
-
 <div>
 
 <label>
 Purpose
 </label>
 
-
 <select name="purpose" required>
-
 
 <option value="">
 Select Purpose
 </option>
 
-
 <option value="Sale">
 For Sale
 </option>
-
 
 <option value="Rent">
 For Rent
 </option>
 
-
 </select>
 
-
 </div>
-
-
-
-
-
 
 
 <div>
@@ -118,39 +77,27 @@ For Rent
 Property Type
 </label>
 
-
 <select name="property_type" required>
-
 
 <option>
 Villa
 </option>
 
-
 <option>
 Apartment
 </option>
-
 
 <option>
 Office
 </option>
 
-
 <option>
 Commercial Building
 </option>
 
-
 </select>
 
-
 </div>
-
-
-
-
-
 
 
 <div>
@@ -159,9 +106,7 @@ Commercial Building
 Location
 </label>
 
-
 <select name="location">
-
 
 <option>
 Doha
@@ -183,15 +128,9 @@ West Bay
 Al Wakrah
 </option>
 
-
 </select>
 
-
 </div>
-
-
-
-
 
 
 <div>
@@ -200,19 +139,13 @@ Al Wakrah
 Price (QAR)
 </label>
 
-
 <input
 type="number"
 name="price"
 placeholder="3500000"
 required>
 
-
 </div>
-
-
-
-
 
 
 <div>
@@ -221,19 +154,13 @@ required>
 Bedrooms
 </label>
 
-
 <input
 type="number"
 name="bedrooms"
 placeholder="0"
 required>
 
-
 </div>
-
-
-
-
 
 
 <div>
@@ -242,20 +169,13 @@ required>
 Bathrooms
 </label>
 
-
 <input
 type="number"
 name="bathrooms"
 placeholder="0"
 required>
 
-
 </div>
-
-
-
-
-
 
 
 <div>
@@ -264,20 +184,13 @@ required>
 Area SQM
 </label>
 
-
 <input
 type="number"
 name="area"
 placeholder="700"
 required>
 
-
 </div>
-
-
-
-
-
 
 
 <div>
@@ -286,21 +199,13 @@ required>
 Parking Spaces
 </label>
 
-
 <input
 type="number"
 name="parking"
 placeholder="0"
 required>
 
-
 </div>
-
-
-
-
-
-
 
 
 <div>
@@ -309,68 +214,85 @@ required>
 Furnished
 </label>
 
-
 <select name="furnished">
-
 
 <option value="Not Furnished">
 Not Furnished
 </option>
 
-
 <option value="Semi Furnished">
 Semi Furnished
 </option>
-
 
 <option value="Fully Furnished">
 Fully Furnished
 </option>
 
-
 </select>
 
+</div>
+
 
 </div>
 
 
-
-
-</div>
-
-
-
-
-
-
-
-
+<!-- PROPERTY ADDRESS -->
 
 <label>
-
 Property Address
-
 </label>
-
 
 <textarea
 name="address"
-placeholder="Complete property address">
-</textarea>
+placeholder="Complete property address"></textarea>
 
 
+<!-- GOOGLE MAP -->
 
-
-
-
-
+<div class="map-input-section">
 
 <label>
-
-Property Description
-
+Property Google Maps Location
 </label>
 
+<input
+type="url"
+name="map_embed_url"
+placeholder="Paste Google Maps embed URL here">
+
+<p class="map-help-text">
+
+<i class="fas fa-map-marker-alt"></i>
+
+To add the property's map, open Google Maps → find the property location →
+<strong>Share → Embed a map → Copy HTML</strong>.
+
+You only need to paste the URL from the
+<code>src="..."</code>
+portion of the Google Maps iframe.
+
+</p>
+
+<div class="map-example-box">
+
+<strong>Example:</strong>
+
+<br>
+
+<code>
+https://www.google.com/maps/embed?pb=...
+</code>
+
+</div>
+
+</div>
+
+
+<!-- DESCRIPTION -->
+
+<label>
+Property Description
+</label>
 
 <textarea
 name="description"
@@ -378,20 +300,11 @@ placeholder="Describe property features, location advantages and facilities">
 </textarea>
 
 
-
-
-
-
-
-
+<!-- IMAGES -->
 
 <label>
-
 Upload Property Images
-
 </label>
-
-
 
 <p style="color:#777;margin-bottom:10px;">
 
@@ -400,36 +313,15 @@ First image will automatically become the main property image.
 </p>
 
 
-
-
 <input
-
 type="file"
-
 name="images"
-
 multiple
-
 accept="image/*"
-
-required
-
->
+required>
 
 
-
-
-
-
-
-
-
-
-
-    <!-- =========================
-     PROPERTY FEATURES
-========================= -->
-
+<!-- FEATURES -->
 
 <label>
 Property Features
@@ -440,7 +332,8 @@ Property Features
 
 
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Swimming Pool">
 
@@ -449,9 +342,9 @@ Swimming Pool
 </label>
 
 
-
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Smart Home">
 
@@ -460,9 +353,9 @@ Smart Home
 </label>
 
 
-
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Sea View">
 
@@ -471,9 +364,9 @@ Sea View
 </label>
 
 
-
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Private Garden">
 
@@ -482,9 +375,9 @@ Private Garden
 </label>
 
 
-
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Gym">
 
@@ -493,9 +386,9 @@ Gym
 </label>
 
 
-
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Security 24/7">
 
@@ -504,9 +397,9 @@ Security 24/7
 </label>
 
 
-
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Maid Room">
 
@@ -515,9 +408,9 @@ Maid Room
 </label>
 
 
-
 <label>
-<input type="checkbox"
+<input
+type="checkbox"
 name="features"
 value="Balcony">
 
@@ -529,13 +422,8 @@ Balcony
 </div>
 
 
-
-
-
 <button
-
 type="submit"
-
 class="save-property-btn">
 
 Save Property
@@ -543,24 +431,11 @@ Save Property
 </button>
 
 
-
-
-
-
-
 </form>
 
-
-
-
-
-
-
 </div>
 
-
 </div>
-
 
 </section>
 
@@ -633,10 +508,11 @@ Save Property
     text-transform: uppercase;
 }
 
-/* INPUTS, SELECTS, TEXTAREAS */
+/* INPUTS */
 
 .admin-form-card input[type="text"],
 .admin-form-card input[type="number"],
+.admin-form-card input[type="url"],
 .admin-form-card select,
 .admin-form-card textarea {
     width: 100%;
@@ -672,6 +548,62 @@ Save Property
     line-height: 1.6;
 }
 
+/* ==================================
+   GOOGLE MAP FIELD
+================================== */
+
+.map-input-section {
+    margin: 6px 0 28px;
+    padding: 22px;
+    background: linear-gradient(
+        135deg,
+        #f8fafc 0%,
+        #ffffff 100%
+    );
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid var(--gold-accent, #D4AF37);
+    border-radius: 14px;
+}
+
+.map-input-section label {
+    margin-bottom: 10px;
+}
+
+.map-input-section input {
+    margin-bottom: 10px;
+}
+
+.map-help-text {
+    margin: 8px 0 10px !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    line-height: 1.6;
+}
+
+.map-help-text i {
+    color: var(--qatar-maroon, #8A1538);
+    margin-right: 5px;
+}
+
+.map-help-text code {
+    color: #8A1538;
+    font-weight: 700;
+}
+
+.map-example-box {
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #64748b;
+    overflow-wrap: anywhere;
+}
+
+.map-example-box code {
+    color: #475569;
+}
+
 /* FILE UPLOAD */
 
 .admin-form-card input[type="file"] {
@@ -699,7 +631,7 @@ Save Property
     font-weight: 500;
 }
 
-/* FEATURES GRID */
+/* FEATURES */
 
 .features-grid {
     display: grid;
@@ -766,15 +698,18 @@ Save Property
     box-shadow: 0 10px 24px rgba(31, 42, 68, 0.25);
 }
 
-/* MOBILE RESPONSIVE */
+/* MOBILE */
 
 @media(max-width: 992px) {
+
     .features-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+
 }
 
 @media(max-width: 768px) {
+
     .admin-form-section {
         padding: 40px 0;
     }
@@ -798,9 +733,11 @@ Save Property
         padding: 16px;
         gap: 12px;
     }
+
 }
 
 @media(max-width: 480px) {
+
     .form-header h1 {
         font-size: 24px;
     }
@@ -808,9 +745,9 @@ Save Property
     .features-grid {
         grid-template-columns: 1fr;
     }
+
 }
 
 </style>
-
 
 {% endblock %}
