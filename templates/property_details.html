@@ -32,7 +32,6 @@ PROPERTY SEO STRUCTURED DATA
     "@type":"RealEstateAgent",
     "name":"Prestigious Real Estate"
   }
-}
 </script>
 
 
@@ -465,7 +464,7 @@ SPLIT INTERACTIVE & RELATED SECTION
                   </div>
 
 
-                  <!-- SECOND RECTANGLE: INFORMATION -->
+                  <!-- SECOND RECTANGLE -->
 
                   <div class="related-info-rect">
 
@@ -499,29 +498,18 @@ SPLIT INTERACTIVE & RELATED SECTION
                       <div class="related-meta">
 
                         <span class="meta-item">
-
                           <i class="fas fa-bed"></i>
-
                           {{ item.bedrooms }}
-
                         </span>
 
-
                         <span class="meta-item">
-
                           <i class="fas fa-bath"></i>
-
                           {{ item.bathrooms }}
-
                         </span>
 
-
                         <span class="meta-item">
-
                           <i class="fas fa-ruler-combined"></i>
-
                           {{ item.area }}m²
-
                         </span>
 
                       </div>
@@ -550,24 +538,79 @@ SPLIT INTERACTIVE & RELATED SECTION
 
 
 <!-- =========================
-LIGHTBOX
+ADVANCED IMAGE LIGHTBOX
 ========================= -->
 
 <div id="imageLightbox"
-     class="lightbox-modal">
+     class="lightbox-modal"
+     aria-hidden="true">
 
-  <span class="lightbox-close"
-        onclick="closeLightbox()">
+  <!-- CLOSE -->
+
+  <button type="button"
+          class="lightbox-close"
+          onclick="closeLightbox()"
+          aria-label="Close image viewer">
+
     &times;
-  </span>
 
-  <img class="lightbox-content"
-       id="lightboxImg">
+  </button>
+
+
+  <!-- PREVIOUS -->
+
+  <button type="button"
+          class="lightbox-nav lightbox-prev"
+          onclick="previousImage(event)"
+          aria-label="Previous image">
+
+    <i class="fas fa-chevron-left"></i>
+
+  </button>
+
+
+  <!-- IMAGE AREA -->
+
+  <div class="lightbox-image-area"
+       id="lightboxImageArea">
+
+    <img class="lightbox-content"
+         id="lightboxImg"
+         draggable="false"
+         alt="{{ property.title }}">
+
+  </div>
+
+
+  <!-- NEXT -->
+
+  <button type="button"
+          class="lightbox-nav lightbox-next"
+          onclick="nextImage(event)"
+          aria-label="Next image">
+
+    <i class="fas fa-chevron-right"></i>
+
+  </button>
+
+
+  <!-- IMAGE COUNTER -->
+
+  <div class="lightbox-counter"
+       id="lightboxCounter">
+
+    1 / 1
+
+  </div>
 
 </div>
 
 
 <script>
+
+/* =========================================================
+   GALLERY IMAGE DATA
+========================================================= */
 
 const galleryImageUrls = [
 
@@ -588,24 +631,131 @@ const galleryImageUrls = [
 ];
 
 
+let currentLightboxIndex = 0;
+
+
+/* =========================================================
+   OPEN LIGHTBOX
+========================================================= */
+
 function openLightbox(index) {
 
-  if (galleryImageUrls.length === 0) return;
+  if (!galleryImageUrls.length) {
+    return;
+  }
+
+  currentLightboxIndex = normalizeGalleryIndex(index);
 
   const modal =
     document.getElementById("imageLightbox");
 
-  const modalImg =
-    document.getElementById("lightboxImg");
-
   modal.style.display = "flex";
+  modal.setAttribute("aria-hidden", "false");
 
-  modalImg.src =
-    galleryImageUrls[index] ||
-    galleryImageUrls[0];
+  document.body.classList.add("lightbox-open");
+
+  updateLightboxImage();
 
 }
 
+
+/* =========================================================
+   UPDATE CURRENT IMAGE
+========================================================= */
+
+function updateLightboxImage() {
+
+  const modalImg =
+    document.getElementById("lightboxImg");
+
+  const counter =
+    document.getElementById("lightboxCounter");
+
+  if (!galleryImageUrls.length) {
+    return;
+  }
+
+  modalImg.src =
+    galleryImageUrls[currentLightboxIndex];
+
+  counter.textContent =
+    (currentLightboxIndex + 1) +
+    " / " +
+    galleryImageUrls.length;
+
+}
+
+
+/* =========================================================
+   NORMALIZE INDEX
+   Allows continuous looping
+========================================================= */
+
+function normalizeGalleryIndex(index) {
+
+  const total =
+    galleryImageUrls.length;
+
+  if (!total) {
+    return 0;
+  }
+
+  return ((index % total) + total) % total;
+
+}
+
+
+/* =========================================================
+   NEXT IMAGE
+========================================================= */
+
+function nextImage(event) {
+
+  if (event) {
+    event.stopPropagation();
+  }
+
+  if (!galleryImageUrls.length) {
+    return;
+  }
+
+  currentLightboxIndex =
+    normalizeGalleryIndex(
+      currentLightboxIndex + 1
+    );
+
+  updateLightboxImage();
+
+}
+
+
+/* =========================================================
+   PREVIOUS IMAGE
+========================================================= */
+
+function previousImage(event) {
+
+  if (event) {
+    event.stopPropagation();
+  }
+
+  if (!galleryImageUrls.length) {
+    return;
+  }
+
+  currentLightboxIndex =
+    normalizeGalleryIndex(
+      currentLightboxIndex - 1
+    );
+
+  updateLightboxImage();
+
+}
+
+
+/* =========================================================
+   CLOSE LIGHTBOX
+========================================================= */
 
 function closeLightbox() {
 
@@ -616,30 +766,58 @@ function closeLightbox() {
 
     modal.style.display = "none";
 
+    modal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
   }
+
+  document.body.classList.remove("lightbox-open");
 
 }
 
 
-window.onclick = function(event) {
-
-  const modal =
-    document.getElementById("imageLightbox");
-
-  if (event.target == modal) {
-
-    modal.style.display = "none";
-
-  }
-
-};
-
+/* =========================================================
+   KEYBOARD NAVIGATION
+========================================================= */
 
 document.addEventListener(
-  'keydown',
+  "keydown",
   function(event) {
 
-    if (event.key === "Escape") {
+    const modal =
+      document.getElementById("imageLightbox");
+
+    if (!modal ||
+        modal.style.display !== "flex") {
+
+      return;
+
+    }
+
+
+    if (event.key === "ArrowRight") {
+
+      event.preventDefault();
+
+      nextImage();
+
+    }
+
+
+    else if (event.key === "ArrowLeft") {
+
+      event.preventDefault();
+
+      previousImage();
+
+    }
+
+
+    else if (event.key === "Escape") {
+
+      event.preventDefault();
 
       closeLightbox();
 
@@ -649,12 +827,142 @@ document.addEventListener(
 );
 
 
+/* =========================================================
+   CLOSE WHEN CLICKING DARK BACKGROUND
+========================================================= */
+
+document
+  .getElementById("imageLightbox")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target === this ||
+        event.target.classList.contains(
+          "lightbox-image-area"
+        )
+      ) {
+
+        closeLightbox();
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   MOBILE SWIPE SUPPORT
+========================================================= */
+
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+const lightboxImageArea =
+  document.getElementById("lightboxImageArea");
+
+
+lightboxImageArea.addEventListener(
+  "touchstart",
+  function(event) {
+
+    if (!event.touches.length) {
+      return;
+    }
+
+    touchStartX =
+      event.touches[0].clientX;
+
+    touchStartY =
+      event.touches[0].clientY;
+
+  },
+  { passive: true }
+);
+
+
+lightboxImageArea.addEventListener(
+  "touchend",
+  function(event) {
+
+    if (!event.changedTouches.length) {
+      return;
+    }
+
+    touchEndX =
+      event.changedTouches[0].clientX;
+
+    touchEndY =
+      event.changedTouches[0].clientY;
+
+    handleSwipe();
+
+  },
+  { passive: true }
+);
+
+
+function handleSwipe() {
+
+  const swipeDistanceX =
+    touchEndX - touchStartX;
+
+  const swipeDistanceY =
+    touchEndY - touchStartY;
+
+
+  /*
+     Ignore mostly vertical swipes.
+  */
+
+  if (
+    Math.abs(swipeDistanceX) <
+    Math.abs(swipeDistanceY)
+  ) {
+
+    return;
+
+  }
+
+
+  /*
+     Minimum horizontal movement:
+     50px
+  */
+
+  if (Math.abs(swipeDistanceX) < 50) {
+
+    return;
+
+  }
+
+
+  if (swipeDistanceX < 0) {
+
+    nextImage();
+
+  } else {
+
+    previousImage();
+
+  }
+
+}
+
+
+/* =========================================================
+   ACCORDION
+========================================================= */
+
 function toggleAccordion(headerElement) {
 
   const item =
     headerElement.parentElement;
 
-  item.classList.toggle('active');
+  item.classList.toggle("active");
 
 }
 
@@ -983,6 +1291,8 @@ function toggleAccordion(headerElement) {
 
   overflow: hidden;
 
+  cursor: pointer;
+
 }
 
 
@@ -1227,7 +1537,7 @@ function toggleAccordion(headerElement) {
 
 
 /* ==================================
-   PRICE - TOP RIGHT OF SECOND RECTANGLE
+   PRICE - TOP RIGHT
 ================================== */
 
 .related-price-badge {
@@ -1260,8 +1570,6 @@ function toggleAccordion(headerElement) {
 
 }
 
-
-/* TEXT */
 
 .related-text-wrap {
 
@@ -1677,9 +1985,9 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* ==================================
-   LIGHTBOX
-================================== */
+/* =========================================================
+   ADVANCED LIGHTBOX
+========================================================= */
 
 .lightbox-modal {
 
@@ -1687,53 +1995,258 @@ function toggleAccordion(headerElement) {
 
   position: fixed;
 
-  z-index: 9999;
+  z-index: 99999;
 
-  left: 0;
-
-  top: 0;
+  inset: 0;
 
   width: 100%;
 
   height: 100%;
 
-  background-color: rgba(15, 23, 42, 0.92);
+  background: rgba(5, 10, 20, 0.96);
 
   justify-content: center;
 
   align-items: center;
 
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+
+  overflow: hidden;
 
 }
 
+
+/* PREVENT PAGE SCROLL WHILE LIGHTBOX IS OPEN */
+
+body.lightbox-open {
+
+  overflow: hidden;
+
+}
+
+
+/* IMAGE AREA */
+
+.lightbox-image-area {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 70px 100px;
+
+  box-sizing: border-box;
+
+  touch-action: pan-y;
+
+}
+
+
+/* IMAGE */
 
 .lightbox-content {
 
-  max-width: 90%;
+  display: block;
 
-  max-height: 85%;
+  max-width: 88vw;
 
-  border-radius: 12px;
+  max-height: 86vh;
+
+  width: auto;
+
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 10px;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+
+  user-select: none;
+
+  -webkit-user-drag: none;
+
+  transition: opacity 0.18s ease;
 
 }
 
 
+/* CLOSE BUTTON */
+
 .lightbox-close {
 
-  position: absolute;
+  position: fixed;
 
-  top: 25px;
+  top: 20px;
 
-  right: 35px;
+  right: 28px;
+
+  width: 48px;
+
+  height: 48px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.12);
 
   color: #ffffff;
 
-  font-size: 40px;
+  font-size: 36px;
 
-  font-weight: bold;
+  line-height: 42px;
+
+  font-weight: 300;
 
   cursor: pointer;
+
+  z-index: 100002;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  transition: all 0.2s ease;
+
+}
+
+
+.lightbox-close:hover {
+
+  background: rgba(255,255,255,0.22);
+
+  color: #D4AF37;
+
+  transform: scale(1.05);
+
+}
+
+
+/* ==================================
+   LEFT / RIGHT ARROW BUTTONS
+================================== */
+
+.lightbox-nav {
+
+  position: fixed;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 58px;
+
+  height: 58px;
+
+  border: 1px solid rgba(255,255,255,0.2);
+
+  border-radius: 50%;
+
+  background: rgba(15,23,42,0.78);
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 24px;
+
+  cursor: pointer;
+
+  z-index: 100002;
+
+  backdrop-filter: blur(8px);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+
+}
+
+
+.lightbox-nav:hover {
+
+  background: rgba(138,21,56,0.95);
+
+  color: #ffffff;
+
+}
+
+
+.lightbox-prev {
+
+  left: 25px;
+
+}
+
+
+.lightbox-next {
+
+  right: 25px;
+
+}
+
+
+.lightbox-prev:hover {
+
+  transform: translateY(-50%) scale(1.06);
+
+}
+
+
+.lightbox-next:hover {
+
+  transform: translateY(-50%) scale(1.06);
+
+}
+
+
+/* IMAGE COUNTER */
+
+.lightbox-counter {
+
+  position: fixed;
+
+  bottom: 22px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: 100002;
+
+  background: rgba(15,23,42,0.78);
+
+  color: #ffffff;
+
+  padding: 7px 13px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  border: 1px solid rgba(255,255,255,0.15);
+
+  backdrop-filter: blur(8px);
 
 }
 
@@ -2023,10 +2536,87 @@ function toggleAccordion(headerElement) {
 
   }
 
+
+  /* ==================================
+     MOBILE LIGHTBOX
+  ================================== */
+
+  .lightbox-image-area {
+
+    padding: 55px 52px 65px;
+
+  }
+
+
+  .lightbox-content {
+
+    max-width: 100%;
+
+    max-height: 78vh;
+
+    border-radius: 6px;
+
+  }
+
+
+  .lightbox-nav {
+
+    width: 44px;
+
+    height: 44px;
+
+    font-size: 18px;
+
+    background: rgba(15,23,42,0.72);
+
+  }
+
+
+  .lightbox-prev {
+
+    left: 8px;
+
+  }
+
+
+  .lightbox-next {
+
+    right: 8px;
+
+  }
+
+
+  .lightbox-close {
+
+    top: 10px;
+
+    right: 12px;
+
+    width: 42px;
+
+    height: 42px;
+
+    font-size: 30px;
+
+  }
+
+
+  .lightbox-counter {
+
+    bottom: 14px;
+
+    font-size: 11px;
+
+    padding: 6px 11px;
+
+  }
+
 }
 
 
-/* VERY SMALL PHONES */
+/* ==================================
+   VERY SMALL PHONES
+================================== */
 
 @media (max-width: 380px) {
 
@@ -2076,6 +2666,42 @@ function toggleAccordion(headerElement) {
   .related-meta .meta-item {
 
     font-size: 11px;
+
+  }
+
+
+  /* VERY SMALL SCREEN LIGHTBOX */
+
+  .lightbox-image-area {
+
+    padding-left: 45px;
+
+    padding-right: 45px;
+
+  }
+
+
+  .lightbox-nav {
+
+    width: 38px;
+
+    height: 38px;
+
+    font-size: 15px;
+
+  }
+
+
+  .lightbox-prev {
+
+    left: 5px;
+
+  }
+
+
+  .lightbox-next {
+
+    right: 5px;
 
   }
 
