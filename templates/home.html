@@ -2342,23 +2342,11 @@ document.addEventListener(
 
       function showLoading() {
 
-        resultsBox.innerHTML = `
+  resultsBox.classList.add(
+    'show'
+  );
 
-          <div class="search-state">
-
-            <i class="fas fa-spinner fa-spin"></i>
-
-            Searching properties...
-
-          </div>
-
-        `;
-
-        resultsBox.classList.add(
-          'show'
-        );
-
-      }
+}
 
 
       /* ===================================================
@@ -2746,7 +2734,7 @@ document.addEventListener(
                 );
 
               },
-              250
+              80
             );
 
         }
