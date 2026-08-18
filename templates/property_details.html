@@ -33,6 +33,7 @@
     "@type": "RealEstateAgent",
     "name": "Prestigious Real Estate"
   }
+}
 </script>
 
 
@@ -660,7 +661,7 @@
 
 
                 <!-- =================================================
-                     PROPERTY LOCATION / GOOGLE MAP
+                     PROPERTY LOCATION
                 ================================================= -->
 
                 <section class="property-section-card property-location-card">
@@ -686,10 +687,23 @@
                     </div>
 
 
-                    <div
-                        id="propertyGoogleMap"
-                        class="property-google-map"
-                    >
+                    {% if property.map_embed_url %}
+
+                    <div class="property-google-map">
+
+                        <iframe
+                            src="{{ property.map_embed_url }}"
+                            title="Google Map showing {{ property.title }}"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            allowfullscreen
+                        ></iframe>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="property-google-map map-not-available">
 
                         <div class="map-loading">
 
@@ -698,16 +712,19 @@
                             </div>
 
                             <strong>
-                                Loading property location...
+                                Property map not available
                             </strong>
 
                             <span>
-                                {{ property.address or property.location or "Qatar" }}
+                                A map location has not been added
+                                for this property yet.
                             </span>
 
                         </div>
 
                     </div>
+
+                    {% endif %}
 
 
                     <div class="map-footer">
@@ -734,6 +751,23 @@
                         </div>
 
 
+                        {% if property.map_embed_url %}
+
+                        <a
+                            href="{{ property.map_embed_url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="open-map-button"
+                        >
+
+                            <i class="fas fa-arrow-up-right-from-square"></i>
+
+                            Open in Google Maps
+
+                        </a>
+
+                        {% elif property.address or property.location %}
+
                         <a
                             id="openGoogleMaps"
                             href="#"
@@ -747,6 +781,8 @@
                             Open in Google Maps
 
                         </a>
+
+                        {% endif %}
 
                     </div>
 
@@ -1029,40 +1065,17 @@
 <script>
 
 /* =========================================================
-   PROPERTY GOOGLE MAP
+   GOOGLE MAP FALLBACK
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const mapContainer =
-        document.getElementById("propertyGoogleMap");
-
     const openMapButton =
         document.getElementById("openGoogleMaps");
 
-
-    if (!mapContainer) {
+    if (!openMapButton) {
         return;
     }
-
-
-    /*
-        The exact Google Maps embed URL saved in the
-        properties table.
-
-        Database column:
-
-        map_embed_url
-    */
-
-    const savedMapEmbedUrl =
-        {{ (property.map_embed_url or "")|tojson }};
-
-
-    /*
-        Existing property information is still available
-        as a fallback if no map embed URL was saved.
-    */
 
     const propertyAddress =
         {{ (property.address or "")|tojson }};
@@ -1070,9 +1083,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const propertyLocation =
         {{ (property.location or "")|tojson }};
 
-
     let mapQuery = "";
-
 
     if (propertyAddress && propertyLocation) {
 
@@ -1106,138 +1117,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-    /*
-        =====================================================
-        MAP EMBED URL
-        =====================================================
-
-        If the administrator has supplied a Google Maps
-        embed URL in the database, use it directly.
-
-        Otherwise, fall back to a normal Google Maps
-        search/embed URL using the property address.
-    */
-
-    let iframeUrl = "";
-
-
-    if (savedMapEmbedUrl.trim()) {
-
-        iframeUrl =
-            savedMapEmbedUrl.trim();
-
-    }
-
-    else {
-
-        const encodedQuery =
-            encodeURIComponent(mapQuery);
-
-        iframeUrl =
-            "https://www.google.com/maps?q="
-            + encodedQuery
-            + "&output=embed";
-
-    }
-
-
-    /*
-        =====================================================
-        OPEN GOOGLE MAPS BUTTON
-        =====================================================
-
-        If a saved embed URL exists, we try to convert it
-        to a usable Google Maps URL.
-
-        Otherwise use a normal Google Maps search URL.
-    */
-
-    if (openMapButton) {
-
-        if (savedMapEmbedUrl.trim()) {
-
-            /*
-                Google embed URLs normally contain the
-                actual map information.
-
-                Opening the saved URL is preferable to
-                constructing another location.
-            */
-
-            openMapButton.href =
-                savedMapEmbedUrl.trim();
-
-        }
-
-        else {
-
-            const encodedQuery =
-                encodeURIComponent(mapQuery);
-
-            openMapButton.href =
-                "https://www.google.com/maps/search/?api=1&query="
-                + encodedQuery;
-
-        }
-
-    }
-
-
-    /*
-        =====================================================
-        CREATE MAP IFRAME
-        =====================================================
-    */
-
-    const iframe =
-        document.createElement("iframe");
-
-
-    iframe.src =
-        iframeUrl;
-
-
-    iframe.title =
-        "Google Map showing "
-        + mapQuery;
-
-
-    iframe.loading =
-        "lazy";
-
-
-    iframe.referrerPolicy =
-        "no-referrer-when-downgrade";
-
-
-    iframe.allowFullscreen =
-        true;
-
-
-    iframe.style.width =
-        "100%";
-
-
-    iframe.style.height =
-        "100%";
-
-
-    iframe.style.border =
-        "0";
-
-
-    iframe.style.display =
-        "block";
-
-
-    /*
-        Replace the loading message with the map.
-    */
-
-    mapContainer.innerHTML = "";
-
-    mapContainer.appendChild(iframe);
+    openMapButton.href =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(mapQuery);
 
 });
 
@@ -1269,7 +1151,6 @@ const galleryImageUrls = [
 let currentLightboxIndex = 0;
 
 
-
 function normalizeGalleryIndex(index) {
 
     const total =
@@ -1287,7 +1168,6 @@ function normalizeGalleryIndex(index) {
 }
 
 
-
 function openLightbox(index) {
 
     if (!galleryImageUrls.length) {
@@ -1297,32 +1177,26 @@ function openLightbox(index) {
     currentLightboxIndex =
         normalizeGalleryIndex(index);
 
-
     const modal =
         document.getElementById(
             "imageLightbox"
         );
 
-
     modal.style.display =
         "flex";
-
 
     modal.setAttribute(
         "aria-hidden",
         "false"
     );
 
-
     document.body.classList.add(
         "lightbox-open"
     );
 
-
     updateLightboxImage();
 
 }
-
 
 
 function updateLightboxImage() {
@@ -1331,24 +1205,20 @@ function updateLightboxImage() {
         return;
     }
 
-
     const image =
         document.getElementById(
             "lightboxImg"
         );
-
 
     const counter =
         document.getElementById(
             "lightboxCounter"
         );
 
-
     image.src =
         galleryImageUrls[
             currentLightboxIndex
         ];
-
 
     counter.textContent =
         (currentLightboxIndex + 1)
@@ -1358,29 +1228,24 @@ function updateLightboxImage() {
 }
 
 
-
 function nextImage(event) {
 
     if (event) {
         event.stopPropagation();
     }
 
-
     if (!galleryImageUrls.length) {
         return;
     }
-
 
     currentLightboxIndex =
         normalizeGalleryIndex(
             currentLightboxIndex + 1
         );
 
-
     updateLightboxImage();
 
 }
-
 
 
 function previousImage(event) {
@@ -1389,22 +1254,18 @@ function previousImage(event) {
         event.stopPropagation();
     }
 
-
     if (!galleryImageUrls.length) {
         return;
     }
-
 
     currentLightboxIndex =
         normalizeGalleryIndex(
             currentLightboxIndex - 1
         );
 
-
     updateLightboxImage();
 
 }
-
 
 
 function closeLightbox() {
@@ -1414,28 +1275,23 @@ function closeLightbox() {
             "imageLightbox"
         );
 
-
     if (!modal) {
         return;
     }
 
-
     modal.style.display =
         "none";
-
 
     modal.setAttribute(
         "aria-hidden",
         "true"
     );
 
-
     document.body.classList.remove(
         "lightbox-open"
     );
 
 }
-
 
 
 document.addEventListener(
@@ -1447,14 +1303,12 @@ document.addEventListener(
                 "imageLightbox"
             );
 
-
         if (
             !modal ||
             modal.style.display !== "flex"
         ) {
             return;
         }
-
 
         if (event.key === "ArrowRight") {
 
@@ -1464,7 +1318,6 @@ document.addEventListener(
 
         }
 
-
         else if (event.key === "ArrowLeft") {
 
             event.preventDefault();
@@ -1472,7 +1325,6 @@ document.addEventListener(
             previousImage();
 
         }
-
 
         else if (event.key === "Escape") {
 
@@ -1484,7 +1336,6 @@ document.addEventListener(
 
     }
 );
-
 
 
 const lightbox =
@@ -1516,7 +1367,6 @@ if (lightbox) {
 }
 
 
-
 let touchStartX = 0;
 let touchStartY = 0;
 let touchEndX = 0;
@@ -1539,10 +1389,8 @@ if (lightboxImageArea) {
                 return;
             }
 
-
             touchStartX =
                 event.touches[0].clientX;
-
 
             touchStartY =
                 event.touches[0].clientY;
@@ -1560,14 +1408,11 @@ if (lightboxImageArea) {
                 return;
             }
 
-
             touchEndX =
                 event.changedTouches[0].clientX;
 
-
             touchEndY =
                 event.changedTouches[0].clientY;
-
 
             handleSwipe();
 
@@ -1578,18 +1423,15 @@ if (lightboxImageArea) {
 }
 
 
-
 function handleSwipe() {
 
     const distanceX =
         touchEndX -
         touchStartX;
 
-
     const distanceY =
         touchEndY -
         touchStartY;
-
 
     if (
         Math.abs(distanceX) <
@@ -1598,13 +1440,11 @@ function handleSwipe() {
         return;
     }
 
-
     if (
         Math.abs(distanceX) < 50
     ) {
         return;
     }
-
 
     if (distanceX < 0) {
 
@@ -2305,7 +2145,7 @@ function handleSwipe() {
 
 
 /* =========================================================
-   GOOGLE MAP
+   PROPERTY MAP
 ========================================================= */
 
 .property-location-card {
@@ -2369,6 +2209,12 @@ function handleSwipe() {
     color: #64748b;
     font-size: 11px;
     max-width: 400px;
+}
+
+.map-not-available {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .map-footer {
@@ -2962,7 +2808,7 @@ body.lightbox-open {
     }
 
 
-    /* GOOGLE MAP MOBILE */
+    /* MAP MOBILE */
 
     .property-google-map {
         height: 300px;
