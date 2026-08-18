@@ -12,25 +12,26 @@
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"Residence",
-  "name":"{{ property.title }}",
-  "description":"{{ property.description|striptags|replace('"','') }}",
-  "image":"{{ property.main_image }}",
-  "address":{
-    "@type":"PostalAddress",
-    "addressLocality":"{{ property.location }}",
-    "addressCountry":"QA"
+  "@context": "https://schema.org",
+  "@type": "Residence",
+  "name": {{ property.title|tojson }},
+  "description": {{ property.description|striptags|tojson }},
+  "image": {{ (property.main_image or "")|tojson }},
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": {{ (property.address or "")|tojson }},
+    "addressLocality": {{ (property.location or "")|tojson }},
+    "addressCountry": "QA"
   },
-  "offers":{
-    "@type":"Offer",
-    "price":"{{ property.price }}",
-    "priceCurrency":"QAR",
-    "availability":"https://schema.org/InStock"
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ property.price or 0 }}",
+    "priceCurrency": "QAR",
+    "availability": "https://schema.org/InStock"
   },
-  "seller":{
-    "@type":"RealEstateAgent",
-    "name":"Prestigious Real Estate"
+  "seller": {
+    "@type": "RealEstateAgent",
+    "name": "Prestigious Real Estate"
   }
 }
 </script>
@@ -42,856 +43,914 @@
 
 <section class="property-gallery-section">
 
-  <div class="property-gallery">
+    <div class="property-gallery">
 
-    <!-- MAIN IMAGE -->
+        <!-- MAIN IMAGE -->
+        <div class="gallery-main" onclick="openLightbox(0)">
 
-    <div class="gallery-main"
-         onclick="openLightbox(0)">
+            {% if gallery_images %}
 
-      {% if gallery_images %}
+                <img
+                    src="{{ gallery_images[0].image_name }}"
+                    alt="{{ property.title }} in {{ property.location }} Qatar"
+                    loading="eager"
+                >
 
-        <img src="{{ gallery_images[0].image_name }}"
-             alt="{{ property.title }} in {{ property.location }} Qatar"
-             loading="eager">
+            {% elif property.main_image %}
 
-      {% elif property.main_image %}
+                <img
+                    src="{{ property.main_image }}"
+                    alt="{{ property.title }} in {{ property.location }} Qatar"
+                    loading="eager"
+                >
 
-        <img src="{{ property.main_image }}"
-             alt="{{ property.title }} in {{ property.location }} Qatar"
-             loading="eager">
+            {% else %}
 
-      {% else %}
+                <img
+                    src="{{ url_for('static', filename='images/no-image.png') }}"
+                    alt="No image available"
+                >
 
-        <img src="{{ url_for('static', filename='images/no-image.png') }}"
-             alt="No image available">
-
-      {% endif %}
-
-
-      <div class="gallery-gradient"></div>
-
-
-      <div class="gallery-status">
-
-        <span class="{% if property.purpose == 'Rent' %}rent{% endif %}">
-          FOR {{ property.purpose|upper }}
-        </span>
-
-      </div>
+            {% endif %}
 
 
-      <div class="gallery-expand">
-
-        <i class="fas fa-expand"></i>
-
-        View Gallery
-
-      </div>
-
-    </div>
+            <div class="gallery-gradient"></div>
 
 
-    <!-- SIDE IMAGES -->
+            <div class="gallery-status">
+                <span class="{% if property.purpose == 'Rent' %}rent{% endif %}">
+                    FOR {{ property.purpose|upper }}
+                </span>
+            </div>
 
-    <div class="gallery-side">
 
-      {% if gallery_images and gallery_images|length > 1 %}
-
-        <div class="gallery-side-image"
-             onclick="openLightbox(1)">
-
-          <img src="{{ gallery_images[1].image_name }}"
-               alt="{{ property.title }} image 2"
-               loading="lazy">
+            <div class="gallery-expand">
+                <i class="fas fa-expand"></i>
+                View Gallery
+            </div>
 
         </div>
 
-      {% endif %}
 
+        <!-- SIDE IMAGES -->
+        <div class="gallery-side">
 
-      {% if gallery_images and gallery_images|length > 2 %}
+            {% if gallery_images and gallery_images|length > 1 %}
 
-        <div class="gallery-side-image"
-             onclick="openLightbox(2)">
+            <div
+                class="gallery-side-image"
+                onclick="openLightbox(1)"
+            >
 
-          <img src="{{ gallery_images[2].image_name }}"
-               alt="{{ property.title }} image 3"
-               loading="lazy">
-
-          {% if gallery_images|length > 3 %}
-
-            <div class="more-photos-overlay">
-
-              <i class="fas fa-images"></i>
-
-              +{{ gallery_images|length - 3 }} Photos
+                <img
+                    src="{{ gallery_images[1].image_name }}"
+                    alt="{{ property.title }} image 2"
+                    loading="lazy"
+                >
 
             </div>
 
-          {% endif %}
+            {% else %}
+
+            <div class="gallery-side-image empty-gallery"></div>
+
+            {% endif %}
+
+
+            {% if gallery_images and gallery_images|length > 2 %}
+
+            <div
+                class="gallery-side-image"
+                onclick="openLightbox(2)"
+            >
+
+                <img
+                    src="{{ gallery_images[2].image_name }}"
+                    alt="{{ property.title }} image 3"
+                    loading="lazy"
+                >
+
+
+                {% if gallery_images|length > 3 %}
+
+                <div class="more-photos-overlay">
+
+                    <i class="fas fa-images"></i>
+
+                    <span>
+                        +{{ gallery_images|length - 3 }} Photos
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% else %}
+
+            <div class="gallery-side-image empty-gallery"></div>
+
+            {% endif %}
 
         </div>
 
-      {% endif %}
+    </div>
+
+
+    <!-- THUMBNAILS -->
+    {% if gallery_images and gallery_images|length > 3 %}
+
+    <div class="property-thumbnails">
+
+        {% for image in gallery_images[3:] %}
+
+        <div
+            class="property-thumbnail"
+            onclick="openLightbox({{ loop.index0 + 3 }})"
+        >
+
+            <img
+                src="{{ image.image_name }}"
+                alt="{{ property.title }} photo {{ loop.index + 3 }}"
+                loading="lazy"
+            >
+
+        </div>
+
+        {% endfor %}
 
     </div>
 
-  </div>
-
-
-  <!-- THUMBNAILS -->
-
-  {% if gallery_images and gallery_images|length > 3 %}
-
-  <div class="property-thumbnails">
-
-    {% for image in gallery_images[3:] %}
-
-      <div class="property-thumbnail"
-           onclick="openLightbox({{ loop.index0 + 3 }})">
-
-        <img src="{{ image.image_name }}"
-             alt="{{ property.title }} photo {{ loop.index + 3 }}"
-             loading="lazy">
-
-      </div>
-
-    {% endfor %}
-
-  </div>
-
-  {% endif %}
+    {% endif %}
 
 </section>
 
 
 
 <!-- =========================================================
-     MAIN PROPERTY CONTENT
+     MAIN CONTENT
 ========================================================= -->
 
 <section class="property-content-section">
 
-  <div class="property-container">
+    <div class="property-container">
 
-    <div class="property-main-layout">
+        <div class="property-main-layout">
 
 
-      <!-- =====================================================
-           LEFT MAIN CONTENT
-      ===================================================== -->
+            <!-- =================================================
+                 LEFT COLUMN
+            ================================================= -->
 
-      <main class="property-main-column">
+            <main class="property-main-column">
 
 
-        <!-- PROPERTY HEADER -->
+                <!-- =================================================
+                     PROPERTY HEADER
+                ================================================= -->
 
-        <div class="property-heading-card">
+                <div class="property-heading-card">
 
-          <div class="property-heading-top">
+                    <div class="property-heading-top">
 
-            <div>
+                        <div class="property-heading-info">
 
-              <div class="property-reference">
+                            <div class="property-reference">
 
-                <span>PROPERTY</span>
+                                <span>PROPERTY</span>
 
-                {% if property.reference %}
-                  <strong>{{ property.reference }}</strong>
-                {% endif %}
+                                {% if property.reference %}
+                                <strong>
+                                    {{ property.reference }}
+                                </strong>
+                                {% endif %}
 
-              </div>
+                            </div>
 
 
-              <h1 class="property-main-title">
-                {{ property.title }}
-              </h1>
+                            <h1 class="property-main-title">
+                                {{ property.title }}
+                            </h1>
 
 
-              <div class="property-location">
+                            <div class="property-location">
 
-                <i class="fas fa-location-dot"></i>
+                                <i class="fas fa-location-dot"></i>
 
-                <span>
-                  {{ property.location }}
-                </span>
+                                <span>
+                                    {{ property.location }}
+                                </span>
 
-                {% if property.address %}
+                                {% if property.address %}
 
-                  <span class="location-separator">•</span>
+                                <span class="location-separator">
+                                    •
+                                </span>
 
-                  <span>
-                    {{ property.address }}
-                  </span>
+                                <span>
+                                    {{ property.address }}
+                                </span>
 
-                {% endif %}
+                                {% endif %}
 
-              </div>
+                            </div>
 
-            </div>
+                        </div>
 
 
-            <!-- PRICE -->
+                        <!-- PRICE -->
 
-            <div class="property-price-block">
+                        <div class="property-price-block">
 
-              <span class="price-label">
-                ASKING PRICE
-              </span>
+                            <span class="price-label">
+                                {% if property.purpose == "Rent" %}
+                                    RENTAL PRICE
+                                {% else %}
+                                    ASKING PRICE
+                                {% endif %}
+                            </span>
 
-              <div class="property-price">
 
-                <span class="currency">
-                  QAR
-                </span>
+                            <div class="property-price">
 
-                {{ "{:,.0f}".format(property.price or 0) }}
+                                <span class="currency">
+                                    QAR
+                                </span>
 
-              </div>
+                                {{ "{:,.0f}".format(property.price or 0) }}
 
-              {% if property.purpose == "Rent" %}
+                            </div>
 
-                <span class="price-period">
-                  Rental Property
-                </span>
 
-              {% else %}
+                            <span class="price-period">
 
-                <span class="price-period">
-                  For Sale
-                </span>
+                                {% if property.purpose == "Rent" %}
+                                    Rental Property
+                                {% else %}
+                                    For Sale
+                                {% endif %}
 
-              {% endif %}
+                            </span>
 
-            </div>
+                        </div>
 
-          </div>
+                    </div>
 
 
-          <!-- QUICK PROPERTY SUMMARY -->
 
-          <div class="quick-property-summary">
+                    <!-- =================================================
+                         QUICK SUMMARY
+                    ================================================= -->
 
+                    <div class="quick-property-summary">
 
-            <!-- BEDROOMS -->
 
-            <div class="summary-item">
+                        <!-- BEDROOMS -->
 
-              <div class="summary-icon">
+                        <div class="summary-item">
 
-                <i class="fas fa-bed"></i>
+                            <div class="summary-icon">
+                                <i class="fas fa-bed"></i>
+                            </div>
 
-              </div>
+                            <div>
 
-              <div>
+                                <strong>
+                                    {{ property.bedrooms or 0 }}
+                                </strong>
 
-                <strong>
-                  {{ property.bedrooms }}
-                </strong>
+                                <span>
+                                    Bedrooms
+                                </span>
 
-                <span>
-                  Bedrooms
-                </span>
+                            </div>
 
-              </div>
+                        </div>
 
-            </div>
 
+                        <!-- BATHROOMS -->
 
-            <!-- BATHROOMS -->
+                        <div class="summary-item">
 
-            <div class="summary-item">
+                            <div class="summary-icon">
+                                <i class="fas fa-bath"></i>
+                            </div>
 
-              <div class="summary-icon">
+                            <div>
 
-                <i class="fas fa-bath"></i>
+                                <strong>
+                                    {{ property.bathrooms or 0 }}
+                                </strong>
 
-              </div>
+                                <span>
+                                    Bathrooms
+                                </span>
 
-              <div>
+                            </div>
 
-                <strong>
-                  {{ property.bathrooms }}
-                </strong>
+                        </div>
 
-                <span>
-                  Bathrooms
-                </span>
 
-              </div>
+                        <!-- AREA -->
 
-            </div>
+                        <div class="summary-item">
 
+                            <div class="summary-icon">
+                                <i class="fas fa-ruler-combined"></i>
+                            </div>
 
-            <!-- AREA -->
+                            <div>
 
-            <div class="summary-item">
+                                <strong>
+                                    {{ property.area or 0 }}
+                                </strong>
 
-              <div class="summary-icon">
+                                <span>
+                                    SQM
+                                </span>
 
-                <i class="fas fa-ruler-combined"></i>
+                            </div>
 
-              </div>
+                        </div>
 
-              <div>
 
-                <strong>
-                  {{ property.area }}
-                </strong>
+                        <!-- PARKING -->
 
-                <span>
-                  SQM
-                </span>
+                        <div class="summary-item">
 
-              </div>
+                            <div class="summary-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
 
-            </div>
+                            <div>
 
+                                <strong>
+                                    {{ property.parking or 0 }}
+                                </strong>
 
-            <!-- TYPE -->
+                                <span>
+                                    Parking
+                                </span>
 
-            <div class="summary-item">
+                            </div>
 
-              <div class="summary-icon">
+                        </div>
 
-                <i class="fas fa-building"></i>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  {{ property.property_type }}
-                </strong>
-
-                <span>
-                  Property Type
-                </span>
-
-              </div>
-
-            </div>
-
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             PROPERTY INFORMATION
-        ================================================= -->
-
-        <section class="property-section-card">
-
-          <div class="section-heading">
-
-            <div class="section-heading-icon">
-
-              <i class="fas fa-circle-info"></i>
-
-            </div>
-
-            <div>
-
-              <h2>
-                Property Information
-              </h2>
-
-              <p>
-                Key details about this property
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="information-grid">
-
-
-            <div class="information-item">
-
-              <span class="information-label">
-                Property Type
-              </span>
-
-              <strong>
-                {{ property.property_type }}
-              </strong>
-
-            </div>
-
-
-            <div class="information-item">
-
-              <span class="information-label">
-                Purpose
-              </span>
-
-              <strong>
-                {{ property.purpose }}
-              </strong>
-
-            </div>
-
-
-            <div class="information-item">
-
-              <span class="information-label">
-                Location
-              </span>
-
-              <strong>
-                {{ property.location }}
-              </strong>
-
-            </div>
-
-
-            <div class="information-item">
-
-              <span class="information-label">
-                Furnishing
-              </span>
-
-              <strong>
-                {{ property.furnished }}
-              </strong>
-
-            </div>
-
-
-            <div class="information-item">
-
-              <span class="information-label">
-                Status
-              </span>
-
-              <strong>
-                {{ property.status }}
-              </strong>
-
-            </div>
-
-
-            {% if property.address %}
-
-            <div class="information-item">
-
-              <span class="information-label">
-                Address
-              </span>
-
-              <strong>
-                {{ property.address }}
-              </strong>
-
-            </div>
-
-            {% endif %}
-
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             AMENITIES
-        ================================================= -->
-
-        {% if features %}
-
-        <section class="property-section-card">
-
-          <div class="section-heading">
-
-            <div class="section-heading-icon gold">
-
-              <i class="fas fa-star"></i>
-
-            </div>
-
-            <div>
-
-              <h2>
-                Property Amenities & Features
-              </h2>
-
-              <p>
-                Features and facilities available with this property
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="amenities-grid">
-
-            {% for feature in features %}
-
-              <div class="amenity-card">
-
-                <div class="amenity-icon">
-
-                  <i class="fas fa-check"></i>
-
-                </div>
-
-                <span>
-                  {{ feature.feature_name }}
-                </span>
-
-              </div>
-
-            {% endfor %}
-
-          </div>
-
-        </section>
-
-        {% endif %}
-
-
-
-        <!-- =================================================
-             PROPERTY DESCRIPTION
-        ================================================= -->
-
-        <section class="property-section-card">
-
-          <div class="section-heading">
-
-            <div class="section-heading-icon">
-
-              <i class="fas fa-align-left"></i>
-
-            </div>
-
-            <div>
-
-              <h2>
-                Property Overview
-              </h2>
-
-              <p>
-                Discover more about this property
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="property-description">
-
-            {{ property.description }}
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             CONTACT CTA
-        ================================================= -->
-
-        <section class="property-enquiry-card">
-
-          <div class="enquiry-decoration"></div>
-
-          <div class="enquiry-content">
-
-            <span class="enquiry-label">
-              PRIVATE VIEWING
-            </span>
-
-            <h2>
-              Interested in this property?
-            </h2>
-
-            <p>
-              Speak with our property consultants to arrange a private
-              viewing or receive more information about this property.
-            </p>
-
-
-            <div class="enquiry-actions">
-
-              <a href="{{ url_for('contact') }}"
-                 class="enquiry-primary">
-
-                <i class="fas fa-paper-plane"></i>
-
-                Contact Agent
-
-              </a>
-
-
-              <a href="{{ url_for('contact') }}"
-                 class="enquiry-secondary">
-
-                <i class="fas fa-calendar-check"></i>
-
-                Request Viewing
-
-              </a>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             LOCATION
-        ================================================= -->
-
-        <section class="property-section-card">
-
-          <div class="section-heading">
-
-            <div class="section-heading-icon">
-
-              <i class="fas fa-location-dot"></i>
-
-            </div>
-
-            <div>
-
-              <h2>
-                Property Location
-              </h2>
-
-              <p>
-                {{ property.location }}
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="property-map">
-
-            <div class="map-inner">
-
-              <i class="fas fa-map-location-dot"></i>
-
-              <strong>
-                {{ property.location }}
-              </strong>
-
-              <span>
-                Qatar
-              </span>
-
-              <small>
-                Google Map integration coming soon
-              </small>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-      </main>
-
-
-
-      <!-- =====================================================
-           RIGHT SIDEBAR
-      ===================================================== -->
-
-      <aside class="property-sidebar">
-
-
-        <!-- STICKY PRICE CARD -->
-
-        <div class="sidebar-price-card">
-
-          <span>
-            ASKING PRICE
-          </span>
-
-          <div class="sidebar-price">
-
-            <small>QAR</small>
-
-            {{ "{:,.0f}".format(property.price or 0) }}
-
-          </div>
-
-
-          <div class="sidebar-location">
-
-            <i class="fas fa-location-dot"></i>
-
-            {{ property.location }}
-
-          </div>
-
-
-          <a href="{{ url_for('contact') }}"
-             class="sidebar-contact-btn">
-
-            <i class="fas fa-envelope"></i>
-
-            Enquire About Property
-
-          </a>
-
-
-          <a href="{{ url_for('contact') }}"
-             class="sidebar-viewing-btn">
-
-            <i class="fas fa-calendar"></i>
-
-            Schedule a Viewing
-
-          </a>
-
-        </div>
-
-
-
-        <!-- =================================================
-             RELATED PROPERTIES
-        ================================================= -->
-
-        {% if related_properties %}
-
-        <div class="related-properties-box">
-
-          <div class="related-heading">
-
-            <span>
-              EXPLORE MORE
-            </span>
-
-            <h2>
-              Related Properties
-            </h2>
-
-          </div>
-
-
-          <div class="related-properties-list">
-
-            {% for item in related_properties[:6] %}
-
-            <a href="{{ url_for('property_details', id=item.id) }}"
-               class="related-property-card">
-
-
-              <div class="related-property-image">
-
-                {% if item.main_image %}
-
-                  <img src="{{ item.main_image }}"
-                       alt="{{ item.title }}"
-                       loading="lazy">
-
-                {% else %}
-
-                  <img src="{{ url_for('static', filename='images/no-image.png') }}"
-                       alt="No image available"
-                       loading="lazy">
-
-                {% endif %}
-
-
-                <span class="related-purpose">
-
-                  {{ item.purpose }}
-
-                </span>
-
-              </div>
-
-
-              <div class="related-property-content">
-
-
-                <div class="related-property-price">
-
-                  QAR {{ "{:,.0f}".format(item.price or 0) }}
+                    </div>
 
                 </div>
 
 
-                <h3>
-                  {{ item.title }}
-                </h3>
+
+                <!-- =================================================
+                     PROPERTY INFORMATION
+                ================================================= -->
+
+                <section class="property-section-card">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon">
+                            <i class="fas fa-circle-info"></i>
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Property Information
+                            </h2>
+
+                            <p>
+                                Key details about this property
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
-                <p>
-
-                  <i class="fas fa-location-dot"></i>
-
-                  {{ item.location }}
-
-                </p>
+                    <div class="information-grid">
 
 
-                <div class="related-property-meta">
+                        <div class="information-item">
 
-                  <span>
+                            <span class="information-label">
+                                Property Type
+                            </span>
 
-                    <i class="fas fa-bed"></i>
+                            <strong>
+                                {{ property.property_type or "Not specified" }}
+                            </strong>
 
-                    {{ item.bedrooms }}
-
-                  </span>
-
-
-                  <span>
-
-                    <i class="fas fa-bath"></i>
-
-                    {{ item.bathrooms }}
-
-                  </span>
+                        </div>
 
 
-                  <span>
+                        <div class="information-item">
 
-                    <i class="fas fa-ruler-combined"></i>
+                            <span class="information-label">
+                                Purpose
+                            </span>
 
-                    {{ item.area }}m²
+                            <strong>
+                                {{ property.purpose or "Not specified" }}
+                            </strong>
 
-                  </span>
+                        </div>
+
+
+                        <div class="information-item">
+
+                            <span class="information-label">
+                                Location
+                            </span>
+
+                            <strong>
+                                {{ property.location or "Not specified" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="information-item">
+
+                            <span class="information-label">
+                                Furnishing
+                            </span>
+
+                            <strong>
+                                {{ property.furnished or "Not specified" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="information-item">
+
+                            <span class="information-label">
+                                Status
+                            </span>
+
+                            <strong class="status-value
+                                {% if property.status == 'Available' %}
+                                    available
+                                {% elif property.status == 'Sold' %}
+                                    sold
+                                {% elif property.status == 'Rented' %}
+                                    rented
+                                {% endif %}
+                            ">
+                                {{ property.status or "Available" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="information-item">
+
+                            <span class="information-label">
+                                Parking Spaces
+                            </span>
+
+                            <strong>
+                                {{ property.parking or 0 }}
+                            </strong>
+
+                        </div>
+
+
+                        {% if property.address %}
+
+                        <div class="information-item information-wide">
+
+                            <span class="information-label">
+                                Address
+                            </span>
+
+                            <strong>
+                                {{ property.address }}
+                            </strong>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     FEATURES
+                ================================================= -->
+
+                {% if features %}
+
+                <section class="property-section-card">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon gold">
+                            <i class="fas fa-star"></i>
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Property Amenities & Features
+                            </h2>
+
+                            <p>
+                                Features and facilities available
+                                with this property
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="amenities-grid">
+
+                        {% for feature in features %}
+
+                        <div class="amenity-card">
+
+                            <div class="amenity-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+
+                            <span>
+                                {{ feature.feature_name }}
+                            </span>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+                {% endif %}
+
+
+
+                <!-- =================================================
+                     DESCRIPTION
+                ================================================= -->
+
+                <section class="property-section-card">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon">
+                            <i class="fas fa-align-left"></i>
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Property Overview
+                            </h2>
+
+                            <p>
+                                Discover more about this property
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="property-description">
+
+                        {{ property.description or
+                           "No description has been provided for this property."
+                        }}
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     ENQUIRY CTA
+                ================================================= -->
+
+                <section class="property-enquiry-card">
+
+                    <div class="enquiry-decoration"></div>
+
+                    <div class="enquiry-content">
+
+                        <span class="enquiry-label">
+                            PRIVATE VIEWING
+                        </span>
+
+                        <h2>
+                            Interested in this property?
+                        </h2>
+
+                        <p>
+                            Speak with our property consultants to
+                            arrange a private viewing or receive
+                            more information about this property.
+                        </p>
+
+
+                        <div class="enquiry-actions">
+
+                            <a
+                                href="{{ url_for('contact') }}"
+                                class="enquiry-primary"
+                            >
+
+                                <i class="fas fa-paper-plane"></i>
+
+                                Contact Agent
+
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('contact') }}"
+                                class="enquiry-secondary"
+                            >
+
+                                <i class="fas fa-calendar-check"></i>
+
+                                Request Viewing
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     LOCATION
+                ================================================= -->
+
+                <section class="property-section-card">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Property Location
+                            </h2>
+
+                            <p>
+                                {{ property.location }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="property-map">
+
+                        <div class="map-inner">
+
+                            <i class="fas fa-map-location-dot"></i>
+
+                            <strong>
+                                {{ property.location }}
+                            </strong>
+
+                            {% if property.address %}
+
+                            <span>
+                                {{ property.address }}
+                            </span>
+
+                            {% else %}
+
+                            <span>
+                                Qatar
+                            </span>
+
+                            {% endif %}
+
+                            <small>
+                                Google Map integration coming soon
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            </main>
+
+
+
+            <!-- =================================================
+                 SIDEBAR
+            ================================================= -->
+
+            <aside class="property-sidebar">
+
+
+                <!-- PRICE CARD -->
+
+                <div class="sidebar-price-card">
+
+                    <span>
+                        {% if property.purpose == "Rent" %}
+                            RENTAL PRICE
+                        {% else %}
+                            ASKING PRICE
+                        {% endif %}
+                    </span>
+
+
+                    <div class="sidebar-price">
+
+                        <small>
+                            QAR
+                        </small>
+
+                        {{ "{:,.0f}".format(property.price or 0) }}
+
+                    </div>
+
+
+                    <div class="sidebar-location">
+
+                        <i class="fas fa-location-dot"></i>
+
+                        <span>
+                            {{ property.location }}
+
+                            {% if property.address %}
+                                <br>
+                                {{ property.address }}
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('contact') }}"
+                        class="sidebar-contact-btn"
+                    >
+
+                        <i class="fas fa-envelope"></i>
+
+                        Enquire About Property
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('contact') }}"
+                        class="sidebar-viewing-btn"
+                    >
+
+                        <i class="fas fa-calendar"></i>
+
+                        Schedule a Viewing
+
+                    </a>
 
                 </div>
 
-              </div>
 
-            </a>
 
-            {% endfor %}
+                <!-- RELATED PROPERTIES -->
 
-          </div>
+                {% if related_properties %}
+
+                <div class="related-properties-box">
+
+                    <div class="related-heading">
+
+                        <span>
+                            EXPLORE MORE
+                        </span>
+
+                        <h2>
+                            Related Properties
+                        </h2>
+
+                    </div>
+
+
+                    <div class="related-properties-list">
+
+                        {% for item in related_properties[:6] %}
+
+                        <a
+                            href="{{ url_for('property_details', id=item.id) }}"
+                            class="related-property-card"
+                        >
+
+
+                            <div class="related-property-image">
+
+                                {% if item.main_image %}
+
+                                <img
+                                    src="{{ item.main_image }}"
+                                    alt="{{ item.title }}"
+                                    loading="lazy"
+                                >
+
+                                {% else %}
+
+                                <img
+                                    src="{{ url_for('static', filename='images/no-image.png') }}"
+                                    alt="No image available"
+                                    loading="lazy"
+                                >
+
+                                {% endif %}
+
+
+                                <span class="related-purpose">
+                                    {{ item.purpose }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="related-property-content">
+
+                                <div class="related-property-price">
+
+                                    QAR
+                                    {{ "{:,.0f}".format(item.price or 0) }}
+
+                                </div>
+
+
+                                <h3>
+                                    {{ item.title }}
+                                </h3>
+
+
+                                <p>
+
+                                    <i class="fas fa-location-dot"></i>
+
+                                    {{ item.location }}
+
+                                </p>
+
+
+                                <div class="related-property-meta">
+
+                                    <span>
+                                        <i class="fas fa-bed"></i>
+                                        {{ item.bedrooms or 0 }}
+                                    </span>
+
+                                    <span>
+                                        <i class="fas fa-bath"></i>
+                                        {{ item.bathrooms or 0 }}
+                                    </span>
+
+                                    <span>
+                                        <i class="fas fa-ruler-combined"></i>
+                                        {{ item.area or 0 }}m²
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </aside>
 
         </div>
-
-        {% endif %}
-
-
-      </aside>
 
     </div>
-
-  </div>
 
 </section>
 
@@ -901,58 +960,63 @@
      LIGHTBOX
 ========================================================= -->
 
-<div id="imageLightbox"
-     class="lightbox-modal"
-     aria-hidden="true">
+<div
+    id="imageLightbox"
+    class="lightbox-modal"
+    aria-hidden="true"
+>
+
+    <button
+        type="button"
+        class="lightbox-close"
+        onclick="closeLightbox()"
+        aria-label="Close image viewer"
+    >
+        &times;
+    </button>
 
 
-  <button type="button"
-          class="lightbox-close"
-          onclick="closeLightbox()"
-          aria-label="Close image viewer">
-
-    &times;
-
-  </button>
-
-
-  <button type="button"
-          class="lightbox-nav lightbox-prev"
-          onclick="previousImage(event)"
-          aria-label="Previous image">
-
-    <i class="fas fa-chevron-left"></i>
-
-  </button>
+    <button
+        type="button"
+        class="lightbox-nav lightbox-prev"
+        onclick="previousImage(event)"
+        aria-label="Previous image"
+    >
+        <i class="fas fa-chevron-left"></i>
+    </button>
 
 
-  <div class="lightbox-image-area"
-       id="lightboxImageArea">
+    <div
+        class="lightbox-image-area"
+        id="lightboxImageArea"
+    >
 
-    <img class="lightbox-content"
-         id="lightboxImg"
-         draggable="false"
-         alt="{{ property.title }}">
+        <img
+            class="lightbox-content"
+            id="lightboxImg"
+            draggable="false"
+            alt="{{ property.title }}"
+        >
 
-  </div>
-
-
-  <button type="button"
-          class="lightbox-nav lightbox-next"
-          onclick="nextImage(event)"
-          aria-label="Next image">
-
-    <i class="fas fa-chevron-right"></i>
-
-  </button>
+    </div>
 
 
-  <div class="lightbox-counter"
-       id="lightboxCounter">
+    <button
+        type="button"
+        class="lightbox-nav lightbox-next"
+        onclick="nextImage(event)"
+        aria-label="Next image"
+    >
+        <i class="fas fa-chevron-right"></i>
+    </button>
 
-    1 / 1
 
-  </div>
+    <div
+        class="lightbox-counter"
+        id="lightboxCounter"
+    >
+        1 / 1
+    </div>
 
 </div>
 
@@ -964,25 +1028,21 @@
 
 <script>
 
-/* =========================================================
-   GALLERY DATA
-========================================================= */
-
 const galleryImageUrls = [
 
-  {% if gallery_images %}
+    {% if gallery_images %}
 
-    {% for img in gallery_images %}
+        {% for img in gallery_images %}
 
-      "{{ img.image_name }}"{% if not loop.last %},{% endif %}
+            {{ img.image_name|tojson }}{% if not loop.last %},{% endif %}
 
-    {% endfor %}
+        {% endfor %}
 
-  {% elif property.main_image %}
+    {% elif property.main_image %}
 
-    "{{ property.main_image }}"
+        {{ property.main_image|tojson }}
 
-  {% endif %}
+    {% endif %}
 
 ];
 
@@ -991,251 +1051,215 @@ let currentLightboxIndex = 0;
 
 
 
-/* =========================================================
-   OPEN LIGHTBOX
-========================================================= */
+function normalizeGalleryIndex(index) {
+
+    const total = galleryImageUrls.length;
+
+    if (!total) {
+        return 0;
+    }
+
+    return ((index % total) + total) % total;
+
+}
+
+
 
 function openLightbox(index) {
 
-  if (!galleryImageUrls.length) {
-    return;
-  }
+    if (!galleryImageUrls.length) {
+        return;
+    }
 
-  currentLightboxIndex =
-    normalizeGalleryIndex(index);
+    currentLightboxIndex =
+        normalizeGalleryIndex(index);
 
-  const modal =
-    document.getElementById("imageLightbox");
+    const modal =
+        document.getElementById("imageLightbox");
 
-  modal.style.display = "flex";
+    modal.style.display = "flex";
 
-  modal.setAttribute(
-    "aria-hidden",
-    "false"
-  );
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
 
-  document.body.classList.add(
-    "lightbox-open"
-  );
+    document.body.classList.add(
+        "lightbox-open"
+    );
 
-  updateLightboxImage();
+    updateLightboxImage();
 
 }
 
 
-
-/* =========================================================
-   UPDATE IMAGE
-========================================================= */
 
 function updateLightboxImage() {
 
-  const image =
-    document.getElementById("lightboxImg");
+    if (!galleryImageUrls.length) {
+        return;
+    }
 
-  const counter =
-    document.getElementById("lightboxCounter");
+    const image =
+        document.getElementById("lightboxImg");
 
-  if (!galleryImageUrls.length) {
-    return;
-  }
-
-  image.src =
-    galleryImageUrls[currentLightboxIndex];
-
-  counter.textContent =
-    (currentLightboxIndex + 1) +
-    " / " +
-    galleryImageUrls.length;
-
-}
+    const counter =
+        document.getElementById("lightboxCounter");
 
 
+    image.src =
+        galleryImageUrls[currentLightboxIndex];
 
-/* =========================================================
-   NORMALIZE
-========================================================= */
 
-function normalizeGalleryIndex(index) {
-
-  const total =
-    galleryImageUrls.length;
-
-  if (!total) {
-    return 0;
-  }
-
-  return ((index % total) + total) % total;
+    counter.textContent =
+        (currentLightboxIndex + 1)
+        + " / "
+        + galleryImageUrls.length;
 
 }
 
 
-
-/* =========================================================
-   NEXT
-========================================================= */
 
 function nextImage(event) {
 
-  if (event) {
-    event.stopPropagation();
-  }
+    if (event) {
+        event.stopPropagation();
+    }
 
-  if (!galleryImageUrls.length) {
-    return;
-  }
+    if (!galleryImageUrls.length) {
+        return;
+    }
 
-  currentLightboxIndex =
-    normalizeGalleryIndex(
-      currentLightboxIndex + 1
-    );
+    currentLightboxIndex =
+        normalizeGalleryIndex(
+            currentLightboxIndex + 1
+        );
 
-  updateLightboxImage();
+    updateLightboxImage();
 
 }
 
 
-
-/* =========================================================
-   PREVIOUS
-========================================================= */
 
 function previousImage(event) {
 
-  if (event) {
-    event.stopPropagation();
-  }
+    if (event) {
+        event.stopPropagation();
+    }
 
-  if (!galleryImageUrls.length) {
-    return;
-  }
+    if (!galleryImageUrls.length) {
+        return;
+    }
 
-  currentLightboxIndex =
-    normalizeGalleryIndex(
-      currentLightboxIndex - 1
-    );
+    currentLightboxIndex =
+        normalizeGalleryIndex(
+            currentLightboxIndex - 1
+        );
 
-  updateLightboxImage();
+    updateLightboxImage();
 
 }
 
 
-
-/* =========================================================
-   CLOSE
-========================================================= */
 
 function closeLightbox() {
 
-  const modal =
-    document.getElementById(
-      "imageLightbox"
+    const modal =
+        document.getElementById("imageLightbox");
+
+    if (!modal) {
+        return;
+    }
+
+    modal.style.display = "none";
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
     );
 
-  if (!modal) {
-    return;
-  }
-
-  modal.style.display = "none";
-
-  modal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  document.body.classList.remove(
-    "lightbox-open"
-  );
+    document.body.classList.remove(
+        "lightbox-open"
+    );
 
 }
 
 
 
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
 document.addEventListener(
-  "keydown",
-  function(event) {
+    "keydown",
+    function(event) {
 
-    const modal =
-      document.getElementById(
-        "imageLightbox"
-      );
-
-    if (
-      !modal ||
-      modal.style.display !== "flex"
-    ) {
-      return;
-    }
+        const modal =
+            document.getElementById("imageLightbox");
 
 
-    if (event.key === "ArrowRight") {
-
-      event.preventDefault();
-
-      nextImage();
-
-    }
-
-
-    else if (
-      event.key === "ArrowLeft"
-    ) {
-
-      event.preventDefault();
-
-      previousImage();
-
-    }
+        if (
+            !modal ||
+            modal.style.display !== "flex"
+        ) {
+            return;
+        }
 
 
-    else if (
-      event.key === "Escape"
-    ) {
+        if (event.key === "ArrowRight") {
 
-      event.preventDefault();
+            event.preventDefault();
 
-      closeLightbox();
+            nextImage();
+
+        }
+
+
+        else if (event.key === "ArrowLeft") {
+
+            event.preventDefault();
+
+            previousImage();
+
+        }
+
+
+        else if (event.key === "Escape") {
+
+            event.preventDefault();
+
+            closeLightbox();
+
+        }
 
     }
-
-  }
 );
 
 
 
-/* =========================================================
-   BACKGROUND CLICK
-========================================================= */
-
-document
-  .getElementById("imageLightbox")
-  .addEventListener(
-    "click",
-    function(event) {
-
-      if (
-        event.target === this ||
-        event.target.classList.contains(
-          "lightbox-image-area"
-        )
-      ) {
-
-        closeLightbox();
-
-      }
-
-    }
-  );
+const lightbox =
+    document.getElementById("imageLightbox");
 
 
+if (lightbox) {
 
-/* =========================================================
-   MOBILE SWIPE
-========================================================= */
+    lightbox.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this ||
+                event.target.classList.contains(
+                    "lightbox-image-area"
+                )
+            ) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+}
+
+
 
 let touchStartX = 0;
 let touchStartY = 0;
@@ -1244,85 +1268,89 @@ let touchEndY = 0;
 
 
 const lightboxImageArea =
-  document.getElementById(
-    "lightboxImageArea"
-  );
+    document.getElementById(
+        "lightboxImageArea"
+    );
 
 
-lightboxImageArea.addEventListener(
-  "touchstart",
-  function(event) {
+if (lightboxImageArea) {
 
-    if (!event.touches.length) {
-      return;
-    }
+    lightboxImageArea.addEventListener(
+        "touchstart",
+        function(event) {
 
-    touchStartX =
-      event.touches[0].clientX;
+            if (!event.touches.length) {
+                return;
+            }
 
-    touchStartY =
-      event.touches[0].clientY;
+            touchStartX =
+                event.touches[0].clientX;
 
-  },
-  { passive: true }
-);
+            touchStartY =
+                event.touches[0].clientY;
+
+        },
+        { passive: true }
+    );
 
 
-lightboxImageArea.addEventListener(
-  "touchend",
-  function(event) {
+    lightboxImageArea.addEventListener(
+        "touchend",
+        function(event) {
 
-    if (!event.changedTouches.length) {
-      return;
-    }
+            if (!event.changedTouches.length) {
+                return;
+            }
 
-    touchEndX =
-      event.changedTouches[0].clientX;
+            touchEndX =
+                event.changedTouches[0].clientX;
 
-    touchEndY =
-      event.changedTouches[0].clientY;
+            touchEndY =
+                event.changedTouches[0].clientY;
 
-    handleSwipe();
+            handleSwipe();
 
-  },
-  { passive: true }
-);
+        },
+        { passive: true }
+    );
+
+}
 
 
 
 function handleSwipe() {
 
-  const distanceX =
-    touchEndX - touchStartX;
+    const distanceX =
+        touchEndX - touchStartX;
 
-  const distanceY =
-    touchEndY - touchStartY;
-
-
-  if (
-    Math.abs(distanceX) <
-    Math.abs(distanceY)
-  ) {
-    return;
-  }
+    const distanceY =
+        touchEndY - touchStartY;
 
 
-  if (
-    Math.abs(distanceX) < 50
-  ) {
-    return;
-  }
+    if (
+        Math.abs(distanceX) <
+        Math.abs(distanceY)
+    ) {
+        return;
+    }
 
 
-  if (distanceX < 0) {
+    if (
+        Math.abs(distanceX) < 50
+    ) {
+        return;
+    }
 
-    nextImage();
 
-  } else {
+    if (distanceX < 0) {
 
-    previousImage();
+        nextImage();
 
-  }
+    } else {
+
+        previousImage();
+
+    }
 
 }
 
@@ -1333,26 +1361,18 @@ function handleSwipe() {
 <style>
 
 /* =========================================================
-   ROOT
+   BASE
 ========================================================= */
 
 .property-gallery-section,
 .property-content-section {
-
-  width: 100%;
-
+    width: 100%;
 }
 
-
 .property-container {
-
-  max-width: 1380px;
-
-  margin: 0 auto;
-
-  padding:
-    0 20px;
-
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 
@@ -1361,242 +1381,140 @@ function handleSwipe() {
 ========================================================= */
 
 .property-gallery-section {
-
-  background: #ffffff;
-
+    background: #ffffff;
 }
-
 
 .property-gallery {
-
-  width: 100vw;
-
-  margin-left: calc(50% - 50vw);
-
-  display: grid;
-
-  grid-template-columns:
-    2fr 1fr;
-
-  gap: 5px;
-
-  height: 590px;
-
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 5px;
+    height: 590px;
 }
-
 
 .gallery-main {
-
-  position: relative;
-
-  overflow: hidden;
-
-  cursor: pointer;
-
-  background: #111827;
-
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: #111827;
 }
-
 
 .gallery-main img {
-
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-
-  transition:
-    transform .6s ease;
-
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
 }
-
 
 .gallery-main:hover img {
-
-  transform: scale(1.025);
-
+    transform: scale(1.025);
 }
-
 
 .gallery-gradient {
-
-  position: absolute;
-
-  inset: 0;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.18),
-      transparent 35%,
-      rgba(0,0,0,.4)
-    );
-
-  pointer-events: none;
-
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.18),
+            transparent 35%,
+            rgba(0,0,0,.4)
+        );
+    pointer-events: none;
 }
-
 
 .gallery-status {
-
-  position: absolute;
-
-  top: 24px;
-
-  left: 28px;
-
+    position: absolute;
+    top: 24px;
+    left: 28px;
 }
-
 
 .gallery-status span {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  padding: 8px 14px;
-
-  border-radius: 30px;
-
-  background: #8A1538;
-
-  color: #ffffff;
-
-  font-size: 11px;
-
-  font-weight: 800;
-
-  letter-spacing: 1.2px;
-
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: #8A1538;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
 }
-
 
 .gallery-status span.rent {
-
-  background: #D4AF37;
-
-  color: #111827;
-
+    background: #D4AF37;
+    color: #111827;
 }
-
 
 .gallery-expand {
-
-  position: absolute;
-
-  right: 24px;
-
-  bottom: 24px;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  padding: 10px 16px;
-
-  background:
-    rgba(15,23,42,.82);
-
-  color: #ffffff;
-
-  border:
-    1px solid rgba(255,255,255,.2);
-
-  border-radius: 30px;
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  backdrop-filter: blur(8px);
-
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(15,23,42,.82);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
 }
-
 
 .gallery-side {
-
-  display: grid;
-
-  grid-template-rows: 1fr 1fr;
-
-  gap: 5px;
-
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 5px;
 }
-
 
 .gallery-side-image {
-
-  position: relative;
-
-  overflow: hidden;
-
-  background: #111827;
-
-  cursor: pointer;
-
+    position: relative;
+    overflow: hidden;
+    background: #111827;
+    cursor: pointer;
 }
 
+.empty-gallery {
+    background:
+        linear-gradient(
+            135deg,
+            #1f2937,
+            #111827
+        );
+}
 
 .gallery-side-image img {
-
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-
-  transition:
-    transform .6s ease;
-
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
 }
-
 
 .gallery-side-image:hover img {
-
-  transform: scale(1.04);
-
+    transform: scale(1.04);
 }
-
 
 .more-photos-overlay {
-
-  position: absolute;
-
-  inset: 0;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  flex-direction: column;
-
-  gap: 7px;
-
-  background:
-    rgba(15,23,42,.55);
-
-  color: #ffffff;
-
-  font-size: 14px;
-
-  font-weight: 800;
-
-  backdrop-filter: blur(2px);
-
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 7px;
+    background: rgba(15,23,42,.55);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 800;
+    backdrop-filter: blur(2px);
 }
 
-
 .more-photos-overlay i {
-
-  font-size: 22px;
-
-  color: #D4AF37;
-
+    font-size: 22px;
+    color: #D4AF37;
 }
 
 
@@ -1605,62 +1523,35 @@ function handleSwipe() {
 ========================================================= */
 
 .property-thumbnails {
-
-  display: flex;
-
-  gap: 10px;
-
-  overflow-x: auto;
-
-  padding:
-    12px 20px;
-
-  background: #0f172a;
-
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 12px 20px;
+    background: #0f172a;
 }
-
 
 .property-thumbnail {
-
-  flex:
-    0 0 125px;
-
-  height: 78px;
-
-  overflow: hidden;
-
-  border-radius: 7px;
-
-  cursor: pointer;
-
-  opacity: .85;
-
-  transition:
-    opacity .2s ease,
-    transform .2s ease;
-
+    flex: 0 0 125px;
+    height: 78px;
+    overflow: hidden;
+    border-radius: 7px;
+    cursor: pointer;
+    opacity: .85;
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
 }
-
 
 .property-thumbnail:hover {
-
-  opacity: 1;
-
-  transform: translateY(-2px);
-
+    opacity: 1;
+    transform: translateY(-2px);
 }
-
 
 .property-thumbnail img {
-
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-
 
 
 /* =========================================================
@@ -1668,156 +1559,96 @@ function handleSwipe() {
 ========================================================= */
 
 .property-content-section {
-
-  background: #f7f8fa;
-
-  padding:
-    42px 0 80px;
-
+    background: #f7f8fa;
+    padding: 42px 0 80px;
 }
 
-
 .property-main-layout {
-
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 1fr) 370px;
-
-  gap: 32px;
-
-  align-items: start;
-
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr) 370px;
+    gap: 32px;
+    align-items: start;
 }
 
 
 /* =========================================================
-   HEADER CARD
+   HEADER
 ========================================================= */
 
 .property-heading-card {
-
-  background: #ffffff;
-
-  border:
-    1px solid #e5e7eb;
-
-  border-radius: 16px;
-
-  padding: 28px;
-
-  margin-bottom: 22px;
-
-  box-shadow:
-    0 5px 25px
-    rgba(15,23,42,.045);
-
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 22px;
+    box-shadow:
+        0 5px 25px
+        rgba(15,23,42,.045);
 }
-
 
 .property-heading-top {
-
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: flex-start;
-
-  gap: 30px;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
 }
 
+.property-heading-info {
+    min-width: 0;
+}
 
 .property-reference {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  margin-bottom: 9px;
-
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
 }
-
 
 .property-reference span {
-
-  font-size: 9px;
-
-  font-weight: 800;
-
-  letter-spacing: 1.5px;
-
-  color: #94a3b8;
-
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
 }
-
 
 .property-reference strong {
-
-  font-size: 10px;
-
-  color: #8A1538;
-
-  letter-spacing: .8px;
-
+    font-size: 10px;
+    color: #8A1538;
+    letter-spacing: .8px;
 }
-
 
 .property-main-title {
-
-  margin: 0;
-
-  color: #172033;
-
-  font-family:
-    var(
-      --font-serif,
-      "Playfair Display",
-      serif
-    );
-
-  font-size:
-    clamp(25px, 3vw, 38px);
-
-  line-height: 1.15;
-
-  font-weight: 800;
-
+    margin: 0;
+    color: #172033;
+    font-family:
+        var(
+            --font-serif,
+            "Playfair Display",
+            serif
+        );
+    font-size:
+        clamp(25px, 3vw, 38px);
+    line-height: 1.15;
+    font-weight: 800;
 }
-
 
 .property-location {
-
-  display: flex;
-
-  flex-wrap: wrap;
-
-  align-items: center;
-
-  gap: 7px;
-
-  margin-top: 12px;
-
-  color: #64748b;
-
-  font-size: 13px;
-
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    color: #64748b;
+    font-size: 13px;
 }
-
 
 .property-location i {
-
-  color: #8A1538;
-
+    color: #8A1538;
 }
 
-
 .location-separator {
-
-  color: #cbd5e1;
-
+    color: #cbd5e1;
 }
 
 
@@ -1826,89 +1657,51 @@ function handleSwipe() {
 ========================================================= */
 
 .property-price-block {
-
-  flex:
-    0 0 auto;
-
-  text-align: right;
-
-  padding-left: 20px;
-
+    flex: 0 0 auto;
+    text-align: right;
+    padding-left: 20px;
 }
-
 
 .price-label {
-
-  display: block;
-
-  color: #94a3b8;
-
-  font-size: 9px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.5px;
-
-  margin-bottom: 5px;
-
+    display: block;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
 }
-
 
 .property-price {
-
-  color: #8A1538;
-
-  font-family:
-    "Inter",
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  font-size:
-    clamp(25px, 3vw, 36px);
-
-  font-weight: 850;
-
-  letter-spacing: -.7px;
-
-  line-height: 1.05;
-
-  white-space: nowrap;
-
+    color: #8A1538;
+    font-family:
+        "Inter",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    font-size:
+        clamp(25px, 3vw, 36px);
+    font-weight: 850;
+    letter-spacing: -.7px;
+    line-height: 1.05;
+    white-space: nowrap;
 }
-
 
 .property-price .currency {
-
-  font-size: 13px;
-
-  font-weight: 800;
-
-  letter-spacing: .5px;
-
-  vertical-align: middle;
-
-  margin-right: 4px;
-
-  color: #6b102b;
-
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    vertical-align: middle;
+    margin-right: 4px;
+    color: #6b102b;
 }
-
 
 .price-period {
-
-  display: block;
-
-  margin-top: 7px;
-
-  color: #94a3b8;
-
-  font-size: 11px;
-
-  font-weight: 600;
-
+    display: block;
+    margin-top: 7px;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
 }
-
 
 
 /* =========================================================
@@ -1916,106 +1709,57 @@ function handleSwipe() {
 ========================================================= */
 
 .quick-property-summary {
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  border-top:
-    1px solid #eef0f3;
-
-  margin-top: 25px;
-
-  padding-top: 22px;
-
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid #eef0f3;
+    margin-top: 25px;
+    padding-top: 22px;
 }
-
 
 .summary-item {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  padding:
-    0 18px;
-
-  border-right:
-    1px solid #edf0f3;
-
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 18px;
+    border-right: 1px solid #edf0f3;
 }
-
 
 .summary-item:first-child {
-
-  padding-left: 0;
-
+    padding-left: 0;
 }
-
 
 .summary-item:last-child {
-
-  border-right: none;
-
+    border-right: none;
 }
-
 
 .summary-icon {
-
-  width: 39px;
-
-  height: 39px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 10px;
-
-  background:
-    rgba(138,21,56,.07);
-
-  color: #8A1538;
-
+    width: 39px;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(138,21,56,.07);
+    color: #8A1538;
+    flex: 0 0 39px;
 }
-
 
 .summary-item strong {
-
-  display: block;
-
-  color: #1f2937;
-
-  font-size: 16px;
-
-  font-weight: 800;
-
+    display: block;
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: 800;
 }
-
 
 .summary-item span {
-
-  display: block;
-
-  color: #94a3b8;
-
-  font-size: 9px;
-
-  text-transform: uppercase;
-
-  letter-spacing: .6px;
-
-  margin-top: 2px;
-
-  font-weight: 700;
-
+    display: block;
+    color: #94a3b8;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-top: 2px;
+    font-weight: 700;
 }
-
 
 
 /* =========================================================
@@ -2023,167 +1767,110 @@ function handleSwipe() {
 ========================================================= */
 
 .property-section-card {
-
-  background: #ffffff;
-
-  border:
-    1px solid #e5e7eb;
-
-  border-radius: 15px;
-
-  padding: 27px;
-
-  margin-bottom: 20px;
-
-  box-shadow:
-    0 4px 20px
-    rgba(15,23,42,.035);
-
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    padding: 27px;
+    margin-bottom: 20px;
+    box-shadow:
+        0 4px 20px
+        rgba(15,23,42,.035);
 }
-
 
 .section-heading {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 13px;
-
-  margin-bottom: 23px;
-
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 23px;
 }
-
 
 .section-heading-icon {
-
-  width: 42px;
-
-  height: 42px;
-
-  flex: 0 0 42px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 11px;
-
-  color: #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #8A1538,
-      #65102a
-    );
-
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #8A1538,
+            #65102a
+        );
 }
-
 
 .section-heading-icon.gold {
-
-  background:
-    linear-gradient(
-      135deg,
-      #D4AF37,
-      #a98319
-    );
-
+    background:
+        linear-gradient(
+            135deg,
+            #D4AF37,
+            #a98319
+        );
 }
-
 
 .section-heading h2 {
-
-  margin: 0;
-
-  color: #172033;
-
-  font-size: 21px;
-
-  font-weight: 800;
-
+    margin: 0;
+    color: #172033;
+    font-size: 21px;
+    font-weight: 800;
 }
-
 
 .section-heading p {
-
-  margin: 3px 0 0;
-
-  color: #94a3b8;
-
-  font-size: 11px;
-
+    margin: 3px 0 0;
+    color: #94a3b8;
+    font-size: 11px;
 }
-
 
 
 /* =========================================================
-   PROPERTY INFORMATION
+   INFORMATION
 ========================================================= */
 
 .information-grid {
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, 1fr);
-
-  gap: 10px;
-
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 }
-
 
 .information-item {
-
-  padding:
-    14px 15px;
-
-  background: #f8fafc;
-
-  border:
-    1px solid #edf0f3;
-
-  border-radius: 9px;
-
+    padding: 14px 15px;
+    background: #f8fafc;
+    border: 1px solid #edf0f3;
+    border-radius: 9px;
 }
 
+.information-wide {
+    grid-column: 1 / -1;
+}
 
 .information-label {
-
-  display: block;
-
-  color: #94a3b8;
-
-  font-size: 10px;
-
-  text-transform: uppercase;
-
-  font-weight: 800;
-
-  letter-spacing: .5px;
-
-  margin-bottom: 5px;
-
+    display: block;
+    color: #94a3b8;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: .5px;
+    margin-bottom: 5px;
 }
-
 
 .information-item strong {
-
-  display: block;
-
-  color: #263247;
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-  word-break: break-word;
-
+    display: block;
+    color: #263247;
+    font-size: 14px;
+    font-weight: 700;
+    word-break: break-word;
 }
 
+.status-value.available {
+    color: #15803d;
+}
+
+.status-value.sold,
+.status-value.rented {
+    color: #b91c1c;
+}
 
 
 /* =========================================================
@@ -2191,90 +1878,51 @@ function handleSwipe() {
 ========================================================= */
 
 .amenities-grid {
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 10px;
-
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }
-
 
 .amenity-card {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  min-height: 54px;
-
-  padding:
-    9px 11px;
-
-  background: #f8fafc;
-
-  border:
-    1px solid #e8edf2;
-
-  border-radius: 9px;
-
-  color: #263247;
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  transition:
-    border-color .2s ease,
-    transform .2s ease,
-    box-shadow .2s ease;
-
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 54px;
+    padding: 9px 11px;
+    background: #f8fafc;
+    border: 1px solid #e8edf2;
+    border-radius: 9px;
+    color: #263247;
+    font-size: 12px;
+    font-weight: 700;
+    transition:
+        border-color .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
 }
-
 
 .amenity-card:hover {
-
-  border-color:
-    rgba(212,175,55,.5);
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 5px 14px
-    rgba(15,23,42,.06);
-
+    border-color:
+        rgba(212,175,55,.5);
+    transform: translateY(-2px);
+    box-shadow:
+        0 5px 14px
+        rgba(15,23,42,.06);
 }
-
 
 .amenity-icon {
-
-  width: 28px;
-
-  height: 28px;
-
-  flex: 0 0 28px;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  border-radius: 50%;
-
-  background:
-    rgba(212,175,55,.13);
-
-  color: #a17b18;
-
-  font-size: 10px;
-
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background:
+        rgba(212,175,55,.13);
+    color: #a17b18;
+    font-size: 10px;
 }
-
 
 
 /* =========================================================
@@ -2282,17 +1930,11 @@ function handleSwipe() {
 ========================================================= */
 
 .property-description {
-
-  color: #4b5563;
-
-  font-size: 15px;
-
-  line-height: 1.85;
-
-  white-space: pre-line;
-
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.85;
+    white-space: pre-line;
 }
-
 
 
 /* =========================================================
@@ -2300,172 +1942,100 @@ function handleSwipe() {
 ========================================================= */
 
 .property-enquiry-card {
-
-  position: relative;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #172033 0%,
-      #25324a 100%
-    );
-
-  border-radius: 16px;
-
-  padding: 32px;
-
-  margin-bottom: 20px;
-
-  color: #ffffff;
-
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #172033 0%,
+            #25324a 100%
+        );
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 20px;
+    color: #ffffff;
 }
-
 
 .enquiry-decoration {
-
-  position: absolute;
-
-  width: 240px;
-
-  height: 240px;
-
-  right: -80px;
-
-  top: -100px;
-
-  border-radius: 50%;
-
-  border:
-    35px solid rgba(212,175,55,.08);
-
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    right: -80px;
+    top: -100px;
+    border-radius: 50%;
+    border:
+        35px solid rgba(212,175,55,.08);
 }
-
 
 .enquiry-content {
-
-  position: relative;
-
-  z-index: 2;
-
-  max-width: 620px;
-
+    position: relative;
+    z-index: 2;
+    max-width: 620px;
 }
-
 
 .enquiry-label {
-
-  display: inline-block;
-
-  color: #D4AF37;
-
-  font-size: 9px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.5px;
-
-  margin-bottom: 8px;
-
+    display: inline-block;
+    color: #D4AF37;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
 }
-
 
 .property-enquiry-card h2 {
-
-  margin: 0 0 8px;
-
-  font-family:
-    var(
-      --font-serif,
-      "Playfair Display",
-      serif
-    );
-
-  font-size: 27px;
-
+    margin: 0 0 8px;
+    font-family:
+        var(
+            --font-serif,
+            "Playfair Display",
+            serif
+        );
+    font-size: 27px;
 }
-
 
 .property-enquiry-card p {
-
-  color: #cbd5e1;
-
-  font-size: 13px;
-
-  line-height: 1.65;
-
-  max-width: 550px;
-
-  margin-bottom: 22px;
-
+    color: #cbd5e1;
+    font-size: 13px;
+    line-height: 1.65;
+    max-width: 550px;
+    margin-bottom: 22px;
 }
-
 
 .enquiry-actions {
-
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 10px;
-
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
-
 
 .enquiry-primary,
 .enquiry-secondary {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  padding:
-    11px 18px;
-
-  border-radius: 8px;
-
-  font-size: 12px;
-
-  font-weight: 800;
-
-  text-decoration: none !important;
-
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: none !important;
 }
-
 
 .enquiry-primary {
-
-  background: #8A1538;
-
-  color: #ffffff !important;
-
+    background: #8A1538;
+    color: #ffffff !important;
 }
-
 
 .enquiry-primary:hover {
-
-  background: #a71d49;
-
+    background: #a71d49;
 }
-
 
 .enquiry-secondary {
-
-  background:
-    rgba(255,255,255,.08);
-
-  border:
-    1px solid rgba(255,255,255,.15);
-
-  color: #ffffff !important;
-
+    background:
+        rgba(255,255,255,.08);
+    border:
+        1px solid rgba(255,255,255,.15);
+    color: #ffffff !important;
 }
-
 
 
 /* =========================================================
@@ -2473,498 +2043,289 @@ function handleSwipe() {
 ========================================================= */
 
 .property-map {
-
-  min-height: 230px;
-
-  border-radius: 12px;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #e9eef3,
-      #dbe3ea
-    );
-
+    min-height: 230px;
+    border-radius: 12px;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #e9eef3,
+            #dbe3ea
+        );
 }
-
 
 .map-inner {
-
-  min-height: 230px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  flex-direction: column;
-
-  gap: 6px;
-
-  text-align: center;
-
-  color: #475569;
-
+    min-height: 230px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+    color: #475569;
+    padding: 20px;
+    box-sizing: border-box;
 }
-
 
 .map-inner i {
-
-  font-size: 36px;
-
-  color: #8A1538;
-
-  margin-bottom: 5px;
-
+    font-size: 36px;
+    color: #8A1538;
+    margin-bottom: 5px;
 }
-
 
 .map-inner strong {
-
-  color: #1f2937;
-
-  font-size: 17px;
-
+    color: #1f2937;
+    font-size: 17px;
 }
-
 
 .map-inner span {
-
-  color: #64748b;
-
-  font-size: 12px;
-
+    color: #64748b;
+    font-size: 12px;
 }
-
 
 .map-inner small {
-
-  color: #94a3b8;
-
-  margin-top: 12px;
-
+    color: #94a3b8;
+    margin-top: 12px;
 }
-
 
 
 /* =========================================================
-   SIDEBAR PRICE
+   SIDEBAR
 ========================================================= */
 
 .property-sidebar {
-
-  position: sticky;
-
-  top: 25px;
-
+    position: sticky;
+    top: 25px;
 }
-
 
 .sidebar-price-card {
-
-  background: #ffffff;
-
-  border:
-    1px solid #e5e7eb;
-
-  border-radius: 15px;
-
-  padding: 24px;
-
-  margin-bottom: 20px;
-
-  box-shadow:
-    0 7px 25px
-    rgba(15,23,42,.07);
-
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow:
+        0 7px 25px
+        rgba(15,23,42,.07);
 }
-
 
 .sidebar-price-card > span {
-
-  color: #94a3b8;
-
-  font-size: 9px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.5px;
-
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
 }
-
 
 .sidebar-price {
-
-  color: #8A1538;
-
-  font-family:
-    "Inter",
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  font-size: 29px;
-
-  font-weight: 850;
-
-  letter-spacing: -.6px;
-
-  margin:
-    6px 0 13px;
-
+    color: #8A1538;
+    font-family:
+        "Inter",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    font-size: 29px;
+    font-weight: 850;
+    letter-spacing: -.6px;
+    margin: 6px 0 13px;
 }
-
 
 .sidebar-price small {
-
-  font-size: 11px;
-
-  color: #6b102b;
-
-  margin-right: 3px;
-
+    font-size: 11px;
+    color: #6b102b;
+    margin-right: 3px;
 }
-
 
 .sidebar-location {
-
-  display: flex;
-
-  gap: 7px;
-
-  align-items: flex-start;
-
-  color: #64748b;
-
-  font-size: 11px;
-
-  padding-bottom: 18px;
-
-  border-bottom:
-    1px solid #edf0f3;
-
+    display: flex;
+    gap: 7px;
+    align-items: flex-start;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.55;
+    padding-bottom: 18px;
+    border-bottom:
+        1px solid #edf0f3;
 }
-
 
 .sidebar-location i {
-
-  color: #8A1538;
-
-  margin-top: 2px;
-
+    color: #8A1538;
+    margin-top: 2px;
 }
-
 
 .sidebar-contact-btn,
 .sidebar-viewing-btn {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  width: 100%;
-
-  box-sizing: border-box;
-
-  padding: 12px;
-
-  border-radius: 8px;
-
-  margin-top: 12px;
-
-  font-size: 12px;
-
-  font-weight: 800;
-
-  text-decoration: none !important;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: none !important;
 }
-
 
 .sidebar-contact-btn {
-
-  background:
-    linear-gradient(
-      135deg,
-      #8A1538,
-      #6b102b
-    );
-
-  color: #ffffff !important;
-
+    background:
+        linear-gradient(
+            135deg,
+            #8A1538,
+            #6b102b
+        );
+    color: #ffffff !important;
 }
-
 
 .sidebar-viewing-btn {
-
-  color: #8A1538 !important;
-
-  background:
-    rgba(138,21,56,.06);
-
-  border:
-    1px solid rgba(138,21,56,.14);
-
+    color: #8A1538 !important;
+    background:
+        rgba(138,21,56,.06);
+    border:
+        1px solid rgba(138,21,56,.14);
 }
-
 
 
 /* =========================================================
-   RELATED
+   RELATED PROPERTIES
 ========================================================= */
 
 .related-properties-box {
-
-  background: #ffffff;
-
-  border:
-    1px solid #e5e7eb;
-
-  border-radius: 15px;
-
-  padding: 22px;
-
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    padding: 22px;
 }
-
 
 .related-heading {
-
-  margin-bottom: 17px;
-
+    margin-bottom: 17px;
 }
-
 
 .related-heading > span {
-
-  color: #D4AF37;
-
-  font-size: 9px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.4px;
-
+    color: #D4AF37;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.4px;
 }
-
 
 .related-heading h2 {
-
-  margin: 3px 0 0;
-
-  color: #172033;
-
-  font-family:
-    var(
-      --font-serif,
-      "Playfair Display",
-      serif
-    );
-
-  font-size: 23px;
-
+    margin: 3px 0 0;
+    color: #172033;
+    font-family:
+        var(
+            --font-serif,
+            "Playfair Display",
+            serif
+        );
+    font-size: 23px;
 }
-
 
 .related-properties-list {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 12px;
-
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
-
 
 .related-property-card {
-
-  display: grid;
-
-  grid-template-columns: 105px 1fr;
-
-  min-height: 105px;
-
-  background: #ffffff;
-
-  border:
-    1px solid #edf0f3;
-
-  border-radius: 10px;
-
-  overflow: hidden;
-
-  text-decoration: none !important;
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-
+    display: grid;
+    grid-template-columns: 105px 1fr;
+    min-height: 105px;
+    background: #ffffff;
+    border: 1px solid #edf0f3;
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none !important;
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
 }
-
 
 .related-property-card:hover {
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 7px 18px
-    rgba(15,23,42,.08);
-
+    transform: translateY(-2px);
+    box-shadow:
+        0 7px 18px
+        rgba(15,23,42,.08);
 }
-
 
 .related-property-image {
-
-  position: relative;
-
-  overflow: hidden;
-
-  background: #e5e7eb;
-
+    position: relative;
+    overflow: hidden;
+    background: #e5e7eb;
 }
-
 
 .related-property-image img {
-
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-
 
 .related-purpose {
-
-  position: absolute;
-
-  left: 6px;
-
-  top: 6px;
-
-  padding: 3px 6px;
-
-  background: #8A1538;
-
-  color: #ffffff;
-
-  border-radius: 4px;
-
-  font-size: 7px;
-
-  font-weight: 900;
-
-  text-transform: uppercase;
-
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    padding: 3px 6px;
+    background: #8A1538;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 7px;
+    font-weight: 900;
+    text-transform: uppercase;
 }
-
 
 .related-property-content {
-
-  padding: 10px;
-
-  min-width: 0;
-
+    padding: 10px;
+    min-width: 0;
 }
-
 
 .related-property-price {
-
-  color: #8A1538;
-
-  font-size: 12px;
-
-  font-weight: 900;
-
-  margin-bottom: 3px;
-
+    color: #8A1538;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 3px;
 }
-
 
 .related-property-content h3 {
-
-  color: #263247;
-
-  font-size: 12px;
-
-  font-weight: 800;
-
-  margin: 0 0 4px;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
+    color: #263247;
+    font-size: 12px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 
 .related-property-content p {
-
-  margin: 0;
-
-  color: #94a3b8;
-
-  font-size: 9px;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
+    margin: 0;
+    color: #94a3b8;
+    font-size: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 
 .related-property-content p i {
-
-  color: #8A1538;
-
+    color: #8A1538;
 }
-
 
 .related-property-meta {
-
-  display: flex;
-
-  gap: 12px;
-
-  border-top:
-    1px solid #f0f2f4;
-
-  margin-top: 8px;
-
-  padding-top: 7px;
-
+    display: flex;
+    gap: 12px;
+    border-top:
+        1px solid #f0f2f4;
+    margin-top: 8px;
+    padding-top: 7px;
 }
-
 
 .related-property-meta span {
-
-  color: #64748b;
-
-  font-size: 9px;
-
+    color: #64748b;
+    font-size: 9px;
 }
-
 
 .related-property-meta i {
-
-  color: #D4AF37;
-
-  margin-right: 2px;
-
+    color: #D4AF37;
+    margin-right: 2px;
 }
-
 
 
 /* =========================================================
@@ -2972,193 +2333,107 @@ function handleSwipe() {
 ========================================================= */
 
 .lightbox-modal {
-
-  display: none;
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 99999;
-
-  background:
-    rgba(5,10,20,.97);
-
-  align-items: center;
-
-  justify-content: center;
-
-  backdrop-filter: blur(10px);
-
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background:
+        rgba(5,10,20,.97);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
 }
-
 
 body.lightbox-open {
-
-  overflow: hidden;
-
+    overflow: hidden;
 }
-
 
 .lightbox-image-area {
-
-  width: 100%;
-
-  height: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding:
-    70px 100px;
-
-  box-sizing: border-box;
-
-  touch-action: pan-y;
-
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px 100px;
+    box-sizing: border-box;
+    touch-action: pan-y;
 }
-
 
 .lightbox-content {
-
-  max-width: 88vw;
-
-  max-height: 86vh;
-
-  width: auto;
-
-  height: auto;
-
-  object-fit: contain;
-
-  border-radius: 8px;
-
-  box-shadow:
-    0 20px 70px
-    rgba(0,0,0,.65);
-
-  user-select: none;
-
-  -webkit-user-drag: none;
-
+    max-width: 88vw;
+    max-height: 86vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow:
+        0 20px 70px
+        rgba(0,0,0,.65);
+    user-select: none;
+    -webkit-user-drag: none;
 }
-
 
 .lightbox-close {
-
-  position: fixed;
-
-  top: 20px;
-
-  right: 25px;
-
-  z-index: 100002;
-
-  width: 48px;
-
-  height: 48px;
-
-  border: none;
-
-  border-radius: 50%;
-
-  background:
-    rgba(255,255,255,.1);
-
-  color: #ffffff;
-
-  font-size: 34px;
-
-  cursor: pointer;
-
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    z-index: 100002;
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background:
+        rgba(255,255,255,.1);
+    color: #ffffff;
+    font-size: 34px;
+    cursor: pointer;
 }
-
 
 .lightbox-nav {
-
-  position: fixed;
-
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  z-index: 100002;
-
-  width: 56px;
-
-  height: 56px;
-
-  border-radius: 50%;
-
-  border:
-    1px solid rgba(255,255,255,.18);
-
-  background:
-    rgba(15,23,42,.8);
-
-  color: #ffffff;
-
-  font-size: 21px;
-
-  cursor: pointer;
-
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100002;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border:
+        1px solid rgba(255,255,255,.18);
+    background:
+        rgba(15,23,42,.8);
+    color: #ffffff;
+    font-size: 21px;
+    cursor: pointer;
 }
-
 
 .lightbox-nav:hover {
-
-  background: #8A1538;
-
+    background: #8A1538;
 }
-
 
 .lightbox-prev {
-
-  left: 24px;
-
+    left: 24px;
 }
-
 
 .lightbox-next {
-
-  right: 24px;
-
+    right: 24px;
 }
-
 
 .lightbox-counter {
-
-  position: fixed;
-
-  bottom: 20px;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  z-index: 100002;
-
-  padding: 7px 13px;
-
-  border-radius: 20px;
-
-  background:
-    rgba(15,23,42,.82);
-
-  border:
-    1px solid rgba(255,255,255,.15);
-
-  color: #ffffff;
-
-  font-size: 11px;
-
-  font-weight: 800;
-
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100002;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background:
+        rgba(15,23,42,.82);
+    border:
+        1px solid rgba(255,255,255,.15);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
 }
-
 
 
 /* =========================================================
@@ -3167,109 +2442,67 @@ body.lightbox-open {
 
 @media (max-width: 1100px) {
 
-  .property-main-layout {
+    .property-main-layout {
+        grid-template-columns:
+            minmax(0, 1fr) 320px;
+        gap: 20px;
+    }
 
-    grid-template-columns:
-      minmax(0, 1fr) 320px;
-
-    gap: 20px;
-
-  }
-
-  .amenities-grid {
-
-    grid-template-columns:
-      repeat(2, 1fr);
-
-  }
+    .amenities-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
 
 }
 
 
-
 /* =========================================================
-   TABLET / SMALL LAPTOP
+   SMALL LAPTOP
 ========================================================= */
 
 @media (max-width: 900px) {
 
-  .property-main-layout {
+    .property-main-layout {
+        grid-template-columns: 1fr;
+    }
 
-    grid-template-columns: 1fr;
+    .property-sidebar {
+        position: static;
+    }
 
-  }
+    .sidebar-price-card {
+        display: grid;
+        grid-template-columns:
+            1fr 1fr;
+        gap: 8px 20px;
+        align-items: center;
+    }
 
+    .sidebar-price-card > span {
+        grid-column: 1 / -1;
+    }
 
-  .property-sidebar {
+    .sidebar-price {
+        margin: 0;
+    }
 
-    position: static;
+    .sidebar-location {
+        border: none;
+        padding: 0;
+    }
 
-  }
+    .sidebar-contact-btn,
+    .sidebar-viewing-btn {
+        margin-top: 5px;
+    }
 
-
-  .sidebar-price-card {
-
-    display: grid;
-
-    grid-template-columns:
-      1fr 1fr;
-
-    gap: 8px 20px;
-
-    align-items: center;
-
-  }
-
-
-  .sidebar-price-card > span {
-
-    grid-column: 1 / -1;
-
-  }
-
-
-  .sidebar-price {
-
-    margin: 0;
-
-  }
-
-
-  .sidebar-location {
-
-    border: none;
-
-    padding: 0;
-
-  }
-
-
-  .sidebar-contact-btn,
-  .sidebar-viewing-btn {
-
-    margin-top: 5px;
-
-  }
-
-
-  .related-properties-list {
-
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, 1fr);
-
-  }
-
-
-  .related-property-card {
-
-    grid-template-columns: 100px 1fr;
-
-  }
+    .related-properties-list {
+        display: grid;
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
 
 }
-
 
 
 /* =========================================================
@@ -3278,303 +2511,178 @@ body.lightbox-open {
 
 @media (max-width: 700px) {
 
-  .property-container {
-
-    padding:
-      0 12px;
-
-  }
-
-
-  .property-gallery {
-
-    width: 100%;
-
-    margin-left: 0;
-
-    grid-template-columns: 1fr;
-
-    grid-template-rows: 310px 130px;
-
-    height: 445px;
-
-  }
-
-
-  .gallery-side {
-
-    grid-template-columns:
-      1fr 1fr;
-
-    grid-template-rows: 1fr;
-
-  }
-
-
-  .gallery-status {
-
-    top: 14px;
-
-    left: 14px;
-
-  }
-
-
-  .gallery-expand {
-
-    right: 12px;
-
-    bottom: 12px;
-
-    padding: 8px 11px;
-
-    font-size: 10px;
-
-  }
-
-
-  .property-content-section {
-
-    padding:
-      20px 0 50px;
-
-  }
-
-
-  .property-heading-card {
-
-    padding: 19px;
-
-    border-radius: 12px;
-
-  }
-
-
-  .property-heading-top {
-
-    flex-direction: column;
-
-    gap: 18px;
-
-  }
-
-
-  .property-main-title {
-
-    font-size: 26px;
-
-  }
-
-
-  .property-price-block {
-
-    text-align: left;
-
-    padding-left: 0;
-
-  }
-
-
-  .property-price {
-
-    font-size: 28px;
-
-  }
-
-
-  .quick-property-summary {
-
-    grid-template-columns:
-      repeat(2, 1fr);
-
-    gap: 15px 0;
-
-  }
-
-
-  .summary-item {
-
-    padding:
-      0 10px;
-
-  }
-
-
-  .summary-item:nth-child(2) {
-
-    border-right: none;
-
-  }
-
-
-  .summary-item:nth-child(3) {
-
-    padding-left: 0;
-
-  }
-
-
-  .property-section-card {
-
-    padding: 20px 17px;
-
-    border-radius: 12px;
-
-  }
-
-
-  .section-heading h2 {
-
-    font-size: 19px;
-
-  }
-
-
-  .information-grid {
-
-    grid-template-columns: 1fr;
-
-  }
-
-
-  .amenities-grid {
-
-    grid-template-columns: 1fr 1fr;
-
-  }
-
-
-  .amenity-card {
-
-    font-size: 11px;
-
-  }
-
-
-  .property-description {
-
-    font-size: 14px;
-
-  }
-
-
-  .property-enquiry-card {
-
-    padding: 25px 20px;
-
-  }
-
-
-  .property-enquiry-card h2 {
-
-    font-size: 24px;
-
-  }
-
-
-  .enquiry-actions {
-
-    flex-direction: column;
-
-  }
-
-
-  .enquiry-primary,
-  .enquiry-secondary {
-
-    width: 100%;
-
-  }
-
-
-  .related-properties-list {
-
-    grid-template-columns: 1fr;
-
-  }
-
-
-  .sidebar-price-card {
-
-    display: block;
-
-  }
-
-
-  .sidebar-location {
-
-    padding-bottom: 15px;
-
-    border-bottom:
-      1px solid #edf0f3;
-
-  }
-
-
-  .sidebar-contact-btn,
-  .sidebar-viewing-btn {
-
-    margin-top: 10px;
-
-  }
-
-
-  .lightbox-image-area {
-
-    padding:
-      60px 50px;
-
-  }
-
-
-  .lightbox-content {
-
-    max-width: 100%;
-
-    max-height: 78vh;
-
-  }
-
-
-  .lightbox-nav {
-
-    width: 42px;
-
-    height: 42px;
-
-    font-size: 16px;
-
-  }
-
-
-  .lightbox-prev {
-
-    left: 7px;
-
-  }
-
-
-  .lightbox-next {
-
-    right: 7px;
-
-  }
-
-
-  .lightbox-close {
-
-    top: 10px;
-
-    right: 10px;
-
-    width: 42px;
-
-    height: 42px;
-
-  }
+    .property-container {
+        padding: 0 12px;
+    }
+
+    .property-gallery {
+        width: 100%;
+        margin-left: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: 310px 130px;
+        height: 445px;
+    }
+
+    .gallery-side {
+        grid-template-columns:
+            1fr 1fr;
+        grid-template-rows: 1fr;
+    }
+
+    .gallery-status {
+        top: 14px;
+        left: 14px;
+    }
+
+    .gallery-expand {
+        right: 12px;
+        bottom: 12px;
+        padding: 8px 11px;
+        font-size: 10px;
+    }
+
+    .property-content-section {
+        padding: 20px 0 50px;
+    }
+
+    .property-heading-card {
+        padding: 19px;
+        border-radius: 12px;
+    }
+
+    .property-heading-top {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .property-main-title {
+        font-size: 26px;
+    }
+
+    .property-price-block {
+        text-align: left;
+        padding-left: 0;
+    }
+
+    .property-price {
+        font-size: 28px;
+    }
+
+    .quick-property-summary {
+        grid-template-columns:
+            repeat(2, 1fr);
+        gap: 15px 0;
+    }
+
+    .summary-item {
+        padding: 0 10px;
+    }
+
+    .summary-item:nth-child(2) {
+        border-right: none;
+    }
+
+    .summary-item:nth-child(3) {
+        padding-left: 0;
+    }
+
+    .property-section-card {
+        padding: 20px 17px;
+        border-radius: 12px;
+    }
+
+    .section-heading h2 {
+        font-size: 19px;
+    }
+
+    .information-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .information-wide {
+        grid-column: auto;
+    }
+
+    .amenities-grid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .amenity-card {
+        font-size: 11px;
+    }
+
+    .property-description {
+        font-size: 14px;
+    }
+
+    .property-enquiry-card {
+        padding: 25px 20px;
+    }
+
+    .property-enquiry-card h2 {
+        font-size: 24px;
+    }
+
+    .enquiry-actions {
+        flex-direction: column;
+    }
+
+    .enquiry-primary,
+    .enquiry-secondary {
+        width: 100%;
+    }
+
+    .related-properties-list {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-price-card {
+        display: block;
+    }
+
+    .sidebar-location {
+        padding-bottom: 15px;
+        border-bottom:
+            1px solid #edf0f3;
+    }
+
+    .sidebar-contact-btn,
+    .sidebar-viewing-btn {
+        margin-top: 10px;
+    }
+
+    .lightbox-image-area {
+        padding: 60px 50px;
+    }
+
+    .lightbox-content {
+        max-width: 100%;
+        max-height: 78vh;
+    }
+
+    .lightbox-nav {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    .lightbox-prev {
+        left: 7px;
+    }
+
+    .lightbox-next {
+        right: 7px;
+    }
+
+    .lightbox-close {
+        top: 10px;
+        right: 10px;
+        width: 42px;
+        height: 42px;
+    }
 
 }
-
 
 
 /* =========================================================
@@ -3583,48 +2691,31 @@ body.lightbox-open {
 
 @media (max-width: 390px) {
 
-  .property-main-title {
+    .property-main-title {
+        font-size: 23px;
+    }
 
-    font-size: 23px;
+    .property-price {
+        font-size: 25px;
+    }
 
-  }
+    .summary-icon {
+        width: 34px;
+        height: 34px;
+        flex-basis: 34px;
+    }
 
+    .summary-item strong {
+        font-size: 14px;
+    }
 
-  .property-price {
+    .amenities-grid {
+        grid-template-columns: 1fr;
+    }
 
-    font-size: 25px;
-
-  }
-
-
-  .summary-icon {
-
-    width: 34px;
-
-    height: 34px;
-
-  }
-
-
-  .summary-item strong {
-
-    font-size: 14px;
-
-  }
-
-
-  .amenities-grid {
-
-    grid-template-columns: 1fr;
-
-  }
-
-
-  .related-property-card {
-
-    grid-template-columns: 95px 1fr;
-
-  }
+    .related-property-card {
+        grid-template-columns: 95px 1fr;
+    }
 
 }
 
