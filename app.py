@@ -888,115 +888,136 @@ def properties():
 
 
 
+# ============================================================
+# LIVE PROPERTY SEARCH API
+# Fast homepage autocomplete search
+# ============================================================
+
 @app.route("/property_search_suggestions")
 def property_search_suggestions():
 
     search = request.args.get("q", "").strip()
 
-    # Do not search for empty/very short requests
+    # Keep one-letter search
     if not search:
         return jsonify({
             "results": []
         })
 
-    conn = get_db_connection()
+    conn = None
+    cursor = None
 
-    cursor = conn.cursor(dictionary=True)
+    try:
 
-    keyword = "%" + search + "%"
+        conn = get_db_connection()
 
-    sql = """
-        SELECT
-            p.id,
-            p.title,
-            p.property_type,
-            p.purpose,
-            p.location,
-            p.price,
-            p.bedrooms,
-            p.bathrooms,
-            p.area,
-            p.main_image
+        cursor = conn.cursor(dictionary=True)
 
-        FROM properties p
+        keyword = f"%{search}%"
 
-        WHERE
-            p.title LIKE %s
+        sql = """
+            SELECT
+                p.id,
+                p.title,
+                p.property_type,
+                p.purpose,
+                p.location,
+                p.price,
+                p.bedrooms,
+                p.bathrooms,
+                p.area,
+                p.main_image
 
-            OR p.property_type LIKE %s
+            FROM properties p
 
-            OR p.location LIKE %s
+            LEFT JOIN property_features pf
+                ON pf.property_id = p.id
+                AND pf.feature_name LIKE %s
 
-            OR p.purpose LIKE %s
+            WHERE
+                p.title LIKE %s
+                OR p.property_type LIKE %s
+                OR p.location LIKE %s
+                OR p.purpose LIKE %s
+                OR p.address LIKE %s
+                OR p.description LIKE %s
+                OR p.furnished LIKE %s
+                OR pf.property_id IS NOT NULL
 
-            OR p.address LIKE %s
+            GROUP BY
+                p.id
 
-            OR p.description LIKE %s
+            ORDER BY
+                CASE
 
-            OR p.furnished LIKE %s
+                    WHEN p.title LIKE %s
+                    THEN 1
 
-            OR EXISTS (
-                SELECT 1
-                FROM property_features pf
+                    WHEN p.location LIKE %s
+                    THEN 2
 
-                WHERE
-                    pf.property_id = p.id
+                    WHEN p.property_type LIKE %s
+                    THEN 3
 
-                    AND pf.feature_name LIKE %s
-            )
+                    ELSE 4
 
-        ORDER BY
-            CASE
+                END,
 
-                WHEN p.title LIKE %s
-                THEN 1
+                p.created_at DESC
 
-                WHEN p.location LIKE %s
-                THEN 2
+            LIMIT 8
+        """
 
-                WHEN p.property_type LIKE %s
-                THEN 3
+        values = [
 
-                ELSE 4
+            # LEFT JOIN feature search
+            keyword,
 
-            END,
+            # WHERE
+            keyword,
+            keyword,
+            keyword,
+            keyword,
+            keyword,
+            keyword,
+            keyword,
 
-            p.created_at DESC
+            # ORDER BY
+            keyword,
+            keyword,
+            keyword
+        ]
 
-        LIMIT 8
-    """
+        cursor.execute(
+            sql,
+            values
+        )
 
-    values = [
+        results = cursor.fetchall()
 
-        keyword,
-        keyword,
-        keyword,
-        keyword,
-        keyword,
-        keyword,
-        keyword,
-        keyword,
+        return jsonify({
+            "results": results
+        })
 
-        keyword,
-        keyword,
-        keyword
+    except Exception as e:
 
-    ]
+        print(
+            "Property live search error:",
+            e
+        )
 
-    cursor.execute(
-        sql,
-        values
-    )
+        return jsonify({
+            "results": [],
+            "error": "Search temporarily unavailable"
+        }), 500
 
-    results = cursor.fetchall()
+    finally:
 
-    cursor.close()
+        if cursor:
+            cursor.close()
 
-    conn.close()
-
-    return jsonify({
-        "results": results
-    })
+        if conn:
+            conn.close()
 
 
 
