@@ -189,8 +189,6 @@
 
             <main class="property-main-column">
 
-                <!-- PROPERTY HEADER -->
-
                 <div class="property-heading-card">
 
                     <div class="property-heading-top">
@@ -272,8 +270,6 @@
                         </div>
 
                     </div>
-
-                    <!-- QUICK SUMMARY -->
 
                     <div class="quick-property-summary">
 
@@ -382,7 +378,6 @@
                     <div class="information-grid">
 
                         <div class="information-item">
-
                             <span class="information-label">
                                 Property Type
                             </span>
@@ -390,11 +385,9 @@
                             <strong>
                                 {{ property.property_type or "Not specified" }}
                             </strong>
-
                         </div>
 
                         <div class="information-item">
-
                             <span class="information-label">
                                 Purpose
                             </span>
@@ -402,11 +395,9 @@
                             <strong>
                                 {{ property.purpose or "Not specified" }}
                             </strong>
-
                         </div>
 
                         <div class="information-item">
-
                             <span class="information-label">
                                 Location
                             </span>
@@ -414,11 +405,9 @@
                             <strong>
                                 {{ property.location or "Not specified" }}
                             </strong>
-
                         </div>
 
                         <div class="information-item">
-
                             <span class="information-label">
                                 Furnishing
                             </span>
@@ -426,7 +415,6 @@
                             <strong>
                                 {{ property.furnished or "Not specified" }}
                             </strong>
-
                         </div>
 
                         <div class="information-item">
@@ -600,22 +588,16 @@
                                 href="{{ url_for('contact') }}"
                                 class="enquiry-primary"
                             >
-
                                 <i class="fas fa-paper-plane"></i>
-
                                 Contact Agent
-
                             </a>
 
                             <a
                                 href="{{ url_for('contact') }}"
                                 class="enquiry-secondary"
                             >
-
                                 <i class="fas fa-calendar-check"></i>
-
                                 Request Viewing
-
                             </a>
 
                         </div>
@@ -708,11 +690,8 @@
                             rel="noopener noreferrer"
                             class="open-map-button"
                         >
-
                             <i class="fas fa-arrow-up-right-from-square"></i>
-
                             Open in Google Maps
-
                         </a>
 
                         {% else %}
@@ -724,11 +703,8 @@
                             rel="noopener noreferrer"
                             class="open-map-button"
                         >
-
                             <i class="fas fa-arrow-up-right-from-square"></i>
-
                             Open in Google Maps
-
                         </a>
 
                         {% endif %}
@@ -744,8 +720,6 @@
             ================================================= -->
 
             <aside class="property-sidebar">
-
-                <!-- PRICE CARD -->
 
                 <div class="sidebar-price-card">
 
@@ -790,27 +764,23 @@
                         href="{{ url_for('contact') }}"
                         class="sidebar-contact-btn"
                     >
-
                         <i class="fas fa-envelope"></i>
-
                         Enquire About Property
-
                     </a>
 
                     <a
                         href="{{ url_for('contact') }}"
                         class="sidebar-viewing-btn"
                     >
-
                         <i class="fas fa-calendar"></i>
-
                         Schedule a Viewing
-
                     </a>
 
                 </div>
 
-                <!-- RELATED PROPERTIES -->
+                <!-- =================================================
+                     RELATED PROPERTIES
+                ================================================= -->
 
                 {% if related_properties %}
 
@@ -996,7 +966,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const propertyAddress = {{ (property.address or "")|tojson }};
     const propertyLocation = {{ (property.location or "")|tojson }};
-    const propertyTitle = {{ (property.title or "")|tojson }};
 
     let queryParts = [];
 
@@ -2087,7 +2056,8 @@ function handleSwipe() {
 
 /* =========================================================
    RELATED PROPERTIES
-   IMAGE WIDER / CONTENT NARROWER
+   IMAGE BOX INCREASED
+   CONTENT FONT SIZE INCREASED
 ========================================================= */
 
 .related-properties-box {
@@ -2126,8 +2096,11 @@ function handleSwipe() {
 
 .related-property-card {
     display: grid;
-    grid-template-columns: 135px minmax(0, 1fr);
-    min-height: 120px;
+
+    /* INCREASED IMAGE BOX */
+    grid-template-columns: 155px minmax(0, 1fr);
+
+    min-height: 135px;
     background: #ffffff;
     border: 1px solid #edf0f3;
     border-radius: 10px;
@@ -2150,7 +2123,9 @@ function handleSwipe() {
     position: relative;
     overflow: hidden;
     background: #e5e7eb;
-    min-height: 120px;
+
+    /* INCREASED IMAGE HEIGHT */
+    min-height: 135px;
 }
 
 .related-property-image img {
@@ -2168,13 +2143,16 @@ function handleSwipe() {
 
 .related-purpose {
     position: absolute;
-    left: 7px;
-    top: 7px;
-    padding: 4px 7px;
+    left: 8px;
+    top: 8px;
+    padding: 5px 8px;
     background: #8A1538;
     color: #ffffff;
     border-radius: 4px;
-    font-size: 7px;
+
+    /* INCREASED */
+    font-size: 8px;
+
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: .3px;
@@ -2183,27 +2161,35 @@ function handleSwipe() {
 }
 
 .related-property-content {
-    padding: 9px 10px;
+    padding: 12px 13px;
     min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
+/* SECOND BOX / CONTENT FONT INCREASED */
+
 .related-property-price {
     color: #8A1538;
-    font-size: 12px;
+
+    /* INCREASED */
+    font-size: 14px;
+
     font-weight: 900;
     line-height: 1.2;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
 }
 
 .related-property-content h3 {
     color: #263247;
-    font-size: 12px;
+
+    /* INCREASED */
+    font-size: 14px;
+
     font-weight: 800;
     line-height: 1.3;
-    margin: 0 0 5px;
+    margin: 0 0 6px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2212,8 +2198,11 @@ function handleSwipe() {
 .related-property-content p {
     margin: 0;
     color: #94a3b8;
-    font-size: 9px;
-    line-height: 1.3;
+
+    /* INCREASED */
+    font-size: 10.5px;
+
+    line-height: 1.35;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2221,20 +2210,23 @@ function handleSwipe() {
 
 .related-property-content p i {
     color: #8A1538;
-    margin-right: 2px;
+    margin-right: 3px;
 }
 
 .related-property-meta {
     display: flex;
-    gap: 10px;
+    gap: 11px;
     border-top: 1px solid #f0f2f4;
-    margin-top: 7px;
-    padding-top: 6px;
+    margin-top: 8px;
+    padding-top: 7px;
 }
 
 .related-property-meta span {
     color: #64748b;
-    font-size: 8.5px;
+
+    /* INCREASED */
+    font-size: 9.5px;
+
     white-space: nowrap;
 }
 
@@ -2362,13 +2354,14 @@ body.lightbox-open {
 
     .related-property-card {
         grid-template-columns:
-            120px
+            140px
             minmax(0, 1fr);
-        min-height: 115px;
+
+        min-height: 125px;
     }
 
     .related-property-image {
-        min-height: 115px;
+        min-height: 125px;
     }
 
 }
@@ -2415,13 +2408,14 @@ body.lightbox-open {
 
     .related-property-card {
         grid-template-columns:
-            120px
+            140px
             minmax(0, 1fr);
-        min-height: 115px;
+
+        min-height: 125px;
     }
 
     .related-property-image {
-        min-height: 115px;
+        min-height: 125px;
     }
 
 }
@@ -2514,17 +2508,34 @@ body.lightbox-open {
 
     .related-property-card {
         grid-template-columns:
-            135px
+            145px
             minmax(0, 1fr);
-        min-height: 120px;
+
+        min-height: 125px;
     }
 
     .related-property-image {
-        min-height: 120px;
+        min-height: 125px;
     }
 
     .related-property-content {
-        padding: 10px;
+        padding: 11px;
+    }
+
+    .related-property-price {
+        font-size: 13px;
+    }
+
+    .related-property-content h3 {
+        font-size: 13px;
+    }
+
+    .related-property-content p {
+        font-size: 10px;
+    }
+
+    .related-property-meta span {
+        font-size: 9px;
     }
 
     .lightbox-image-area {
