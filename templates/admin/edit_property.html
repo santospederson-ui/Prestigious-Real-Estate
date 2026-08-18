@@ -237,6 +237,47 @@ Property Address
 <textarea name="address">{{ property.address }}</textarea>
 
 
+   <!-- GOOGLE MAP -->
+
+<div class="map-input-section">
+
+<label>
+Property Google Maps Location
+</label>
+
+<input
+type="url"
+name="map_embed_url"
+value="{{ property.map_embed_url or '' }}"
+placeholder="Paste Google Maps embed URL here">
+
+<p class="map-help-text">
+
+<i class="fas fa-map-marker-alt"></i>
+
+Open Google Maps → find the property → 
+<strong>Share → Embed a map → Copy HTML</strong>.
+
+Paste the URL from the
+<code>src="..."</code>
+portion of the iframe.
+
+</p>
+
+<div class="map-example-box">
+
+<strong>Example:</strong>
+
+<br>
+
+<code>
+https://www.google.com/maps/embed?pb=...
+</code>
+
+</div>
+
+</div>
+
 
 
 <label>
@@ -470,6 +511,81 @@ Update Property
     transform: translateY(-2px);
     box-shadow: 0 10px 24px rgba(31, 42, 68, 0.25);
 }
+
+
+
+/* ==================================
+   GOOGLE MAP FIELD
+================================== */
+
+.map-input-section {
+    margin: 6px 0 28px;
+    padding: 22px;
+    background: linear-gradient(
+        135deg,
+        #f8fafc 0%,
+        #ffffff 100%
+    );
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid var(--gold-accent, #D4AF37);
+    border-radius: 14px;
+}
+
+.map-input-section label {
+    margin-bottom: 10px;
+}
+
+.map-input-section input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    background: #ffffff;
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.map-input-section input:focus {
+    outline: none;
+    border-color: var(--qatar-maroon, #8A1538);
+    box-shadow: 0 0 0 4px rgba(138, 21, 56, 0.12);
+}
+
+.map-help-text {
+    margin: 8px 0 10px !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    line-height: 1.6;
+}
+
+.map-help-text i {
+    color: var(--qatar-maroon, #8A1538);
+    margin-right: 5px;
+}
+
+.map-help-text code {
+    color: #8A1538;
+    font-weight: 700;
+}
+
+.map-example-box {
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #64748b;
+    overflow-wrap: anywhere;
+}
+
+.map-example-box code {
+    color: #475569;
+}
+
+
+   
 
 /* MOBILE RESPONSIVE */
 
