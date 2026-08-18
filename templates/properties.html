@@ -28,8 +28,9 @@ PROPERTY FILTER
 
 <section class="property-filter-section">
   <div class="container">
+
     <form class="filter-box" method="GET" action="{{ url_for('properties') }}">
-      
+
       <div class="filter-group">
         <label class="filter-label">Type</label>
         <select name="property_type">
@@ -63,11 +64,23 @@ PROPERTY FILTER
       </div>
 
       <button type="submit" class="filter-submit-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="18"
+             height="18"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2.5"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
         <span>Search</span>
       </button>
 
     </form>
+
   </div>
 </section>
 
@@ -77,73 +90,187 @@ PROPERTY LIST
 
 <section class="properties-section">
   <div class="container">
-    
+
     <div class="section-title">
       <h2>Available Properties</h2>
       <p>Explore our exclusive collection of luxury real estate listings across Qatar</p>
     </div>
 
     <div class="property-grid">
-      {% for property in properties %}
-        <div class="property-card">
-          
-          <div class="property-image-wrapper">
-            {% if property.main_image %}
-              <img src="{{ property.main_image }}"
-                   alt="{{ property.title }}"
-                   loading="lazy">
-            {% else %}
-              <img src="{{ url_for('static', filename='images/no-image.jpg') }}"
-                   alt="No Image Available"
-                   loading="lazy">
-            {% endif %}
 
-            <div class="property-badge {% if property.purpose == 'Rent' %}badge-rent{% else %}badge-sale{% endif %}">
-              FOR {{ property.purpose|upper }}
+      {% for property in properties %}
+
+        <div class="property-card">
+
+          <!-- CLICKABLE PROPERTY IMAGE -->
+
+          <a href="{{ url_for('property_details', id=property.id) }}"
+             class="property-image-link">
+
+            <div class="property-image-wrapper">
+
+              {% if property.main_image %}
+
+                <img src="{{ property.main_image }}"
+                     alt="{{ property.title }}"
+                     loading="lazy">
+
+              {% else %}
+
+                <img src="{{ url_for('static', filename='images/no-image.jpg') }}"
+                     alt="No Image Available"
+                     loading="lazy">
+
+              {% endif %}
+
+              <div class="property-badge {% if property.purpose == 'Rent' %}badge-rent{% else %}badge-sale{% endif %}">
+                FOR {{ property.purpose|upper }}
+              </div>
+
             </div>
+
+          </a>
+
+          <!-- =========================
+          SECOND RECTANGLE
+          ========================= -->
+
+          <div class="property-info">
+
+            <!-- PRICE — TOP RIGHT OF SECOND RECTANGLE -->
 
             <div class="property-price-tag">
               QAR {{ "{:,.0f}".format(property.price or 0) }}
             </div>
-          </div>
 
-          <div class="property-info">
             <div class="property-location">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="15"
+                   height="15"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+
+              </svg>
+
               <span>{{ property.location }}</span>
+
             </div>
 
-            <h3 class="property-title">{{ property.title }}</h3>
+            <h3 class="property-title">
+              {{ property.title }}
+            </h3>
 
             <div class="property-meta">
+
               <div class="meta-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-                <span>{{ property.bedrooms or 0 }} Beds</span>
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="16"
+                     height="16"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                  <path d="M2 4v16"/>
+                  <path d="M2 8h18a2 2 0 0 1 2 2v10"/>
+                  <path d="M2 17h20"/>
+                  <path d="M6 8v9"/>
+
+                </svg>
+
+                <span>
+                  {{ property.bedrooms or 0 }} Beds
+                </span>
+
               </div>
+
               <div class="meta-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L6 9"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 6 12.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L12 9"/></svg>
-                <span>{{ property.bathrooms or 0 }} Baths</span>
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="16"
+                     height="16"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                  <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L6 9"/>
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                  <path d="M15 6 12.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L12 9"/>
+
+                </svg>
+
+                <span>
+                  {{ property.bathrooms or 0 }} Baths
+                </span>
+
               </div>
+
               <div class="meta-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                <span>{{ property.area or 0 }} sqm</span>
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="16"
+                     height="16"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                  <rect width="18"
+                        height="18"
+                        x="3"
+                        y="3"
+                        rx="2"/>
+
+                  <path d="M3 9h18"/>
+                  <path d="M9 21V9"/>
+
+                </svg>
+
+                <span>
+                  {{ property.area or 0 }} sqm
+                </span>
+
               </div>
+
             </div>
 
-            <a href="{{ url_for('property_details', id=property.id) }}" class="details-btn">
-              <span>View Property</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
           </div>
 
         </div>
+
       {% else %}
+
         <div class="empty-properties-card">
+
           <div class="empty-icon">🏠</div>
+
           <h3>No Properties Found</h3>
-          <p>We couldn't find any properties matching your search criteria. Try adjusting your filters.</p>
+
+          <p>
+            We couldn't find any properties matching your search criteria.
+            Try adjusting your filters.
+          </p>
+
         </div>
+
       {% endfor %}
+
     </div>
 
     <!-- =========================
@@ -151,15 +278,28 @@ PROPERTY LIST
     ========================= -->
 
     {% if total_pages > 1 %}
+
       <div class="pagination-container">
+
         <div class="pagination">
-          
+
           {% if page > 1 %}
-            <a href="{{ url_for('properties', page=page-1, property_type=property_type, purpose=purpose, location=location) }}" class="pagination-link nav-btn">
+
+            <a href="{{ url_for('properties',
+                               page=page-1,
+                               property_type=property_type,
+                               purpose=purpose,
+                               location=location) }}"
+               class="pagination-link nav-btn">
               ← Previous
             </a>
+
           {% else %}
-            <span class="pagination-link disabled">← Previous</span>
+
+            <span class="pagination-link disabled">
+              ← Previous
+            </span>
+
           {% endif %}
 
           <div class="pagination-indicator">
@@ -167,24 +307,39 @@ PROPERTY LIST
           </div>
 
           {% if page < total_pages %}
-            <a href="{{ url_for('properties', page=page+1, property_type=property_type, purpose=purpose, location=location) }}" class="pagination-link nav-btn">
+
+            <a href="{{ url_for('properties',
+                               page=page+1,
+                               property_type=property_type,
+                               purpose=purpose,
+                               location=location) }}"
+               class="pagination-link nav-btn">
               Next →
             </a>
+
           {% else %}
-            <span class="pagination-link disabled">Next →</span>
+
+            <span class="pagination-link disabled">
+              Next →
+            </span>
+
           {% endif %}
 
         </div>
+
       </div>
+
     {% endif %}
 
   </div>
 </section>
 
 <style>
+
 /* ==================================
    DESIGN SYSTEM & QATAR MAROON PALETTE
 ================================== */
+
 :root {
   --qatar-maroon: #8A1538;
   --qatar-maroon-dark: #670D28;
@@ -197,13 +352,15 @@ PROPERTY LIST
   --bg-page: #f8fafc;
 }
 
-/* INCREASING MARGINS (PADDING) ON LEFT & RIGHT */
+/* CONTAINER */
+
 .container {
   padding-left: clamp(20px, 4vw, 50px);
   padding-right: clamp(20px, 4vw, 50px);
 }
 
 /* PAGE HERO */
+
 .page-hero {
   min-height: 380px;
   background-size: cover;
@@ -213,11 +370,14 @@ PROPERTY LIST
   align-items: center;
 }
 
-/* BRIGHTENED HERO OVERLAY */
 .page-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.15) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.35) 0%,
+    rgba(15, 23, 42, 0.15) 100%
+  );
   display: flex;
   align-items: center;
 }
@@ -259,6 +419,7 @@ PROPERTY LIST
 }
 
 /* FILTER SECTION */
+
 .property-filter-section {
   position: relative;
   z-index: 10;
@@ -342,6 +503,7 @@ PROPERTY LIST
 }
 
 /* PROPERTIES SECTION */
+
 .properties-section {
   padding: 60px 0 90px 0;
   background: var(--bg-page);
@@ -368,6 +530,7 @@ PROPERTY LIST
 }
 
 /* PROPERTY GRID */
+
 .property-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
@@ -375,6 +538,7 @@ PROPERTY LIST
 }
 
 /* PROPERTY CARD */
+
 .property-card {
   background: #ffffff;
   border-radius: 0;
@@ -391,7 +555,16 @@ PROPERTY LIST
   border-color: rgba(138, 21, 56, 0.2);
 }
 
-/* IMAGE WRAPPER & BADGES */
+/* CLICKABLE IMAGE LINK */
+
+.property-image-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* IMAGE */
+
 .property-image-wrapper {
   position: relative;
   height: 230px;
@@ -411,6 +584,8 @@ PROPERTY LIST
 .property-card:hover .property-image-wrapper img {
   transform: scale(1.06);
 }
+
+/* PROPERTY BADGE */
 
 .property-badge {
   position: absolute;
@@ -434,128 +609,167 @@ PROPERTY LIST
   background: var(--navy-dark);
 }
 
-.property-price-tag {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(8px);
-  color: #ffffff;
-  padding: 6px 14px;
-  border-radius: 0;
-  font-size: 15px;
-  font-weight: 800;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+/* ==================================
+   SECOND RECTANGLE
+================================== */
 
-/* CARD DETAILS */
 .property-info {
-  padding: 24px;
+  position: relative;
+
+  padding: 14px 20px 16px 20px;
+
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 
-  /* NEW */
-  background: linear-gradient(180deg, #2d3748 0%, #1f2937 100%);
+  background: linear-gradient(
+    180deg,
+    #2d3748 0%,
+    #1f2937 100%
+  );
+
   color: #f8fafc;
 }
+
+/* ==================================
+   PRICE — TOP RIGHT OF SECOND RECTANGLE
+================================== */
+
+.property-price-tag {
+  position: absolute;
+
+  top: 12px;
+  right: 14px;
+
+  background: rgba(15, 23, 42, 0.95);
+
+  color: #ffffff;
+
+  padding: 6px 11px;
+
+  border-radius: 0;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+
+  z-index: 5;
+
+  white-space: nowrap;
+}
+
+/* LOCATION */
 
 .property-location {
   display: flex;
   align-items: center;
   gap: 6px;
+
   color: #d4af37;
+
   font-size: 13px;
   font-weight: 700;
-  margin-bottom: 8px;
+
+  margin-bottom: 5px;
+
+  /* Gives room for the price badge */
+  padding-right: 145px;
 }
 
-.property-location svg{
-    color:#d4af37;
+.property-location svg {
+  color: #d4af37;
+  flex-shrink: 0;
 }
+
+/* TITLE */
 
 .property-title {
   font-size: 18px;
   font-weight: 800;
-  color:#ffffff;
-  margin-bottom: 18px;
-  line-height: 1.4;
+
+  color: #ffffff;
+
+  margin-bottom: 10px;
+
+  line-height: 1.35;
+
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+
   overflow: hidden;
-  height: 50px;
+
+  height: 48px;
 }
+
+/* META */
 
 .property-meta {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
   gap: 10px;
-  padding: 12px 0;
+
+  padding: 8px 0;
+
   border-top: 1px solid rgba(255,255,255,.12);
   border-bottom: 1px solid rgba(255,255,255,.12);
-  margin-bottom: 20px;
+
+  margin-bottom: 0;
 }
+
 .meta-item {
   display: flex;
   align-items: center;
+
   gap: 3px;
+
   color: rgba(255,255,255,.88);
+
   font-size: 13px;
   font-weight: 600;
 }
 
-
-.meta-item:hover{
-    border-color:var(--gold-accent);
-    box-shadow:0 8px 18px rgba(0,0,0,.06);
+.meta-item:hover {
+  border-color: var(--gold-accent);
+  box-shadow: 0 8px 18px rgba(0,0,0,.06);
 }
 
-.meta-item svg{
-    color:#1F2A44;
-    margin-bottom:8px;
-    width:18px;
-    height:18px;
+.meta-item svg {
+  color: #d4af37;
+
+  margin-bottom: 0;
+
+  width: 17px;
+  height: 17px;
+
+  flex-shrink: 0;
 }
 
-  .meta-item span{
-    color:#1F2A44;
-    font-size:13px;
-    font-weight:700;
-}
-
-.details-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px;
-
-  background: var(--qatar-maroon);
+.meta-item span {
   color: #ffffff;
 
-  border-radius: 0;
-  text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  border: none;
-  transition: all .3s ease;
-}
-
-.details-btn:hover{
-    background:#670D28;
-    transform:translateY(-2px);
 }
 
 /* EMPTY STATE */
+
 .empty-properties-card {
   grid-column: 1 / -1;
+
   text-align: center;
+
   padding: 80px 20px;
+
   background: #ffffff;
+
   border-radius: 0;
+
   border: 1px dashed var(--border-light);
 }
 
@@ -577,30 +791,42 @@ PROPERTY LIST
   margin: 0;
 }
 
-/* PAGINATION STYLING */
+/* PAGINATION */
+
 .pagination-container {
   display: flex;
   justify-content: center;
+
   margin-top: 50px;
 }
 
 .pagination {
   display: inline-flex;
   align-items: center;
+
   gap: 14px;
+
   background: #ffffff;
+
   padding: 8px 16px;
+
   border-radius: 0;
+
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+
   border: 1px solid var(--border-light);
 }
 
 .pagination-link {
   padding: 10px 18px;
+
   border-radius: 0;
+
   text-decoration: none;
+
   font-size: 14px;
   font-weight: 700;
+
   transition: all 0.2s ease;
 }
 
@@ -630,26 +856,41 @@ PROPERTY LIST
   color: var(--navy-dark);
 }
 
-/* RESPONSIVE DESIGN */
+/* ==================================
+   RESPONSIVE
+================================== */
+
 @media (max-width: 1024px) {
+
   .filter-box {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .filter-submit-btn {
     grid-column: span 2;
   }
+
 }
 
 @media (max-width: 768px) {
-  .page-hero { min-height: 300px; }
-  .hero-text-content h1 { font-size: 32px; }
-  .property-filter-section { margin-top: -20px; }
-  
+
+  .page-hero {
+    min-height: 300px;
+  }
+
+  .hero-text-content h1 {
+    font-size: 32px;
+  }
+
+  .property-filter-section {
+    margin-top: -20px;
+  }
+
   .filter-box {
     grid-template-columns: 1fr;
     padding: 18px;
   }
-  
+
   .filter-submit-btn {
     grid-column: span 1;
   }
@@ -657,7 +898,104 @@ PROPERTY LIST
   .property-grid {
     grid-template-columns: 1fr;
   }
+
+  /* MOBILE IMAGE */
+
+  .property-image-wrapper {
+    height: 220px;
+  }
+
+  /* MOBILE SECOND RECTANGLE */
+
+  .property-info {
+    padding: 12px 16px 13px 16px;
+  }
+
+  /* MOBILE PRICE */
+
+  .property-price-tag {
+    top: 10px;
+    right: 12px;
+
+    padding: 5px 9px;
+
+    font-size: 13px;
+  }
+
+  /* MOBILE LOCATION */
+
+  .property-location {
+    margin-bottom: 4px;
+    padding-right: 125px;
+
+    font-size: 12px;
+  }
+
+  /* MOBILE TITLE */
+
+  .property-title {
+    margin-bottom: 8px;
+
+    height: 44px;
+
+    font-size: 17px;
+  }
+
+  /* MOBILE META */
+
+  .property-meta {
+    gap: 7px;
+    padding: 7px 0;
+  }
+
+  .meta-item {
+    font-size: 12px;
+    gap: 2px;
+  }
+
+  .meta-item svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .meta-item span {
+    font-size: 12px;
+  }
+
 }
+
+/* VERY SMALL PHONES */
+
+@media (max-width: 400px) {
+
+  .property-price-tag {
+    top: 9px;
+    right: 10px;
+
+    padding: 5px 8px;
+
+    font-size: 12px;
+  }
+
+  .property-location {
+    padding-right: 110px;
+    font-size: 11px;
+  }
+
+  .property-title {
+    font-size: 16px;
+  }
+
+  .property-meta {
+    gap: 5px;
+  }
+
+  .meta-item span {
+    font-size: 11px;
+  }
+
+}
+
 </style>
 
 {% endblock %}
