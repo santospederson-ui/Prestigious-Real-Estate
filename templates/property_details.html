@@ -6,9 +6,9 @@
 
 {% block content %}
 
-<!-- =========================
-PROPERTY SEO STRUCTURED DATA
-========================= -->
+<!-- =========================================================
+     PROPERTY SEO STRUCTURED DATA
+========================================================= -->
 
 <script type="application/ld+json">
 {
@@ -32,12 +32,13 @@ PROPERTY SEO STRUCTURED DATA
     "@type":"RealEstateAgent",
     "name":"Prestigious Real Estate"
   }
+}
 </script>
 
 
-<!-- =========================
-TOP FULL-BLEED MOSAIC GALLERY
-========================= -->
+<!-- =========================================================
+     TOP FULL-BLEED MOSAIC GALLERY
+========================================================= -->
 
 <section class="top-mosaic-section">
 
@@ -49,26 +50,29 @@ TOP FULL-BLEED MOSAIC GALLERY
 
       {% if gallery_images %}
 
-        <img src="{{ gallery_images[0].image_name }}"
-             alt="{{ property.title }} in {{ property.location }} Qatar"
-             loading="lazy">
+        <img
+          src="{{ gallery_images[0].image_name }}"
+          alt="{{ property.title }} in {{ property.location }} Qatar"
+          loading="lazy">
 
       {% elif property.main_image %}
 
-        <img src="{{ property.main_image }}"
-             alt="{{ property.title }} in {{ property.location }} Qatar"
-             loading="lazy">
+        <img
+          src="{{ property.main_image }}"
+          alt="{{ property.title }} in {{ property.location }} Qatar"
+          loading="lazy">
 
       {% else %}
 
-        <img src="{{ url_for('static', filename='images/no-image.png') }}"
-             alt="No image available"
-             loading="lazy">
+        <img
+          src="{{ url_for('static', filename='images/no-image.png') }}"
+          alt="No image available"
+          loading="lazy">
 
       {% endif %}
 
 
-      <!-- COMPACT TOP-LEFT PROPERTY BOX -->
+      <!-- PROPERTY OVERLAY -->
 
       <div class="mosaic-header-overlay">
 
@@ -79,30 +83,35 @@ TOP FULL-BLEED MOSAIC GALLERY
         <h1>{{ property.title }}</h1>
 
         <p class="property-location-tag">
-          📍 {{ property.location }}
+          <i class="fas fa-map-marker-alt"></i>
+          {{ property.location }}
         </p>
 
       </div>
 
 
       <div class="image-expand-badge">
-        🔍 Click to Expand
+        <i class="fas fa-expand"></i>
+        Click to Expand
       </div>
 
     </div>
 
 
-    <!-- RIGHT TWO IMAGES -->
+    <!-- RIGHT IMAGES -->
 
     <div class="mosaic-side-30">
 
       {% if gallery_images and gallery_images|length > 1 %}
 
-        <div class="mosaic-sub-item" onclick="openLightbox(1)">
+        <div
+          class="mosaic-sub-item"
+          onclick="openLightbox(1)">
 
-          <img src="{{ gallery_images[1].image_name }}"
-               alt="{{ property.title }} photo 2"
-               loading="lazy">
+          <img
+            src="{{ gallery_images[1].image_name }}"
+            alt="{{ property.title }} photo 2"
+            loading="lazy">
 
         </div>
 
@@ -111,11 +120,14 @@ TOP FULL-BLEED MOSAIC GALLERY
 
       {% if gallery_images and gallery_images|length > 2 %}
 
-        <div class="mosaic-sub-item" onclick="openLightbox(2)">
+        <div
+          class="mosaic-sub-item"
+          onclick="openLightbox(2)">
 
-          <img src="{{ gallery_images[2].image_name }}"
-               alt="{{ property.title }} photo 3"
-               loading="lazy">
+          <img
+            src="{{ gallery_images[2].image_name }}"
+            alt="{{ property.title }} photo 3"
+            loading="lazy">
 
         </div>
 
@@ -136,12 +148,14 @@ TOP FULL-BLEED MOSAIC GALLERY
 
         {% for image in gallery_images[3:] %}
 
-          <div class="horizontal-thumb-item"
-               onclick="openLightbox({{ loop.index0 + 3 }})">
+          <div
+            class="horizontal-thumb-item"
+            onclick="openLightbox({{ loop.index0 + 3 }})">
 
-            <img src="{{ image.image_name }}"
-                 alt="{{ property.title }} photo {{ loop.index + 3 }}"
-                 loading="lazy">
+            <img
+              src="{{ image.image_name }}"
+              alt="{{ property.title }} photo {{ loop.index + 3 }}"
+              loading="lazy">
 
           </div>
 
@@ -156,9 +170,9 @@ TOP FULL-BLEED MOSAIC GALLERY
 </section>
 
 
-<!-- =========================
-SPLIT INTERACTIVE & RELATED SECTION
-========================= -->
+<!-- =========================================================
+     MAIN PROPERTY CONTENT
+========================================================= -->
 
 <section class="modern-split-section">
 
@@ -167,23 +181,36 @@ SPLIT INTERACTIVE & RELATED SECTION
     <div class="modern-split-grid">
 
 
-      <!-- =========================
-      LEFT COLUMN
-      ========================= -->
+      <!-- =====================================================
+           LEFT COLUMN
+      ===================================================== -->
 
       <div class="split-left-column">
 
         <div class="interactive-accordion">
 
 
-          <!-- ITEM 1 -->
+          <!-- =================================================
+               ITEM 1 — ASKING PRICE & KEY FEATURES
+          ================================================= -->
 
           <div class="accordion-item active">
 
-            <button class="accordion-header"
-                    onclick="toggleAccordion(this)">
+            <button
+              class="accordion-header"
+              onclick="toggleAccordion(this)">
 
-              <span>Asking Price & Key Features</span>
+              <span class="accordion-title-wrap">
+
+                <span class="accordion-icon price-icon">
+                  <i class="fas fa-tag"></i>
+                </span>
+
+                <span>
+                  Asking Price & Key Features
+                </span>
+
+              </span>
 
               <i class="fas fa-chevron-down toggle-icon"></i>
 
@@ -192,44 +219,83 @@ SPLIT INTERACTIVE & RELATED SECTION
 
             <div class="accordion-content">
 
-              <div class="price-header">
+              <div class="price-section-modern">
 
-                <span class="label">
-                  Asking Price
-                </span>
+                <div class="price-label-modern">
+                  ASKING PRICE
+                </div>
 
-                <h3 class="property-price">
-                  QAR {{ "{:,.0f}".format(property.price or 0) }}
-                </h3>
+                <div class="property-price-modern">
+
+                  <span class="price-currency">
+                    QAR
+                  </span>
+
+                  <span class="price-number">
+                    {{ "{:,.0f}".format(property.price or 0) }}
+                  </span>
+
+                </div>
 
               </div>
 
 
               <div class="details-features">
 
+
+                <!-- BEDROOMS -->
+
                 <div class="feature-box">
 
-                  <h4>{{ property.bedrooms }}</h4>
+                  <div class="feature-icon">
+                    <i class="fas fa-bed"></i>
+                  </div>
 
-                  <span>Bedrooms</span>
+                  <div class="feature-value">
+                    {{ property.bedrooms }}
+                  </div>
+
+                  <div class="feature-label">
+                    Bedrooms
+                  </div>
 
                 </div>
 
 
+                <!-- BATHROOMS -->
+
                 <div class="feature-box">
 
-                  <h4>{{ property.bathrooms }}</h4>
+                  <div class="feature-icon">
+                    <i class="fas fa-bath"></i>
+                  </div>
 
-                  <span>Bathrooms</span>
+                  <div class="feature-value">
+                    {{ property.bathrooms }}
+                  </div>
+
+                  <div class="feature-label">
+                    Bathrooms
+                  </div>
 
                 </div>
 
 
+                <!-- AREA -->
+
                 <div class="feature-box">
 
-                  <h4>{{ property.area }}</h4>
+                  <div class="feature-icon">
+                    <i class="fas fa-ruler-combined"></i>
+                  </div>
 
-                  <span>SQM</span>
+                  <div class="feature-value">
+                    {{ property.area }}
+                  </div>
+
+                  <div class="feature-label">
+                    SQM
+                  </div>
 
                 </div>
 
@@ -240,16 +306,28 @@ SPLIT INTERACTIVE & RELATED SECTION
           </div>
 
 
-          <!-- ITEM 2 -->
+          <!-- =================================================
+               ITEM 2 — PROPERTY INFORMATION
+               MOVED ABOVE AMENITIES
+          ================================================= -->
 
-          {% if features %}
+          <div class="accordion-item active">
 
-          <div class="accordion-item">
+            <button
+              class="accordion-header"
+              onclick="toggleAccordion(this)">
 
-            <button class="accordion-header"
-                    onclick="toggleAccordion(this)">
+              <span class="accordion-title-wrap">
 
-              <span>Property Amenities & Features</span>
+                <span class="accordion-icon information-icon">
+                  <i class="fas fa-info"></i>
+                </span>
+
+                <span>
+                  Property Information
+                </span>
+
+              </span>
 
               <i class="fas fa-chevron-down toggle-icon"></i>
 
@@ -258,12 +336,198 @@ SPLIT INTERACTIVE & RELATED SECTION
 
             <div class="accordion-content">
 
-              <div class="feature-list">
+              <div class="property-info-grid-modern">
+
+
+                <!-- PROPERTY TYPE -->
+
+                <div class="modern-info-card">
+
+                  <div class="modern-info-icon">
+                    <i class="fas fa-building"></i>
+                  </div>
+
+                  <div class="modern-info-content">
+
+                    <span class="modern-info-label">
+                      Property Type
+                    </span>
+
+                    <strong>
+                      {{ property.property_type }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <!-- PURPOSE -->
+
+                <div class="modern-info-card">
+
+                  <div class="modern-info-icon">
+                    <i class="fas fa-bullseye"></i>
+                  </div>
+
+                  <div class="modern-info-content">
+
+                    <span class="modern-info-label">
+                      Purpose
+                    </span>
+
+                    <strong>
+                      {{ property.purpose }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div class="modern-info-card">
+
+                  <div class="modern-info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+
+                  <div class="modern-info-content">
+
+                    <span class="modern-info-label">
+                      Location
+                    </span>
+
+                    <strong>
+                      {{ property.location }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <!-- ADDRESS -->
+
+                <div class="modern-info-card">
+
+                  <div class="modern-info-icon">
+                    <i class="fas fa-location-arrow"></i>
+                  </div>
+
+                  <div class="modern-info-content">
+
+                    <span class="modern-info-label">
+                      Address
+                    </span>
+
+                    <strong>
+                      {{ property.address }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <!-- FURNISHED -->
+
+                <div class="modern-info-card">
+
+                  <div class="modern-info-icon">
+                    <i class="fas fa-couch"></i>
+                  </div>
+
+                  <div class="modern-info-content">
+
+                    <span class="modern-info-label">
+                      Furnished
+                    </span>
+
+                    <strong>
+                      {{ property.furnished }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="modern-info-card">
+
+                  <div class="modern-info-icon">
+                    <i class="fas fa-circle-check"></i>
+                  </div>
+
+                  <div class="modern-info-content">
+
+                    <span class="modern-info-label">
+                      Status
+                    </span>
+
+                    <strong>
+                      {{ property.status }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               ITEM 3 — AMENITIES & FEATURES
+          ================================================= -->
+
+          {% if features %}
+
+          <div class="accordion-item">
+
+            <button
+              class="accordion-header"
+              onclick="toggleAccordion(this)">
+
+              <span class="accordion-title-wrap">
+
+                <span class="accordion-icon amenities-icon">
+                  <i class="fas fa-star"></i>
+                </span>
+
+                <span>
+                  Property Amenities & Features
+                </span>
+
+              </span>
+
+              <i class="fas fa-chevron-down toggle-icon"></i>
+
+            </button>
+
+
+            <div class="accordion-content">
+
+              <div class="feature-list-modern">
 
                 {% for feature in features %}
 
-                  <div class="feature-item">
-                    ✓ {{ feature.feature_name }}
+                  <div class="feature-item-modern">
+
+                    <span class="feature-check">
+                      <i class="fas fa-check"></i>
+                    </span>
+
+                    <span>
+                      {{ feature.feature_name }}
+                    </span>
+
                   </div>
 
                 {% endfor %}
@@ -277,14 +541,27 @@ SPLIT INTERACTIVE & RELATED SECTION
           {% endif %}
 
 
-          <!-- ITEM 3 -->
+          <!-- =================================================
+               ITEM 4 — PROPERTY OVERVIEW
+          ================================================= -->
 
           <div class="accordion-item">
 
-            <button class="accordion-header"
-                    onclick="toggleAccordion(this)">
+            <button
+              class="accordion-header"
+              onclick="toggleAccordion(this)">
 
-              <span>Property Information</span>
+              <span class="accordion-title-wrap">
+
+                <span class="accordion-icon overview-icon">
+                  <i class="fas fa-align-left"></i>
+                </span>
+
+                <span>
+                  Property Overview
+                </span>
+
+              </span>
 
               <i class="fas fa-chevron-down toggle-icon"></i>
 
@@ -293,32 +570,11 @@ SPLIT INTERACTIVE & RELATED SECTION
 
             <div class="accordion-content">
 
-              <div class="property-info-grid">
+              <div class="description-wrapper">
 
-                <div class="info-item">
-                  <strong>Type:</strong>
-                  <span>{{ property.property_type }}</span>
-                </div>
-
-                <div class="info-item">
-                  <strong>Purpose:</strong>
-                  <span>{{ property.purpose }}</span>
-                </div>
-
-                <div class="info-item">
-                  <strong>Address:</strong>
-                  <span>{{ property.address }}</span>
-                </div>
-
-                <div class="info-item">
-                  <strong>Furnished:</strong>
-                  <span>{{ property.furnished }}</span>
-                </div>
-
-                <div class="info-item">
-                  <strong>Status:</strong>
-                  <span>{{ property.status }}</span>
-                </div>
+                <p class="description-text">
+                  {{ property.description }}
+                </p>
 
               </div>
 
@@ -327,39 +583,27 @@ SPLIT INTERACTIVE & RELATED SECTION
           </div>
 
 
-          <!-- ITEM 4 -->
+          <!-- =================================================
+               ITEM 5 — PROPERTY MAP
+          ================================================= -->
 
           <div class="accordion-item">
 
-            <button class="accordion-header"
-                    onclick="toggleAccordion(this)">
+            <button
+              class="accordion-header"
+              onclick="toggleAccordion(this)">
 
-              <span>Property Overview</span>
+              <span class="accordion-title-wrap">
 
-              <i class="fas fa-chevron-down toggle-icon"></i>
+                <span class="accordion-icon map-icon">
+                  <i class="fas fa-map"></i>
+                </span>
 
-            </button>
+                <span>
+                  Property Map
+                </span>
 
-
-            <div class="accordion-content">
-
-              <p class="description-text">
-                {{ property.description }}
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <!-- ITEM 5 -->
-
-          <div class="accordion-item">
-
-            <button class="accordion-header"
-                    onclick="toggleAccordion(this)">
-
-              <span>Property Map</span>
+              </span>
 
               <i class="fas fa-chevron-down toggle-icon"></i>
 
@@ -370,11 +614,17 @@ SPLIT INTERACTIVE & RELATED SECTION
 
               <div class="map-placeholder">
 
-                📍 {{ property.location }}
+                <div class="map-placeholder-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
 
-                <br><br>
+                <strong>
+                  {{ property.location }}
+                </strong>
 
-                Google Map Integration Coming Soon
+                <span>
+                  Google Map Integration Coming Soon
+                </span>
 
               </div>
 
@@ -386,7 +636,9 @@ SPLIT INTERACTIVE & RELATED SECTION
         </div>
 
 
-        <!-- AGENT CONTACT -->
+        <!-- =================================================
+             AGENT CONTACT
+        ================================================= -->
 
         <div class="agent-contact-card">
 
@@ -404,10 +656,13 @@ SPLIT INTERACTIVE & RELATED SECTION
               Schedule a private viewing or enquire with our luxury property consultants.
             </p>
 
-            <a href="{{ url_for('contact') }}"
-               class="primary-btn">
+            <a
+              href="{{ url_for('contact') }}"
+              class="primary-btn">
 
-              <span>Contact Agent</span>
+              <span>
+                Contact Agent
+              </span>
 
               <i class="fas fa-arrow-right"></i>
 
@@ -420,9 +675,9 @@ SPLIT INTERACTIVE & RELATED SECTION
       </div>
 
 
-      <!-- =========================
-      RIGHT COLUMN - RELATED
-      ========================= -->
+      <!-- =====================================================
+           RIGHT COLUMN — RELATED PROPERTIES
+      ===================================================== -->
 
       <div class="split-right-column">
 
@@ -430,46 +685,54 @@ SPLIT INTERACTIVE & RELATED SECTION
 
           <div class="related-properties-modern">
 
-            <h2 class="section-title">
-              Related Properties
-            </h2>
+            <div class="related-heading">
+
+              <span class="related-eyebrow">
+                YOU MAY ALSO LIKE
+              </span>
+
+              <h2 class="section-title">
+                Related Properties
+              </h2>
+
+            </div>
 
 
             <div class="related-modern-grid">
 
               {% for item in related_properties[:6] %}
 
-                <a href="{{ url_for('property_details', id=item.id) }}"
-                   class="related-card-rect">
+                <a
+                  href="{{ url_for('property_details', id=item.id) }}"
+                  class="related-card-rect">
 
 
-                  <!-- FIRST RECTANGLE: IMAGE -->
+                  <!-- IMAGE -->
 
                   <div class="related-image-rect">
 
                     {% if item.main_image %}
 
-                      <img src="{{ item.main_image }}"
-                           alt="{{ item.title }} in {{ item.location }} Qatar"
-                           loading="lazy">
+                      <img
+                        src="{{ item.main_image }}"
+                        alt="{{ item.title }} in {{ item.location }} Qatar"
+                        loading="lazy">
 
                     {% else %}
 
-                      <img src="{{ url_for('static', filename='images/no-image.png') }}"
-                           alt="No image available"
-                           loading="lazy">
+                      <img
+                        src="{{ url_for('static', filename='images/no-image.png') }}"
+                        alt="No image available"
+                        loading="lazy">
 
                     {% endif %}
 
                   </div>
 
 
-                  <!-- SECOND RECTANGLE -->
+                  <!-- INFORMATION -->
 
                   <div class="related-info-rect">
-
-
-                    <!-- PRICE TOP RIGHT -->
 
                     <div class="related-price-badge">
 
@@ -485,31 +748,43 @@ SPLIT INTERACTIVE & RELATED SECTION
                       </h3>
 
                       <p class="location-text">
-                        📍 {{ item.location }}
+
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ item.location }}
+
                       </p>
 
                     </div>
 
-
-                    <!-- BOTTOM FEATURES -->
 
                     <div class="related-bottom-bar">
 
                       <div class="related-meta">
 
                         <span class="meta-item">
+
                           <i class="fas fa-bed"></i>
+
                           {{ item.bedrooms }}
+
                         </span>
 
+
                         <span class="meta-item">
+
                           <i class="fas fa-bath"></i>
+
                           {{ item.bathrooms }}
+
                         </span>
 
+
                         <span class="meta-item">
+
                           <i class="fas fa-ruler-combined"></i>
+
                           {{ item.area }}m²
+
                         </span>
 
                       </div>
@@ -537,20 +812,23 @@ SPLIT INTERACTIVE & RELATED SECTION
 </section>
 
 
-<!-- =========================
-ADVANCED IMAGE LIGHTBOX
-========================= -->
+<!-- =========================================================
+     ADVANCED IMAGE LIGHTBOX
+========================================================= -->
 
-<div id="imageLightbox"
-     class="lightbox-modal"
-     aria-hidden="true">
+<div
+  id="imageLightbox"
+  class="lightbox-modal"
+  aria-hidden="true">
+
 
   <!-- CLOSE -->
 
-  <button type="button"
-          class="lightbox-close"
-          onclick="closeLightbox()"
-          aria-label="Close image viewer">
+  <button
+    type="button"
+    class="lightbox-close"
+    onclick="closeLightbox()"
+    aria-label="Close image viewer">
 
     &times;
 
@@ -559,45 +837,50 @@ ADVANCED IMAGE LIGHTBOX
 
   <!-- PREVIOUS -->
 
-  <button type="button"
-          class="lightbox-nav lightbox-prev"
-          onclick="previousImage(event)"
-          aria-label="Previous image">
+  <button
+    type="button"
+    class="lightbox-nav lightbox-prev"
+    onclick="previousImage(event)"
+    aria-label="Previous image">
 
     <i class="fas fa-chevron-left"></i>
 
   </button>
 
 
-  <!-- IMAGE AREA -->
+  <!-- IMAGE -->
 
-  <div class="lightbox-image-area"
-       id="lightboxImageArea">
+  <div
+    class="lightbox-image-area"
+    id="lightboxImageArea">
 
-    <img class="lightbox-content"
-         id="lightboxImg"
-         draggable="false"
-         alt="{{ property.title }}">
+    <img
+      class="lightbox-content"
+      id="lightboxImg"
+      draggable="false"
+      alt="{{ property.title }}">
 
   </div>
 
 
   <!-- NEXT -->
 
-  <button type="button"
-          class="lightbox-nav lightbox-next"
-          onclick="nextImage(event)"
-          aria-label="Next image">
+  <button
+    type="button"
+    class="lightbox-nav lightbox-next"
+    onclick="nextImage(event)"
+    aria-label="Next image">
 
     <i class="fas fa-chevron-right"></i>
 
   </button>
 
 
-  <!-- IMAGE COUNTER -->
+  <!-- COUNTER -->
 
-  <div class="lightbox-counter"
-       id="lightboxCounter">
+  <div
+    class="lightbox-counter"
+    id="lightboxCounter">
 
     1 / 1
 
@@ -644,15 +927,22 @@ function openLightbox(index) {
     return;
   }
 
-  currentLightboxIndex = normalizeGalleryIndex(index);
+  currentLightboxIndex =
+    normalizeGalleryIndex(index);
 
   const modal =
     document.getElementById("imageLightbox");
 
   modal.style.display = "flex";
-  modal.setAttribute("aria-hidden", "false");
 
-  document.body.classList.add("lightbox-open");
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "lightbox-open"
+  );
 
   updateLightboxImage();
 
@@ -660,7 +950,7 @@ function openLightbox(index) {
 
 
 /* =========================================================
-   UPDATE CURRENT IMAGE
+   UPDATE IMAGE
 ========================================================= */
 
 function updateLightboxImage() {
@@ -688,7 +978,6 @@ function updateLightboxImage() {
 
 /* =========================================================
    NORMALIZE INDEX
-   Allows continuous looping
 ========================================================= */
 
 function normalizeGalleryIndex(index) {
@@ -700,13 +989,16 @@ function normalizeGalleryIndex(index) {
     return 0;
   }
 
-  return ((index % total) + total) % total;
+  return (
+    (index % total) +
+    total
+  ) % total;
 
 }
 
 
 /* =========================================================
-   NEXT IMAGE
+   NEXT
 ========================================================= */
 
 function nextImage(event) {
@@ -730,10 +1022,14 @@ function nextImage(event) {
 
 
 /* =========================================================
-   PREVIOUS IMAGE
+   PREVIOUS
 ========================================================= */
 
 function previousImage(event) {
+
+  if (event) {
+    event.stopPropagation();
+  }
 
   if (event) {
     event.stopPropagation();
@@ -773,7 +1069,9 @@ function closeLightbox() {
 
   }
 
-  document.body.classList.remove("lightbox-open");
+  document.body.classList.remove(
+    "lightbox-open"
+  );
 
 }
 
@@ -789,13 +1087,12 @@ document.addEventListener(
     const modal =
       document.getElementById("imageLightbox");
 
-    if (!modal ||
-        modal.style.display !== "flex") {
-
+    if (
+      !modal ||
+      modal.style.display !== "flex"
+    ) {
       return;
-
     }
-
 
     if (event.key === "ArrowRight") {
 
@@ -805,7 +1102,6 @@ document.addEventListener(
 
     }
 
-
     else if (event.key === "ArrowLeft") {
 
       event.preventDefault();
@@ -813,7 +1109,6 @@ document.addEventListener(
       previousImage();
 
     }
-
 
     else if (event.key === "Escape") {
 
@@ -828,7 +1123,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   CLOSE WHEN CLICKING DARK BACKGROUND
+   CLOSE BACKGROUND
 ========================================================= */
 
 document
@@ -853,7 +1148,7 @@ document
 
 
 /* =========================================================
-   MOBILE SWIPE SUPPORT
+   MOBILE SWIPE
 ========================================================= */
 
 let touchStartX = 0;
@@ -861,8 +1156,11 @@ let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
 
+
 const lightboxImageArea =
-  document.getElementById("lightboxImageArea");
+  document.getElementById(
+    "lightboxImageArea"
+  );
 
 
 lightboxImageArea.addEventListener(
@@ -914,10 +1212,6 @@ function handleSwipe() {
     touchEndY - touchStartY;
 
 
-  /*
-     Ignore mostly vertical swipes.
-  */
-
   if (
     Math.abs(swipeDistanceX) <
     Math.abs(swipeDistanceY)
@@ -928,12 +1222,9 @@ function handleSwipe() {
   }
 
 
-  /*
-     Minimum horizontal movement:
-     50px
-  */
-
-  if (Math.abs(swipeDistanceX) < 50) {
+  if (
+    Math.abs(swipeDistanceX) < 50
+  ) {
 
     return;
 
@@ -944,7 +1235,9 @@ function handleSwipe() {
 
     nextImage();
 
-  } else {
+  }
+
+  else {
 
     previousImage();
 
@@ -971,31 +1264,40 @@ function toggleAccordion(headerElement) {
 
 <style>
 
-/* ==================================
-   LUXURY PROPERTY DETAIL STYLES
-================================== */
+/* =========================================================
+   MODERN PROPERTY DETAIL DESIGN
+========================================================= */
 
 .top-mosaic-section {
+
   padding: 0;
   margin-top: 0;
+
   background: #ffffff;
+
   width: 100%;
+
   overflow-x: hidden;
+
 }
 
 
 .custom-tight-container {
+
   max-width: 1380px;
+
   padding-left: 12px;
   padding-right: 12px;
+
   margin-left: auto;
   margin-right: auto;
+
 }
 
 
-/* ==================================
+/* =========================================================
    MAIN MOSAIC
-================================== */
+========================================================= */
 
 .mosaic-grid-wrapper.full-stretch {
 
@@ -1008,11 +1310,9 @@ function toggleAccordion(headerElement) {
   position: relative;
 
   left: 50%;
-
   right: 50%;
 
   margin-left: -50vw;
-
   margin-right: -50vw;
 
   height: 600px;
@@ -1044,12 +1344,12 @@ function toggleAccordion(headerElement) {
 .mosaic-main-70 img {
 
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
 
-  transition: transform 0.5s ease;
+  transition:
+    transform 0.5s ease;
 
 }
 
@@ -1061,16 +1361,15 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* ==================================
-   COMPACT MAIN IMAGE BOX
-================================== */
+/* =========================================================
+   IMAGE OVERLAY
+========================================================= */
 
 .mosaic-header-overlay {
 
   position: absolute;
 
   top: 22px;
-
   left: 22px;
 
   z-index: 2;
@@ -1079,11 +1378,21 @@ function toggleAccordion(headerElement) {
 
   width: fit-content;
 
-  max-width: min(430px, calc(100% - 44px));
+  max-width:
+    min(
+      430px,
+      calc(100% - 44px)
+    );
 
   box-sizing: border-box;
 
-  background: rgba(15, 23, 42, 0.78);
+  background:
+    rgba(
+      15,
+      23,
+      42,
+      0.78
+    );
 
   backdrop-filter: blur(10px);
 
@@ -1091,11 +1400,15 @@ function toggleAccordion(headerElement) {
 
   border-radius: 10px;
 
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border:
+    1px solid
+    rgba(255,255,255,0.2);
 
   color: #ffffff;
 
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow:
+    0 8px 24px
+    rgba(0,0,0,0.25);
 
 }
 
@@ -1106,7 +1419,8 @@ function toggleAccordion(headerElement) {
 
   width: fit-content;
 
-  background: var(--qatar-maroon, #8A1538);
+  background:
+    var(--qatar-maroon, #8A1538);
 
   color: #ffffff;
 
@@ -1127,7 +1441,8 @@ function toggleAccordion(headerElement) {
 
 .property-status.rent {
 
-  background: var(--gold-accent, #D4AF37);
+  background:
+    var(--gold-accent, #D4AF37);
 
   color: #0F172A;
 
@@ -1136,19 +1451,32 @@ function toggleAccordion(headerElement) {
 
 .mosaic-header-overlay h1 {
 
-  font-size: clamp(18px, 2.2vw, 28px);
+  font-size:
+    clamp(
+      18px,
+      2.2vw,
+      28px
+    );
 
   color: #ffffff;
 
   font-weight: 800;
 
-  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-family:
+    var(
+      --font-serif,
+      'Playfair Display',
+      serif
+    );
 
-  margin: 0 0 3px 0;
+  margin:
+    0 0 3px 0;
 
   line-height: 1.2;
 
-  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  text-shadow:
+    0 2px 4px
+    rgba(0,0,0,0.4);
 
 }
 
@@ -1166,19 +1494,28 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* ==================================
-   IMAGE EXPAND BADGE
-================================== */
+.property-location-tag i {
+
+  color: #D4AF37;
+
+  margin-right: 4px;
+
+}
+
+
+/* =========================================================
+   EXPAND BADGE
+========================================================= */
 
 .image-expand-badge {
 
   position: absolute;
 
   bottom: 20px;
-
   right: 20px;
 
-  background: rgba(15, 23, 42, 0.85);
+  background:
+    rgba(15,23,42,0.85);
 
   color: #ffffff;
 
@@ -1192,20 +1529,32 @@ function toggleAccordion(headerElement) {
 
   backdrop-filter: blur(6px);
 
-  border: 1px solid rgba(255,255,255,0.2);
+  border:
+    1px solid
+    rgba(255,255,255,0.2);
 
 }
 
 
-/* ==================================
+.image-expand-badge i {
+
+  margin-right: 5px;
+
+}
+
+
+/* =========================================================
    SIDE IMAGES
-================================== */
+========================================================= */
 
 .mosaic-side-30 {
 
-  flex: 0 0 calc(30% - 2px);
+  flex:
+    0 0
+    calc(30% - 2px);
 
-  width: calc(30% - 2px);
+  width:
+    calc(30% - 2px);
 
   display: flex;
 
@@ -1222,7 +1571,8 @@ function toggleAccordion(headerElement) {
 
   flex: 1;
 
-  height: calc(50% - 2px);
+  height:
+    calc(50% - 2px);
 
   overflow: hidden;
 
@@ -1236,12 +1586,12 @@ function toggleAccordion(headerElement) {
 .mosaic-sub-item img {
 
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
 
-  transition: transform 0.5s ease;
+  transition:
+    transform 0.5s ease;
 
 }
 
@@ -1253,9 +1603,9 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* ==================================
+/* =========================================================
    HORIZONTAL GALLERY
-================================== */
+========================================================= */
 
 .horizontal-gallery-container {
 
@@ -1283,7 +1633,9 @@ function toggleAccordion(headerElement) {
 
 .horizontal-thumb-item {
 
-  flex: 0 0 220px;
+  flex:
+    0 0
+    220px;
 
   height: 140px;
 
@@ -1299,7 +1651,6 @@ function toggleAccordion(headerElement) {
 .horizontal-thumb-item img {
 
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
@@ -1307,15 +1658,17 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* ==================================
-   SPLIT LAYOUT
-================================== */
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
 
 .modern-split-section {
 
-  padding: 40px 0 60px;
+  padding:
+    48px 0 70px;
 
-  background: #f8fafc;
+  background:
+    #f8fafc;
 
 }
 
@@ -1324,7 +1677,9 @@ function toggleAccordion(headerElement) {
 
   display: grid;
 
-  grid-template-columns: 1fr 400px;
+  grid-template-columns:
+    minmax(0,1fr)
+    400px;
 
   gap: 32px;
 
@@ -1333,9 +1688,9 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* ==================================
+/* =========================================================
    ACCORDION
-================================== */
+========================================================= */
 
 .interactive-accordion {
 
@@ -1343,7 +1698,7 @@ function toggleAccordion(headerElement) {
 
   flex-direction: column;
 
-  gap: 12px;
+  gap: 14px;
 
   margin-bottom: 24px;
 
@@ -1354,13 +1709,37 @@ function toggleAccordion(headerElement) {
 
   background: #ffffff;
 
-  border-radius: 12px;
+  border-radius: 16px;
 
-  border: 1px solid #e2e8f0;
+  border:
+    1px solid
+    #e2e8f0;
 
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  box-shadow:
+    0 5px 20px
+    rgba(15,23,42,0.035);
 
   overflow: hidden;
+
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+
+}
+
+
+.accordion-item:hover {
+
+  border-color: #d8dee8;
+
+}
+
+
+.accordion-item.active {
+
+  box-shadow:
+    0 8px 28px
+    rgba(15,23,42,0.055);
 
 }
 
@@ -1369,7 +1748,10 @@ function toggleAccordion(headerElement) {
 
   width: 100%;
 
-  padding: 16px 20px;
+  min-height: 66px;
+
+  padding:
+    16px 20px;
 
   background: #ffffff;
 
@@ -1381,11 +1763,15 @@ function toggleAccordion(headerElement) {
 
   align-items: center;
 
-  font-size: 20px;
+  font-size: 18px;
 
-  font-weight: 700;
+  font-weight: 750;
 
-  color: var(--navy-dark, #1F2A44);
+  color:
+    var(
+      --navy-dark,
+      #1F2A44
+    );
 
   cursor: pointer;
 
@@ -1394,11 +1780,122 @@ function toggleAccordion(headerElement) {
 }
 
 
-.accordion-item.active .accordion-header {
+.accordion-item.active
+.accordion-header {
 
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom:
+    1px solid
+    #eef2f7;
 
-  background: #f8fafc;
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #fbfcfe
+    );
+
+}
+
+
+.accordion-title-wrap {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+.accordion-icon {
+
+  width: 36px;
+  height: 36px;
+
+  min-width: 36px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+}
+
+
+.price-icon {
+
+  background:
+    rgba(138,21,56,0.09);
+
+  color: #8A1538;
+
+}
+
+
+.information-icon {
+
+  background:
+    rgba(30,64,175,0.08);
+
+  color: #1d4ed8;
+
+}
+
+
+.amenities-icon {
+
+  background:
+    rgba(212,175,55,0.14);
+
+  color: #9a7611;
+
+}
+
+
+.overview-icon {
+
+  background:
+    rgba(15,23,42,0.07);
+
+  color: #334155;
+
+}
+
+
+.map-icon {
+
+  background:
+    rgba(16,185,129,0.10);
+
+  color: #059669;
+
+}
+
+
+.toggle-icon {
+
+  color: #94a3b8;
+
+  font-size: 13px;
+
+  transition:
+    transform 0.25s ease;
+
+}
+
+
+.accordion-item.active
+.toggle-icon {
+
+  transform:
+    rotate(180deg);
+
+  color: #8A1538;
 
 }
 
@@ -1407,35 +1904,760 @@ function toggleAccordion(headerElement) {
 
   display: none;
 
-  padding: 24px;
+  padding: 26px;
 
   background: #ffffff;
 
 }
 
 
-.accordion-item.active .accordion-content {
+.accordion-item.active
+.accordion-content {
 
   display: block;
 
 }
 
 
-/* ==================================
-   RELATED PROPERTIES
-================================== */
+/* =========================================================
+   MODERN PRICE SECTION
+========================================================= */
 
-.section-title {
+.price-section-modern {
 
-  font-size: 30px;
+  padding:
+    4px 0 2px;
 
-  color: var(--navy-dark, #1F2A44);
+}
+
+
+.price-label-modern {
+
+  font-size: 11px;
 
   font-weight: 800;
 
-  font-family: var(--font-serif, 'Playfair Display', serif);
+  letter-spacing: 1.6px;
+
+  color: #64748b;
+
+  text-transform: uppercase;
+
+  margin-bottom: 5px;
+
+}
+
+
+/*
+   IMPORTANT:
+   Price intentionally uses a clean sans-serif font.
+   It is easier to read than the serif heading font.
+*/
+
+.property-price-modern {
+
+  display: flex;
+
+  align-items: baseline;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  line-height: 1;
+
+}
+
+
+.price-currency {
+
+  font-family:
+    'Inter',
+    'Segoe UI',
+    Arial,
+    sans-serif;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+  color: #8A1538;
+
+  letter-spacing: 0.3px;
+
+}
+
+
+.price-number {
+
+  font-family:
+    'Inter',
+    'Segoe UI',
+    Arial,
+    sans-serif;
+
+  font-size:
+    clamp(32px,4vw,44px);
+
+  font-weight: 800;
+
+  letter-spacing: -1.2px;
+
+  color:
+    #172033;
+
+  line-height: 1.05;
+
+}
+
+
+/* =========================================================
+   KEY FEATURES
+========================================================= */
+
+.details-features {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 14px;
+
+  margin-top: 26px;
+
+  padding-top: 22px;
+
+  border-top:
+    1px solid
+    #eef2f7;
+
+}
+
+
+.feature-box {
+
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fafc,
+      #ffffff
+    );
+
+  padding:
+    17px 10px;
+
+  border-radius: 12px;
+
+  text-align: center;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
+
+.feature-box:hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 8px 18px
+    rgba(15,23,42,0.06);
+
+}
+
+
+.feature-icon {
+
+  width: 34px;
+  height: 34px;
+
+  margin:
+    0 auto 8px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(138,21,56,0.08);
+
+  color: #8A1538;
+
+  font-size: 13px;
+
+}
+
+
+.feature-value {
+
+  font-size: 21px;
+
+  line-height: 1.1;
+
+  color:
+    #1F2A44;
+
+  font-weight: 800;
+
+}
+
+
+.feature-label {
+
+  margin-top: 5px;
+
+  font-size: 10px;
+
+  color: #64748b;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+
+}
+
+
+/* =========================================================
+   PROPERTY INFORMATION
+========================================================= */
+
+.property-info-grid-modern {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap: 12px;
+
+}
+
+
+.modern-info-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+
+  padding:
+    14px;
+
+  border:
+    1px solid
+    #e5eaf0;
+
+  border-radius: 12px;
+
+  background:
+    #fbfcfe;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+}
+
+
+.modern-info-card:hover {
+
+  border-color:
+    rgba(138,21,56,0.25);
+
+  background:
+    #ffffff;
+
+}
+
+
+.modern-info-icon {
+
+  width: 38px;
+  height: 38px;
+
+  min-width: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    rgba(138,21,56,0.08);
+
+  color: #8A1538;
+
+  font-size: 14px;
+
+}
+
+
+.modern-info-content {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+}
+
+
+.modern-info-label {
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+
+  color: #94a3b8;
+
+  font-weight: 800;
+
+}
+
+
+.modern-info-content strong {
+
+  color: #1F2A44;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1.35;
+
+  overflow-wrap: anywhere;
+
+}
+
+
+/* =========================================================
+   AMENITIES
+========================================================= */
+
+.feature-list-modern {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap: 10px;
+
+}
+
+
+.feature-item-modern {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-height: 44px;
+
+  padding:
+    9px 12px;
+
+  background:
+    #f8fafc;
+
+  border:
+    1px solid
+    #e5eaf0;
+
+  border-radius: 9px;
+
+  color:
+    #334155;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+
+.feature-item-modern:hover {
+
+  background: #ffffff;
+
+  border-color:
+    rgba(212,175,55,0.55);
+
+}
+
+
+.feature-check {
+
+  width: 22px;
+  height: 22px;
+
+  min-width: 22px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(212,175,55,0.16);
+
+  color:
+    #9a7611;
+
+  font-size: 10px;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description-wrapper {
+
+  max-width: 900px;
+
+}
+
+
+.description-text {
+
+  font-size: 15px;
+
+  line-height: 1.85;
+
+  color: #475569;
+
+  margin: 0;
+
+  white-space: pre-line;
+
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.map-placeholder {
+
+  min-height: 190px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  gap: 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fafc,
+      #eef2f7
+    );
+
+  border:
+    1px dashed
+    #cbd5e1;
+
+  border-radius: 14px;
+
+  color: #64748b;
+
+}
+
+
+.map-placeholder-icon {
+
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(138,21,56,0.09);
+
+  color: #8A1538;
+
+  font-size: 19px;
+
+  margin-bottom: 4px;
+
+}
+
+
+.map-placeholder strong {
+
+  color: #1F2A44;
+
+  font-size: 16px;
+
+}
+
+
+.map-placeholder span {
+
+  font-size: 12px;
+
+}
+
+
+/* =========================================================
+   AGENT CONTACT
+========================================================= */
+
+.agent-contact-card {
+
+  position: relative;
+
+  background:
+    #ffffff;
+
+  padding:
+    24px 28px;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 6px 22px
+    rgba(15,23,42,0.05);
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  overflow: hidden;
+
+}
+
+
+.agent-contact-card::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #D4AF37 0%,
+      #8A1538 100%
+    );
+
+}
+
+
+.contact-card-content {
+
+  position: relative;
+
+  z-index: 1;
+
+}
+
+
+.contact-badge {
+
+  display: inline-block;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+
+  color: #8A1538;
+
+  text-transform: uppercase;
+
+  background:
+    rgba(138,21,56,0.08);
+
+  padding:
+    4px 9px;
+
+  border-radius: 12px;
+
+  margin-bottom: 9px;
+
+}
+
+
+.agent-contact-card h3 {
+
+  font-size: 20px;
+
+  color: #1F2A44;
+
+  font-weight: 750;
+
+  margin:
+    0 0 6px;
+
+}
+
+
+.agent-contact-card p {
+
+  font-size: 13px;
+
+  color: #64748b;
+
+  line-height: 1.55;
+
+  margin-bottom: 18px;
+
+}
+
+
+.agent-contact-card .primary-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding:
+    11px 23px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8A1538 0%,
+      #6b102b 100%
+    );
+
+  color: #ffffff;
+
+  border-radius: 25px;
+
+  font-weight: 700;
+
+  font-size: 13px;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 5px 14px
+    rgba(138,21,56,0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
+
+.agent-contact-card .primary-btn:hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(138,21,56,0.25);
+
+}
+
+
+/* =========================================================
+   RELATED PROPERTIES
+========================================================= */
+
+.related-heading {
 
   margin-bottom: 20px;
+
+}
+
+
+.related-eyebrow {
+
+  display: block;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.6px;
+
+  color: #8A1538;
+
+  margin-bottom: 4px;
+
+}
+
+
+.section-title {
+
+  font-size: 29px;
+
+  color:
+    var(--navy-dark,#1F2A44);
+
+  font-weight: 800;
+
+  font-family:
+    var(
+      --font-serif,
+      'Playfair Display',
+      serif
+    );
+
+  margin: 0;
 
 }
 
@@ -1444,7 +2666,11 @@ function toggleAccordion(headerElement) {
 
   display: grid;
 
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(180px,1fr)
+    );
 
   gap: 16px;
 
@@ -1463,27 +2689,34 @@ function toggleAccordion(headerElement) {
 
   overflow: hidden;
 
-  border: 1px solid #e2e8f0;
+  border:
+    1px solid
+    #e2e8f0;
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow:
+    0 4px 12px
+    rgba(0,0,0,0.06);
 
   text-decoration: none !important;
 
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 
 }
 
 
 .related-card-rect:hover {
 
-  transform: translateY(-4px);
+  transform:
+    translateY(-4px);
 
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  box-shadow:
+    0 8px 20px
+    rgba(0,0,0,0.12);
 
 }
 
-
-/* FIRST RECTANGLE */
 
 .related-image-rect {
 
@@ -1499,15 +2732,24 @@ function toggleAccordion(headerElement) {
 .related-image-rect img {
 
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
 
+  transition:
+    transform 0.4s ease;
+
 }
 
 
-/* SECOND RECTANGLE */
+.related-card-rect:hover
+.related-image-rect img {
+
+  transform:
+    scale(1.04);
+
+}
+
 
 .related-info-rect {
 
@@ -1525,38 +2767,38 @@ function toggleAccordion(headerElement) {
 
   gap: 8px;
 
-  background: linear-gradient(
-    180deg,
-    #2d3748 0%,
-    #1f2937 100%
-  );
+  background:
+    linear-gradient(
+      180deg,
+      #2d3748 0%,
+      #1f2937 100%
+    );
 
   flex: 1;
 
 }
 
 
-/* ==================================
-   PRICE - TOP RIGHT
-================================== */
-
 .related-price-badge {
 
   position: absolute;
 
   top: 9px;
-
   right: 9px;
 
-  background: rgba(15, 23, 42, 0.92);
+  background:
+    rgba(15,23,42,0.92);
 
   color: #D4AF37;
 
-  padding: 5px 8px;
+  padding:
+    5px 8px;
 
   border-radius: 5px;
 
-  border: 1px solid rgba(212,175,55,0.35);
+  border:
+    1px solid
+    rgba(212,175,55,0.35);
 
   font-size: 11px;
 
@@ -1586,7 +2828,8 @@ function toggleAccordion(headerElement) {
 
   font-weight: 700;
 
-  margin: 0 0 3px 0;
+  margin:
+    0 0 3px;
 
   white-space: nowrap;
 
@@ -1610,7 +2853,14 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* BOTTOM META */
+.related-text-wrap .location-text i {
+
+  color: #D4AF37;
+
+  margin-right: 3px;
+
+}
+
 
 .related-bottom-bar {
 
@@ -1620,7 +2870,9 @@ function toggleAccordion(headerElement) {
 
   align-items: center;
 
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top:
+    1px solid
+    rgba(255,255,255,0.1);
 
   padding-top: 8px;
 
@@ -1674,319 +2926,8 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* ==================================
-   PRICE / FEATURE DETAILS
-================================== */
-
-.price-header .label {
-
-  font-size: 12px;
-
-  text-transform: uppercase;
-
-  color: #64748b;
-
-  font-weight: 700;
-
-}
-
-
-.property-price {
-
-  font-size: 32px;
-
-  color: var(--qatar-maroon, #8A1538);
-
-  font-weight: 800;
-
-  font-family: var(--font-serif, 'Playfair Display', serif);
-
-  margin-top: 2px;
-
-}
-
-
-.details-features {
-
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 12px;
-
-  margin-top: 20px;
-
-  padding-top: 16px;
-
-  border-top: 1px solid #f1f5f9;
-
-}
-
-
-.feature-box {
-
-  background: #f8fafc;
-
-  padding: 12px 8px;
-
-  border-radius: 8px;
-
-  text-align: center;
-
-  border: 1px solid #e2e8f0;
-
-}
-
-
-.feature-box h4 {
-
-  font-size: 20px;
-
-  color: var(--navy-dark, #1F2A44);
-
-  font-weight: 800;
-
-}
-
-
-.feature-box span {
-
-  font-size: 11px;
-
-  color: #64748b;
-
-  font-weight: 700;
-
-  text-transform: uppercase;
-
-}
-
-
-/* ==================================
-   OTHER CONTENT
-================================== */
-
-.feature-list {
-
-  display: grid;
-
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-
-  gap: 8px;
-
-}
-
-
-.feature-item {
-
-  padding: 8px 10px;
-
-  background: #f8fafc;
-
-  border-left: 3px solid var(--gold-accent, #D4AF37);
-
-  border-radius: 4px;
-
-  font-size: 15px;
-
-  font-weight: 600;
-
-  color: var(--navy-dark, #1F2A44);
-
-}
-
-
-.description-text {
-
-  font-size: 16px;
-
-  line-height: 1.7;
-
-  color: #475569;
-
-}
-
-
-.property-info-grid {
-
-  display: grid;
-
-  grid-template-columns: 1fr;
-
-  gap: 8px;
-
-}
-
-
-.info-item {
-
-  padding: 10px;
-
-  background: #f8fafc;
-
-  border-radius: 6px;
-
-  border: 1px solid #e2e8f0;
-
-  font-size: 15px;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-}
-
-
-.info-item strong {
-
-  color: var(--navy-dark, #1F2A44);
-
-  min-width: 90px;
-
-}
-
-
-/* ==================================
-   AGENT CARD
-================================== */
-
-.agent-contact-card {
-
-  position: relative;
-
-  background: #ffffff;
-
-  padding: 20px 24px;
-
-  border-radius: 14px;
-
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
-
-  border: 1px solid #e2e8f0;
-
-  overflow: hidden;
-
-}
-
-
-.agent-contact-card::before {
-
-  content: '';
-
-  position: absolute;
-
-  top: 0;
-
-  left: 0;
-
-  width: 4px;
-
-  height: 100%;
-
-  background: linear-gradient(
-    180deg,
-    #D4AF37 0%,
-    #8A1538 100%
-  );
-
-}
-
-
-.contact-card-content {
-
-  position: relative;
-
-  z-index: 1;
-
-}
-
-
-.contact-badge {
-
-  display: inline-block;
-
-  font-size: 9px;
-
-  font-weight: 800;
-
-  letter-spacing: 1.2px;
-
-  color: #8A1538;
-
-  text-transform: uppercase;
-
-  background: rgba(138, 21, 56, 0.08);
-
-  padding: 3px 8px;
-
-  border-radius: 12px;
-
-  margin-bottom: 8px;
-
-}
-
-
-.agent-contact-card h3 {
-
-  font-size: 17px;
-
-  color: #1F2A44;
-
-  font-weight: 700;
-
-  margin-bottom: 4px;
-
-}
-
-
-.agent-contact-card p {
-
-  font-size: 12px;
-
-  color: #64748b;
-
-  line-height: 1.4;
-
-  margin-bottom: 16px;
-
-}
-
-
-.agent-contact-card .primary-btn {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  padding: 10px 22px;
-
-  background: linear-gradient(
-    135deg,
-    #8A1538 0%,
-    #6b102b 100%
-  );
-
-  color: #ffffff;
-
-  border-radius: 25px;
-
-  font-weight: 700;
-
-  font-size: 13px;
-
-  text-decoration: none;
-
-}
-
-
 /* =========================================================
-   ADVANCED LIGHTBOX
+   LIGHTBOX
 ========================================================= */
 
 .lightbox-modal {
@@ -2000,10 +2941,10 @@ function toggleAccordion(headerElement) {
   inset: 0;
 
   width: 100%;
-
   height: 100%;
 
-  background: rgba(5, 10, 20, 0.96);
+  background:
+    rgba(5,10,20,0.96);
 
   justify-content: center;
 
@@ -2016,8 +2957,6 @@ function toggleAccordion(headerElement) {
 }
 
 
-/* PREVENT PAGE SCROLL WHILE LIGHTBOX IS OPEN */
-
 body.lightbox-open {
 
   overflow: hidden;
@@ -2025,14 +2964,11 @@ body.lightbox-open {
 }
 
 
-/* IMAGE AREA */
-
 .lightbox-image-area {
 
   position: relative;
 
   width: 100%;
-
   height: 100%;
 
   display: flex;
@@ -2041,7 +2977,8 @@ body.lightbox-open {
 
   align-items: center;
 
-  padding: 70px 100px;
+  padding:
+    70px 100px;
 
   box-sizing: border-box;
 
@@ -2049,8 +2986,6 @@ body.lightbox-open {
 
 }
 
-
-/* IMAGE */
 
 .lightbox-content {
 
@@ -2061,43 +2996,42 @@ body.lightbox-open {
   max-height: 86vh;
 
   width: auto;
-
   height: auto;
 
   object-fit: contain;
 
   border-radius: 10px;
 
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  box-shadow:
+    0 20px 60px
+    rgba(0,0,0,0.6);
 
   user-select: none;
 
   -webkit-user-drag: none;
 
-  transition: opacity 0.18s ease;
+  transition:
+    opacity 0.18s ease;
 
 }
 
-
-/* CLOSE BUTTON */
 
 .lightbox-close {
 
   position: fixed;
 
   top: 20px;
-
   right: 28px;
 
   width: 48px;
-
   height: 48px;
 
   border: none;
 
   border-radius: 50%;
 
-  background: rgba(255,255,255,0.12);
+  background:
+    rgba(255,255,255,0.12);
 
   color: #ffffff;
 
@@ -2114,28 +3048,26 @@ body.lightbox-open {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
-  transition: all 0.2s ease;
+  transition:
+    all 0.2s ease;
 
 }
 
 
 .lightbox-close:hover {
 
-  background: rgba(255,255,255,0.22);
+  background:
+    rgba(255,255,255,0.22);
 
   color: #D4AF37;
 
-  transform: scale(1.05);
+  transform:
+    scale(1.05);
 
 }
 
-
-/* ==================================
-   LEFT / RIGHT ARROW BUTTONS
-================================== */
 
 .lightbox-nav {
 
@@ -2143,24 +3075,26 @@ body.lightbox-open {
 
   top: 50%;
 
-  transform: translateY(-50%);
+  transform:
+    translateY(-50%);
 
   width: 58px;
-
   height: 58px;
 
-  border: 1px solid rgba(255,255,255,0.2);
+  border:
+    1px solid
+    rgba(255,255,255,0.2);
 
   border-radius: 50%;
 
-  background: rgba(15,23,42,0.78);
+  background:
+    rgba(15,23,42,0.78);
 
   color: #ffffff;
 
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   font-size: 24px;
@@ -2181,7 +3115,8 @@ body.lightbox-open {
 
 .lightbox-nav:hover {
 
-  background: rgba(138,21,56,0.95);
+  background:
+    rgba(138,21,56,0.95);
 
   color: #ffffff;
 
@@ -2204,19 +3139,21 @@ body.lightbox-open {
 
 .lightbox-prev:hover {
 
-  transform: translateY(-50%) scale(1.06);
+  transform:
+    translateY(-50%)
+    scale(1.06);
 
 }
 
 
 .lightbox-next:hover {
 
-  transform: translateY(-50%) scale(1.06);
+  transform:
+    translateY(-50%)
+    scale(1.06);
 
 }
 
-
-/* IMAGE COUNTER */
 
 .lightbox-counter {
 
@@ -2226,15 +3163,18 @@ body.lightbox-open {
 
   left: 50%;
 
-  transform: translateX(-50%);
+  transform:
+    translateX(-50%);
 
   z-index: 100002;
 
-  background: rgba(15,23,42,0.78);
+  background:
+    rgba(15,23,42,0.78);
 
   color: #ffffff;
 
-  padding: 7px 13px;
+  padding:
+    7px 13px;
 
   border-radius: 20px;
 
@@ -2244,16 +3184,18 @@ body.lightbox-open {
 
   letter-spacing: 0.5px;
 
-  border: 1px solid rgba(255,255,255,0.15);
+  border:
+    1px solid
+    rgba(255,255,255,0.15);
 
   backdrop-filter: blur(8px);
 
 }
 
 
-/* ==================================
+/* =========================================================
    TABLET
-================================== */
+========================================================= */
 
 @media (max-width: 992px) {
 
@@ -2272,11 +3214,19 @@ body.lightbox-open {
 }
 
 
-/* ==================================
+/* =========================================================
    MOBILE
-================================== */
+========================================================= */
 
 @media (max-width: 768px) {
+
+  .modern-split-section {
+
+    padding:
+      30px 0 50px;
+
+  }
+
 
   .mosaic-grid-wrapper.full-stretch {
 
@@ -2285,11 +3235,9 @@ body.lightbox-open {
     height: auto;
 
     left: 0;
-
     right: 0;
 
     margin-left: 0;
-
     margin-right: 0;
 
     width: 100%;
@@ -2308,21 +3256,20 @@ body.lightbox-open {
   }
 
 
-  /* SMALL PORTABLE BOX */
-
   .mosaic-header-overlay {
 
     top: 12px;
-
     left: 12px;
 
     right: auto;
 
     width: auto;
 
-    max-width: calc(100% - 24px);
+    max-width:
+      calc(100% - 24px);
 
-    padding: 9px 11px;
+    padding:
+      9px 11px;
 
     border-radius: 8px;
 
@@ -2348,7 +3295,8 @@ body.lightbox-open {
 
     font-size: 8px;
 
-    padding: 3px 8px;
+    padding:
+      3px 8px;
 
     margin-bottom: 4px;
 
@@ -2365,10 +3313,10 @@ body.lightbox-open {
   .image-expand-badge {
 
     bottom: 12px;
-
     right: 12px;
 
-    padding: 6px 10px;
+    padding:
+      6px 10px;
 
     font-size: 10px;
 
@@ -2395,7 +3343,143 @@ body.lightbox-open {
   }
 
 
-  /* RELATED PROPERTIES */
+  /* ACCORDIONS */
+
+  .accordion-header {
+
+    min-height: 60px;
+
+    padding:
+      13px 14px;
+
+    font-size: 15px;
+
+  }
+
+
+  .accordion-icon {
+
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+
+    font-size: 12px;
+
+  }
+
+
+  .accordion-title-wrap {
+
+    gap: 9px;
+
+  }
+
+
+  .accordion-content {
+
+    padding: 18px 15px;
+
+  }
+
+
+  /* PRICE */
+
+  .price-number {
+
+    font-size: 32px;
+
+  }
+
+
+  .price-currency {
+
+    font-size: 15px;
+
+  }
+
+
+  /* FEATURES */
+
+  .details-features {
+
+    gap: 7px;
+
+  }
+
+
+  .feature-box {
+
+    padding:
+      12px 5px;
+
+  }
+
+
+  .feature-icon {
+
+    width: 30px;
+    height: 30px;
+
+    font-size: 11px;
+
+  }
+
+
+  .feature-value {
+
+    font-size: 18px;
+
+  }
+
+
+  .feature-label {
+
+    font-size: 8px;
+
+    letter-spacing: 0.3px;
+
+  }
+
+
+  /* PROPERTY INFORMATION */
+
+  .property-info-grid-modern {
+
+    grid-template-columns: 1fr;
+
+    gap: 9px;
+
+  }
+
+
+  .modern-info-card {
+
+    padding: 12px;
+
+  }
+
+
+  .modern-info-icon {
+
+    width: 35px;
+    height: 35px;
+
+    min-width: 35px;
+
+  }
+
+
+  /* AMENITIES */
+
+  .feature-list-modern {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  /* RELATED */
 
   .related-modern-grid {
 
@@ -2429,17 +3513,15 @@ body.lightbox-open {
   }
 
 
-  /* MOBILE PRICE TOP RIGHT */
-
   .related-price-badge {
 
     top: 9px;
-
     right: 9px;
 
     font-size: 11px;
 
-    padding: 5px 7px;
+    padding:
+      5px 7px;
 
   }
 
@@ -2465,13 +3547,12 @@ body.lightbox-open {
   }
 
 
-  /* MOBILE META SPREADS ACROSS RECTANGLE */
-
   .related-meta {
 
     width: 100%;
 
-    justify-content: space-between;
+    justify-content:
+      space-between;
 
     gap: 4px;
 
@@ -2486,7 +3567,8 @@ body.lightbox-open {
 
     font-size: 12px;
 
-    padding: 5px 0;
+    padding:
+      5px 0;
 
   }
 
@@ -2498,52 +3580,22 @@ body.lightbox-open {
   }
 
 
-  /* MAIN FEATURES */
-
-  .details-features {
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 6px;
-
-  }
-
-
-  .feature-box {
-
-    padding: 10px 4px;
-
-  }
-
-
-  .feature-box h4 {
-
-    font-size: 18px;
-
-  }
-
-
-  .feature-box span {
-
-    font-size: 9px;
-
-  }
-
+  /* CONTACT */
 
   .agent-contact-card {
 
-    padding: 16px 18px;
+    padding:
+      18px 20px;
 
   }
 
 
-  /* ==================================
-     MOBILE LIGHTBOX
-  ================================== */
+  /* LIGHTBOX */
 
   .lightbox-image-area {
 
-    padding: 55px 52px 65px;
+    padding:
+      55px 52px 65px;
 
   }
 
@@ -2562,12 +3614,12 @@ body.lightbox-open {
   .lightbox-nav {
 
     width: 44px;
-
     height: 44px;
 
     font-size: 18px;
 
-    background: rgba(15,23,42,0.72);
+    background:
+      rgba(15,23,42,0.72);
 
   }
 
@@ -2589,11 +3641,9 @@ body.lightbox-open {
   .lightbox-close {
 
     top: 10px;
-
     right: 12px;
 
     width: 42px;
-
     height: 42px;
 
     font-size: 30px;
@@ -2607,26 +3657,27 @@ body.lightbox-open {
 
     font-size: 11px;
 
-    padding: 6px 11px;
+    padding:
+      6px 11px;
 
   }
 
 }
 
 
-/* ==================================
+/* =========================================================
    VERY SMALL PHONES
-================================== */
+========================================================= */
 
 @media (max-width: 380px) {
 
   .mosaic-header-overlay {
 
     top: 10px;
-
     left: 10px;
 
-    padding: 8px 9px;
+    padding:
+      8px 9px;
 
   }
 
@@ -2651,7 +3702,8 @@ body.lightbox-open {
 
     font-size: 10px;
 
-    padding: 4px 6px;
+    padding:
+      4px 6px;
 
   }
 
@@ -2670,8 +3722,6 @@ body.lightbox-open {
   }
 
 
-  /* VERY SMALL SCREEN LIGHTBOX */
-
   .lightbox-image-area {
 
     padding-left: 45px;
@@ -2684,7 +3734,6 @@ body.lightbox-open {
   .lightbox-nav {
 
     width: 38px;
-
     height: 38px;
 
     font-size: 15px;
