@@ -33,7 +33,6 @@
     "@type": "RealEstateAgent",
     "name": "Prestigious Real Estate"
   }
-}
 </script>
 
 
@@ -661,7 +660,7 @@
 
 
                 <!-- =================================================
-                     GOOGLE MAP
+                     PROPERTY LOCATION / GOOGLE MAP
                 ================================================= -->
 
                 <section class="property-section-card property-location-card">
@@ -686,14 +685,6 @@
 
                     </div>
 
-
-                    <!--
-                        The address is passed into JavaScript and
-                        converted into a Google Maps query.
-
-                        This allows every property to display its
-                        own location automatically.
-                    -->
 
                     <div
                         id="propertyGoogleMap"
@@ -1038,7 +1029,7 @@
 <script>
 
 /* =========================================================
-   GOOGLE MAP
+   PROPERTY GOOGLE MAP
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1056,11 +1047,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /*
-        Build the property location from the existing
-        database fields.
+        The exact Google Maps embed URL saved in the
+        properties table.
 
-        Address is preferred because it is usually more
-        specific than location.
+        Database column:
+
+        map_embed_url
+    */
+
+    const savedMapEmbedUrl =
+        {{ (property.map_embed_url or "")|tojson }};
+
+
+    /*
+        Existing property information is still available
+        as a fallback if no map embed URL was saved.
     */
 
     const propertyAddress =
@@ -1107,42 +1108,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /*
-        Encode the address so spaces, commas and special
-        characters do not break the URL.
+        =====================================================
+        MAP EMBED URL
+        =====================================================
+
+        If the administrator has supplied a Google Maps
+        embed URL in the database, use it directly.
+
+        Otherwise, fall back to a normal Google Maps
+        search/embed URL using the property address.
     */
 
-    const encodedQuery =
-        encodeURIComponent(mapQuery);
+    let iframeUrl = "";
 
 
-    /*
-        Google Maps normal web search URL.
-        This does not require us to expose an API key
-        in this page.
-    */
+    if (savedMapEmbedUrl.trim()) {
 
-    const googleMapsUrl =
-        "https://www.google.com/maps/search/?api=1&query="
-        + encodedQuery;
+        iframeUrl =
+            savedMapEmbedUrl.trim();
 
+    }
 
-    /*
-        Set the external Google Maps button.
-    */
+    else {
 
-    if (openMapButton) {
+        const encodedQuery =
+            encodeURIComponent(mapQuery);
 
-        openMapButton.href =
-            googleMapsUrl;
+        iframeUrl =
+            "https://www.google.com/maps?q="
+            + encodedQuery
+            + "&output=embed";
 
     }
 
 
     /*
-        Google Maps embedded view.
+        =====================================================
+        OPEN GOOGLE MAPS BUTTON
+        =====================================================
 
-        The standard maps URL with output=embed
-        displays the requested property location.
+        If a saved embed URL exists, we try to convert it
+        to a usable Google Maps URL.
+
+        Otherwise use a normal Google Maps search URL.
+    */
+
+    if (openMapButton) {
+
+        if (savedMapEmbedUrl.trim()) {
+
+            /*
+                Google embed URLs normally contain the
+                actual map information.
+
+                Opening the saved URL is preferable to
+                constructing another location.
+            */
+
+            openMapButton.href =
+                savedMapEmbedUrl.trim();
+
+        }
+
+        else {
+
+            const encodedQuery =
+                encodeURIComponent(mapQuery);
+
+            openMapButton.href =
+                "https://www.google.com/maps/search/?api=1&query="
+                + encodedQuery;
+
+        }
+
+    }
+
+
+    /*
+        =====================================================
+        CREATE MAP IFRAME
+        =====================================================
     */
 
     const iframe =
@@ -1150,9 +1195,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     iframe.src =
-        "https://www.google.com/maps?q="
-        + encodedQuery
-        + "&output=embed";
+        iframeUrl;
 
 
     iframe.title =
@@ -1189,7 +1232,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /*
-        Replace loading message with the actual map.
+        Replace the loading message with the map.
     */
 
     mapContainer.innerHTML = "";
@@ -2269,7 +2312,6 @@ function handleSwipe() {
     overflow: hidden;
 }
 
-
 .property-google-map {
     width: 100%;
     height: 390px;
@@ -2285,14 +2327,12 @@ function handleSwipe() {
     position: relative;
 }
 
-
 .property-google-map iframe {
     width: 100%;
     height: 100%;
     border: 0;
     display: block;
 }
-
 
 .map-loading {
     position: absolute;
@@ -2307,7 +2347,6 @@ function handleSwipe() {
     padding: 20px;
 }
 
-
 .map-loading-icon {
     width: 52px;
     height: 52px;
@@ -2321,19 +2360,16 @@ function handleSwipe() {
     margin-bottom: 5px;
 }
 
-
 .map-loading strong {
     color: #1f2937;
     font-size: 15px;
 }
-
 
 .map-loading span {
     color: #64748b;
     font-size: 11px;
     max-width: 400px;
 }
-
 
 .map-footer {
     display: flex;
@@ -2342,7 +2378,6 @@ function handleSwipe() {
     gap: 15px;
     padding-top: 14px;
 }
-
 
 .map-address {
     display: flex;
@@ -2353,12 +2388,10 @@ function handleSwipe() {
     line-height: 1.5;
 }
 
-
 .map-address i {
     color: #8A1538;
     margin-top: 2px;
 }
-
 
 .open-map-button {
     flex: 0 0 auto;
@@ -2377,7 +2410,6 @@ function handleSwipe() {
         background .2s ease,
         transform .2s ease;
 }
-
 
 .open-map-button:hover {
     background: #6b102b;
