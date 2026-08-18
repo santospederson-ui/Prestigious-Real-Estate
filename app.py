@@ -2478,9 +2478,7 @@ def add_property():
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
-
     if request.method == "POST":
-
 
         title = request.form["title"]
 
@@ -2490,7 +2488,6 @@ def add_property():
             + "-"
             + str(uuid.uuid4())[:6]
         )
-
 
         purpose = request.form["purpose"]
         property_type = request.form["property_type"]
@@ -2507,69 +2504,65 @@ def add_property():
 
         description = request.form["description"]
 
+        # ==========================
+        # GOOGLE MAP EMBED URL
+        # ==========================
+
+        map_embed_url = request.form.get(
+            "map_embed_url",
+            ""
+        ).strip()
 
         featured = 0
         status = "Available"
 
-
-
         conn = get_db_connection()
         cursor = conn.cursor()
-
-
 
         # ==========================
         # CLOUDINARY IMAGE UPLOAD
         # ==========================
 
-
         main_image = None
-
         uploaded_images = []
-
 
         images = request.files.getlist("images")
 
-
         for image in images:
-
 
             if image and allowed_file(image.filename):
 
-                MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10MB
+                MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
                 if image.content_length and image.content_length > MAX_IMAGE_SIZE:
-                    flash("Image too large. Maximum size is 10MB.", "danger")
-                    return redirect(url_for("add_property"))
 
+                    flash(
+                        "Image too large. Maximum size is 10MB.",
+                        "danger"
+                    )
+
+                    cursor.close()
+                    conn.close()
+
+                    return redirect(
+                        url_for("add_property")
+                    )
 
                 result = cloudinary.uploader.upload(
                     image,
                     folder="prestigious_real_estate/properties"
                 )
 
-
                 image_url = result["secure_url"]
-
 
                 uploaded_images.append(image_url)
 
-
-
-                # First image becomes cover image
-
                 if main_image is None:
-
                     main_image = image_url
-
-
-
-
 
         # ==========================
         # INSERT PROPERTY
         # ==========================
-
 
         cursor.execute(
             """
@@ -2590,15 +2583,15 @@ def add_property():
                 featured,
                 status,
                 description,
-                main_image
+                main_image,
+                map_embed_url
             )
 
             VALUES
             (
                 %s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s
+                %s,%s,%s,%s,%s,%s,%s,%s,%s
             )
-
             """,
 
             (
@@ -2617,31 +2610,22 @@ def add_property():
                 featured,
                 status,
                 description,
-                main_image
+                main_image,
+                map_embed_url
             )
         )
 
-
-
         property_id = cursor.lastrowid
-
-
-
-
 
         # ==========================
         # SAVE FEATURES
         # ==========================
 
-
         features = request.form.getlist("features")
-
 
         for feature in features:
 
-
             cursor.execute(
-
                 """
                 INSERT INTO property_features
                 (
@@ -2651,31 +2635,21 @@ def add_property():
 
                 VALUES
                 (%s,%s)
-
                 """,
 
                 (
                     property_id,
                     feature
                 )
-
             )
-
-
-
-
-
 
         # ==========================
         # SAVE CLOUDINARY IMAGES
         # ==========================
 
-
         for image_url in uploaded_images:
 
-
             cursor.execute(
-
                 """
                 INSERT INTO property_images
                 (
@@ -2685,48 +2659,31 @@ def add_property():
 
                 VALUES
                 (%s,%s)
-
                 """,
 
                 (
                     property_id,
                     image_url
                 )
-
             )
-
-
-
-
 
         conn.commit()
 
-
         cursor.close()
         conn.close()
-
-
 
         flash(
             "Property added successfully",
             "success"
         )
 
-
-
         return redirect(
             url_for("admin_dashboard")
         )
 
-
-
-
-
     return render_template(
         "admin/add_property.html"
     )
-
-
 
 
 
@@ -2950,12 +2907,9 @@ def edit_property(id):
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
-
     conn = get_db_connection()
 
     cursor = conn.cursor(dictionary=True)
-
-
 
     # =========================
     # UPDATE PROPERTY
@@ -2963,70 +2917,77 @@ def edit_property(id):
 
     if request.method == "POST":
 
-
         title = request.form.get("title")
         purpose = request.form.get("purpose")
         property_type = request.form.get("property_type")
         location = request.form.get("location")
         address = request.form.get("address")
+
         price = request.form.get("price", 0)
         bedrooms = request.form.get("bedrooms", 0)
         bathrooms = request.form.get("bathrooms", 0)
         area = request.form.get("area", 0)
         parking = request.form.get("parking", 0)
+
         furnished = request.form.get("furnished")
         status = request.form.get("status")
         description = request.form.get("description")
 
+        # =========================
+        # GOOGLE MAP EMBED URL
+        # =========================
 
+        map_embed_url = request.form.get(
+            "map_embed_url",
+            ""
+        ).strip()
 
         cursor.execute(
-        """
-        UPDATE properties
+            """
+            UPDATE properties
 
-        SET
+            SET
 
-        title=%s,
-        purpose=%s,
-        property_type=%s,
-        location=%s,
-        address=%s,
-        price=%s,
-        bedrooms=%s,
-        bathrooms=%s,
-        area=%s,
-        parking=%s,
-        furnished=%s,
-        status=%s,
-        description=%s
+            title=%s,
+            purpose=%s,
+            property_type=%s,
+            location=%s,
+            address=%s,
+            price=%s,
+            bedrooms=%s,
+            bathrooms=%s,
+            area=%s,
+            parking=%s,
+            furnished=%s,
+            status=%s,
+            description=%s,
+            map_embed_url=%s
 
-        WHERE id=%s
+            WHERE id=%s
+            """,
 
-        """,
-        (
-        title,
-        purpose,
-        property_type,
-        location,
-        address,
-        price,
-        bedrooms,
-        bathrooms,
-        area,
-        parking,
-        furnished,
-        status,
-        description,
-        id
+            (
+                title,
+                purpose,
+                property_type,
+                location,
+                address,
+                price,
+                bedrooms,
+                bathrooms,
+                area,
+                parking,
+                furnished,
+                status,
+                description,
+                map_embed_url,
+                id
+            )
         )
-        )
-
-
 
         # =========================
         # UPDATE PROPERTY FEATURES
         # =========================
-
 
         cursor.execute(
             """
@@ -3036,103 +2997,78 @@ def edit_property(id):
             (id,)
         )
 
-
-
         selected_features = request.form.getlist("features")
-
-
 
         for feature in selected_features:
 
             cursor.execute(
-            """
-            INSERT INTO property_features
-            (
-            property_id,
-            feature_name
+                """
+                INSERT INTO property_features
+                (
+                    property_id,
+                    feature_name
+                )
+
+                VALUES
+                (%s,%s)
+                """,
+
+                (
+                    id,
+                    feature
+                )
             )
-
-            VALUES
-            (%s,%s)
-
-            """,
-            (
-            id,
-            feature
-            )
-            )
-
-
 
         conn.commit()
 
-
-
         cursor.close()
         conn.close()
-
-
 
         flash(
             "Property updated successfully",
             "success"
         )
 
-
         return redirect(
             url_for("manage_properties")
         )
-
-
-
-
 
     # =========================
     # GET PROPERTY DETAILS
     # =========================
 
-
     cursor.execute(
-    """
-    SELECT *
-    FROM properties
-    WHERE id=%s
-    """,
-    (id,)
+        """
+        SELECT *
+        FROM properties
+        WHERE id=%s
+        """,
+        (id,)
     )
 
-
     property = cursor.fetchone()
-
-
 
     # Existing features
 
     cursor.execute(
-    """
-    SELECT feature_name
-    FROM property_features
-    WHERE property_id=%s
-    """,
-    (id,)
+        """
+        SELECT feature_name
+        FROM property_features
+        WHERE property_id=%s
+        """,
+        (id,)
     )
-
 
     saved_features = cursor.fetchall()
 
-
-
     cursor.close()
     conn.close()
-
-
 
     return render_template(
         "admin/edit_property.html",
         property=property,
         saved_features=saved_features
     )
-
 
 
 
