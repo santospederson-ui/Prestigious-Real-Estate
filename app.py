@@ -86,12 +86,29 @@ def session_timeout():
 
 
 
-
 # ==========================================
 # MYSQL CONNECTION
 # ==========================================
+import os
+from urllib.parse import urlparse
+
 def get_db_connection():
 
+    database_url = os.getenv("DATABASE_URL")
+
+    # Railway / platforms providing DATABASE_URL
+    if database_url:
+        parsed = urlparse(database_url)
+
+        return mysql.connector.connect(
+            host=parsed.hostname,
+            user=parsed.username,
+            password=parsed.password,
+            database=parsed.path.lstrip("/"),
+            port=parsed.port or 3306
+        )
+
+    # Local XAMPP / Render using separate DB variables
     return mysql.connector.connect(
         host=os.getenv("DB_HOST"),
         user=os.getenv("DB_USER"),
@@ -99,7 +116,6 @@ def get_db_connection():
         database=os.getenv("DB_NAME"),
         port=int(os.getenv("DB_PORT", 3306))
     )
-
 
 
 
@@ -725,486 +741,179 @@ def about():
 @app.route("/properties")
 def properties():
 
-    conn = None
-    cursor = None
+    conn = get_db_connection()
 
-    try:
+    cursor = conn.cursor(dictionary=True)
 
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+    # =========================
+    # FILTERS
+    # =========================
 
-        # ==========================================================
-        # FILTERS
-        # ==========================================================
+    property_type = request.args.get("property_type", "").strip()
 
-        property_type = request.args.get(
-            "property_type", ""
-        ).strip()
+    purpose = request.args.get("purpose", "").strip()
 
-        purpose = request.args.get(
-            "purpose", ""
-        ).strip()
+    location = request.args.get("location", "").strip()
 
-        location = request.args.get(
-            "location", ""
-        ).strip()
+    search = request.args.get("search", "").strip()
 
-        search = request.args.get(
-            "search", ""
-        ).strip()
+    page = request.args.get(
+        "page",
+        1,
+        type=int
+    )
 
-        bedrooms = request.args.get(
-            "bedrooms", ""
-        ).strip()
+    per_page = 9
 
-        bathrooms = request.args.get(
-            "bathrooms", ""
-        ).strip()
+    offset = (page - 1) * per_page
 
-        min_price = request.args.get(
-            "min_price", ""
-        ).strip()
+    # =========================
+    # BUILD QUERY
+    # =========================
 
-        max_price = request.args.get(
-            "max_price", ""
-        ).strip()
+    where = []
 
-        min_area = request.args.get(
-            "min_area", ""
-        ).strip()
+    values = []
 
-        max_area = request.args.get(
-            "max_area", ""
-        ).strip()
+    if property_type:
 
-        furnished = request.args.get(
-            "furnished", ""
-        ).strip()
-
-        sort = request.args.get(
-            "sort", "newest"
-        ).strip()
-
-        page = request.args.get(
-            "page",
-            1,
-            type=int
+        where.append(
+            "p.property_type=%s"
         )
 
-        if page < 1:
-            page = 1
+        values.append(property_type)
 
-        per_page = 9
+    if purpose:
 
-        offset = (page - 1) * per_page
-
-        # ==========================================================
-        # BUILD WHERE CONDITIONS
-        # ==========================================================
-
-        where = []
-        values = []
-
-        # PROPERTY TYPE
-
-        if property_type:
-
-            where.append(
-                "p.property_type = %s"
-            )
-
-            values.append(
-                property_type
-            )
-
-        # PURPOSE
-
-        if purpose:
-
-            where.append(
-                "p.purpose = %s"
-            )
-
-            values.append(
-                purpose
-            )
-
-        # LOCATION
-        #
-        # LIKE is used instead of = so that:
-        #
-        # "The Pearl"
-        #
-        # can also find:
-        #
-        # "The Pearl, Porto Arabia"
-        # "The Pearl, Qatar"
-        #
-
-        if location:
-
-            where.append(
-                "p.location LIKE %s"
-            )
-
-            values.append(
-                "%" + location + "%"
-            )
-
-        # BEDROOMS
-
-        if bedrooms:
-
-            try:
-
-                bedroom_value = int(
-                    bedrooms
-                )
-
-                if bedroom_value > 0:
-
-                    where.append(
-                        "p.bedrooms >= %s"
-                    )
-
-                    values.append(
-                        bedroom_value
-                    )
-
-            except ValueError:
-                pass
-
-        # BATHROOMS
-
-        if bathrooms:
-
-            try:
-
-                bathroom_value = int(
-                    bathrooms
-                )
-
-                if bathroom_value > 0:
-
-                    where.append(
-                        "p.bathrooms >= %s"
-                    )
-
-                    values.append(
-                        bathroom_value
-                    )
-
-            except ValueError:
-                pass
-
-        # MINIMUM PRICE
-
-        if min_price:
-
-            try:
-
-                min_price_value = float(
-                    min_price
-                )
-
-                where.append(
-                    "p.price >= %s"
-                )
-
-                values.append(
-                    min_price_value
-                )
-
-            except ValueError:
-                pass
-
-        # MAXIMUM PRICE
-
-        if max_price:
-
-            try:
-
-                max_price_value = float(
-                    max_price
-                )
-
-                where.append(
-                    "p.price <= %s"
-                )
-
-                values.append(
-                    max_price_value
-                )
-
-            except ValueError:
-                pass
-
-        # MINIMUM AREA
-
-        if min_area:
-
-            try:
-
-                min_area_value = float(
-                    min_area
-                )
-
-                where.append(
-                    "p.area >= %s"
-                )
-
-                values.append(
-                    min_area_value
-                )
-
-            except ValueError:
-                pass
-
-        # MAXIMUM AREA
-
-        if max_area:
-
-            try:
-
-                max_area_value = float(
-                    max_area
-                )
-
-                where.append(
-                    "p.area <= %s"
-                )
-
-                values.append(
-                    max_area_value
-                )
-
-            except ValueError:
-                pass
-
-        # FURNISHED
-
-        if furnished:
-
-            where.append(
-                "p.furnished = %s"
-            )
-
-            values.append(
-                furnished
-            )
-
-        # ==========================================================
-        # KEYWORD SEARCH
-        # ==========================================================
-
-        if search:
-
-            keyword = "%" + search + "%"
-
-            where.append(
-                """
-                (
-                    p.title LIKE %s
-                    OR p.property_type LIKE %s
-                    OR p.location LIKE %s
-                    OR p.purpose LIKE %s
-                    OR p.address LIKE %s
-                    OR p.description LIKE %s
-                    OR p.furnished LIKE %s
-
-                    OR EXISTS
-                    (
-                        SELECT 1
-                        FROM property_features pf
-                        WHERE pf.property_id = p.id
-                        AND pf.feature_name LIKE %s
-                    )
-                )
-                """
-            )
-
-            values.extend([
-                keyword,
-                keyword,
-                keyword,
-                keyword,
-                keyword,
-                keyword,
-                keyword,
-                keyword
-            ])
-
-        # ==========================================================
-        # WHERE SQL
-        # ==========================================================
-
-        where_sql = ""
-
-        if where:
-
-            where_sql = (
-                "WHERE "
-                + " AND ".join(where)
-            )
-
-        # ==========================================================
-        # COUNT RESULTS
-        # ==========================================================
-
-        count_sql = f"""
-            SELECT COUNT(*) AS total
-
-            FROM properties p
-
-            {where_sql}
-        """
-
-        cursor.execute(
-            count_sql,
-            values
+        where.append(
+            "p.purpose=%s"
         )
 
-        total = cursor.fetchone()["total"]
+        values.append(purpose)
 
-        total_pages = (
-            (total + per_page - 1)
-            // per_page
+    if location:
+
+        where.append(
+            "p.location=%s"
         )
 
-        # ==========================================================
-        # SORTING
-        # ==========================================================
-        #
-        # IMPORTANT:
-        # We do NOT put the request value directly
-        # into SQL.
-        #
-        # This whitelist prevents SQL injection.
-        #
+        values.append(location)
 
-        sort_options = {
+    if search:
 
-            "newest":
-                "p.created_at DESC",
-
-            "oldest":
-                "p.created_at ASC",
-
-            "price_low":
-                "p.price ASC",
-
-            "price_high":
-                "p.price DESC",
-
-            "area_low":
-                "p.area ASC",
-
-            "area_high":
-                "p.area DESC"
-        }
-
-        order_by = sort_options.get(
-            sort,
-            "p.created_at DESC"
+        where.append("""
+        (
+            p.title LIKE %s
+            OR p.property_type LIKE %s
+            OR p.location LIKE %s
+            OR p.purpose LIKE %s
+            OR p.address LIKE %s
+            OR p.description LIKE %s
+            OR p.furnished LIKE %s
+            OR EXISTS
+            (
+                SELECT 1
+                FROM property_features pf
+                WHERE pf.property_id = p.id
+                AND pf.feature_name LIKE %s
+            )
         )
+        """)
 
-        # ==========================================================
-        # GET PROPERTIES
-        # ==========================================================
+        keyword = "%" + search + "%"
 
-        sql = f"""
-            SELECT *
-
-            FROM properties p
-
-            {where_sql}
-
-            ORDER BY {order_by}
-
-            LIMIT %s
-            OFFSET %s
-        """
-
-        property_values = values.copy()
-
-        property_values.extend([
-            per_page,
-            offset
+        values.extend([
+            keyword,
+            keyword,
+            keyword,
+            keyword,
+            keyword,
+            keyword,
+            keyword,
+            keyword
         ])
 
-        cursor.execute(
-            sql,
-            property_values
-        )
+    where_sql = ""
 
-        properties = cursor.fetchall()
+    if where:
 
-        # ==========================================================
-        # RETURN PAGE
-        # ==========================================================
+        where_sql = "WHERE " + " AND ".join(where)
 
-        return render_template(
-            "properties.html",
+    # =========================
+    # COUNT TOTAL
+    # =========================
 
-            properties=properties,
+    count_sql = f"""
+    SELECT COUNT(*) AS total
+    FROM properties p
+    {where_sql}
+    """
 
-            page=page,
-            total_pages=total_pages,
-            total=total,
+    cursor.execute(
+        count_sql,
+        values
+    )
 
-            property_type=property_type,
-            purpose=purpose,
-            location=location,
-            search=search,
+    total = cursor.fetchone()["total"]
 
-            bedrooms=bedrooms,
-            bathrooms=bathrooms,
+    total_pages = (
+        total + per_page - 1
+    ) // per_page
 
-            min_price=min_price,
-            max_price=max_price,
+    # =========================
+    # GET PROPERTIES
+    # =========================
 
-            min_area=min_area,
-            max_area=max_area,
+    sql = f"""
+    SELECT *
+    FROM properties p
+    {where_sql}
+    ORDER BY p.created_at DESC
+    LIMIT %s OFFSET %s
+    """
 
-            furnished=furnished,
+    property_values = values.copy()
 
-            sort=sort
-        )
+    property_values.extend([
+        per_page,
+        offset
+    ])
 
-    except Exception as e:
+    cursor.execute(
+        sql,
+        property_values
+    )
 
-        print(
-            "Properties page error:",
-            e
-        )
+    properties = cursor.fetchall()
 
-        return "Unable to load properties", 500
+    cursor.close()
 
-    finally:
+    conn.close()
 
-        if cursor:
-            cursor.close()
-
-        if conn:
-            conn.close()
-
-
+    return render_template(
+        "properties.html",
+        properties=properties,
+        page=page,
+        total_pages=total_pages,
+        property_type=property_type,
+        purpose=purpose,
+        location=location,
+        search=search
+    )
 
 # ============================================================
 # LIVE PROPERTY SEARCH API
-# Fast homepage autocomplete search
+# Used by the homepage smart search autocomplete
 # ============================================================
 
-@app.route("/property_search_suggestions")
-def property_search_suggestions():
+@app.route("/api/property-search")
+def property_search_api():
 
     search = request.args.get("q", "").strip()
 
-    # Allow even one-character searches
-    if not search:
-        return jsonify({
-            "results": []
-        })
+    # Do not query the database for an empty/very short search
+    if len(search) < 1:
+        return jsonify([])
 
     conn = None
     cursor = None
@@ -1215,26 +924,19 @@ def property_search_suggestions():
 
         cursor = conn.cursor(dictionary=True)
 
-        keyword = f"%{search}%"
+        keyword = "%" + search + "%"
 
         sql = """
             SELECT
                 p.id,
                 p.title,
                 p.property_type,
-                p.purpose,
                 p.location,
+                p.purpose,
                 p.price,
-                p.bedrooms,
-                p.bathrooms,
-                p.area,
                 p.main_image
 
             FROM properties p
-
-            LEFT JOIN property_features pf
-                ON pf.property_id = p.id
-                AND pf.feature_name LIKE %s
 
             WHERE
                 p.title LIKE %s
@@ -1244,21 +946,27 @@ def property_search_suggestions():
                 OR p.address LIKE %s
                 OR p.description LIKE %s
                 OR p.furnished LIKE %s
-                OR pf.property_id IS NOT NULL
 
-            GROUP BY
-                p.id
+                OR EXISTS (
+                    SELECT 1
+                    FROM property_features pf
+                    WHERE pf.property_id = p.id
+                    AND pf.feature_name LIKE %s
+                )
 
             ORDER BY
                 CASE
 
+                    /* Exact title match first */
                     WHEN p.title LIKE %s
                     THEN 1
 
-                    WHEN p.location LIKE %s
+                    /* Title starts with the search */
+                    WHEN p.title LIKE %s
                     THEN 2
 
-                    WHEN p.property_type LIKE %s
+                    /* Location starts with the search */
+                    WHEN p.location LIKE %s
                     THEN 3
 
                     ELSE 4
@@ -1270,47 +978,38 @@ def property_search_suggestions():
             LIMIT 8
         """
 
-        values = [
-
-            # LEFT JOIN
-            keyword,
-
-            # WHERE
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-
-            # ORDER BY
-            keyword,
-            keyword,
-            keyword
-        ]
-
         cursor.execute(
             sql,
-            values
+            (
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+
+                # ORDER BY parameters
+                keyword,
+                search + "%",
+                search + "%"
+            )
         )
 
         results = cursor.fetchall()
 
-        return jsonify({
-            "results": results
-        })
+        return jsonify(results)
 
     except Exception as e:
 
         print(
-            "Property live search error:",
+            "LIVE PROPERTY SEARCH ERROR:",
             e
         )
 
         return jsonify({
-            "results": [],
-            "error": "Search temporarily unavailable"
+            "error": "Unable to perform property search."
         }), 500
 
     finally:
@@ -1320,6 +1019,8 @@ def property_search_suggestions():
 
         if conn:
             conn.close()
+
+
 
 
 
@@ -1913,6 +1614,24 @@ def delete_contact_message(id):
 
 
 
+
+
+
+
+
+
+# =====================================================
+# LOCATIONS ROUTE
+# =====================================================
+@app.route("/locations")
+def locations():
+    return render_template("locations.html")
+
+
+
+
+
+
 # =====================================================
 # FIND PROPERTY ROUTE
 # =====================================================
@@ -2478,7 +2197,9 @@ def add_property():
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
+
     if request.method == "POST":
+
 
         title = request.form["title"]
 
@@ -2488,6 +2209,7 @@ def add_property():
             + "-"
             + str(uuid.uuid4())[:6]
         )
+
 
         purpose = request.form["purpose"]
         property_type = request.form["property_type"]
@@ -2504,65 +2226,69 @@ def add_property():
 
         description = request.form["description"]
 
-        # ==========================
-        # GOOGLE MAP EMBED URL
-        # ==========================
-
-        map_embed_url = request.form.get(
-            "map_embed_url",
-            ""
-        ).strip()
 
         featured = 0
         status = "Available"
 
+
+
         conn = get_db_connection()
         cursor = conn.cursor()
+
+
 
         # ==========================
         # CLOUDINARY IMAGE UPLOAD
         # ==========================
 
+
         main_image = None
+
         uploaded_images = []
+
 
         images = request.files.getlist("images")
 
+
         for image in images:
+
 
             if image and allowed_file(image.filename):
 
-                MAX_IMAGE_SIZE = 10 * 1024 * 1024
+                MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10MB
 
                 if image.content_length and image.content_length > MAX_IMAGE_SIZE:
+                    flash("Image too large. Maximum size is 10MB.", "danger")
+                    return redirect(url_for("add_property"))
 
-                    flash(
-                        "Image too large. Maximum size is 10MB.",
-                        "danger"
-                    )
-
-                    cursor.close()
-                    conn.close()
-
-                    return redirect(
-                        url_for("add_property")
-                    )
 
                 result = cloudinary.uploader.upload(
                     image,
                     folder="prestigious_real_estate/properties"
                 )
 
+
                 image_url = result["secure_url"]
+
 
                 uploaded_images.append(image_url)
 
+
+
+                # First image becomes cover image
+
                 if main_image is None:
+
                     main_image = image_url
+
+
+
+
 
         # ==========================
         # INSERT PROPERTY
         # ==========================
+
 
         cursor.execute(
             """
@@ -2583,15 +2309,15 @@ def add_property():
                 featured,
                 status,
                 description,
-                main_image,
-                map_embed_url
+                main_image
             )
 
             VALUES
             (
                 %s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s
+                %s,%s,%s,%s,%s,%s,%s,%s
             )
+
             """,
 
             (
@@ -2610,22 +2336,31 @@ def add_property():
                 featured,
                 status,
                 description,
-                main_image,
-                map_embed_url
+                main_image
             )
         )
 
+
+
         property_id = cursor.lastrowid
+
+
+
+
 
         # ==========================
         # SAVE FEATURES
         # ==========================
 
+
         features = request.form.getlist("features")
+
 
         for feature in features:
 
+
             cursor.execute(
+
                 """
                 INSERT INTO property_features
                 (
@@ -2635,21 +2370,31 @@ def add_property():
 
                 VALUES
                 (%s,%s)
+
                 """,
 
                 (
                     property_id,
                     feature
                 )
+
             )
+
+
+
+
+
 
         # ==========================
         # SAVE CLOUDINARY IMAGES
         # ==========================
 
+
         for image_url in uploaded_images:
 
+
             cursor.execute(
+
                 """
                 INSERT INTO property_images
                 (
@@ -2659,31 +2404,48 @@ def add_property():
 
                 VALUES
                 (%s,%s)
+
                 """,
 
                 (
                     property_id,
                     image_url
                 )
+
             )
+
+
+
+
 
         conn.commit()
 
+
         cursor.close()
         conn.close()
+
+
 
         flash(
             "Property added successfully",
             "success"
         )
 
+
+
         return redirect(
             url_for("admin_dashboard")
         )
 
+
+
+
+
     return render_template(
         "admin/add_property.html"
     )
+
+
 
 
 
@@ -2907,9 +2669,12 @@ def edit_property(id):
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
+
     conn = get_db_connection()
 
     cursor = conn.cursor(dictionary=True)
+
+
 
     # =========================
     # UPDATE PROPERTY
@@ -2917,77 +2682,70 @@ def edit_property(id):
 
     if request.method == "POST":
 
+
         title = request.form.get("title")
         purpose = request.form.get("purpose")
         property_type = request.form.get("property_type")
         location = request.form.get("location")
         address = request.form.get("address")
-
         price = request.form.get("price", 0)
         bedrooms = request.form.get("bedrooms", 0)
         bathrooms = request.form.get("bathrooms", 0)
         area = request.form.get("area", 0)
         parking = request.form.get("parking", 0)
-
         furnished = request.form.get("furnished")
         status = request.form.get("status")
         description = request.form.get("description")
 
-        # =========================
-        # GOOGLE MAP EMBED URL
-        # =========================
 
-        map_embed_url = request.form.get(
-            "map_embed_url",
-            ""
-        ).strip()
 
         cursor.execute(
-            """
-            UPDATE properties
+        """
+        UPDATE properties
 
-            SET
+        SET
 
-            title=%s,
-            purpose=%s,
-            property_type=%s,
-            location=%s,
-            address=%s,
-            price=%s,
-            bedrooms=%s,
-            bathrooms=%s,
-            area=%s,
-            parking=%s,
-            furnished=%s,
-            status=%s,
-            description=%s,
-            map_embed_url=%s
+        title=%s,
+        purpose=%s,
+        property_type=%s,
+        location=%s,
+        address=%s,
+        price=%s,
+        bedrooms=%s,
+        bathrooms=%s,
+        area=%s,
+        parking=%s,
+        furnished=%s,
+        status=%s,
+        description=%s
 
-            WHERE id=%s
-            """,
+        WHERE id=%s
 
-            (
-                title,
-                purpose,
-                property_type,
-                location,
-                address,
-                price,
-                bedrooms,
-                bathrooms,
-                area,
-                parking,
-                furnished,
-                status,
-                description,
-                map_embed_url,
-                id
-            )
+        """,
+        (
+        title,
+        purpose,
+        property_type,
+        location,
+        address,
+        price,
+        bedrooms,
+        bathrooms,
+        area,
+        parking,
+        furnished,
+        status,
+        description,
+        id
         )
+        )
+
+
 
         # =========================
         # UPDATE PROPERTY FEATURES
         # =========================
+
 
         cursor.execute(
             """
@@ -2997,78 +2755,103 @@ def edit_property(id):
             (id,)
         )
 
+
+
         selected_features = request.form.getlist("features")
+
+
 
         for feature in selected_features:
 
             cursor.execute(
-                """
-                INSERT INTO property_features
-                (
-                    property_id,
-                    feature_name
-                )
-
-                VALUES
-                (%s,%s)
-                """,
-
-                (
-                    id,
-                    feature
-                )
+            """
+            INSERT INTO property_features
+            (
+            property_id,
+            feature_name
             )
+
+            VALUES
+            (%s,%s)
+
+            """,
+            (
+            id,
+            feature
+            )
+            )
+
+
 
         conn.commit()
 
+
+
         cursor.close()
         conn.close()
+
+
 
         flash(
             "Property updated successfully",
             "success"
         )
 
+
         return redirect(
             url_for("manage_properties")
         )
+
+
+
+
 
     # =========================
     # GET PROPERTY DETAILS
     # =========================
 
+
     cursor.execute(
-        """
-        SELECT *
-        FROM properties
-        WHERE id=%s
-        """,
-        (id,)
+    """
+    SELECT *
+    FROM properties
+    WHERE id=%s
+    """,
+    (id,)
     )
 
+
     property = cursor.fetchone()
+
+
 
     # Existing features
 
     cursor.execute(
-        """
-        SELECT feature_name
-        FROM property_features
-        WHERE property_id=%s
-        """,
-        (id,)
+    """
+    SELECT feature_name
+    FROM property_features
+    WHERE property_id=%s
+    """,
+    (id,)
     )
+
 
     saved_features = cursor.fetchall()
 
+
+
     cursor.close()
     conn.close()
+
+
 
     return render_template(
         "admin/edit_property.html",
         property=property,
         saved_features=saved_features
     )
+
 
 
 
