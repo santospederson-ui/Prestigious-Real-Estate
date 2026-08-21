@@ -1,2119 +1,1943 @@
 {% extends "base.html" %}
 
 {% block title %}
-Properties | Prestigious Real Estate
+Properties | Prestigious Real Estate Qatar
 {% endblock %}
 
 {% block content %}
 
-<!-- =========================
-PAGE HERO
-========================= -->
-
-<section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/uploads/properties/properties.png') }}');">
-  <div class="page-overlay">
-    <div class="container">
-      <div class="hero-text-content">
-        <span class="hero-badge">Real Estate Portfolio</span>
-        <h1>Our Properties</h1>
-        <p>Discover premium residential and commercial properties for rent and sale in Qatar</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================
-PROPERTY SEARCH / FILTER
-========================= -->
-
-<section class="property-filter-section">
-  <div class="container">
-
-    <form
-      class="filter-box"
-      method="GET"
-      action="{{ url_for('properties') }}"
-      id="propertySearchForm"
-    >
-
-      <!-- =========================
-      LIVE SEARCH
-      ========================= -->
-
-      <div class="filter-group search-group">
-
-        <label class="filter-label">
-          Search Property
-        </label>
-
-        <div class="live-search-wrapper">
-
-          <svg
-            class="search-input-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.3-4.3"/>
-          </svg>
-
-          <input
-            type="text"
-            name="search"
-            id="propertySearchInput"
-            value="{{ search or '' }}"
-            placeholder="Search properties..."
-            autocomplete="off"
-          >
-
-          <div
-            id="liveSearchResults"
-            class="live-search-results"
-          ></div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =========================
-      SORT
-      ========================= -->
-
-      <div class="filter-group">
-
-        <label class="filter-label">
-          Sort By
-        </label>
-
-        <select name="sort" id="sortSelect">
-
-          <option
-            value="newest"
-            {% if sort == 'newest' or not sort %}selected{% endif %}
-          >
-            Newest First
-          </option>
-
-          <option
-            value="oldest"
-            {% if sort == 'oldest' %}selected{% endif %}
-          >
-            Oldest First
-          </option>
-
-          <option
-            value="price_low"
-            {% if sort == 'price_low' %}selected{% endif %}
-          >
-            Price: Low to High
-          </option>
-
-          <option
-            value="price_high"
-            {% if sort == 'price_high' %}selected{% endif %}
-          >
-            Price: High to Low
-          </option>
-
-          <option
-            value="title_az"
-            {% if sort == 'title_az' %}selected{% endif %}
-          >
-            Title: A to Z
-          </option>
-
-          <option
-            value="title_za"
-            {% if sort == 'title_za' %}selected{% endif %}
-          >
-            Title: Z to A
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- =========================
-      ADVANCED SEARCH BUTTON
-      ========================= -->
-
-      <button
-        type="button"
-        class="advanced-search-btn"
-        id="advancedSearchBtn"
-      >
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="4" y1="21" x2="4" y2="14"/>
-          <line x1="4" y1="10" x2="4" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="12"/>
-          <line x1="12" y1="8" x2="12" y2="3"/>
-          <line x1="20" y1="21" x2="20" y2="16"/>
-          <line x1="20" y1="12" x2="20" y2="3"/>
-          <line x1="1" y1="14" x2="7" y2="14"/>
-          <line x1="9" y1="8" x2="15" y2="8"/>
-          <line x1="17" y1="16" x2="23" y2="16"/>
-        </svg>
-
-        <span>Advanced Search</span>
-
-      </button>
-
-
-      <!-- =========================
-      SEARCH BUTTON
-      ========================= -->
-
-      <button
-        type="submit"
-        class="filter-submit-btn"
-      >
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.3-4.3"/>
-        </svg>
-
-        <span>Search</span>
-
-      </button>
-
-    </form>
-
-
-    <!-- =========================
-    ADVANCED SEARCH PANEL
-    ========================= -->
-
-    <div
-      class="advanced-search-panel"
-      id="advancedSearchPanel"
-    >
-
-      <div class="advanced-panel-header">
-
-        <div>
-          <h3>Advanced Property Search</h3>
-          <p>Refine your search using specific property criteria.</p>
-        </div>
-
-        <button
-          type="button"
-          id="closeAdvancedSearch"
-          class="advanced-close-btn"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="advanced-grid">
-
-        <!-- PROPERTY TYPE -->
-
-        <div class="advanced-field">
-
-          <label>Property Type</label>
-
-          <select name="property_type" form="propertySearchForm">
-
-            <option value="">All Property Types</option>
-
-            <option
-              value="Villa"
-              {% if property_type == 'Villa' %}selected{% endif %}
-            >
-              Villa
-            </option>
-
-            <option
-              value="Apartment"
-              {% if property_type == 'Apartment' %}selected{% endif %}
-            >
-              Apartment
-            </option>
-
-            <option
-              value="Office"
-              {% if property_type == 'Office' %}selected{% endif %}
-            >
-              Office
-            </option>
-
-            <option
-              value="Commercial Building"
-              {% if property_type == 'Commercial Building' %}selected{% endif %}
-            >
-              Commercial Building
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- PURPOSE -->
-
-        <div class="advanced-field">
-
-          <label>Purpose</label>
-
-          <select name="purpose" form="propertySearchForm">
-
-            <option value="">Sale & Rent</option>
-
-            <option
-              value="Sale"
-              {% if purpose == 'Sale' %}selected{% endif %}
-            >
-              For Sale
-            </option>
-
-            <option
-              value="Rent"
-              {% if purpose == 'Rent' %}selected{% endif %}
-            >
-              For Rent
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- LOCATION -->
-
-        <div class="advanced-field">
-
-          <label>Location</label>
-
-          <select name="location" form="propertySearchForm">
-
-            <option value="">All Locations</option>
-
-            <option
-              value="Doha"
-              {% if location == 'Doha' %}selected{% endif %}
-            >
-              Doha
-            </option>
-
-            <option
-              value="Lusail"
-              {% if location == 'Lusail' %}selected{% endif %}
-            >
-              Lusail
-            </option>
-
-            <option
-              value="The Pearl"
-              {% if location == 'The Pearl' %}selected{% endif %}
-            >
-              The Pearl
-            </option>
-
-            <option
-              value="West Bay"
-              {% if location == 'West Bay' %}selected{% endif %}
-            >
-              West Bay
-            </option>
-
-            <option
-              value="Al Wakrah"
-              {% if location == 'Al Wakrah' %}selected{% endif %}
-            >
-              Al Wakrah
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- BEDROOMS -->
-
-        <div class="advanced-field">
-
-          <label>Bedrooms</label>
-
-          <select name="bedrooms" form="propertySearchForm">
-
-            <option value="">Any Bedrooms</option>
-
-            <option value="1" {% if bedrooms == '1' %}selected{% endif %}>
-              1+
-            </option>
-
-            <option value="2" {% if bedrooms == '2' %}selected{% endif %}>
-              2+
-            </option>
-
-            <option value="3" {% if bedrooms == '3' %}selected{% endif %}>
-              3+
-            </option>
-
-            <option value="4" {% if bedrooms == '4' %}selected{% endif %}>
-              4+
-            </option>
-
-            <option value="5" {% if bedrooms == '5' %}selected{% endif %}>
-              5+
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- BATHROOMS -->
-
-        <div class="advanced-field">
-
-          <label>Bathrooms</label>
-
-          <select name="bathrooms" form="propertySearchForm">
-
-            <option value="">Any Bathrooms</option>
-
-            <option value="1" {% if bathrooms == '1' %}selected{% endif %}>
-              1+
-            </option>
-
-            <option value="2" {% if bathrooms == '2' %}selected{% endif %}>
-              2+
-            </option>
-
-            <option value="3" {% if bathrooms == '3' %}selected{% endif %}>
-              3+
-            </option>
-
-            <option value="4" {% if bathrooms == '4' %}selected{% endif %}>
-              4+
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- FURNISHED -->
-
-        <div class="advanced-field">
-
-          <label>Furnished</label>
-
-          <select name="furnished" form="propertySearchForm">
-
-            <option value="">Any</option>
-
-            <option
-              value="Furnished"
-              {% if furnished == 'Furnished' %}selected{% endif %}
-            >
-              Furnished
-            </option>
-
-            <option
-              value="Unfurnished"
-              {% if furnished == 'Unfurnished' %}selected{% endif %}
-            >
-              Unfurnished
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- MIN PRICE -->
-
-        <div class="advanced-field">
-
-          <label>Minimum Price</label>
-
-          <input
-            type="number"
-            name="min_price"
-            form="propertySearchForm"
-            value="{{ min_price or '' }}"
-            placeholder="e.g. 500000"
-            min="0"
-          >
-
-        </div>
-
-
-        <!-- MAX PRICE -->
-
-        <div class="advanced-field">
-
-          <label>Maximum Price</label>
-
-          <input
-            type="number"
-            name="max_price"
-            form="propertySearchForm"
-            value="{{ max_price or '' }}"
-            placeholder="e.g. 5000000"
-            min="0"
-          >
-
-        </div>
-
-      </div>
-
-
-      <div class="advanced-panel-actions">
-
-        <a
-          href="{{ url_for('properties') }}"
-          class="clear-filter-btn"
-        >
-          Clear All
-        </a>
-
-        <button
-          type="submit"
-          form="propertySearchForm"
-          class="advanced-apply-btn"
-        >
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="17"
-            height="17"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.3-4.3"/>
-          </svg>
-
-          Apply Filters
-
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- =========================
-PROPERTY LIST
-========================= -->
-
-<section class="properties-section">
-
-  <div class="container">
-
-    <div class="section-title">
-
-      <h2>Available Properties</h2>
-
-      <p>
-        Explore our exclusive collection of luxury real estate listings across Qatar
-      </p>
-
-    </div>
-
-
-    <div class="property-grid">
-
-      {% for property in properties %}
-
-        <div class="property-card">
-
-          <!-- CLICKABLE PROPERTY IMAGE -->
-
-          <a
-            href="{{ url_for('property_details', id=property.id) }}"
-            class="property-image-link"
-          >
-
-            <div class="property-image-wrapper">
-
-              {% if property.main_image %}
-
-                <img
-                  src="{{ property.main_image }}"
-                  alt="{{ property.title }}"
-                  loading="lazy"
-                >
-
-              {% else %}
-
-                <img
-                  src="{{ url_for('static', filename='images/no-image.jpg') }}"
-                  alt="No Image Available"
-                  loading="lazy"
-                >
-
-              {% endif %}
-
-
-              <div
-                class="property-badge
-                {% if property.purpose == 'Rent' %}
-                  badge-rent
-                {% else %}
-                  badge-sale
-                {% endif %}"
-              >
-
-                FOR {{ property.purpose|upper }}
-
-              </div>
-
-            </div>
-
-          </a>
-
-
-          <!-- PROPERTY INFO -->
-
-          <div class="property-info">
-
-            <!-- PRICE -->
-
-            <div class="property-price-tag">
-
-              QAR {{ "{:,.0f}".format(property.price or 0) }}
-
-            </div>
-
-
-            <!-- LOCATION -->
-
-            <div class="property-location">
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-
-              </svg>
-
-              <span>{{ property.location }}</span>
-
-            </div>
-
-
-            <!-- TITLE -->
-
-            <h3 class="property-title">
-              {{ property.title }}
-            </h3>
-
-
-            <!-- META -->
-
-            <div class="property-meta">
-
-              <div class="meta-item">
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-
-                  <path d="M2 4v16"/>
-                  <path d="M2 8h18a2 2 0 0 1 2 2v10"/>
-                  <path d="M2 17h20"/>
-                  <path d="M6 8v9"/>
-
-                </svg>
-
-                <span>
-                  {{ property.bedrooms or 0 }} Beds
-                </span>
-
-              </div>
-
-
-              <div class="meta-item">
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-
-                  <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L6 9"/>
-                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                  <path d="M15 6 12.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L12 9"/>
-
-                </svg>
-
-                <span>
-                  {{ property.bathrooms or 0 }} Baths
-                </span>
-
-              </div>
-
-
-              <div class="meta-item">
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-
-                  <rect
-                    width="18"
-                    height="18"
-                    x="3"
-                    y="3"
-                    rx="2"
-                  />
-
-                  <path d="M3 9h18"/>
-                  <path d="M9 21V9"/>
-
-                </svg>
-
-                <span>
-                  {{ property.area or 0 }} sqm
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      {% else %}
-
-        <div class="empty-properties-card">
-
-          <div class="empty-icon">🏠</div>
-
-          <h3>No Properties Found</h3>
-
-          <p>
-            We couldn't find any properties matching your search criteria.
-            Try adjusting your filters.
-          </p>
-
-        </div>
-
-      {% endfor %}
-
-    </div>
-
-
-    <!-- =========================
-    PAGINATION
-    ========================= -->
-
-    {% if total_pages > 1 %}
-
-      <div class="pagination-container">
-
-        <div class="pagination">
-
-          {% if page > 1 %}
-
-            <a
-              href="{{ url_for(
-                'properties',
-                page=page-1,
-                property_type=property_type,
-                purpose=purpose,
-                location=location,
-                search=search,
-                sort=sort,
-                bedrooms=bedrooms,
-                bathrooms=bathrooms,
-                furnished=furnished,
-                min_price=min_price,
-                max_price=max_price
-              ) }}"
-              class="pagination-link nav-btn"
-            >
-              ← Previous
-            </a>
-
-          {% else %}
-
-            <span class="pagination-link disabled">
-              ← Previous
-            </span>
-
-          {% endif %}
-
-
-          <div class="pagination-indicator">
-
-            Page
-            <strong>{{ page }}</strong>
-            of
-            {{ total_pages }}
-
-          </div>
-
-
-          {% if page < total_pages %}
-
-            <a
-              href="{{ url_for(
-                'properties',
-                page=page+1,
-                property_type=property_type,
-                purpose=purpose,
-                location=location,
-                search=search,
-                sort=sort,
-                bedrooms=bedrooms,
-                bathrooms=bathrooms,
-                furnished=furnished,
-                min_price=min_price,
-                max_price=max_price
-              ) }}"
-              class="pagination-link nav-btn"
-            >
-              Next →
-            </a>
-
-          {% else %}
-
-            <span class="pagination-link disabled">
-              Next →
-            </span>
-
-          {% endif %}
-
-        </div>
-
-      </div>
-
-    {% endif %}
-
-  </div>
-
-</section>
-
-
 <style>
 
-/* ==================================
-   DESIGN SYSTEM & QATAR MAROON
-================================== */
+/* =========================================================
+   PROPERTIES PAGE
+========================================================= */
 
 :root {
-  --qatar-maroon: #8A1538;
-  --qatar-maroon-dark: #670D28;
-  --qatar-maroon-light: rgba(138, 21, 56, 0.08);
-  --gold-accent: #D4AF37;
-  --navy-dark: #1F2A44;
-  --text-dark: #0f172a;
-  --text-muted: #64748b;
-  --border-light: #e2e8f0;
-  --bg-page: #f8fafc;
+    --qatar-maroon: #8A1538;
+    --qatar-maroon-dark: #670D28;
+    --gold-accent: #D4AF37;
+    --navy-dark: #1F2A44;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --light-bg: #f8fafc;
 }
 
 
-/* CONTAINER */
+/* =========================================================
+   PAGE HEADER
+========================================================= */
 
-.container {
-  padding-left: clamp(20px, 4vw, 50px);
-  padding-right: clamp(20px, 4vw, 50px);
+.properties-header {
+    background:
+        linear-gradient(
+            135deg,
+            var(--navy-dark),
+            var(--qatar-maroon)
+        );
+
+    padding: 70px 20px;
+
+    text-align: center;
+
+    color: white;
+}
+
+.properties-header h1 {
+    font-family:
+        var(
+            --font-serif,
+            'Playfair Display',
+            serif
+        );
+
+    font-size: clamp(32px, 5vw, 52px);
+
+    margin: 0 0 12px;
+
+    font-weight: 800;
+}
+
+.properties-header p {
+    margin: 0;
+
+    font-size: 16px;
+
+    color: rgba(255,255,255,.88);
 }
 
 
-/* PAGE HERO */
+/* =========================================================
+   SEARCH / FILTER AREA
+========================================================= */
 
-.page-hero {
-  min-height: 380px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  align-items: center;
+.properties-search-section {
+    margin-top: -35px;
+
+    position: relative;
+
+    z-index: 20;
+
+    margin-bottom: 55px;
 }
 
-.page-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.35) 0%,
-    rgba(15, 23, 42, 0.15) 100%
-  );
-  display: flex;
-  align-items: center;
-}
+.properties-search-card {
+    background: white;
 
-.hero-text-content {
-  color: white;
-  max-width: 650px;
-}
+    border: 1px solid var(--border-color);
 
-.hero-badge {
-  display: inline-block;
-  background: rgba(138, 21, 56, 0.85);
-  border: 1px solid var(--gold-accent);
-  color: #ffffff;
-  padding: 5px 14px;
-  border-radius: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
+    padding: 28px;
 
-.hero-text-content h1 {
-  font-size: 46px;
-  font-weight: 800;
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-.hero-text-content p {
-  font-size: 17px;
-  color: #ffffff;
-  margin: 0;
-  line-height: 1.6;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    box-shadow:
+        0 15px 35px rgba(15,23,42,.10);
 }
 
 
-/* ==================================
-   SEARCH SECTION
-================================== */
+/* =========================================================
+   SEARCH
+========================================================= */
 
-.property-filter-section {
-  position: relative;
-  z-index: 10;
-  margin-top: -40px;
-  padding-bottom: 30px;
+.property-search-wrapper {
+    position: relative;
 }
 
-.filter-box {
-  display: grid;
-  grid-template-columns: 2fr 1fr auto auto;
-  gap: 16px;
-  padding: 24px;
-  background: #ffffff;
-  border-radius: 0;
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
-  border: 1px solid var(--border-light);
-  align-items: end;
+.property-search-form {
+    display: flex;
+
+    gap: 10px;
+
+    width: 100%;
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
+.property-search-input {
+    flex: 1;
+
+    min-width: 0;
+
+    border:
+        2px solid var(--border-color);
+
+    padding: 14px 18px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: .3s ease;
 }
 
-.filter-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--navy-dark);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
+.property-search-input:focus {
+    border-color:
+        var(--qatar-maroon);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(138,21,56,.08);
 }
 
+.property-search-button {
+    border: none;
 
-/* ==================================
-   LIVE SEARCH INPUT
-================================== */
+    background:
+        var(--qatar-maroon);
 
-.live-search-wrapper {
-  position: relative;
+    color: white;
+
+    padding:
+        0 28px;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .3s ease;
 }
 
-.live-search-wrapper input {
-  width: 100%;
-  height: 48px;
-  padding: 12px 45px 12px 42px;
-  border: 1.5px solid var(--border-light);
-  border-radius: 0;
-  font-size: 14px;
-  color: var(--text-dark);
-  background: var(--bg-page);
-  font-weight: 500;
-  box-sizing: border-box;
-}
-
-.live-search-wrapper input:focus {
-  outline: none;
-  border-color: var(--qatar-maroon);
-  background: #ffffff;
-  box-shadow: 0 0 0 4px var(--qatar-maroon-light);
-}
-
-.search-input-icon {
-  position: absolute;
-  left: 14px;
-  top: 15px;
-  color: var(--text-muted);
-  pointer-events: none;
+.property-search-button:hover {
+    background:
+        var(--qatar-maroon-dark);
 }
 
 
-/* ==================================
-   LIVE SEARCH RESULTS
-================================== */
+/* =========================================================
+   LIVE SEARCH
+========================================================= */
 
-.live-search-results {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(100% + 6px);
-  background: #ffffff;
-  border: 1px solid var(--border-light);
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.14);
-  z-index: 1000;
-  display: none;
-  max-height: 420px;
-  overflow-y: auto;
+.property-live-results {
+
+    position: absolute;
+
+    top: calc(100% + 5px);
+
+    left: 0;
+
+    right: 0;
+
+    background: white;
+
+    border:
+        1px solid var(--border-color);
+
+    box-shadow:
+        0 18px 40px
+        rgba(15,23,42,.16);
+
+    display: none;
+
+    z-index: 1000;
+
+    max-height: 420px;
+
+    overflow-y: auto;
 }
 
-.live-search-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-bottom: 1px solid #f1f5f9;
-  text-decoration: none;
-  color: var(--text-dark);
-  background: #ffffff;
-  transition: background .2s ease;
+.property-live-results.show {
+    display: block;
 }
 
-.live-search-item:hover {
-  background: #f8fafc;
+.property-live-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 13px 16px;
+
+    border-bottom:
+        1px solid #f1f5f9;
+
+    color: inherit;
+
+    text-decoration: none;
 }
 
-.live-search-item img {
-  width: 58px;
-  height: 48px;
-  object-fit: cover;
-  flex-shrink: 0;
+.property-live-item:last-child {
+    border-bottom: none;
 }
 
-.live-search-item-content {
-  min-width: 0;
+.property-live-item:hover {
+    background:
+        #f8fafc;
 }
 
-.live-search-item-title {
-  font-size: 13px;
-  font-weight: 800;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.property-live-image {
+
+    width: 65px;
+
+    height: 55px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    background: #e2e8f0;
 }
 
-.live-search-item-location {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 3px;
+.property-live-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
 }
 
-.live-search-item-price {
-  margin-left: auto;
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--qatar-maroon);
-  white-space: nowrap;
+.property-live-info {
+    flex: 1;
+
+    min-width: 0;
 }
 
-.live-search-loading {
-  padding: 15px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--text-muted);
+.property-live-title {
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    color:
+        var(--navy-dark);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    margin-bottom: 4px;
 }
 
+.property-live-location {
 
-/* ==================================
-   SELECT
-================================== */
+    font-size: 12px;
 
-.filter-box select,
-.advanced-field select {
-  width: 100%;
-  height: 48px;
-  padding: 12px 40px 12px 16px;
-  border: 1.5px solid var(--border-light);
-  border-radius: 0;
-  font-size: 14px;
-  color: var(--text-dark);
-  background: var(--bg-page);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all .25s ease;
-  appearance: none;
+    color:
+        var(--text-secondary);
 
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-
-  background-repeat: no-repeat;
-  background-position: right 14px center;
+    margin-bottom: 4px;
 }
 
-.filter-box select:focus,
-.advanced-field select:focus {
-  outline: none;
-  border-color: var(--qatar-maroon);
-  background-color: #ffffff;
+.property-live-details {
+
+    display: flex;
+
+    gap: 9px;
+
+    flex-wrap: wrap;
+
+    font-size: 11px;
+
+    color:
+        var(--text-secondary);
 }
 
+.property-live-price {
 
-/* ==================================
-   ADVANCED SEARCH BUTTON
-================================== */
+    color:
+        var(--qatar-maroon);
 
-.advanced-search-btn {
-  height: 48px;
-  padding: 0 18px;
-  background: #ffffff;
-  color: var(--navy-dark);
-  border: 1.5px solid var(--border-light);
-  border-radius: 0;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  white-space: nowrap;
-  transition: all .25s ease;
+    font-weight: 800;
 }
 
-.advanced-search-btn svg {
-  color: var(--qatar-maroon);
+.property-live-badge {
+
+    background:
+        var(--qatar-maroon);
+
+    color: white;
+
+    padding: 4px 8px;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    align-self: flex-start;
 }
 
-.advanced-search-btn:hover,
-.advanced-search-btn.active {
-  border-color: var(--qatar-maroon);
-  color: var(--qatar-maroon);
-  background: var(--qatar-maroon-light);
+.property-live-badge.rent {
+    background:
+        var(--navy-dark);
 }
 
+.property-search-state {
 
-/* ==================================
-   SEARCH BUTTON
-================================== */
+    padding: 22px;
 
-.filter-submit-btn {
-  height: 48px;
-  padding: 0 20px;
-  background: var(--qatar-maroon);
-  color: white;
-  border: none;
-  border-radius: 0;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all .25s ease;
-  box-shadow: 0 4px 12px rgba(138, 21, 56, .25);
-}
+    text-align: center;
 
-.filter-submit-btn:hover {
-  background: var(--qatar-maroon-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(138, 21, 56, .35);
-}
+    color:
+        var(--text-secondary);
 
-
-/* ==================================
-   ADVANCED PANEL
-================================== */
-
-.advanced-search-panel {
-  display: none;
-  margin-top: 12px;
-  padding: 24px;
-  background: #ffffff;
-  border: 1px solid var(--border-light);
-  box-shadow: 0 15px 35px rgba(15, 23, 42, .08);
-}
-
-.advanced-search-panel.open {
-  display: block;
-}
-
-.advanced-panel-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.advanced-panel-header h3 {
-  margin: 0 0 5px;
-  color: var(--navy-dark);
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.advanced-panel-header p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.advanced-close-btn {
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--border-light);
-  background: #ffffff;
-  color: var(--text-muted);
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.advanced-close-btn:hover {
-  color: var(--qatar-maroon);
-  border-color: var(--qatar-maroon);
+    font-size: 13px;
 }
 
 
-/* ==================================
-   ADVANCED GRID
-================================== */
+/* =========================================================
+   FILTERS
+========================================================= */
 
-.advanced-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+.property-filters {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 14px;
+
+    margin-top: 18px;
 }
 
-.advanced-field {
-  display: flex;
-  flex-direction: column;
+.property-filter {
+
+    width: 100%;
+
+    border:
+        1px solid var(--border-color);
+
+    background: white;
+
+    padding: 13px 14px;
+
+    color:
+        var(--text-primary);
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
 }
 
-.advanced-field label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--navy-dark);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  margin-bottom: 8px;
-}
-
-.advanced-field input {
-  width: 100%;
-  height: 48px;
-  padding: 12px 14px;
-  border: 1.5px solid var(--border-light);
-  border-radius: 0;
-  box-sizing: border-box;
-  font-size: 14px;
-  background: var(--bg-page);
-}
-
-.advanced-field input:focus {
-  outline: none;
-  border-color: var(--qatar-maroon);
-  background: #ffffff;
-}
-
-
-/* ==================================
-   ADVANCED ACTIONS
-================================== */
-
-.advanced-panel-actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-light);
-}
-
-.clear-filter-btn {
-  padding: 12px 20px;
-  border: 1px solid var(--border-light);
-  color: var(--text-muted);
-  background: #ffffff;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.clear-filter-btn:hover {
-  color: var(--qatar-maroon);
-  border-color: var(--qatar-maroon);
-}
-
-.advanced-apply-btn {
-  padding: 12px 22px;
-  border: none;
-  background: var(--qatar-maroon);
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.advanced-apply-btn:hover {
-  background: var(--qatar-maroon-dark);
+.property-filter:focus {
+    border-color:
+        var(--qatar-maroon);
 }
 
 
-/* ==================================
-   PROPERTIES SECTION
-================================== */
+/* =========================================================
+   PROPERTY SECTION
+========================================================= */
 
 .properties-section {
-  padding: 60px 0 90px 0;
-  background: var(--bg-page);
+
+    padding:
+        0 0 80px;
 }
 
-.section-title {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 45px auto;
+.properties-topbar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
 }
 
-.section-title h2 {
-  font-size: 34px;
-  color: var(--navy-dark);
-  font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: -.5px;
+.properties-topbar h2 {
+
+    margin: 0;
+
+    color:
+        var(--navy-dark);
+
+    font-family:
+        var(
+            --font-serif,
+            'Playfair Display',
+            serif
+        );
+
+    font-size: 28px;
 }
 
-.section-title p {
-  color: var(--text-muted);
-  font-size: 15px;
-  margin: 0;
+.properties-count {
+
+    color:
+        var(--text-secondary);
+
+    font-size: 14px;
 }
 
 
-/* ==================================
+/* =========================================================
    PROPERTY GRID
-================================== */
+========================================================= */
 
-.property-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  gap: 30px;
+.properties-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 28px;
 }
 
 
-/* PROPERTY CARD */
+/* =========================================================
+   PROPERTY CARD
+========================================================= */
 
 .property-card {
-  background: #ffffff;
-  border-radius: 0;
-  overflow: hidden;
-  border: 1px solid var(--border-light);
-  transition: all .3s ease;
-  display: flex;
-  flex-direction: column;
+
+    background: white;
+
+    border:
+        1px solid var(--border-color);
+
+    overflow: hidden;
+
+    box-shadow:
+        0 6px 18px
+        rgba(15,23,42,.05);
+
+    transition:
+        .35s ease;
 }
 
 .property-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, .08);
-  border-color: rgba(138, 21, 56, .2);
+
+    transform:
+        translateY(-6px);
+
+    box-shadow:
+        0 18px 35px
+        rgba(15,23,42,.12);
+
+    border-color:
+        var(--gold-accent);
+}
+
+.property-card-link {
+
+    text-decoration: none;
+
+    color: inherit;
+
+    display: block;
 }
 
 
-/* IMAGE LINK */
+/* =========================================================
+   IMAGE
+========================================================= */
 
-.property-image-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
+.property-card-image {
+
+    position: relative;
+
+    height: 245px;
+
+    background:
+        #f1f5f9;
+
+    overflow: hidden;
+}
+
+.property-card-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform .6s ease;
+}
+
+.property-card:hover
+.property-card-image img {
+
+    transform:
+        scale(1.06);
 }
 
 
-/* IMAGE */
+/* =========================================================
+   STATUS
+========================================================= */
 
-.property-image-wrapper {
-  position: relative;
-  height: 230px;
-  overflow: hidden;
-  background: #e2e8f0;
-  border-radius: 0;
+.property-status {
+
+    position: absolute;
+
+    top: 14px;
+
+    left: 14px;
+
+    background:
+        var(--qatar-maroon);
+
+    color: white;
+
+    padding:
+        5px 12px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
 }
 
-.property-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .5s ease;
-}
+.property-status.rent {
 
-.property-card:hover .property-image-wrapper img {
-  transform: scale(1.06);
-}
-
-
-/* BADGE */
-
-.property-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  padding: 5px 12px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .5px;
-  color: white;
-  z-index: 2;
-}
-
-.badge-sale {
-  background: var(--qatar-maroon);
-}
-
-.badge-rent {
-  background: var(--navy-dark);
+    background:
+        var(--navy-dark);
 }
 
 
-/* ==================================
-   PROPERTY INFO
-================================== */
+/* =========================================================
+   CARD INFO
+========================================================= */
 
-.property-info {
-  position: relative;
-  padding: 14px 20px 16px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  background: linear-gradient(
-    180deg,
-    #2d3748 0%,
-    #1f2937 100%
-  );
-  color: #f8fafc;
+.property-card-info {
+
+    padding:
+        20px;
+}
+
+.property-card-title {
+
+    color:
+        var(--navy-dark);
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    margin: 0 0 7px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.property-card-location {
+
+    color:
+        var(--text-secondary);
+
+    font-size: 13px;
+
+    margin-bottom: 14px;
+}
+
+.property-card-price {
+
+    color:
+        var(--qatar-maroon);
+
+    font-size: 19px;
+
+    font-weight: 900;
+
+    margin-bottom: 15px;
+}
+
+.property-card-meta {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+.property-card-meta span {
+
+    background:
+        #f1f5f9;
+
+    border:
+        1px solid #e2e8f0;
+
+    padding:
+        6px 9px;
+
+    font-size: 11px;
+
+    color:
+        var(--text-primary);
+
+    font-weight: 600;
 }
 
 
-/* PRICE */
+/* =========================================================
+   EMPTY
+========================================================= */
 
-.property-price-tag {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  background: rgba(15, 23, 42, .95);
-  color: #ffffff;
-  padding: 6px 11px;
-  font-size: 14px;
-  font-weight: 800;
-  border: 1px solid rgba(255,255,255,.18);
-  white-space: nowrap;
+.properties-empty {
+
+    text-align: center;
+
+    padding:
+        80px 20px;
+
+    background:
+        var(--light-bg);
+
+    border:
+        1px solid var(--border-color);
+}
+
+.properties-empty h3 {
+
+    color:
+        var(--navy-dark);
+
+    margin-bottom: 8px;
+}
+
+.properties-empty p {
+
+    color:
+        var(--text-secondary);
 }
 
 
-/* LOCATION */
-
-.property-location {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #d4af37;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 5px;
-  padding-right: 145px;
-}
-
-.property-location svg {
-  color: #d4af37;
-  flex-shrink: 0;
-}
-
-
-/* TITLE */
-
-.property-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 10px;
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  height: 48px;
-}
-
-
-/* META */
-
-.property-meta {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 8px 0;
-  border-top: 1px solid rgba(255,255,255,.12);
-  border-bottom: 1px solid rgba(255,255,255,.12);
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  color: rgba(255,255,255,.88);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.meta-item svg {
-  color: #d4af37;
-  width: 17px;
-  height: 17px;
-  flex-shrink: 0;
-}
-
-.meta-item span {
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-
-/* ==================================
-   EMPTY STATE
-================================== */
-
-.empty-properties-card {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 80px 20px;
-  background: #ffffff;
-  border: 1px dashed var(--border-light);
-}
-
-.empty-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
-}
-
-.empty-properties-card h3 {
-  font-size: 20px;
-  color: var(--navy-dark);
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.empty-properties-card p {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin: 0;
-}
-
-
-/* ==================================
+/* =========================================================
    PAGINATION
-================================== */
-
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-}
+========================================================= */
 
 .pagination {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  background: #ffffff;
-  padding: 8px 16px;
-  box-shadow: 0 4px 20px rgba(15,23,42,.05);
-  border: 1px solid var(--border-light);
-}
 
-.pagination-link {
-  padding: 10px 18px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 700;
-  transition: all .2s ease;
-}
+    display: flex;
 
-.pagination-link.nav-btn {
-  background: var(--qatar-maroon);
-  color: #ffffff;
-}
-
-.pagination-link.nav-btn:hover {
-  background: var(--qatar-maroon-dark);
-  transform: translateY(-1px);
-}
-
-.pagination-link.disabled {
-  background: var(--bg-page);
-  color: #cbd5e1;
-  cursor: not-allowed;
-}
-
-.pagination-indicator {
-  font-size: 14px;
-  color: var(--text-muted);
-  padding: 0 10px;
-}
-
-.pagination-indicator strong {
-  color: var(--navy-dark);
-}
-
-
-/* ==================================
-   RESPONSIVE
-================================== */
-
-@media (max-width: 1100px) {
-
-  .filter-box {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .advanced-search-btn,
-  .filter-submit-btn {
-    width: 100%;
-  }
-
-  .advanced-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-}
-
-
-@media (max-width: 768px) {
-
-  .page-hero {
-    min-height: 300px;
-  }
-
-  .hero-text-content h1 {
-    font-size: 32px;
-  }
-
-  .property-filter-section {
-    margin-top: -20px;
-  }
-
-  .filter-box {
-    grid-template-columns: 1fr;
-    padding: 18px;
-  }
-
-  .advanced-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .advanced-panel-actions {
-    flex-direction: column;
-  }
-
-  .clear-filter-btn,
-  .advanced-apply-btn {
-    width: 100%;
     justify-content: center;
-    text-align: center;
-    box-sizing: border-box;
-  }
 
-  .property-grid {
-    grid-template-columns: 1fr;
-  }
+    align-items: center;
 
-  .property-image-wrapper {
-    height: 220px;
-  }
-
-  .property-info {
-    padding: 12px 16px 13px;
-  }
-
-  .property-price-tag {
-    top: 10px;
-    right: 12px;
-    padding: 5px 9px;
-    font-size: 13px;
-  }
-
-  .property-location {
-    margin-bottom: 4px;
-    padding-right: 125px;
-    font-size: 12px;
-  }
-
-  .property-title {
-    margin-bottom: 8px;
-    height: 44px;
-    font-size: 17px;
-  }
-
-  .property-meta {
     gap: 7px;
-    padding: 7px 0;
-  }
 
-  .meta-item {
-    font-size: 12px;
-    gap: 2px;
-  }
+    margin-top: 50px;
 
-  .meta-item svg {
-    width: 15px;
-    height: 15px;
-  }
+    flex-wrap: wrap;
+}
 
-  .meta-item span {
-    font-size: 12px;
-  }
+.pagination a,
+.pagination span {
+
+    min-width: 40px;
+
+    height: 40px;
+
+    padding:
+        0 12px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid var(--border-color);
+
+    background: white;
+
+    color:
+        var(--navy-dark);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.pagination a:hover {
+
+    background:
+        var(--qatar-maroon);
+
+    border-color:
+        var(--qatar-maroon);
+
+    color: white;
+}
+
+.pagination .active {
+
+    background:
+        var(--qatar-maroon);
+
+    border-color:
+        var(--qatar-maroon);
+
+    color: white;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .properties-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .property-filters {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
 
 }
 
 
-@media (max-width: 400px) {
+@media (max-width: 640px) {
 
-  .property-price-tag {
-    top: 9px;
-    right: 10px;
-    padding: 5px 8px;
-    font-size: 12px;
-  }
+    .properties-header {
 
-  .property-location {
-    padding-right: 110px;
-    font-size: 11px;
-  }
+        padding:
+            50px 20px;
+    }
 
-  .property-title {
-    font-size: 16px;
-  }
+    .properties-search-card {
 
-  .property-meta {
-    gap: 5px;
-  }
+        padding:
+            20px;
+    }
 
-  .meta-item span {
-    font-size: 11px;
-  }
+    .property-search-form {
 
-}
+        flex-direction: column;
+    }
 
+    .property-search-button {
 
-/* ==================================
-   SEARCH RESULTS MOBILE
-================================== */
+        height: 48px;
+    }
 
-@media (max-width: 500px) {
+    .property-filters {
 
-  .live-search-item {
-    padding: 9px;
-  }
+        grid-template-columns: 1fr;
+    }
 
-  .live-search-item img {
-    width: 50px;
-    height: 44px;
-  }
+    .properties-grid {
 
-  .live-search-item-price {
-    font-size: 11px;
-  }
+        grid-template-columns: 1fr;
+    }
+
+    .properties-topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .property-card-image {
+
+        height: 230px;
+    }
+
+    .property-live-badge {
+
+        display: none;
+    }
 
 }
 
 </style>
 
 
+<!-- =======================================================
+     PAGE HEADER
+======================================================= -->
+
+<section class="properties-header">
+
+    <div class="container">
+
+        <h1>
+            Properties
+        </h1>
+
+        <p>
+            Discover premium residential and commercial
+            properties across Qatar.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     SEARCH + FILTERS
+======================================================= -->
+
+<section class="properties-search-section">
+
+    <div class="container">
+
+        <div class="properties-search-card">
+
+            <div class="property-search-wrapper">
+
+                <form
+                    action="{{ url_for('properties') }}"
+                    method="GET"
+                    class="property-search-form"
+                    id="propertySearchForm">
+
+                    <input
+                        type="text"
+                        name="search"
+                        id="propertySearchInput"
+                        class="property-search-input"
+                        value="{{ search or '' }}"
+                        placeholder="Search villas, apartments, Lusail, sea view..."
+                        autocomplete="off"
+                        spellcheck="false">
+
+                    <button
+                        type="submit"
+                        class="property-search-button">
+
+                        <i class="fas fa-search"></i>
+
+                        Search
+
+                    </button>
+
+                </form>
+
+
+                <!-- LIVE RESULTS -->
+
+                <div
+                    id="propertyLiveResults"
+                    class="property-live-results">
+                </div>
+
+            </div>
+
+
+            <!-- FILTERS -->
+
+            <form
+                action="{{ url_for('properties') }}"
+                method="GET">
+
+                <div class="property-filters">
+
+                    <select
+                        name="property_type"
+                        class="property-filter">
+
+                        <option value="">
+                            All Property Types
+                        </option>
+
+                        <option
+                            value="Villa"
+                            {% if property_type == 'Villa' %}
+                            selected
+                            {% endif %}>
+
+                            Villa
+
+                        </option>
+
+                        <option
+                            value="Apartment"
+                            {% if property_type == 'Apartment' %}
+                            selected
+                            {% endif %}>
+
+                            Apartment
+
+                        </option>
+
+                        <option
+                            value="Studio"
+                            {% if property_type == 'Studio' %}
+                            selected
+                            {% endif %}>
+
+                            Studio
+
+                        </option>
+
+                        <option
+                            value="Office"
+                            {% if property_type == 'Office' %}
+                            selected
+                            {% endif %}>
+
+                            Office
+
+                        </option>
+
+                        <option
+                            value="Commercial"
+                            {% if property_type == 'Commercial' %}
+                            selected
+                            {% endif %}>
+
+                            Commercial
+
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        name="purpose"
+                        class="property-filter">
+
+                        <option value="">
+                            Sale or Rent
+                        </option>
+
+                        <option
+                            value="Sale"
+                            {% if purpose == 'Sale' %}
+                            selected
+                            {% endif %}>
+
+                            For Sale
+
+                        </option>
+
+                        <option
+                            value="Rent"
+                            {% if purpose == 'Rent' %}
+                            selected
+                            {% endif %}>
+
+                            For Rent
+
+                        </option>
+
+                    </select>
+
+
+                    <input
+                        type="text"
+                        name="location"
+                        class="property-filter"
+                        value="{{ location or '' }}"
+                        placeholder="Location">
+
+                </div>
+
+
+                {% if search %}
+
+                <input
+                    type="hidden"
+                    name="search"
+                    value="{{ search }}">
+
+                {% endif %}
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     PROPERTIES
+======================================================= -->
+
+<section class="properties-section">
+
+    <div class="container">
+
+
+        <div class="properties-topbar">
+
+            <h2>
+                {% if search %}
+                    Search Results
+                {% elif property_type %}
+                    {{ property_type }} Properties
+                {% elif purpose %}
+                    Properties For {{ purpose }}
+                {% else %}
+                    Available Properties
+                {% endif %}
+            </h2>
+
+
+            <div class="properties-count">
+
+                {% if total_pages > 0 %}
+
+                    Page {{ page }} of {{ total_pages }}
+
+                {% else %}
+
+                    No properties found
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        {% if properties %}
+
+        <div class="properties-grid">
+
+
+            {% for property in properties %}
+
+            <article class="property-card">
+
+                <a
+                    href="{{ url_for('property_details', id=property.id) }}"
+                    class="property-card-link">
+
+
+                    <div class="property-card-image">
+
+                        {% if property.main_image %}
+
+                        <img
+                            src="{{ property.main_image }}"
+                            alt="{{ property.title }}"
+                            loading="lazy">
+
+                        {% else %}
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='images/no-image.png'
+                            ) }}"
+                            alt="Property image"
+                            loading="lazy">
+
+                        {% endif %}
+
+
+                        <span
+                            class="
+                                property-status
+                                {% if property.purpose == 'Rent' %}
+                                rent
+                                {% endif %}
+                            ">
+
+                            {% if property.purpose == 'Rent' %}
+
+                                FOR RENT
+
+                            {% else %}
+
+                                FOR SALE
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="property-card-info">
+
+                        <h3
+                            class="property-card-title">
+
+                            {{ property.title }}
+
+                        </h3>
+
+
+                        <div
+                            class="property-card-location">
+
+                            📍
+                            {{ property.location }}
+
+                        </div>
+
+
+                        <div
+                            class="property-card-price">
+
+                            {% if property.price %}
+
+                                QAR
+                                {{ "{:,.0f}".format(
+                                    property.price
+                                ) }}
+
+                            {% else %}
+
+                                Contact For Price
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div
+                            class="property-card-meta">
+
+
+                            {% if property.bedrooms %}
+
+                            <span>
+
+                                🛏
+                                {{ property.bedrooms }}
+                                Beds
+
+                            </span>
+
+                            {% endif %}
+
+
+                            {% if property.bathrooms %}
+
+                            <span>
+
+                                🚿
+                                {{ property.bathrooms }}
+                                Baths
+
+                            </span>
+
+                            {% endif %}
+
+
+                            {% if property.area %}
+
+                            <span>
+
+                                📐
+                                {{ "{:,.0f}".format(
+                                    property.area
+                                ) }}
+                                sqm
+
+                            </span>
+
+                            {% endif %}
+
+
+                            {% if property.property_type %}
+
+                            <span>
+
+                                {{ property.property_type }}
+
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="properties-empty">
+
+            <h3>
+                No Properties Found
+            </h3>
+
+            <p>
+                We couldn't find any properties matching
+                your search or filters.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             PAGINATION
+        ================================================= -->
+
+        {% if total_pages > 1 %}
+
+        <div class="pagination">
+
+
+            {% if page > 1 %}
+
+            <a
+                href="{{ url_for(
+                    'properties',
+                    page=page-1,
+                    property_type=property_type,
+                    purpose=purpose,
+                    location=location,
+                    search=search
+                ) }}">
+
+                ‹ Previous
+
+            </a>
+
+            {% endif %}
+
+
+            {% for p in range(1, total_pages + 1) %}
+
+                {% if p == page %}
+
+                <span class="active">
+                    {{ p }}
+                </span>
+
+                {% else %}
+
+                <a
+                    href="{{ url_for(
+                        'properties',
+                        page=p,
+                        property_type=property_type,
+                        purpose=purpose,
+                        location=location,
+                        search=search
+                    ) }}">
+
+                    {{ p }}
+
+                </a>
+
+                {% endif %}
+
+            {% endfor %}
+
+
+            {% if page < total_pages %}
+
+            <a
+                href="{{ url_for(
+                    'properties',
+                    page=page+1,
+                    property_type=property_type,
+                    purpose=purpose,
+                    location=location,
+                    search=search
+                ) }}">
+
+                Next ›
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     JAVASCRIPT
+======================================================= -->
+
 <script>
 
-/* =========================================================
-   ADVANCED SEARCH PANEL
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const advancedBtn =
-    document.getElementById("advancedSearchBtn");
-
-  const advancedPanel =
-    document.getElementById("advancedSearchPanel");
-
-  const closeBtn =
-    document.getElementById("closeAdvancedSearch");
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-  if (advancedBtn && advancedPanel) {
+        /* =================================================
+           LIVE PROPERTY SEARCH
 
-    advancedBtn.addEventListener("click", function () {
+           IMPORTANT:
+           This uses the actual Flask endpoint:
 
-      advancedPanel.classList.toggle("open");
+           property_search_api
 
-      advancedBtn.classList.toggle(
-        "active",
-        advancedPanel.classList.contains("open")
-      );
+           URL:
+           /api/property-search
+        ================================================= */
 
-    });
+        const searchInput =
+            document.getElementById(
+                "propertySearchInput"
+            );
 
-  }
+        const resultsBox =
+            document.getElementById(
+                "propertyLiveResults"
+            );
 
+        let searchTimer = null;
 
-  if (closeBtn && advancedPanel) {
-
-    closeBtn.addEventListener("click", function () {
-
-      advancedPanel.classList.remove("open");
-
-      advancedBtn.classList.remove("active");
-
-    });
-
-  }
+        let currentController = null;
 
 
-  /* =====================================================
-     SORT
-  ===================================================== */
-
-  const sortSelect =
-    document.getElementById("sortSelect");
-
-  if (sortSelect) {
-
-    sortSelect.addEventListener("change", function () {
-
-      document
-        .getElementById("propertySearchForm")
-        .submit();
-
-    });
-
-  }
+        if (!searchInput || !resultsBox) {
+            return;
+        }
 
 
-  /* =====================================================
-     LIVE SEARCH
-  ===================================================== */
+        /* =================================================
+           ESCAPE HTML
+        ================================================= */
 
-  const searchInput =
-    document.getElementById("propertySearchInput");
+        function escapeHTML(value) {
 
-  const resultsBox =
-    document.getElementById("liveSearchResults");
+            if (
+                value === null ||
+                value === undefined
+            ) {
 
+                return "";
 
-  let searchTimer = null;
+            }
 
+            return String(value)
 
-  if (searchInput && resultsBox) {
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
 
-    searchInput.addEventListener("input", function () {
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
 
-      const query =
-        this.value.trim();
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
 
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
 
-      clearTimeout(searchTimer);
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
 
-
-      if (!query) {
-
-        resultsBox.innerHTML = "";
-
-        resultsBox.style.display = "none";
-
-        return;
-
-      }
-
-
-      resultsBox.innerHTML =
-        '<div class="live-search-loading">Searching...</div>';
-
-      resultsBox.style.display = "block";
-
-
-      searchTimer = setTimeout(function () {
-
-        fetch(
-          "{{ url_for('property_search_suggestions') }}?q="
-          + encodeURIComponent(query)
-        )
-
-        .then(function (response) {
-
-          if (!response.ok) {
-            throw new Error("Search request failed");
-          }
-
-          return response.json();
-
-        })
-
-        .then(function (data) {
-
-          resultsBox.innerHTML = "";
+        }
 
 
-          if (
-            !data.results ||
-            data.results.length === 0
-          ) {
+        /* =================================================
+           CLEAR RESULTS
+        ================================================= */
+
+        function clearResults() {
+
+            resultsBox.innerHTML = "";
+
+            resultsBox.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        /* =================================================
+           SHOW LOADING
+        ================================================= */
+
+        function showLoading() {
+
+            resultsBox.innerHTML = `
+
+                <div class="property-search-state">
+
+                    <i class="fas fa-spinner fa-spin"></i>
+
+                    Searching properties...
+
+                </div>
+
+            `;
+
+            resultsBox.classList.add(
+                "show"
+            );
+
+        }
+
+
+        /* =================================================
+           RENDER RESULTS
+
+           IMPORTANT:
+           property_search_api returns:
+
+           jsonify(results)
+
+           Therefore "data" itself is
+           the array.
+
+           NOT data.results
+        ================================================= */
+
+        function renderResults(data) {
+
+
+            if (
+                !Array.isArray(data) ||
+                data.length === 0
+            ) {
+
+                resultsBox.innerHTML = `
+
+                    <div class="property-search-state">
+
+                        No matching properties found.
+
+                    </div>
+
+                `;
+
+                resultsBox.classList.add(
+                    "show"
+                );
+
+                return;
+
+            }
+
+
+            let html = "";
+
+
+            data.forEach(
+                function (property) {
+
+
+                    const purpose =
+                        property.purpose ||
+                        "Sale";
+
+
+                    const badgeClass =
+                        purpose.toLowerCase() === "rent"
+                            ? "rent"
+                            : "";
+
+
+                    let price =
+                        "Contact For Price";
+
+
+                    if (
+                        property.price !== null &&
+                        property.price !== undefined &&
+                        property.price !== ""
+                    ) {
+
+                        const numericPrice =
+                            Number(
+                                property.price
+                            );
+
+                        if (
+                            !Number.isNaN(
+                                numericPrice
+                            )
+                        ) {
+
+                            price =
+                                "QAR " +
+                                numericPrice
+                                    .toLocaleString();
+
+                        }
+
+                    }
+
+
+                    const image =
+                        property.main_image ||
+                        "{{ url_for(
+                            'static',
+                            filename='images/no-image.png'
+                        ) }}";
+
+
+                    html += `
+
+                        <a
+                            href="/property/${encodeURIComponent(
+                                property.id
+                            )}"
+                            class="property-live-item"
+                        >
+
+
+                            <div
+                                class="property-live-image"
+                            >
+
+                                <img
+                                    src="${escapeHTML(
+                                        image
+                                    )}"
+                                    alt="${escapeHTML(
+                                        property.title
+                                    )}"
+                                    loading="lazy">
+
+                            </div>
+
+
+                            <div
+                                class="property-live-info"
+                            >
+
+                                <div
+                                    class="property-live-title"
+                                >
+
+                                    ${escapeHTML(
+                                        property.title
+                                    )}
+
+                                </div>
+
+
+                                <div
+                                    class="property-live-location"
+                                >
+
+                                    📍
+                                    ${escapeHTML(
+                                        property.location ||
+                                        ""
+                                    )}
+
+                                </div>
+
+
+                                <div
+                                    class="property-live-details"
+                                >
+
+                                    <span
+                                        class="property-live-price"
+                                    >
+
+                                        ${escapeHTML(
+                                            price
+                                        )}
+
+                                    </span>
+
+
+                                    ${
+                                        property.property_type
+                                        ? `
+                                            <span>
+                                                ${escapeHTML(
+                                                    property.property_type
+                                                )}
+                                            </span>
+                                        `
+                                        : ""
+                                    }
+
+
+                                    ${
+                                        property.bedrooms
+                                        ? `
+                                            <span>
+                                                🛏
+                                                ${escapeHTML(
+                                                    property.bedrooms
+                                                )}
+                                            </span>
+                                        `
+                                        : ""
+                                    }
+
+
+                                    ${
+                                        property.area
+                                        ? `
+                                            <span>
+                                                📐
+                                                ${escapeHTML(
+                                                    property.area
+                                                )}
+                                                sqm
+                                            </span>
+                                        `
+                                        : ""
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            <span
+                                class="
+                                    property-live-badge
+                                    ${badgeClass}
+                                "
+                            >
+
+                                FOR
+                                ${escapeHTML(
+                                    purpose
+                                ).toUpperCase()}
+
+                            </span>
+
+
+                        </a>
+
+                    `;
+
+                }
+            );
+
 
             resultsBox.innerHTML =
-              '<div class="live-search-loading">No properties found.</div>';
+                html;
 
-            resultsBox.style.display = "block";
-
-            return;
-
-          }
-
-
-          data.results.forEach(function (property) {
-
-            const item =
-              document.createElement("a");
-
-            item.className =
-              "live-search-item";
-
-            item.href =
-              "{{ url_for('property_details', id=0) }}"
-              .replace(
-                "/0",
-                "/" + property.id
-              );
-
-
-            const image =
-              document.createElement("img");
-
-            image.src =
-              property.main_image ||
-              "{{ url_for('static', filename='images/no-image.jpg') }}";
-
-            image.alt =
-              property.title || "Property";
-
-
-            const content =
-              document.createElement("div");
-
-            content.className =
-              "live-search-item-content";
-
-
-            const title =
-              document.createElement("div");
-
-            title.className =
-              "live-search-item-title";
-
-            title.textContent =
-              property.title || "Untitled Property";
-
-
-            const location =
-              document.createElement("div");
-
-            location.className =
-              "live-search-item-location";
-
-            location.textContent =
-              property.location || "Qatar";
-
-
-            content.appendChild(title);
-
-            content.appendChild(location);
-
-
-            const price =
-              document.createElement("div");
-
-            price.className =
-              "live-search-item-price";
-
-
-            const numericPrice =
-              Number(property.price || 0);
-
-
-            price.textContent =
-              "QAR " +
-              numericPrice.toLocaleString();
-
-
-            item.appendChild(image);
-
-            item.appendChild(content);
-
-            item.appendChild(price);
-
-
-            resultsBox.appendChild(item);
-
-          });
-
-
-          resultsBox.style.display =
-            "block";
-
-        })
-
-        .catch(function (error) {
-
-          console.error(
-            "Live property search error:",
-            error
-          );
-
-          resultsBox.innerHTML =
-            '<div class="live-search-loading">Search temporarily unavailable.</div>';
-
-          resultsBox.style.display =
-            "block";
-
-        });
-
-      }, 250);
-
-    });
-
-
-    /* =====================================================
-       CLOSE LIVE SEARCH WHEN CLICKING OUTSIDE
-    ===================================================== */
-
-    document.addEventListener(
-      "click",
-      function (event) {
-
-        if (
-          !searchInput.contains(event.target) &&
-          !resultsBox.contains(event.target)
-        ) {
-
-          resultsBox.style.display =
-            "none";
+            resultsBox.classList.add(
+                "show"
+            );
 
         }
 
-      }
-    );
 
+        /* =================================================
+           PERFORM LIVE SEARCH
+        ================================================= */
 
-    /* =====================================================
-       SHOW RESULTS AGAIN WHEN INPUT FOCUSES
-    ===================================================== */
-
-    searchInput.addEventListener(
-      "focus",
-      function () {
-
-        if (
-          this.value.trim() &&
-          resultsBox.innerHTML.trim()
+        function performSearch(
+            keyword
         ) {
 
-          resultsBox.style.display =
-            "block";
+
+            keyword =
+                keyword.trim();
+
+
+            if (!keyword) {
+
+                clearResults();
+
+                return;
+
+            }
+
+
+            if (currentController) {
+
+                currentController.abort();
+
+            }
+
+
+            currentController =
+                new AbortController();
+
+
+            showLoading();
+
+
+            /*
+             * THIS IS THE IMPORTANT FIX.
+             *
+             * Previously the application was
+             * trying to use:
+             *
+             * property_search_suggestions
+             *
+             * which does NOT exist.
+             *
+             * Your Flask route is:
+             *
+             * property_search_api
+             *
+             * with URL:
+             *
+             * /api/property-search
+             */
+
+            const apiURL =
+                "{{ url_for(
+                    'property_search_api'
+                ) }}";
+
+
+            fetch(
+                `${apiURL}?q=${encodeURIComponent(
+                    keyword
+                )}`,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+                    },
+
+                    signal:
+                        currentController.signal
+                }
+            )
+
+            .then(
+                function (response) {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Search request failed"
+                        );
+
+                    }
+
+                    return response.json();
+
+                }
+            )
+
+            .then(
+                function (data) {
+
+                    renderResults(
+                        data
+                    );
+
+                }
+            )
+
+            .catch(
+                function (error) {
+
+                    if (
+                        error.name ===
+                        "AbortError"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    console.error(
+                        "Property search error:",
+                        error
+                    );
+
+
+                    resultsBox.innerHTML = `
+
+                        <div
+                            class="property-search-state"
+                        >
+
+                            Unable to search properties.
+                            Please try again.
+
+                        </div>
+
+                    `;
+
+                    resultsBox.classList.add(
+                        "show"
+                    );
+
+                }
+            );
 
         }
 
-      }
-    );
 
-  }
+        /* =================================================
+           INPUT EVENT
+        ================================================= */
 
-});
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+
+                clearTimeout(
+                    searchTimer
+                );
+
+
+                const keyword =
+                    this.value.trim();
+
+
+                if (!keyword) {
+
+                    clearResults();
+
+                    return;
+
+                }
+
+
+                searchTimer =
+                    setTimeout(
+                        function () {
+
+                            performSearch(
+                                keyword
+                            );
+
+                        },
+                        250
+                    );
+
+            }
+        );
+
+
+        /* =================================================
+           CLOSE WHEN CLICKING OUTSIDE
+        ================================================= */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !event.target.closest(
+                        ".property-search-wrapper"
+                    )
+                ) {
+
+                    clearResults();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           ESCAPE KEY
+        ================================================= */
+
+        searchInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    clearResults();
+
+                    this.blur();
+
+                }
+
+            }
+        );
+
+    }
+
+);
 
 </script>
 
