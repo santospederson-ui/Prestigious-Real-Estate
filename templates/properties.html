@@ -6,996 +6,2816 @@ Properties | Prestigious Real Estate
 
 {% block content %}
 
-<!-- =========================
-PAGE HERO
-========================= -->
+<!-- =========================================================
+     PAGE HERO
+========================================================= -->
 
-<section class="page-hero" style="background-image:url('{{ url_for('static', filename='images/uploads/properties/properties.png') }}');">
-  <div class="page-overlay">
-    <div class="container">
-      <div class="hero-text-content">
-        <span class="hero-badge">Real Estate Portfolio</span>
-        <h1>Our Properties</h1>
-        <p>Discover premium residential and commercial properties for rent and sale in Qatar</p>
-      </div>
+<section class="page-hero"
+         style="background-image:url('{{ url_for('static', filename='images/uploads/properties/properties.png') }}');">
+
+    <div class="page-overlay">
+
+        <div class="container">
+
+            <div class="hero-text-content">
+
+                <span class="hero-badge">
+                    Real Estate Portfolio
+                </span>
+
+                <h1>
+                    Our Properties
+                </h1>
+
+                <p>
+                    Discover premium residential and commercial properties
+                    for rent and sale in Qatar.
+                </p>
+
+            </div>
+
+        </div>
+
     </div>
-  </div>
+
 </section>
 
-<!-- =========================
-PROPERTY FILTER
-========================= -->
 
-<section class="property-filter-section">
-  <div class="container">
+<!-- =========================================================
+     FIND PROPERTY
+========================================================= -->
 
-    <form class="filter-box" method="GET" action="{{ url_for('properties') }}">
+<section class="find-property-section">
 
-      <div class="filter-group">
-        <label class="filter-label">Type</label>
-        <select name="property_type">
-          <option value="">All Property Types</option>
-          <option value="Villa" {% if request.args.get('property_type') == 'Villa' %}selected{% endif %}>Villa</option>
-          <option value="Apartment" {% if request.args.get('property_type') == 'Apartment' %}selected{% endif %}>Apartment</option>
-          <option value="Office" {% if request.args.get('property_type') == 'Office' %}selected{% endif %}>Office</option>
-          <option value="Commercial Building" {% if request.args.get('property_type') == 'Commercial Building' %}selected{% endif %}>Commercial Building</option>
-        </select>
-      </div>
+    <div class="container">
 
-      <div class="filter-group">
-        <label class="filter-label">Purpose</label>
-        <select name="purpose">
-          <option value="">Sale & Rent</option>
-          <option value="Sale" {% if request.args.get('purpose') == 'Sale' %}selected{% endif %}>For Sale</option>
-          <option value="Rent" {% if request.args.get('purpose') == 'Rent' %}selected{% endif %}>For Rent</option>
-        </select>
-      </div>
+        <div class="find-property-heading">
 
-      <div class="filter-group">
-        <label class="filter-label">Location</label>
-        <select name="location">
-          <option value="">All Locations</option>
-          <option value="Doha" {% if request.args.get('location') == 'Doha' %}selected{% endif %}>Doha</option>
-          <option value="Lusail" {% if request.args.get('location') == 'Lusail' %}selected{% endif %}>Lusail</option>
-          <option value="The Pearl" {% if request.args.get('location') == 'The Pearl' %}selected{% endif %}>The Pearl</option>
-          <option value="West Bay" {% if request.args.get('location') == 'West Bay' %}selected{% endif %}>West Bay</option>
-          <option value="Al Wakrah" {% if request.args.get('location') == 'Al Wakrah' %}selected{% endif %}>Al Wakrah</option>
-        </select>
-      </div>
+            <span class="find-property-eyebrow">
+                PROPERTY SEARCH
+            </span>
 
-      <button type="submit" class="filter-submit-btn">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             width="18"
-             height="18"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2.5"
-             stroke-linecap="round"
-             stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.3-4.3"/>
-        </svg>
-        <span>Search</span>
-      </button>
+            <h2>
+                Find Property
+            </h2>
 
-    </form>
+            <p>
+                Search by property name, location, type, purpose or feature.
+            </p>
 
-  </div>
+        </div>
+
+
+        <!-- SEARCH PANEL -->
+
+        <div class="property-search-panel">
+
+            <!-- LIVE SEARCH -->
+
+            <div class="live-search-wrapper">
+
+                <div class="live-search-box">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="21"
+                         height="21"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+
+                    </svg>
+
+                    <input
+                        type="text"
+                        id="propertyLiveSearch"
+                        name="search"
+                        value="{{ search or '' }}"
+                        placeholder="Search villas, apartments, Lusail, sea view..."
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+                    <button
+                        type="button"
+                        id="clearSearchBtn"
+                        class="clear-search-btn"
+                        aria-label="Clear search"
+                        style="{% if not search %}display:none;{% endif %}">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <!-- LIVE RESULTS DROPDOWN -->
+
+                <div
+                    id="liveSearchResults"
+                    class="live-search-results"
+                    aria-live="polite">
+                </div>
+
+            </div>
+
+
+            <!-- ACTION BUTTONS -->
+
+            <div class="search-actions">
+
+                <!-- ADVANCED SEARCH -->
+
+                <button
+                    type="button"
+                    class="search-action-btn"
+                    id="advancedSearchBtn">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="19"
+                         height="19"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M4 21v-7"/>
+                        <path d="M4 10V3"/>
+                        <path d="M12 21v-9"/>
+                        <path d="M12 8V3"/>
+                        <path d="M20 21v-5"/>
+                        <path d="M20 12V3"/>
+                        <path d="M1 14h6"/>
+                        <path d="M9 8h6"/>
+                        <path d="M17 16h6"/>
+
+                    </svg>
+
+                    <span>
+                        Advanced Search
+                    </span>
+
+                    <span
+                        class="action-value"
+                        id="advancedValue">
+                        Filters
+                    </span>
+
+                </button>
+
+
+                <!-- SORT -->
+
+                <button
+                    type="button"
+                    class="search-action-btn"
+                    id="sortBtn">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="19"
+                         height="19"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M3 6h18"/>
+                        <path d="M6 12h12"/>
+                        <path d="M10 18h4"/>
+
+                    </svg>
+
+                    <span>
+                        Sort
+                    </span>
+
+                    <span
+                        class="action-value"
+                        id="sortValue">
+                        Newest
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ADVANCED FILTER PANEL
+        ================================================= -->
+
+        <div
+            id="advancedFilterPanel"
+            class="advanced-filter-panel">
+
+            <form
+                method="GET"
+                action="{{ url_for('properties') }}"
+                id="advancedFilterForm">
+
+                <input
+                    type="hidden"
+                    name="search"
+                    id="advancedSearchInput"
+                    value="{{ search or '' }}">
+
+                <input
+                    type="hidden"
+                    name="sort"
+                    id="advancedSortInput"
+                    value="{{ sort or 'newest' }}">
+
+
+                <div class="advanced-filter-grid">
+
+                    <!-- TYPE -->
+
+                    <div class="advanced-filter-group">
+
+                        <label>
+                            Property Type
+                        </label>
+
+                        <select name="property_type">
+
+                            <option value="">
+                                All Property Types
+                            </option>
+
+                            <option value="Villa"
+                                {% if property_type == 'Villa' %}selected{% endif %}>
+                                Villa
+                            </option>
+
+                            <option value="Apartment"
+                                {% if property_type == 'Apartment' %}selected{% endif %}>
+                                Apartment
+                            </option>
+
+                            <option value="Office"
+                                {% if property_type == 'Office' %}selected{% endif %}>
+                                Office
+                            </option>
+
+                            <option value="Commercial Building"
+                                {% if property_type == 'Commercial Building' %}selected{% endif %}>
+                                Commercial Building
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PURPOSE -->
+
+                    <div class="advanced-filter-group">
+
+                        <label>
+                            Purpose
+                        </label>
+
+                        <select name="purpose">
+
+                            <option value="">
+                                Sale & Rent
+                            </option>
+
+                            <option value="Sale"
+                                {% if purpose == 'Sale' %}selected{% endif %}>
+                                For Sale
+                            </option>
+
+                            <option value="Rent"
+                                {% if purpose == 'Rent' %}selected{% endif %}>
+                                For Rent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- LOCATION -->
+
+                    <div class="advanced-filter-group">
+
+                        <label>
+                            Location
+                        </label>
+
+                        <select name="location">
+
+                            <option value="">
+                                All Locations
+                            </option>
+
+                            <option value="Doha"
+                                {% if location == 'Doha' %}selected{% endif %}>
+                                Doha
+                            </option>
+
+                            <option value="Lusail"
+                                {% if location == 'Lusail' %}selected{% endif %}>
+                                Lusail
+                            </option>
+
+                            <option value="The Pearl"
+                                {% if location == 'The Pearl' %}selected{% endif %}>
+                                The Pearl
+                            </option>
+
+                            <option value="West Bay"
+                                {% if location == 'West Bay' %}selected{% endif %}>
+                                West Bay
+                            </option>
+
+                            <option value="Al Wakrah"
+                                {% if location == 'Al Wakrah' %}selected{% endif %}>
+                                Al Wakrah
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- APPLY -->
+
+                    <div class="advanced-filter-actions">
+
+                        <button
+                            type="button"
+                            id="clearFiltersBtn"
+                            class="clear-filter-btn">
+
+                            Clear
+
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="apply-filter-btn">
+
+                            Apply Filters
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =================================================
+             SORT PANEL
+        ================================================= -->
+
+        <div
+            id="sortPanel"
+            class="sort-panel">
+
+            <button
+                type="button"
+                class="sort-option {% if sort == 'newest' or not sort %}active{% endif %}"
+                data-sort="newest">
+
+                <span>Newest First</span>
+
+                <small>
+                    Recently added
+                </small>
+
+                <span class="sort-check">✓</span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="sort-option {% if sort == 'oldest' %}active{% endif %}"
+                data-sort="oldest">
+
+                <span>Oldest First</span>
+
+                <small>
+                    Earliest listings
+                </small>
+
+                <span class="sort-check">✓</span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="sort-option {% if sort == 'price_low' %}active{% endif %}"
+                data-sort="price_low">
+
+                <span>Price: Low to High</span>
+
+                <small>
+                    Lowest price first
+                </small>
+
+                <span class="sort-check">✓</span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="sort-option {% if sort == 'price_high' %}active{% endif %}"
+                data-sort="price_high">
+
+                <span>Price: High to Low</span>
+
+                <small>
+                    Highest price first
+                </small>
+
+                <span class="sort-check">✓</span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="sort-option {% if sort == 'area_large' %}active{% endif %}"
+                data-sort="area_large">
+
+                <span>Largest Area</span>
+
+                <small>
+                    Biggest properties first
+                </small>
+
+                <span class="sort-check">✓</span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="sort-option {% if sort == 'area_small' %}active{% endif %}"
+                data-sort="area_small">
+
+                <span>Smallest Area</span>
+
+                <small>
+                    Smallest properties first
+                </small>
+
+                <span class="sort-check">✓</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
 </section>
 
-<!-- =========================
-PROPERTY LIST
-========================= -->
+
+<!-- =========================================================
+     PROPERTY LIST
+========================================================= -->
 
 <section class="properties-section">
-  <div class="container">
 
-    <div class="section-title">
-      <h2>Available Properties</h2>
-      <p>Explore our exclusive collection of luxury real estate listings across Qatar</p>
+    <div class="container">
+
+        <div class="section-title">
+
+            <h2>
+                Available Properties
+            </h2>
+
+            <p>
+                Explore our exclusive collection of luxury real estate
+                listings across Qatar.
+            </p>
+
+        </div>
+
+
+        <div class="property-grid">
+
+            {% for property in properties %}
+
+            <div class="property-card">
+
+                <a
+                    href="{{ url_for('property_details', id=property.id) }}"
+                    class="property-image-link">
+
+                    <div class="property-image-wrapper">
+
+                        {% if property.main_image %}
+
+                        <img
+                            src="{{ property.main_image }}"
+                            alt="{{ property.title }}"
+                            loading="lazy">
+
+                        {% else %}
+
+                        <img
+                            src="{{ url_for('static', filename='images/no-image.jpg') }}"
+                            alt="No Image Available"
+                            loading="lazy">
+
+                        {% endif %}
+
+
+                        <div class="property-badge
+                            {% if property.purpose == 'Rent' %}
+                                badge-rent
+                            {% else %}
+                                badge-sale
+                            {% endif %}">
+
+                            FOR {{ property.purpose|upper }}
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <div class="property-info">
+
+                    <div class="property-price-tag">
+
+                        {% if property.price %}
+
+                            QAR {{ "{:,.0f}".format(property.price) }}
+
+                        {% else %}
+
+                            Contact For Price
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="property-location">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="15"
+                             height="15"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                            <circle cx="12" cy="10" r="3"/>
+
+                        </svg>
+
+                        <span>
+                            {{ property.location }}
+                        </span>
+
+                    </div>
+
+
+                    <h3 class="property-title">
+                        {{ property.title }}
+                    </h3>
+
+
+                    <div class="property-meta">
+
+                        <div class="meta-item">
+
+                            <span class="meta-icon">🛏</span>
+
+                            <span>
+                                {{ property.bedrooms or 0 }}
+                            </span>
+
+                            <small>
+                                Beds
+                            </small>
+
+                        </div>
+
+
+                        <div class="meta-item">
+
+                            <span class="meta-icon">🚿</span>
+
+                            <span>
+                                {{ property.bathrooms or 0 }}
+                            </span>
+
+                            <small>
+                                Baths
+                            </small>
+
+                        </div>
+
+
+                        <div class="meta-item">
+
+                            <span class="meta-icon">📐</span>
+
+                            <span>
+                                {{ property.area or 0 }}
+                            </span>
+
+                            <small>
+                                sqm
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-properties-card">
+
+                <div class="empty-icon">
+                    🏠
+                </div>
+
+                <h3>
+                    No Properties Found
+                </h3>
+
+                <p>
+                    We couldn't find any properties matching your
+                    search criteria. Try adjusting your filters.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =================================================
+             PAGINATION
+        ================================================= -->
+
+        {% if total_pages > 1 %}
+
+        <div class="pagination-container">
+
+            <div class="pagination">
+
+                {% if page > 1 %}
+
+                <a
+                    href="{{ url_for(
+                        'properties',
+                        page=page-1,
+                        property_type=property_type,
+                        purpose=purpose,
+                        location=location,
+                        search=search,
+                        sort=sort
+                    ) }}"
+                    class="pagination-link nav-btn">
+
+                    ← Previous
+
+                </a>
+
+                {% else %}
+
+                <span class="pagination-link disabled">
+                    ← Previous
+                </span>
+
+                {% endif %}
+
+
+                <div class="pagination-indicator">
+
+                    Page
+                    <strong>{{ page }}</strong>
+                    of
+                    {{ total_pages }}
+
+                </div>
+
+
+                {% if page < total_pages %}
+
+                <a
+                    href="{{ url_for(
+                        'properties',
+                        page=page+1,
+                        property_type=property_type,
+                        purpose=purpose,
+                        location=location,
+                        search=search,
+                        sort=sort
+                    ) }}"
+                    class="pagination-link nav-btn">
+
+                    Next →
+
+                </a>
+
+                {% else %}
+
+                <span class="pagination-link disabled">
+                    Next →
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
     </div>
 
-    <div class="property-grid">
-
-      {% for property in properties %}
-
-        <div class="property-card">
-
-          <!-- CLICKABLE PROPERTY IMAGE -->
-
-          <a href="{{ url_for('property_details', id=property.id) }}"
-             class="property-image-link">
-
-            <div class="property-image-wrapper">
-
-              {% if property.main_image %}
-
-                <img src="{{ property.main_image }}"
-                     alt="{{ property.title }}"
-                     loading="lazy">
-
-              {% else %}
-
-                <img src="{{ url_for('static', filename='images/no-image.jpg') }}"
-                     alt="No Image Available"
-                     loading="lazy">
-
-              {% endif %}
-
-              <div class="property-badge {% if property.purpose == 'Rent' %}badge-rent{% else %}badge-sale{% endif %}">
-                FOR {{ property.purpose|upper }}
-              </div>
-
-            </div>
-
-          </a>
-
-          <!-- =========================
-          SECOND RECTANGLE
-          ========================= -->
-
-          <div class="property-info">
-
-            <!-- PRICE — TOP RIGHT OF SECOND RECTANGLE -->
-
-            <div class="property-price-tag">
-              QAR {{ "{:,.0f}".format(property.price or 0) }}
-            </div>
-
-            <div class="property-location">
-
-              <svg xmlns="http://www.w3.org/2000/svg"
-                   width="15"
-                   height="15"
-                   viewBox="0 0 24 24"
-                   fill="none"
-                   stroke="currentColor"
-                   stroke-width="2"
-                   stroke-linecap="round"
-                   stroke-linejoin="round">
-
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-
-              </svg>
-
-              <span>{{ property.location }}</span>
-
-            </div>
-
-            <h3 class="property-title">
-              {{ property.title }}
-            </h3>
-
-            <div class="property-meta">
-
-              <div class="meta-item">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="16"
-                     height="16"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-
-                  <path d="M2 4v16"/>
-                  <path d="M2 8h18a2 2 0 0 1 2 2v10"/>
-                  <path d="M2 17h20"/>
-                  <path d="M6 8v9"/>
-
-                </svg>
-
-                <span>
-                  {{ property.bedrooms or 0 }} Beds
-                </span>
-
-              </div>
-
-              <div class="meta-item">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="16"
-                     height="16"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-
-                  <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L6 9"/>
-                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                  <path d="M15 6 12.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L12 9"/>
-
-                </svg>
-
-                <span>
-                  {{ property.bathrooms or 0 }} Baths
-                </span>
-
-              </div>
-
-              <div class="meta-item">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="16"
-                     height="16"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-
-                  <rect width="18"
-                        height="18"
-                        x="3"
-                        y="3"
-                        rx="2"/>
-
-                  <path d="M3 9h18"/>
-                  <path d="M9 21V9"/>
-
-                </svg>
-
-                <span>
-                  {{ property.area or 0 }} sqm
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      {% else %}
-
-        <div class="empty-properties-card">
-
-          <div class="empty-icon">🏠</div>
-
-          <h3>No Properties Found</h3>
-
-          <p>
-            We couldn't find any properties matching your search criteria.
-            Try adjusting your filters.
-          </p>
-
-        </div>
-
-      {% endfor %}
-
-    </div>
-
-    <!-- =========================
-    PAGINATION
-    ========================= -->
-
-    {% if total_pages > 1 %}
-
-      <div class="pagination-container">
-
-        <div class="pagination">
-
-          {% if page > 1 %}
-
-            <a href="{{ url_for('properties',
-                               page=page-1,
-                               property_type=property_type,
-                               purpose=purpose,
-                               location=location) }}"
-               class="pagination-link nav-btn">
-              ← Previous
-            </a>
-
-          {% else %}
-
-            <span class="pagination-link disabled">
-              ← Previous
-            </span>
-
-          {% endif %}
-
-          <div class="pagination-indicator">
-            Page <strong>{{ page }}</strong> of {{ total_pages }}
-          </div>
-
-          {% if page < total_pages %}
-
-            <a href="{{ url_for('properties',
-                               page=page+1,
-                               property_type=property_type,
-                               purpose=purpose,
-                               location=location) }}"
-               class="pagination-link nav-btn">
-              Next →
-            </a>
-
-          {% else %}
-
-            <span class="pagination-link disabled">
-              Next →
-            </span>
-
-          {% endif %}
-
-        </div>
-
-      </div>
-
-    {% endif %}
-
-  </div>
 </section>
+
+
+<!-- =========================================================
+     CSS
+========================================================= -->
 
 <style>
 
-/* ==================================
-   DESIGN SYSTEM & QATAR MAROON PALETTE
-================================== */
-
 :root {
-  --qatar-maroon: #8A1538;
-  --qatar-maroon-dark: #670D28;
-  --qatar-maroon-light: rgba(138, 21, 56, 0.08);
-  --gold-accent: #D4AF37;
-  --navy-dark: #1F2A44;
-  --text-dark: #0f172a;
-  --text-muted: #64748b;
-  --border-light: #e2e8f0;
-  --bg-page: #f8fafc;
+    --qatar-maroon:#8A1538;
+    --qatar-maroon-dark:#670D28;
+    --qatar-maroon-light:rgba(138,21,56,.08);
+    --gold-accent:#D4AF37;
+    --navy-dark:#1F2A44;
+    --text-dark:#0f172a;
+    --text-muted:#64748b;
+    --border-light:#e2e8f0;
+    --bg-page:#f8fafc;
 }
 
-/* CONTAINER */
+
+/* =========================================================
+   CONTAINER
+========================================================= */
 
 .container {
-  padding-left: clamp(20px, 4vw, 50px);
-  padding-right: clamp(20px, 4vw, 50px);
+    padding-left:clamp(20px,4vw,50px);
+    padding-right:clamp(20px,4vw,50px);
 }
 
-/* PAGE HERO */
+
+/* =========================================================
+   HERO
+========================================================= */
 
 .page-hero {
-  min-height: 380px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  align-items: center;
+    min-height:380px;
+    background-size:cover;
+    background-position:center;
+    position:relative;
+    display:flex;
+    align-items:center;
 }
 
 .page-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.35) 0%,
-    rgba(15, 23, 42, 0.15) 100%
-  );
-  display: flex;
-  align-items: center;
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        180deg,
+        rgba(15,23,42,.35),
+        rgba(15,23,42,.15)
+    );
+    display:flex;
+    align-items:center;
 }
 
 .hero-text-content {
-  color: white;
-  max-width: 650px;
+    color:#fff;
+    max-width:650px;
 }
 
 .hero-badge {
-  display: inline-block;
-  background: rgba(138, 21, 56, 0.85);
-  border: 1px solid var(--gold-accent);
-  color: #ffffff;
-  padding: 5px 14px;
-  border-radius: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display:inline-block;
+    background:rgba(138,21,56,.85);
+    border:1px solid var(--gold-accent);
+    color:#fff;
+    padding:5px 14px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:14px;
 }
 
 .hero-text-content h1 {
-  font-size: 46px;
-  font-weight: 800;
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    font-size:46px;
+    font-weight:800;
+    margin-bottom:12px;
+    text-shadow:0 2px 8px rgba(0,0,0,.6);
 }
 
 .hero-text-content p {
-  font-size: 17px;
-  color: #ffffff;
-  margin: 0;
-  line-height: 1.6;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    font-size:17px;
+    color:#fff;
+    margin:0;
+    line-height:1.6;
+    text-shadow:0 2px 6px rgba(0,0,0,.6);
 }
 
-/* FILTER SECTION */
 
-.property-filter-section {
-  position: relative;
-  z-index: 10;
-  margin-top: -40px;
-  padding-bottom: 30px;
+/* =========================================================
+   FIND PROPERTY
+========================================================= */
+
+.find-property-section {
+    position:relative;
+    z-index:20;
+    margin-top:-50px;
+    padding-bottom:30px;
 }
 
-.filter-box {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr) 140px;
-  gap: 16px;
-  padding: 24px;
-  background: #ffffff;
-  border-radius: 0;
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
-  border: 1px solid var(--border-light);
-  align-items: end;
+.find-property-heading {
+    background:#fff;
+    padding:26px 30px 18px;
+    border:1px solid var(--border-light);
+    border-bottom:none;
+    box-shadow:0 12px 30px rgba(15,23,42,.07);
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
+.find-property-eyebrow {
+    display:block;
+    color:var(--qatar-maroon);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    margin-bottom:5px;
 }
 
-.filter-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--navy-dark);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
+.find-property-heading h2 {
+    margin:0;
+    color:var(--navy-dark);
+    font-size:27px;
+    font-weight:800;
 }
 
-.filter-box select {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1.5px solid var(--border-light);
-  border-radius: 0;
-  font-size: 14px;
-  color: var(--text-dark);
-  background: var(--bg-page);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px;
+.find-property-heading p {
+    margin:5px 0 0;
+    color:var(--text-muted);
+    font-size:13px;
 }
 
-.filter-box select:focus {
-  outline: none;
-  border-color: var(--qatar-maroon);
-  background-color: #ffffff;
-  box-shadow: 0 0 0 4px var(--qatar-maroon-light);
+
+/* =========================================================
+   SEARCH PANEL
+========================================================= */
+
+.property-search-panel {
+    background:#fff;
+    padding:16px;
+    border:1px solid var(--border-light);
+    box-shadow:0 18px 40px rgba(15,23,42,.10);
+
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:12px;
 }
 
-.filter-submit-btn {
-  height: 48px;
-  padding: 0 20px;
-  background: var(--qatar-maroon);
-  color: white;
-  border: none;
-  border-radius: 0;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(138, 21, 56, 0.25);
+
+/* =========================================================
+   LIVE SEARCH
+========================================================= */
+
+.live-search-wrapper {
+    position:relative;
+    min-width:0;
 }
 
-.filter-submit-btn:hover {
-  background: var(--qatar-maroon-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(138, 21, 56, 0.35);
+.live-search-box {
+    height:56px;
+
+    display:flex;
+    align-items:center;
+
+    background:#f8fafc;
+
+    border:2px solid var(--border-light);
+
+    padding:0 12px 0 18px;
+
+    transition:.25s ease;
 }
 
-/* PROPERTIES SECTION */
+.live-search-box:focus-within {
+    background:#fff;
+    border-color:var(--qatar-maroon);
+
+    box-shadow:
+        0 0 0 4px var(--qatar-maroon-light);
+}
+
+.live-search-box > svg {
+    color:var(--text-muted);
+    flex-shrink:0;
+    margin-right:12px;
+}
+
+.live-search-box input {
+    border:0;
+    outline:0;
+    background:transparent;
+
+    width:100%;
+
+    font-size:15px;
+    color:var(--text-dark);
+}
+
+.live-search-box input::placeholder {
+    color:#94a3b8;
+}
+
+.clear-search-btn {
+    width:30px;
+    height:30px;
+
+    border:0;
+    background:#e2e8f0;
+
+    color:#64748b;
+
+    font-size:20px;
+    line-height:1;
+
+    cursor:pointer;
+}
+
+.clear-search-btn:hover {
+    background:var(--qatar-maroon);
+    color:#fff;
+}
+
+
+/* =========================================================
+   LIVE SEARCH DROPDOWN
+   SMALLER + PRICE PROMINENT
+========================================================= */
+
+.live-search-results {
+    position:absolute;
+
+    top:calc(100% + 6px);
+    left:0;
+    right:0;
+
+    background:#fff;
+
+    border:1px solid var(--border-light);
+
+    box-shadow:
+        0 18px 40px rgba(15,23,42,.16);
+
+    z-index:100;
+
+    display:none;
+
+    max-height:400px;
+    overflow-y:auto;
+}
+
+.live-search-results.show {
+    display:block;
+}
+
+
+/* RESULT ROW */
+
+.live-result {
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    padding:8px 11px;
+
+    min-height:58px;
+
+    border-bottom:1px solid #f1f5f9;
+
+    text-decoration:none;
+
+    color:inherit;
+
+    transition:.2s ease;
+}
+
+.live-result:last-child {
+    border-bottom:none;
+}
+
+.live-result:hover {
+    background:#f8fafc;
+}
+
+
+/* SMALL IMAGE */
+
+.live-result-image {
+    width:48px;
+    height:40px;
+
+    flex:0 0 48px;
+
+    object-fit:cover;
+
+    background:#e2e8f0;
+
+    border-radius:3px;
+
+    display:block;
+}
+
+
+/* RESULT INFORMATION */
+
+.live-result-info {
+    min-width:0;
+    flex:1;
+
+    overflow:hidden;
+}
+
+.live-result-title {
+    font-size:13px;
+    line-height:1.25;
+
+    font-weight:800;
+
+    color:var(--navy-dark);
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    margin-bottom:2px;
+}
+
+.live-result-location {
+    font-size:10px;
+    line-height:1.2;
+
+    color:var(--text-muted);
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+/* PRICE AREA */
+
+.live-result-price {
+    flex:0 0 auto;
+
+    min-width:105px;
+
+    text-align:right;
+
+    font-size:12px;
+    line-height:1.2;
+
+    font-weight:900;
+
+    color:var(--qatar-maroon);
+
+    white-space:nowrap;
+}
+
+
+/* PRICE LABEL */
+
+.live-result-price-value {
+    display:block;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    color:var(--qatar-maroon);
+}
+
+
+/* PURPOSE BADGE */
+
+.live-result-purpose {
+    display:inline-block;
+
+    margin-top:4px;
+
+    font-size:8px;
+    line-height:1;
+
+    font-weight:900;
+
+    letter-spacing:.4px;
+
+    color:#fff;
+
+    padding:3px 5px;
+
+    border-radius:2px;
+}
+
+.live-result-purpose.rent {
+    background:var(--navy-dark);
+}
+
+.live-result-purpose.sale {
+    background:var(--qatar-maroon);
+}
+
+
+/* SEARCH STATUS */
+
+.search-status {
+    padding:18px;
+
+    text-align:center;
+
+    color:var(--text-muted);
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   SEARCH ACTIONS
+========================================================= */
+
+.search-actions {
+    display:flex;
+    gap:10px;
+}
+
+.search-action-btn {
+    min-width:145px;
+
+    height:56px;
+
+    border:1px solid var(--border-light);
+
+    background:#fff;
+
+    color:var(--navy-dark);
+
+    cursor:pointer;
+
+    padding:0 14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    font-size:13px;
+    font-weight:800;
+
+    transition:.25s ease;
+}
+
+.search-action-btn:hover,
+.search-action-btn.active {
+    border-color:var(--qatar-maroon);
+    color:var(--qatar-maroon);
+    background:var(--qatar-maroon-light);
+}
+
+.search-action-btn svg {
+    flex-shrink:0;
+}
+
+.action-value {
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:3px 7px;
+
+    background:#f1f5f9;
+
+    color:var(--text-muted);
+
+    font-size:10px;
+
+    font-weight:800;
+}
+
+.search-action-btn.active .action-value {
+    background:var(--qatar-maroon);
+    color:#fff;
+}
+
+
+/* =========================================================
+   ADVANCED FILTER
+========================================================= */
+
+.advanced-filter-panel {
+    display:none;
+
+    background:#fff;
+
+    border:1px solid var(--border-light);
+    border-top:none;
+
+    padding:20px;
+
+    box-shadow:0 15px 30px rgba(15,23,42,.08);
+}
+
+.advanced-filter-panel.show {
+    display:block;
+}
+
+.advanced-filter-grid {
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr))
+        auto;
+
+    gap:15px;
+
+    align-items:end;
+}
+
+.advanced-filter-group {
+    display:flex;
+    flex-direction:column;
+}
+
+.advanced-filter-group label {
+    font-size:11px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.6px;
+
+    font-weight:800;
+
+    color:var(--navy-dark);
+
+    margin-bottom:7px;
+}
+
+.advanced-filter-group select {
+    height:45px;
+
+    border:1px solid var(--border-light);
+
+    background:#f8fafc;
+
+    padding:0 12px;
+
+    color:var(--text-dark);
+
+    font-size:13px;
+
+    outline:none;
+}
+
+.advanced-filter-group select:focus {
+    border-color:var(--qatar-maroon);
+}
+
+.advanced-filter-actions {
+    display:flex;
+    gap:8px;
+}
+
+.clear-filter-btn,
+.apply-filter-btn {
+    height:45px;
+
+    padding:0 16px;
+
+    border:0;
+
+    cursor:pointer;
+
+    font-weight:800;
+
+    font-size:12px;
+}
+
+.clear-filter-btn {
+    background:#f1f5f9;
+    color:var(--text-muted);
+}
+
+.apply-filter-btn {
+    background:var(--qatar-maroon);
+    color:#fff;
+}
+
+.apply-filter-btn:hover {
+    background:var(--qatar-maroon-dark);
+}
+
+
+/* =========================================================
+   SORT PANEL
+========================================================= */
+
+.sort-panel {
+    display:none;
+
+    position:absolute;
+
+    margin-top:8px;
+
+    right:clamp(20px,4vw,50px);
+
+    width:280px;
+
+    background:#fff;
+
+    border:1px solid var(--border-light);
+
+    box-shadow:0 20px 45px rgba(15,23,42,.15);
+
+    z-index:90;
+}
+
+.sort-panel.show {
+    display:block;
+}
+
+.sort-option {
+    position:relative;
+
+    width:100%;
+
+    border:0;
+
+    border-bottom:1px solid #f1f5f9;
+
+    background:#fff;
+
+    text-align:left;
+
+    padding:13px 42px 13px 15px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:3px;
+}
+
+.sort-option:hover {
+    background:#f8fafc;
+}
+
+.sort-option > span:first-child {
+    color:var(--navy-dark);
+    font-size:13px;
+    font-weight:800;
+}
+
+.sort-option small {
+    color:var(--text-muted);
+    font-size:10px;
+}
+
+.sort-option.active {
+    background:var(--qatar-maroon-light);
+}
+
+.sort-option.active > span:first-child {
+    color:var(--qatar-maroon);
+}
+
+.sort-check {
+    position:absolute;
+
+    right:15px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:var(--qatar-maroon);
+
+    display:none;
+}
+
+.sort-option.active .sort-check {
+    display:block;
+}
+
+
+/* =========================================================
+   PROPERTY SECTION
+========================================================= */
 
 .properties-section {
-  padding: 60px 0 90px 0;
-  background: var(--bg-page);
+    padding:45px 0 90px;
+    background:var(--bg-page);
 }
 
 .section-title {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 45px auto;
+    text-align:center;
+    max-width:600px;
+
+    margin:0 auto 45px;
 }
 
 .section-title h2 {
-  font-size: 34px;
-  color: var(--navy-dark);
-  font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: -0.5px;
+    font-size:34px;
+    color:var(--navy-dark);
+    font-weight:800;
+    margin-bottom:10px;
 }
 
 .section-title p {
-  color: var(--text-muted);
-  font-size: 15px;
-  margin: 0;
+    color:var(--text-muted);
+    font-size:15px;
+    margin:0;
 }
 
-/* PROPERTY GRID */
+
+/* =========================================================
+   PROPERTY GRID
+========================================================= */
 
 .property-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  gap: 30px;
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fill,minmax(330px,1fr));
+
+    gap:30px;
 }
 
-/* PROPERTY CARD */
+
+/* =========================================================
+   PROPERTY CARD
+========================================================= */
 
 .property-card {
-  background: #ffffff;
-  border-radius: 0;
-  overflow: hidden;
-  border: 1px solid var(--border-light);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
+    background:#fff;
+
+    overflow:hidden;
+
+    border:1px solid var(--border-light);
+
+    display:flex;
+    flex-direction:column;
+
+    transition:.3s ease;
 }
 
 .property-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-  border-color: rgba(138, 21, 56, 0.2);
-}
+    transform:translateY(-6px);
 
-/* CLICKABLE IMAGE LINK */
+    box-shadow:
+        0 18px 40px rgba(15,23,42,.08);
+
+    border-color:rgba(138,21,56,.2);
+}
 
 .property-image-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
+    display:block;
+    text-decoration:none;
 }
 
-/* IMAGE */
-
 .property-image-wrapper {
-  position: relative;
-  height: 230px;
-  overflow: hidden;
-  background: #e2e8f0;
-  border-radius: 0;
+    position:relative;
+
+    height:230px;
+
+    overflow:hidden;
+
+    background:#e2e8f0;
 }
 
 .property-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  border-radius: 0;
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.5s ease;
 }
 
-.property-card:hover .property-image-wrapper img {
-  transform: scale(1.06);
+.property-card:hover
+.property-image-wrapper img {
+    transform:scale(1.06);
 }
-
-/* PROPERTY BADGE */
 
 .property-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  padding: 5px 12px;
-  border-radius: 0;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: white;
-  z-index: 2;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    position:absolute;
+
+    top:16px;
+    left:16px;
+
+    padding:5px 12px;
+
+    font-size:11px;
+    font-weight:800;
+
+    color:#fff;
 }
 
 .badge-sale {
-  background: var(--qatar-maroon);
+    background:var(--qatar-maroon);
 }
 
 .badge-rent {
-  background: var(--navy-dark);
+    background:var(--navy-dark);
 }
 
-/* ==================================
-   SECOND RECTANGLE
-================================== */
+
+/* =========================================================
+   PROPERTY INFO
+========================================================= */
 
 .property-info {
-  position: relative;
+    position:relative;
 
-  padding: 14px 20px 16px 20px;
+    padding:14px 20px 16px;
 
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+    display:flex;
+    flex-direction:column;
+    flex-grow:1;
 
-  background: linear-gradient(
-    180deg,
-    #2d3748 0%,
-    #1f2937 100%
-  );
+    background:linear-gradient(
+        180deg,
+        #2d3748 0%,
+        #1f2937 100%
+    );
 
-  color: #f8fafc;
+    color:#f8fafc;
 }
-
-/* ==================================
-   PRICE — TOP RIGHT OF SECOND RECTANGLE
-================================== */
 
 .property-price-tag {
-  position: absolute;
+    position:absolute;
 
-  top: 12px;
-  right: 14px;
+    top:12px;
+    right:14px;
 
-  background: rgba(15, 23, 42, 0.95);
+    background:rgba(15,23,42,.95);
 
-  color: #ffffff;
+    color:#fff;
 
-  padding: 6px 11px;
+    padding:6px 11px;
 
-  border-radius: 0;
+    font-size:14px;
+    font-weight:800;
 
-  font-size: 14px;
-  font-weight: 800;
+    border:1px solid rgba(255,255,255,.18);
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-
-  z-index: 5;
-
-  white-space: nowrap;
+    white-space:nowrap;
 }
 
-/* LOCATION */
-
 .property-location {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+    display:flex;
+    align-items:center;
 
-  color: #d4af37;
+    gap:6px;
 
-  font-size: 13px;
-  font-weight: 700;
+    color:var(--gold-accent);
 
-  margin-bottom: 5px;
+    font-size:13px;
+    font-weight:700;
 
-  /* Gives room for the price badge */
-  padding-right: 145px;
+    margin-bottom:5px;
+
+    padding-right:145px;
 }
 
 .property-location svg {
-  color: #d4af37;
-  flex-shrink: 0;
+    color:var(--gold-accent);
+    flex-shrink:0;
 }
-
-/* TITLE */
 
 .property-title {
-  font-size: 18px;
-  font-weight: 800;
+    font-size:18px;
+    font-weight:800;
 
-  color: #ffffff;
+    color:#fff;
 
-  margin-bottom: 10px;
+    margin-bottom:10px;
 
-  line-height: 1.35;
+    line-height:1.35;
 
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
 
-  overflow: hidden;
+    overflow:hidden;
 
-  height: 48px;
+    min-height:48px;
 }
 
-/* META */
+
+/* =========================================================
+   META
+========================================================= */
 
 .property-meta {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+    display:flex;
 
-  gap: 10px;
+    align-items:center;
 
-  padding: 8px 0;
+    gap:8px;
 
-  border-top: 1px solid rgba(255,255,255,.12);
-  border-bottom: 1px solid rgba(255,255,255,.12);
+    padding:9px 0;
 
-  margin-bottom: 0;
+    border-top:1px solid rgba(255,255,255,.12);
+    border-bottom:1px solid rgba(255,255,255,.12);
 }
 
 .meta-item {
-  display: flex;
-  align-items: center;
+    display:flex;
 
-  gap: 3px;
+    align-items:center;
 
-  color: rgba(255,255,255,.88);
+    gap:4px;
 
-  font-size: 13px;
-  font-weight: 600;
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    padding-right:9px;
+
+    border-right:1px solid rgba(255,255,255,.12);
 }
 
-.meta-item:hover {
-  border-color: var(--gold-accent);
-  box-shadow: 0 8px 18px rgba(0,0,0,.06);
+.meta-item:last-child {
+    border-right:0;
 }
 
-.meta-item svg {
-  color: #d4af37;
-
-  margin-bottom: 0;
-
-  width: 17px;
-  height: 17px;
-
-  flex-shrink: 0;
+.meta-icon {
+    font-size:15px;
 }
 
-.meta-item span {
-  color: #ffffff;
-
-  font-size: 13px;
-  font-weight: 700;
+.meta-item small {
+    color:rgba(255,255,255,.65);
+    font-size:10px;
+    font-weight:600;
 }
 
-/* EMPTY STATE */
+
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .empty-properties-card {
-  grid-column: 1 / -1;
+    grid-column:1/-1;
 
-  text-align: center;
+    text-align:center;
 
-  padding: 80px 20px;
+    padding:80px 20px;
 
-  background: #ffffff;
+    background:#fff;
 
-  border-radius: 0;
-
-  border: 1px dashed var(--border-light);
+    border:1px dashed var(--border-light);
 }
 
 .empty-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
+    font-size:40px;
+    margin-bottom:12px;
 }
 
 .empty-properties-card h3 {
-  font-size: 20px;
-  color: var(--navy-dark);
-  font-weight: 700;
-  margin-bottom: 6px;
+    font-size:20px;
+    color:var(--navy-dark);
+    margin-bottom:6px;
 }
 
 .empty-properties-card p {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin: 0;
+    color:var(--text-muted);
+    font-size:14px;
 }
 
-/* PAGINATION */
+
+/* =========================================================
+   PAGINATION
+========================================================= */
 
 .pagination-container {
-  display: flex;
-  justify-content: center;
+    display:flex;
+    justify-content:center;
 
-  margin-top: 50px;
+    margin-top:50px;
 }
 
 .pagination {
-  display: inline-flex;
-  align-items: center;
+    display:inline-flex;
+    align-items:center;
 
-  gap: 14px;
+    gap:14px;
 
-  background: #ffffff;
+    background:#fff;
 
-  padding: 8px 16px;
+    padding:8px 16px;
 
-  border-radius: 0;
+    border:1px solid var(--border-light);
 
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
-
-  border: 1px solid var(--border-light);
+    box-shadow:0 4px 20px rgba(15,23,42,.05);
 }
 
 .pagination-link {
-  padding: 10px 18px;
+    padding:10px 18px;
 
-  border-radius: 0;
+    text-decoration:none;
 
-  text-decoration: none;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  transition: all 0.2s ease;
+    font-size:14px;
+    font-weight:700;
 }
 
 .pagination-link.nav-btn {
-  background: var(--qatar-maroon);
-  color: #ffffff;
+    background:var(--qatar-maroon);
+    color:#fff;
 }
 
 .pagination-link.nav-btn:hover {
-  background: var(--qatar-maroon-dark);
-  transform: translateY(-1px);
+    background:var(--qatar-maroon-dark);
 }
 
 .pagination-link.disabled {
-  background: var(--bg-page);
-  color: #cbd5e1;
-  cursor: not-allowed;
+    background:var(--bg-page);
+    color:#cbd5e1;
 }
 
 .pagination-indicator {
-  font-size: 14px;
-  color: var(--text-muted);
-  padding: 0 10px;
+    font-size:14px;
+    color:var(--text-muted);
 }
 
 .pagination-indicator strong {
-  color: var(--navy-dark);
+    color:var(--navy-dark);
 }
 
-/* ==================================
+
+/* =========================================================
    RESPONSIVE
-================================== */
+========================================================= */
 
-@media (max-width: 1024px) {
+@media(max-width:900px) {
 
-  .filter-box {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .property-search-panel {
+        grid-template-columns:1fr;
+    }
 
-  .filter-submit-btn {
-    grid-column: span 2;
-  }
+    .search-actions {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+    }
 
-}
+    .search-action-btn {
+        width:100%;
+    }
 
-@media (max-width: 768px) {
+    .advanced-filter-grid {
+        grid-template-columns:1fr 1fr;
+    }
 
-  .page-hero {
-    min-height: 300px;
-  }
-
-  .hero-text-content h1 {
-    font-size: 32px;
-  }
-
-  .property-filter-section {
-    margin-top: -20px;
-  }
-
-  .filter-box {
-    grid-template-columns: 1fr;
-    padding: 18px;
-  }
-
-  .filter-submit-btn {
-    grid-column: span 1;
-  }
-
-  .property-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* MOBILE IMAGE */
-
-  .property-image-wrapper {
-    height: 220px;
-  }
-
-  /* MOBILE SECOND RECTANGLE */
-
-  .property-info {
-    padding: 12px 16px 13px 16px;
-  }
-
-  /* MOBILE PRICE */
-
-  .property-price-tag {
-    top: 10px;
-    right: 12px;
-
-    padding: 5px 9px;
-
-    font-size: 13px;
-  }
-
-  /* MOBILE LOCATION */
-
-  .property-location {
-    margin-bottom: 4px;
-    padding-right: 125px;
-
-    font-size: 12px;
-  }
-
-  /* MOBILE TITLE */
-
-  .property-title {
-    margin-bottom: 8px;
-
-    height: 44px;
-
-    font-size: 17px;
-  }
-
-  /* MOBILE META */
-
-  .property-meta {
-    gap: 7px;
-    padding: 7px 0;
-  }
-
-  .meta-item {
-    font-size: 12px;
-    gap: 2px;
-  }
-
-  .meta-item svg {
-    width: 15px;
-    height: 15px;
-  }
-
-  .meta-item span {
-    font-size: 12px;
-  }
+    .advanced-filter-actions {
+        grid-column:1/-1;
+    }
 
 }
 
-/* VERY SMALL PHONES */
 
-@media (max-width: 400px) {
+@media(max-width:768px) {
 
-  .property-price-tag {
-    top: 9px;
-    right: 10px;
+    .page-hero {
+        min-height:300px;
+    }
 
-    padding: 5px 8px;
+    .hero-text-content h1 {
+        font-size:32px;
+    }
 
-    font-size: 12px;
-  }
+    .find-property-section {
+        margin-top:-25px;
+    }
 
-  .property-location {
-    padding-right: 110px;
-    font-size: 11px;
-  }
+    .find-property-heading {
+        padding:20px;
+    }
 
-  .property-title {
-    font-size: 16px;
-  }
+    .find-property-heading h2 {
+        font-size:24px;
+    }
 
-  .property-meta {
-    gap: 5px;
-  }
+    .property-search-panel {
+        padding:12px;
+    }
 
-  .meta-item span {
-    font-size: 11px;
-  }
+    .advanced-filter-grid {
+        grid-template-columns:1fr;
+    }
+
+    .advanced-filter-actions {
+        grid-column:auto;
+    }
+
+    .property-grid {
+        grid-template-columns:1fr;
+    }
+
+    .property-image-wrapper {
+        height:220px;
+    }
+
+    .property-location {
+        padding-right:125px;
+    }
+
+}
+
+
+@media(max-width:480px) {
+
+    .search-actions {
+        grid-template-columns:1fr;
+    }
+
+    .live-search-box {
+        height:52px;
+    }
+
+    /* SMALLER MOBILE SEARCH IMAGE */
+
+    .live-result {
+        gap:8px;
+        padding:7px 9px;
+        min-height:52px;
+    }
+
+    .live-result-image {
+        width:42px;
+        height:36px;
+        flex-basis:42px;
+    }
+
+    .live-result-title {
+        font-size:11px;
+    }
+
+    .live-result-location {
+        font-size:9px;
+    }
+
+    .live-result-price {
+        min-width:82px;
+        font-size:10px;
+    }
+
+    .live-result-price-value {
+        font-size:10px;
+    }
+
+    .live-result-purpose {
+        font-size:7px;
+        padding:2px 4px;
+    }
+
+    .property-price-tag {
+        font-size:12px;
+    }
+
+    .property-location {
+        padding-right:110px;
+        font-size:11px;
+    }
+
+    .property-title {
+        font-size:16px;
+    }
+
+}
+
+
+@media(max-width:380px) {
+
+    .live-result-price {
+        min-width:72px;
+    }
+
+    .live-result-image {
+        width:38px;
+        height:33px;
+        flex-basis:38px;
+    }
+
+    .live-result-title {
+        font-size:10px;
+    }
+
+    .live-result-location {
+        font-size:8px;
+    }
+
+}
+
+
+/* =========================================================
+   SEARCH SPINNER
+========================================================= */
+
+.search-loading {
+    width:16px;
+    height:16px;
+
+    border:2px solid #e2e8f0;
+    border-top-color:var(--qatar-maroon);
+
+    border-radius:50%;
+
+    animation:
+        searchSpin .7s linear infinite;
+
+    margin-left:8px;
+}
+
+@keyframes searchSpin {
+
+    to {
+        transform:rotate(360deg);
+    }
 
 }
 
 </style>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput =
+        document.getElementById("propertyLiveSearch");
+
+    const resultsBox =
+        document.getElementById("liveSearchResults");
+
+    const clearSearchBtn =
+        document.getElementById("clearSearchBtn");
+
+    const advancedBtn =
+        document.getElementById("advancedSearchBtn");
+
+    const advancedPanel =
+        document.getElementById("advancedFilterPanel");
+
+    const sortBtn =
+        document.getElementById("sortBtn");
+
+    const sortPanel =
+        document.getElementById("sortPanel");
+
+    const sortValue =
+        document.getElementById("sortValue");
+
+    const advancedSearchInput =
+        document.getElementById("advancedSearchInput");
+
+    const advancedSortInput =
+        document.getElementById("advancedSortInput");
+
+    const clearFiltersBtn =
+        document.getElementById("clearFiltersBtn");
+
+    const advancedValue =
+        document.getElementById("advancedValue");
+
+
+    let searchTimer = null;
+
+
+    /* =====================================================
+       UPDATE FILTER COUNT
+    ===================================================== */
+
+    function updateFilterLabel() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        let count = 0;
+
+        if (params.get("property_type")) count++;
+        if (params.get("purpose")) count++;
+        if (params.get("location")) count++;
+
+        if (count > 0) {
+
+            advancedValue.textContent =
+                count +
+                (count === 1
+                    ? " Filter"
+                    : " Filters");
+
+        } else {
+
+            advancedValue.textContent =
+                "Filters";
+
+        }
+
+    }
+
+
+    updateFilterLabel();
+
+
+    /* =====================================================
+       ADVANCED SEARCH TOGGLE
+    ===================================================== */
+
+    advancedBtn.addEventListener(
+        "click",
+        function () {
+
+            advancedPanel.classList.toggle(
+                "show"
+            );
+
+            advancedBtn.classList.toggle(
+                "active",
+                advancedPanel.classList.contains("show")
+            );
+
+            sortPanel.classList.remove(
+                "show"
+            );
+
+            sortBtn.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       SORT TOGGLE
+    ===================================================== */
+
+    sortBtn.addEventListener(
+        "click",
+        function () {
+
+            sortPanel.classList.toggle(
+                "show"
+            );
+
+            sortBtn.classList.toggle(
+                "active",
+                sortPanel.classList.contains("show")
+            );
+
+            advancedPanel.classList.remove(
+                "show"
+            );
+
+            advancedBtn.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       SORT SELECTION
+    ===================================================== */
+
+    document
+        .querySelectorAll(".sort-option")
+        .forEach(function (option) {
+
+            option.addEventListener(
+                "click",
+                function () {
+
+                    const selectedSort =
+                        this.dataset.sort;
+
+                    advancedSortInput.value =
+                        selectedSort;
+
+                    const url =
+                        new URL(
+                            window.location.href
+                        );
+
+                    url.searchParams.set(
+                        "sort",
+                        selectedSort
+                    );
+
+                    url.searchParams.set(
+                        "page",
+                        "1"
+                    );
+
+                    sortPanel.classList.remove(
+                        "show"
+                    );
+
+                    sortBtn.classList.remove(
+                        "active"
+                    );
+
+                    window.location.href =
+                        url.toString();
+
+                }
+            );
+
+        });
+
+
+    /* =====================================================
+       UPDATE SORT LABEL
+    ===================================================== */
+
+    const currentSort =
+        "{{ sort or 'newest' }}";
+
+    const sortLabels = {
+
+        newest:"Newest",
+
+        oldest:"Oldest",
+
+        price_low:"Low → High",
+
+        price_high:"High → Low",
+
+        area_large:"Largest",
+
+        area_small:"Smallest"
+
+    };
+
+
+    if (sortLabels[currentSort]) {
+
+        sortValue.textContent =
+            sortLabels[currentSort];
+
+    }
+
+
+    /* =====================================================
+       LIVE DATABASE SEARCH
+    ===================================================== */
+
+    searchInput.addEventListener(
+        "input",
+        function () {
+
+            const query =
+                this.value.trim();
+
+            clearTimeout(searchTimer);
+
+
+            if (query.length === 0) {
+
+                resultsBox.innerHTML =
+                    "";
+
+                resultsBox.classList.remove(
+                    "show"
+                );
+
+                clearSearchBtn.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            clearSearchBtn.style.display =
+                "block";
+
+
+            searchTimer =
+                setTimeout(
+                    function () {
+
+                        performLiveSearch(
+                            query
+                        );
+
+                    },
+                    180
+                );
+
+        }
+    );
+
+
+    /* =====================================================
+       SEARCH FUNCTION
+    ===================================================== */
+
+    async function performLiveSearch(query) {
+
+        resultsBox.classList.add(
+            "show"
+        );
+
+
+        resultsBox.innerHTML = `
+
+            <div class="search-status">
+
+                <span
+                    style="
+                        display:inline-flex;
+                        align-items:center;
+                    ">
+
+                    Searching
+
+                    <span
+                        class="search-loading">
+                    </span>
+
+                </span>
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const url =
+                new URL(
+                    "{{ url_for('properties') }}",
+                    window.location.origin
+                );
+
+
+            url.searchParams.set(
+                "search",
+                query
+            );
+
+
+            url.searchParams.set(
+                "page",
+                "1"
+            );
+
+
+            const response =
+                await fetch(
+                    url.toString(),
+                    {
+                        headers:{
+                            "X-Requested-With":
+                                "XMLHttpRequest"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Search request failed"
+                );
+
+            }
+
+
+            const html =
+                await response.text();
+
+
+            const parser =
+                new DOMParser();
+
+
+            const doc =
+                parser.parseFromString(
+                    html,
+                    "text/html"
+                );
+
+
+            const cards =
+                Array.from(
+                    doc.querySelectorAll(
+                        ".property-card"
+                    )
+                );
+
+
+            if (cards.length === 0) {
+
+                resultsBox.innerHTML = `
+
+                    <div class="search-status">
+
+                        No properties found for
+                        "<strong>
+                            ${escapeHtml(query)}
+                        </strong>"
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /*
+             * Maximum 6 live suggestions.
+             */
+
+            const suggestions =
+                cards.slice(0,6);
+
+
+            resultsBox.innerHTML =
+                "";
+
+
+            suggestions.forEach(
+                function (card) {
+
+                    const link =
+                        card.querySelector(
+                            ".property-image-link"
+                        );
+
+
+                    if (!link) return;
+
+
+                    const image =
+                        card.querySelector(
+                            ".property-image-wrapper img"
+                        );
+
+
+                    const title =
+                        card.querySelector(
+                            ".property-title"
+                        );
+
+
+                    const location =
+                        card.querySelector(
+                            ".property-location span"
+                        );
+
+
+                    const price =
+                        card.querySelector(
+                            ".property-price-tag"
+                        );
+
+
+                    const badge =
+                        card.querySelector(
+                            ".property-badge"
+                        );
+
+
+                    const result =
+                        document.createElement(
+                            "a"
+                        );
+
+
+                    result.className =
+                        "live-result";
+
+
+                    result.href =
+                        link.href;
+
+
+                    const imageSrc =
+                        image
+                            ? image.src
+                            : "{{ url_for(
+                                'static',
+                                filename='images/no-image.jpg'
+                            ) }}";
+
+
+                    const titleText =
+                        title
+                            ? title.textContent.trim()
+                            : "Property";
+
+
+                    const locationText =
+                        location
+                            ? location.textContent.trim()
+                            : "";
+
+
+                    /*
+                     * Get the actual displayed
+                     * price from the property card.
+                     */
+
+                    let priceText =
+                        price
+                            ? price.textContent.trim()
+                            : "";
+
+
+                    /*
+                     * Clean excessive whitespace.
+                     */
+
+                    priceText =
+                        priceText.replace(
+                            /\s+/g,
+                            " "
+                        );
+
+
+                    if (!priceText) {
+
+                        priceText =
+                            "Contact For Price";
+
+                    }
+
+
+                    const badgeText =
+                        badge
+                            ? badge.textContent.trim()
+                            : "";
+
+
+                    const isRent =
+                        badgeText
+                            .toLowerCase()
+                            .includes("rent");
+
+
+                    result.innerHTML = `
+
+                        <img
+                            class="live-result-image"
+                            src="${escapeAttribute(
+                                imageSrc
+                            )}"
+                            alt="${escapeAttribute(
+                                titleText
+                            )}">
+
+
+                        <div
+                            class="live-result-info">
+
+                            <div
+                                class="live-result-title">
+
+                                ${escapeHtml(
+                                    titleText
+                                )}
+
+                            </div>
+
+
+                            <div
+                                class="live-result-location">
+
+                                📍
+                                ${escapeHtml(
+                                    locationText
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="live-result-price">
+
+                            <span
+                                class="live-result-price-value">
+
+                                ${escapeHtml(
+                                    priceText
+                                )}
+
+                            </span>
+
+
+                            <span
+                                class="
+                                    live-result-purpose
+                                    ${isRent
+                                        ? "rent"
+                                        : "sale"}
+                                ">
+
+                                ${isRent
+                                    ? "FOR RENT"
+                                    : "FOR SALE"}
+
+                            </span>
+
+                        </div>
+
+                    `;
+
+
+                    resultsBox.appendChild(
+                        result
+                    );
+
+                }
+            );
+
+        }
+
+
+        catch (error) {
+
+            console.error(
+                "Live property search error:",
+                error
+            );
+
+
+            resultsBox.innerHTML = `
+
+                <div class="search-status">
+
+                    Unable to complete the search.
+                    Please try again.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CLEAR SEARCH
+    ===================================================== */
+
+    clearSearchBtn.addEventListener(
+        "click",
+        function () {
+
+            searchInput.value =
+                "";
+
+            resultsBox.innerHTML =
+                "";
+
+            resultsBox.classList.remove(
+                "show"
+            );
+
+            clearSearchBtn.style.display =
+                "none";
+
+            searchInput.focus();
+
+        }
+    );
+
+
+    /* =====================================================
+       CLEAR ADVANCED FILTERS
+    ===================================================== */
+
+    clearFiltersBtn.addEventListener(
+        "click",
+        function () {
+
+            const form =
+                document.getElementById(
+                    "advancedFilterForm"
+                );
+
+
+            form.querySelector(
+                '[name="property_type"]'
+            ).value = "";
+
+
+            form.querySelector(
+                '[name="purpose"]'
+            ).value = "";
+
+
+            form.querySelector(
+                '[name="location"]'
+            ).value = "";
+
+        }
+    );
+
+
+    /* =====================================================
+       KEEP SEARCH WHEN APPLYING FILTERS
+    ===================================================== */
+
+    document
+        .getElementById(
+            "advancedFilterForm"
+        )
+        .addEventListener(
+            "submit",
+            function () {
+
+                advancedSearchInput.value =
+                    searchInput.value.trim();
+
+            }
+        );
+
+
+    /* =====================================================
+       CLOSE DROPDOWNS OUTSIDE
+    ===================================================== */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                !event.target.closest(
+                    ".live-search-wrapper"
+                )
+            ) {
+
+                resultsBox.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            if (
+                !event.target.closest(
+                    ".search-action-btn"
+                ) &&
+                !event.target.closest(
+                    ".sort-panel"
+                ) &&
+                !event.target.closest(
+                    ".advanced-filter-panel"
+                )
+            ) {
+
+                advancedPanel.classList.remove(
+                    "show"
+                );
+
+                sortPanel.classList.remove(
+                    "show"
+                );
+
+                advancedBtn.classList.remove(
+                    "active"
+                );
+
+                sortBtn.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       ESCAPE KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                resultsBox.classList.remove(
+                    "show"
+                );
+
+                advancedPanel.classList.remove(
+                    "show"
+                );
+
+                sortPanel.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       HTML ESCAPING
+    ===================================================== */
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    function escapeAttribute(value) {
+
+        return escapeHtml(value);
+
+    }
+
+});
+
+</script>
 
 {% endblock %}
