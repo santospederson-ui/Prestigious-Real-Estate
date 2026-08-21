@@ -93,12 +93,11 @@ Prestigious Real Estate | Qatar Properties
 }
 
 .hero-content h1 {
-  font-family:
-    var(
-      --font-serif,
-      'Playfair Display',
-      serif
-    );
+  font-family: var(
+    --font-serif,
+    'Playfair Display',
+    serif
+  );
 
   font-size: clamp(36px, 5vw, 62px);
 
@@ -234,70 +233,7 @@ Prestigious Real Estate | Qatar Properties
 
   font-size: 14px;
 
-  margin-bottom: 20px;
-}
-
-
-/* =========================================================
-   PROPERTY SEARCH TYPE TABS
-========================================================= */
-
-.search-purpose-tabs {
-  display: flex;
-
-  align-items: center;
-
-  gap: 0;
-
-  margin-bottom: 18px;
-
-  border-bottom:
-    1px solid var(--border-color);
-}
-
-.search-purpose-tab {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 11px 22px;
-
-  color: var(--text-secondary);
-
-  background: transparent;
-
-  border: none;
-
-  border-bottom:
-    3px solid transparent;
-
-  text-decoration: none;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  transition:
-    all .25s ease;
-
-  margin-bottom: -1px;
-}
-
-.search-purpose-tab:hover {
-  color: var(--qatar-maroon);
-
-  background: #faf7f8;
-}
-
-.search-purpose-tab.active {
-  color: var(--qatar-maroon);
-
-  border-bottom-color:
-    var(--qatar-maroon);
-
-  background: #fff;
+  margin-bottom: 24px;
 }
 
 
@@ -1431,7 +1367,6 @@ Prestigious Real Estate | Qatar Properties
 @media (max-width: 1024px) {
 
   .property-grid-3 {
-
     grid-template-columns:
       repeat(2,1fr);
   }
@@ -1442,38 +1377,9 @@ Prestigious Real Estate | Qatar Properties
 @media (max-width: 640px) {
 
   .search-card {
-
     padding:
       24px 20px;
   }
-
-
-  /* SEARCH TABS */
-
-  .search-purpose-tabs {
-
-    overflow-x: auto;
-
-    scrollbar-width: none;
-  }
-
-  .search-purpose-tabs::-webkit-scrollbar {
-
-    display: none;
-  }
-
-  .search-purpose-tab {
-
-    flex: 1;
-
-    min-width: 110px;
-
-    padding:
-      10px 12px;
-
-    font-size: 12px;
-  }
-
 
   .smart-search-input {
 
@@ -1485,7 +1391,6 @@ Prestigious Real Estate | Qatar Properties
   }
 
   .smart-search-input > i {
-
     display: none;
   }
 
@@ -1577,12 +1482,10 @@ Prestigious Real Estate | Qatar Properties
 @media (max-width: 400px) {
 
   .live-result-title {
-
     font-size: 13px;
   }
 
   .live-result-location {
-
     font-size: 11px;
   }
 
@@ -1679,45 +1582,6 @@ Prestigious Real Estate | Qatar Properties
       </p>
 
 
-      <!-- =================================================
-           PROPERTY PURPOSE TABS
-      ================================================= -->
-
-      <div class="search-purpose-tabs">
-
-        <a
-          href="{{ url_for('properties') }}"
-          class="search-purpose-tab active">
-
-          All Properties
-
-        </a>
-
-
-        <a
-          href="{{ url_for('properties', purpose='Rent') }}"
-          class="search-purpose-tab">
-
-          For Rent
-
-        </a>
-
-
-        <a
-          href="{{ url_for('properties', purpose='Sale') }}"
-          class="search-purpose-tab">
-
-          For Sale
-
-        </a>
-
-      </div>
-
-
-      <!-- =================================================
-           SEARCH FORM
-      ================================================= -->
-
       <form
         action="{{ url_for('properties') }}"
         method="GET"
@@ -1764,7 +1628,6 @@ Prestigious Real Estate | Qatar Properties
 
       <!-- =====================================================
            POPULAR SEARCHES
-           RENT REMOVED
       ===================================================== -->
 
       <div class="popular-searches">
@@ -1773,29 +1636,28 @@ Prestigious Real Estate | Qatar Properties
           Popular Searches:
         </span>
 
-        <a
-          href="{{ url_for('properties', search='Villa') }}">
+        <a href="{{ url_for('properties', search='Villa') }}">
           Villas
         </a>
 
-        <a
-          href="{{ url_for('properties', search='Apartment') }}">
+        <a href="{{ url_for('properties', search='Apartment') }}">
           Apartments
         </a>
 
-        <a
-          href="{{ url_for('properties', search='Studio') }}">
+        <a href="{{ url_for('properties', search='Studio') }}">
           Studio
         </a>
 
-        <a
-          href="{{ url_for('properties', search='Office') }}">
+        <a href="{{ url_for('properties', search='Office') }}">
           Office
         </a>
 
-        <a
-          href="{{ url_for('properties', search='Lusail') }}">
+        <a href="{{ url_for('properties', search='Lusail') }}">
           Lusail
+        </a>
+
+        <a href="{{ url_for('properties', search='Rent') }}">
+          For Rent
         </a>
 
       </div>
@@ -2442,10 +2304,8 @@ document.addEventListener(
 
       function escapeHTML(value) {
 
-        if (
-          value === null ||
-          value === undefined
-        ) {
+        if (value === null ||
+            value === undefined) {
 
           return '';
 
@@ -2523,11 +2383,9 @@ document.addEventListener(
       function renderResults(data) {
 
 
-        if (
-          !data ||
-          !data.results ||
-          data.results.length === 0
-        ) {
+        if (!data ||
+            !data.results ||
+            data.results.length === 0) {
 
           resultsBox.innerHTML = `
 
@@ -2576,7 +2434,6 @@ document.addEventListener(
 
             let price = '';
 
-
             if (
               property.price !== null &&
               property.price !== undefined &&
@@ -2590,7 +2447,6 @@ document.addEventListener(
                 ).toLocaleString();
 
             }
-
             else {
 
               price =
@@ -2635,11 +2491,9 @@ document.addEventListener(
                   <div
                     class="live-result-title"
                   >
-
                     ${escapeHTML(
                       property.title
                     )}
-
                   </div>
 
 
@@ -2662,11 +2516,8 @@ document.addEventListener(
                     <span
                       class="live-result-price"
                     >
-
                       ${price}
-
                     </span>
-
 
                     ${
                       property.property_type
@@ -2680,7 +2531,6 @@ document.addEventListener(
                       : ''
                     }
 
-
                     ${
                       property.bedrooms
                       ? `
@@ -2693,7 +2543,6 @@ document.addEventListener(
                       `
                       : ''
                     }
-
 
                     ${
                       property.area
@@ -2719,11 +2568,9 @@ document.addEventListener(
                     ${badgeClass}
                   "
                 >
-
                   FOR ${escapeHTML(
                     purpose
                   ).toUpperCase()}
-
                 </span>
 
               </a>
@@ -2885,7 +2732,7 @@ document.addEventListener(
 
 
           /*
-             Wait briefly after the user
+             Wait 250ms after the user
              stops typing before querying
              the database.
           */
