@@ -247,7 +247,7 @@ LIVE SEARCH AREA
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   gap: 10px;
 }
 
@@ -300,20 +300,21 @@ LIVE SEARCH AREA
   font-size: 13px;
 }
 
-/*
-   These cards are generated from the
-   existing /properties page.
-*/
+/* ==================================
+COMPACT HORIZONTAL LIVE RESULTS
+================================== */
 
 .live-results-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .live-result-card {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 82px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   overflow: hidden;
@@ -322,13 +323,18 @@ LIVE SEARCH AREA
 }
 
 .live-result-card:hover {
-  transform: translateY(-3px);
+  background: #f8fafc;
   border-color: #D4AF37;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.10);
 }
 
+/* SMALLER IMAGE */
+
 .live-result-image {
-  height: 150px;
+  flex: 0 0 105px;
+  width: 105px;
+  height: 72px;
+  margin: 5px;
   background: #f1f5f9;
   overflow: hidden;
   position: relative;
@@ -340,16 +346,23 @@ LIVE SEARCH AREA
   object-fit: cover;
 }
 
+/* HORIZONTAL INFORMATION */
+
 .live-result-info {
-  padding: 14px;
+  flex: 1;
+  min-width: 0;
+  padding: 10px 16px;
+  display: grid;
+  grid-template-columns: minmax(180px, 1.5fr) minmax(140px, 1fr) minmax(120px, 1fr) auto;
+  align-items: center;
+  column-gap: 20px;
 }
 
 .live-result-title {
   color: #1F2A44;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  margin-bottom: 5px;
-
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -358,29 +371,42 @@ LIVE SEARCH AREA
 .live-result-location {
   color: #64748b;
   font-size: 12px;
-  margin-bottom: 8px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .live-result-price {
   color: #8A1538;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
+  margin: 0;
+  white-space: nowrap;
 }
 
+/* STATUS */
+
 .live-result-purpose {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 4px 8px;
-  background: #f1f5f9;
-  color: #1F2A44;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 11px;
+  background: #8A1538;
+  color: #ffffff;
   font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.live-result-purpose.rent {
+  background: #1F2A44;
 }
 
 .live-search-footer {
   text-align: center;
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
 .live-search-footer a {
@@ -886,8 +912,13 @@ RESPONSIVE
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .live-results-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .live-result-info {
+    grid-template-columns:
+      minmax(150px, 1.3fr)
+      minmax(120px, 1fr)
+      minmax(110px, 1fr)
+      auto;
+    column-gap: 12px;
   }
 
 }
@@ -921,12 +952,46 @@ RESPONSIVE
     display: none;
   }
 
-  .live-results-grid {
-    grid-template-columns: 1fr;
+  /* MOBILE LIVE SEARCH */
+
+  .live-result-card {
+    min-height: 76px;
   }
 
   .live-result-image {
-    height: 180px;
+    flex: 0 0 78px;
+    width: 78px;
+    height: 64px;
+  }
+
+  .live-result-info {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    row-gap: 5px;
+    column-gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .live-result-title {
+    grid-column: 1 / 3;
+    font-size: 13px;
+  }
+
+  .live-result-location {
+    grid-column: 1;
+    font-size: 11px;
+  }
+
+  .live-result-price {
+    grid-column: 1;
+    font-size: 12px;
+  }
+
+  .live-result-purpose {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    font-size: 9px;
+    padding: 5px 8px;
   }
 
   .live-search-header {
@@ -935,6 +1000,10 @@ RESPONSIVE
   }
 
 }
+
+/* ==================================
+END OF STYLES
+================================== */
 </style>
 
 
@@ -1695,14 +1764,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ==========================================
      LIVE PROPERTY SEARCH
-
-     IMPORTANT:
-     This uses the existing Flask:
-
-     /properties?search=keyword
-
-     Therefore no additional Flask route
-     is required.
   ========================================== */
 
   const searchInput =
@@ -1732,10 +1793,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (searchInput && liveResults) {
 
 
-    /* ======================================
-       CREATE LOADING MESSAGE
-    ====================================== */
-
     function showLoading() {
 
       liveResults.classList.add('show');
@@ -1761,10 +1818,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-
-    /* ======================================
-       SHOW EMPTY RESULT
-    ====================================== */
 
     function showNoResults(keyword) {
 
@@ -1797,13 +1850,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /* ======================================
-       ESCAPE HTML
-
-       Protects the search term when
-       inserting it into HTML.
-    ====================================== */
-
     function escapeHtml(value) {
 
       const div =
@@ -1815,10 +1861,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-
-    /* ======================================
-       FORMAT PRICE
-    ====================================== */
 
     function formatPrice(value) {
 
@@ -1848,10 +1890,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /* ======================================
-       FETCH LIVE PROPERTIES
-    ====================================== */
-
     async function performLiveSearch(keyword) {
 
 
@@ -1868,11 +1906,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       showLoading();
 
-
-      /*
-         Cancel the previous request if
-         the user is typing quickly.
-      */
 
       if (currentRequest) {
 
@@ -1915,11 +1948,6 @@ document.addEventListener('DOMContentLoaded', function () {
           await response.text();
 
 
-        /*
-           Convert the returned properties
-           page into a temporary document.
-        */
-
         const parser =
           new DOMParser();
 
@@ -1930,24 +1958,11 @@ document.addEventListener('DOMContentLoaded', function () {
           );
 
 
-        /*
-           Find property cards from the
-           properties page.
-
-           We support several common card
-           selectors so this remains flexible.
-        */
-
         let cards =
           documentResult.querySelectorAll(
             '.property-card'
           );
 
-
-        /*
-           If the properties page uses
-           another common card class.
-        */
 
         if (!cards.length) {
 
@@ -1967,11 +1982,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
 
-
-        /*
-           Limit the live suggestions to
-           the first 6 results.
-        */
 
         const limitedCards =
           Array.from(cards).slice(0, 6);
@@ -2003,11 +2013,6 @@ document.addEventListener('DOMContentLoaded', function () {
         limitedCards.forEach(function (originalCard) {
 
 
-          /*
-             Extract information from the
-             existing property card.
-          */
-
           const image =
             originalCard.querySelector(
               'img'
@@ -2028,6 +2033,11 @@ document.addEventListener('DOMContentLoaded', function () {
               '.property-price, .price'
             );
 
+          const originalStatus =
+            originalCard.querySelector(
+              '.property-status'
+            );
+
           const link =
             originalCard.querySelector(
               'a[href]'
@@ -2037,11 +2047,6 @@ document.addEventListener('DOMContentLoaded', function () {
           const card =
             document.createElement('a');
 
-
-          /*
-             If the original property card
-             contains a details link, use it.
-          */
 
           if (link) {
 
@@ -2061,7 +2066,9 @@ document.addEventListener('DOMContentLoaded', function () {
             'live-result-card';
 
 
-          /* IMAGE */
+          /* ==================================
+             IMAGE
+          ================================== */
 
           const imageWrapper =
             document.createElement('div');
@@ -2114,7 +2121,9 @@ document.addEventListener('DOMContentLoaded', function () {
           );
 
 
-          /* INFORMATION */
+          /* ==================================
+             INFORMATION
+          ================================== */
 
           const info =
             document.createElement('div');
@@ -2122,6 +2131,8 @@ document.addEventListener('DOMContentLoaded', function () {
           info.className =
             'live-result-info';
 
+
+          /* TITLE */
 
           const titleElement =
             document.createElement('div');
@@ -2140,40 +2151,122 @@ document.addEventListener('DOMContentLoaded', function () {
           );
 
 
-          if (locationElement) {
+          /* LOCATION */
 
-            const location =
-              document.createElement('div');
+          const location =
+            document.createElement('div');
 
-            location.className =
-              'live-result-location';
+          location.className =
+            'live-result-location';
 
-            location.textContent =
-              locationElement.textContent.trim();
+          location.textContent =
+            locationElement
+              ? '📍 ' +
+                locationElement.textContent.trim()
+              : '📍 Location not specified';
 
-            info.appendChild(
-              location
+          info.appendChild(
+            location
+          );
+
+
+          /* PRICE */
+
+          const priceElement =
+            document.createElement('div');
+
+          priceElement.className =
+            'live-result-price';
+
+          priceElement.textContent =
+            price
+              ? formatPrice(
+                  price.textContent.trim()
+                )
+              : 'Contact For Price';
+
+          info.appendChild(
+            priceElement
+          );
+
+
+          /* ==================================
+             STATUS — SALE / RENT
+          ================================== */
+
+          const purpose =
+            document.createElement('span');
+
+          purpose.className =
+            'live-result-purpose';
+
+
+          let purposeText = 'FOR SALE';
+
+          let isRent = false;
+
+
+          if (originalStatus) {
+
+            const statusText =
+              originalStatus.textContent
+                .trim()
+                .toUpperCase();
+
+
+            if (
+              statusText.includes('RENT')
+            ) {
+
+              purposeText =
+                'FOR RENT';
+
+              isRent = true;
+
+            } else if (
+              statusText.includes('SALE')
+            ) {
+
+              purposeText =
+                'FOR SALE';
+
+            } else {
+
+              purposeText =
+                statusText;
+
+            }
+
+          } else if (
+            originalCard.textContent
+              .toLowerCase()
+              .includes('rent')
+          ) {
+
+            purposeText =
+              'FOR RENT';
+
+            isRent = true;
+
+          }
+
+
+          purpose.textContent =
+            purposeText;
+
+
+          if (isRent) {
+
+            purpose.classList.add(
+              'rent'
             );
 
           }
 
 
-          if (price) {
-
-            const priceElement =
-              document.createElement('div');
-
-            priceElement.className =
-              'live-result-price';
-
-            priceElement.textContent =
-              price.textContent.trim();
-
-            info.appendChild(
-              priceElement
-            );
-
-          }
+          info.appendChild(
+            purpose
+          );
 
 
           card.appendChild(
@@ -2195,9 +2288,9 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
 
-        /*
-           Add "View all results" link.
-        */
+        /* ==================================
+           VIEW ALL RESULTS
+        ================================== */
 
         const footer =
           document.createElement('div');
@@ -2231,12 +2324,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       } catch (error) {
 
-
-        /*
-           Abort errors are normal when
-           typing quickly, so don't show
-           an error for them.
-        */
 
         if (
           error.name === 'AbortError'
@@ -2286,9 +2373,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ======================================
-       INPUT EVENT
-
-       This is what makes the search LIVE.
+       LIVE INPUT SEARCH
     ====================================== */
 
     searchInput.addEventListener(
@@ -2300,17 +2385,10 @@ document.addEventListener('DOMContentLoaded', function () {
           this.value.trim();
 
 
-        /*
-           Cancel previous timer.
-        */
+        clearTimeout(
+          searchTimer
+        );
 
-        clearTimeout(searchTimer);
-
-
-        /*
-           If input is empty,
-           immediately hide results.
-        */
 
         if (!keyword) {
 
@@ -2325,14 +2403,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
 
-
-        /*
-           Small debounce.
-
-           The search will execute
-           approximately 250ms after the
-           user stops typing.
-        */
 
         searchTimer =
           setTimeout(
@@ -2351,9 +2421,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ======================================
-       FORM SUBMIT
-
-       Normal full properties search.
+       NORMAL FORM SUBMIT
     ====================================== */
 
     if (searchForm) {
@@ -2363,10 +2431,8 @@ document.addEventListener('DOMContentLoaded', function () {
         function () {
 
           /*
-             Allow normal form submission.
-             This takes the user to:
-
-             /properties?search=keyword
+             Normal form submission is
+             intentionally preserved.
           */
 
         }
@@ -2376,8 +2442,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ======================================
-       CLOSE LIVE RESULTS WHEN CLICKING
-       OUTSIDE THE SEARCH CARD
+       CLOSE RESULTS OUTSIDE SEARCH
     ====================================== */
 
     document.addEventListener(
@@ -2406,11 +2471,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     );
 
-
-    /*
-       Prevent clicking inside the
-       results from closing them.
-    */
 
     liveResults.addEventListener(
       'click',
