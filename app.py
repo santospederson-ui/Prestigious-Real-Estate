@@ -86,29 +86,12 @@ def session_timeout():
 
 
 
+
 # ==========================================
 # MYSQL CONNECTION
 # ==========================================
-import os
-from urllib.parse import urlparse
-
 def get_db_connection():
 
-    database_url = os.getenv("DATABASE_URL")
-
-    # Railway / platforms providing DATABASE_URL
-    if database_url:
-        parsed = urlparse(database_url)
-
-        return mysql.connector.connect(
-            host=parsed.hostname,
-            user=parsed.username,
-            password=parsed.password,
-            database=parsed.path.lstrip("/"),
-            port=parsed.port or 3306
-        )
-
-    # Local XAMPP / Render using separate DB variables
     return mysql.connector.connect(
         host=os.getenv("DB_HOST"),
         user=os.getenv("DB_USER"),
@@ -116,6 +99,7 @@ def get_db_connection():
         database=os.getenv("DB_NAME"),
         port=int(os.getenv("DB_PORT", 3306))
     )
+
 
 
 
