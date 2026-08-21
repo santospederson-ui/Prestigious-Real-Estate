@@ -716,75 +716,40 @@ def home():
 def about():
     return render_template("about.html")
 
-
-
-
 # =====================================================
-# PROPERTIES ROUTE
+# PROPERTIES  ROUTE
 # =====================================================
 @app.route("/properties")
 def properties():
 
     conn = get_db_connection()
-
     cursor = conn.cursor(dictionary=True)
 
-    # =========================
-    # FILTERS
-    # =========================
-
     property_type = request.args.get("property_type", "").strip()
-
     purpose = request.args.get("purpose", "").strip()
-
     location = request.args.get("location", "").strip()
-
     search = request.args.get("search", "").strip()
 
-    page = request.args.get(
-        "page",
-        1,
-        type=int
-    )
-
+    page = request.args.get("page", 1, type=int)
     per_page = 9
-
     offset = (page - 1) * per_page
 
-    # =========================
-    # BUILD QUERY
-    # =========================
-
     where = []
-
     values = []
 
     if property_type:
-
-        where.append(
-            "p.property_type=%s"
-        )
-
+        where.append("p.property_type=%s")
         values.append(property_type)
 
     if purpose:
-
-        where.append(
-            "p.purpose=%s"
-        )
-
+        where.append("p.purpose=%s")
         values.append(purpose)
 
     if location:
-
-        where.append(
-            "p.location=%s"
-        )
-
+        where.append("p.location=%s")
         values.append(location)
 
     if search:
-
         where.append("""
         (
             p.title LIKE %s
@@ -794,8 +759,7 @@ def properties():
             OR p.address LIKE %s
             OR p.description LIKE %s
             OR p.furnished LIKE %s
-            OR EXISTS
-            (
+            OR EXISTS (
                 SELECT 1
                 FROM property_features pf
                 WHERE pf.property_id = p.id
@@ -820,58 +784,37 @@ def properties():
     where_sql = ""
 
     if where:
-
         where_sql = "WHERE " + " AND ".join(where)
 
-    # =========================
-    # COUNT TOTAL
-    # =========================
-
+    # COUNT
     count_sql = f"""
-    SELECT COUNT(*) AS total
-    FROM properties p
-    {where_sql}
+        SELECT COUNT(*) AS total
+        FROM properties p
+        {where_sql}
     """
 
-    cursor.execute(
-        count_sql,
-        values
-    )
-
+    cursor.execute(count_sql, values)
     total = cursor.fetchone()["total"]
 
-    total_pages = (
-        total + per_page - 1
-    ) // per_page
+    total_pages = (total + per_page - 1) // per_page
 
-    # =========================
-    # GET PROPERTIES
-    # =========================
-
+    # PROPERTIES
     sql = f"""
-    SELECT *
-    FROM properties p
-    {where_sql}
-    ORDER BY p.created_at DESC
-    LIMIT %s OFFSET %s
+        SELECT *
+        FROM properties p
+        {where_sql}
+        ORDER BY p.created_at DESC
+        LIMIT %s OFFSET %s
     """
 
     property_values = values.copy()
+    property_values.extend([per_page, offset])
 
-    property_values.extend([
-        per_page,
-        offset
-    ])
-
-    cursor.execute(
-        sql,
-        property_values
-    )
+    cursor.execute(sql, property_values)
 
     properties = cursor.fetchall()
 
     cursor.close()
-
     conn.close()
 
     return render_template(
@@ -884,6 +827,75 @@ def properties():
         location=location,
         search=search
     )
+
+
+
+# =====================================================
+# PROPERTIES ROUTE
+# =====================================================
+@app.route("/api/properties/search")
+def api_properties_search():
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    search = request.args.get("q", "").strip()
+
+    # Don't query the database for an empty search
+    if not search:
+        cursor.close()
+        conn.close()
+        return jsonify([])
+
+    keyword = "%" + search + "%"
+
+    sql = """
+        SELECT
+            p.id,
+            p.title,
+            p.property_type,
+            p.purpose,
+            p.location,
+            p.price,
+            p.main_image
+        FROM properties p
+        WHERE
+            p.title LIKE %s
+            OR p.property_type LIKE %s
+            OR p.location LIKE %s
+            OR p.purpose LIKE %s
+            OR p.address LIKE %s
+            OR p.description LIKE %s
+            OR p.furnished LIKE %s
+            OR EXISTS (
+                SELECT 1
+                FROM property_features pf
+                WHERE pf.property_id = p.id
+                AND pf.feature_name LIKE %s
+            )
+        ORDER BY p.created_at DESC
+        LIMIT 8
+    """
+
+    values = [
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword,
+        keyword
+    ]
+
+    cursor.execute(sql, values)
+
+    results = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(results)
 
 
 
