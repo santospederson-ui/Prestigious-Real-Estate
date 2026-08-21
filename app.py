@@ -725,166 +725,338 @@ def about():
 @app.route("/properties")
 def properties():
 
-    conn = get_db_connection()
+    conn = None
+    cursor = None
 
-    cursor = conn.cursor(dictionary=True)
+    try:
 
-    # =========================
-    # FILTERS
-    # =========================
+        conn = get_db_connection()
 
-    property_type = request.args.get("property_type", "").strip()
+        cursor = conn.cursor(dictionary=True)
 
-    purpose = request.args.get("purpose", "").strip()
+        # =====================================================
+        # FILTERS
+        # =====================================================
 
-    location = request.args.get("location", "").strip()
+        property_type = request.args.get(
+            "property_type",
+            ""
+        ).strip()
 
-    search = request.args.get("search", "").strip()
+        purpose = request.args.get(
+            "purpose",
+            ""
+        ).strip()
 
-    page = request.args.get(
-        "page",
-        1,
-        type=int
-    )
+        location = request.args.get(
+            "location",
+            ""
+        ).strip()
 
-    per_page = 9
+        search = request.args.get(
+            "search",
+            ""
+        ).strip()
 
-    offset = (page - 1) * per_page
-
-    # =========================
-    # BUILD QUERY
-    # =========================
-
-    where = []
-
-    values = []
-
-    if property_type:
-
-        where.append(
-            "p.property_type=%s"
+        page = request.args.get(
+            "page",
+            1,
+            type=int
         )
 
-        values.append(property_type)
+        # Prevent invalid page numbers
+        if page < 1:
+            page = 1
 
-    if purpose:
+        per_page = 9
 
-        where.append(
-            "p.purpose=%s"
-        )
+        offset = (page - 1) * per_page
 
-        values.append(purpose)
 
-    if location:
+        # =====================================================
+        # BUILD WHERE CONDITIONS
+        # =====================================================
 
-        where.append(
-            "p.location=%s"
-        )
+        where_conditions = []
 
-        values.append(location)
+        values = []
 
-    if search:
 
-        where.append("""
-        (
-            p.title LIKE %s
-            OR p.property_type LIKE %s
-            OR p.location LIKE %s
-            OR p.purpose LIKE %s
-            OR p.address LIKE %s
-            OR p.description LIKE %s
-            OR p.furnished LIKE %s
-            OR EXISTS
-            (
-                SELECT 1
-                FROM property_features pf
-                WHERE pf.property_id = p.id
-                AND pf.feature_name LIKE %s
+        # -----------------------------------------------------
+        # PROPERTY TYPE
+        # -----------------------------------------------------
+
+        if property_type:
+
+            where_conditions.append(
+                "p.property_type = %s"
             )
+
+            values.append(
+                property_type
+            )
+
+
+        # -----------------------------------------------------
+        # PURPOSE
+        # -----------------------------------------------------
+
+        if purpose:
+
+            where_conditions.append(
+                "p.purpose = %s"
+            )
+
+            values.append(
+                purpose
+            )
+
+
+        # -----------------------------------------------------
+        # LOCATION
+        # -----------------------------------------------------
+
+        if location:
+
+            where_conditions.append(
+                "p.location = %s"
+            )
+
+            values.append(
+                location
+            )
+
+
+        # -----------------------------------------------------
+        # SMART SEARCH
+        # -----------------------------------------------------
+
+        if search:
+
+            keyword = "%" + search + "%"
+
+            where_conditions.append(
+                """
+                (
+                    p.title LIKE %s
+                    OR p.property_type LIKE %s
+                    OR p.location LIKE %s
+                    OR p.purpose LIKE %s
+                    OR p.address LIKE %s
+                    OR p.description LIKE %s
+                    OR p.furnished LIKE %s
+
+                    OR EXISTS (
+                        SELECT 1
+                        FROM property_features pf
+                        WHERE pf.property_id = p.id
+                        AND pf.feature_name LIKE %s
+                    )
+                )
+                """
+            )
+
+            values.extend([
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword,
+                keyword
+            ])
+
+
+        # =====================================================
+        # WHERE SQL
+        # =====================================================
+
+        where_sql = ""
+
+        if where_conditions:
+
+            where_sql = (
+                "WHERE "
+                + " AND ".join(
+                    where_conditions
+                )
+            )
+
+
+        # =====================================================
+        # COUNT TOTAL PROPERTIES
+        # =====================================================
+
+        count_sql = f"""
+            SELECT COUNT(*) AS total
+
+            FROM properties p
+
+            {where_sql}
+        """
+
+        cursor.execute(
+            count_sql,
+            values
         )
-        """)
 
-        keyword = "%" + search + "%"
+        count_result = cursor.fetchone()
 
-        values.extend([
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword,
-            keyword
+        total = (
+            count_result["total"]
+            if count_result
+            else 0
+        )
+
+
+        # =====================================================
+        # TOTAL PAGES
+        # =====================================================
+
+        total_pages = max(
+            1,
+            (total + per_page - 1) // per_page
+        )
+
+
+        # If requested page is beyond available pages,
+        # return the last valid page.
+        if page > total_pages:
+
+            page = total_pages
+
+            offset = (
+                page - 1
+            ) * per_page
+
+
+        # =====================================================
+        # PROPERTY QUERY
+        # =====================================================
+
+        sql = f"""
+            SELECT
+                p.*
+
+            FROM properties p
+
+            {where_sql}
+
+            ORDER BY
+                p.created_at DESC
+
+            LIMIT %s
+            OFFSET %s
+        """
+
+
+        property_values = list(
+            values
+        )
+
+        property_values.extend([
+            per_page,
+            offset
         ])
 
-    where_sql = ""
 
-    if where:
+        cursor.execute(
+            sql,
+            property_values
+        )
 
-        where_sql = "WHERE " + " AND ".join(where)
 
-    # =========================
-    # COUNT TOTAL
-    # =========================
+        properties = cursor.fetchall()
 
-    count_sql = f"""
-    SELECT COUNT(*) AS total
-    FROM properties p
-    {where_sql}
-    """
 
-    cursor.execute(
-        count_sql,
-        values
-    )
+        # =====================================================
+        # CLOSE DATABASE
+        # =====================================================
 
-    total = cursor.fetchone()["total"]
+        cursor.close()
+        cursor = None
 
-    total_pages = (
-        total + per_page - 1
-    ) // per_page
+        conn.close()
+        conn = None
 
-    # =========================
-    # GET PROPERTIES
-    # =========================
 
-    sql = f"""
-    SELECT *
-    FROM properties p
-    {where_sql}
-    ORDER BY p.created_at DESC
-    LIMIT %s OFFSET %s
-    """
+        # =====================================================
+        # RENDER PAGE
+        # =====================================================
 
-    property_values = values.copy()
+        return render_template(
+            "properties.html",
 
-    property_values.extend([
-        per_page,
-        offset
-    ])
+            properties=properties,
 
-    cursor.execute(
-        sql,
-        property_values
-    )
+            page=page,
 
-    properties = cursor.fetchall()
+            total_pages=total_pages,
 
-    cursor.close()
+            property_type=property_type,
 
-    conn.close()
+            purpose=purpose,
 
-    return render_template(
-        "properties.html",
-        properties=properties,
-        page=page,
-        total_pages=total_pages,
-        property_type=property_type,
-        purpose=purpose,
-        location=location,
-        search=search
-    )
+            location=location,
 
+            search=search,
+
+            total=total
+        )
+
+
+    except Exception as e:
+
+        print(
+            "PROPERTIES PAGE ERROR:",
+            e
+        )
+
+        # Close cursor safely
+        if cursor:
+
+            try:
+                cursor.close()
+
+            except Exception:
+                pass
+
+
+        # Close connection safely
+        if conn:
+
+            try:
+                conn.close()
+
+            except Exception:
+                pass
+
+
+        return """
+            <div style="
+                font-family:Arial;
+                padding:40px;
+                max-width:900px;
+                margin:auto;
+            ">
+
+                <h2 style="color:#8A1538;">
+                    Unable to Load Properties
+                </h2>
+
+                <p>
+                    There was a problem loading the
+                    properties page.
+                </p>
+
+                <p>
+                    Please check the application
+                    terminal for the exact error.
+                </p>
+
+            </div>
+        """, 500
 # ============================================================
 # LIVE PROPERTY SEARCH API
 # Used by the homepage smart search autocomplete
