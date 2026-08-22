@@ -241,49 +241,26 @@ Prestigious Real Estate | Premium Properties in Qatar
   bottom: 0;
   left: 0;
   right: 0;
-  border-top: 1px solid rgba(255,255,255,.16);
-  background: rgba(8,17,34,.38);
-  backdrop-filter: blur(10px);
-}
-
-.hero-bottom-inner {
-  width: min(1200px, calc(100% - 40px));
-  margin: auto;
-  min-height: 74px;
+  padding: 16px 0;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  gap: 25px;
-}
-
-.hero-stat {
-  color: #fff;
-}
-
-.hero-stat strong {
-  display: block;
-  color: var(--pr-gold-light);
-  font-size: 20px;
-  line-height: 1;
-  margin-bottom: 5px;
-}
-
-.hero-stat span {
-  color: rgba(255,255,255,.72);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .hero-dots {
   display: flex;
-  gap: 7px;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(8, 17, 34, 0.45);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .hero-dot {
   width: 28px;
   height: 3px;
-  background: rgba(255,255,255,.35);
+  background: rgba(255,255,255,.4);
   cursor: pointer;
   transition: .3s ease;
 }
@@ -1169,8 +1146,7 @@ Prestigious Real Estate | Premium Properties in Qatar
 @media (max-width: 700px) {
 
   .home-container,
-  .home-hero-content,
-  .hero-bottom-inner {
+  .home-hero-content {
     width: min(100% - 28px, 1200px);
   }
 
@@ -1198,18 +1174,6 @@ Prestigious Real Estate | Premium Properties in Qatar
 
   .home-hero-btn {
     width: 100%;
-  }
-
-  .hero-bottom-inner {
-    min-height: 64px;
-  }
-
-  .hero-stat:nth-child(2) {
-    display: none;
-  }
-
-  .hero-stat strong {
-    font-size: 17px;
   }
 
   .property-search-section {
@@ -1380,14 +1344,6 @@ Prestigious Real Estate | Premium Properties in Qatar
     letter-spacing: 1.7px;
   }
 
-  .hero-bottom-inner {
-    justify-content: space-between;
-  }
-
-  .hero-stat span {
-    font-size: 9px;
-  }
-
   .live-result-image {
     flex-basis: 55px;
     width: 55px;
@@ -1518,28 +1474,7 @@ Prestigious Real Estate | Premium Properties in Qatar
   </div>
 
   <div class="hero-bottom-bar">
-
-    <div class="hero-bottom-inner">
-
-      <div class="hero-stat">
-        <strong>Qatar</strong>
-        <span>Local Market Expertise</span>
-      </div>
-
-      <div class="hero-stat">
-        <strong>Premium</strong>
-        <span>Property Selection</span>
-      </div>
-
-      <div class="hero-stat">
-        <strong>Trusted</strong>
-        <span>Professional Service</span>
-      </div>
-
-      <div class="hero-dots" id="heroDots"></div>
-
-    </div>
-
+    <div class="hero-dots" id="heroDots"></div>
   </div>
 
 </section>
