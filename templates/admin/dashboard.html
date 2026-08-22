@@ -1,901 +1,1044 @@
 {% extends "base.html" %}
 
-
 {% block title %}
 Admin Dashboard | Prestigious Real Estate
 {% endblock %}
 
-
-
 {% block content %}
-
-
-<section class="dashboard-section">
-
-
-<div class="container">
-
-
-<!-- =========================
-ADMIN HEADER
-========================= -->
-
-
-<div class="admin-header">
-
-
-<div class="admin-welcome">
-
-<h1>
-Welcome, {{ session.admin_name }}
-</h1>
-
-
-<p>
-Prestigious Real Estate Management System
-</p>
-
-
-</div>
-
-
-
-<a href="{{ url_for('admin_logout') }}" class="logout-btn">
-Logout
-</a>
-
-
-</div>
-
-
-
-
-
-
-
-<!-- =========================
-PROPERTY OVERVIEW
-========================= -->
-
-
-<h2 class="dashboard-section-title">
-Property Overview
-</h2>
-
-
-
-<div class="dashboard-grid">
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-🏠
-</div>
-
-
-<h3>
-Total Properties
-</h3>
-
-
-<p class="dashboard-number">
-{{ total_properties }}
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-✅
-</div>
-
-
-<h3>
-Available Properties
-</h3>
-
-
-<p class="dashboard-number">
-{{ available_properties }}
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-🏢
-</div>
-
-
-<h3>
-Rental Properties
-</h3>
-
-
-<p class="dashboard-number">
-{{ rent_properties }}
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-💰
-</div>
-
-
-<h3>
-Properties For Sale
-</h3>
-
-
-<p class="dashboard-number">
-{{ sale_properties }}
-</p>
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =========================
-CUSTOMER ACTIVITY
-========================= -->
-
-
-<h2 class="dashboard-section-title" style="margin-top:50px;">
-Customer Activity
-</h2>
-
-
-
-
-<div class="dashboard-grid">
-
-
-
-<div class="dashboard-card">
-
-
-<div class="dashboard-icon">
-📩
-</div>
-
-
-<h3>
-Contact Messages
-</h3>
-
-
-<p class="dashboard-number">
-{{ total_messages }}
-</p>
-
-
-<p>
-Unread:
-<strong>
-{{ unread_messages }}
-</strong>
-</p>
-
-
-
-<a href="{{ url_for('contact_messages') }}">
-View Messages →
-</a>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =========================
-QUICK ACTIONS
-========================= -->
-
-
-<h2 class="dashboard-section-title" style="margin-top:50px;">
-Quick Actions
-</h2>
-
-
-
-<div class="dashboard-grid">
-
-
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-➕
-</div>
-
-
-<h3>
-Add Property
-</h3>
-
-
-<p>
-Create a new property listing
-</p>
-
-
-<a href="{{ url_for('add_property') }}">
-Add Property →
-</a>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-📋
-</div>
-
-
-<h3>
-Manage Properties
-</h3>
-
-
-<p>
-Edit, update and remove listings
-</p>
-
-
-<a href="{{ url_for('manage_properties') }}">
-Manage Listings →
-</a>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-📧
-</div>
-
-
-<h3>
-Email Settings
-</h3>
-
-
-<p>
-Manage Brevo email notifications
-</p>
-
-
-<a href="{{ url_for('email_settings') }}">
-Configure Email →
-</a>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="dashboard-card">
-
-<div class="dashboard-icon">
-🌐
-</div>
-
-
-<h3>
-View Website
-</h3>
-
-
-<p>
-Open public website
-</p>
-
-
-<a href="{{ url_for('home') }}">
-Visit Website →
-</a>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =========================
-RECENT CONTACT MESSAGES
-========================= -->
-
-
-<div class="admin-form-card" style="margin-top:50px;">
-
-
-<h2>
-Recent Customer Enquiries
-</h2>
-
-
-
-<table class="property-table">
-
-
-<thead>
-
-<tr>
-
-<th>
-Name
-</th>
-
-
-<th>
-Email
-</th>
-
-
-<th>
-Message
-</th>
-
-
-<th>
-Status
-</th>
-
-
-</tr>
-
-
-</thead>
-
-
-
-
-<tbody>
-
-
-
-{% for message in recent_messages %}
-
-
-
-<tr>
-
-
-<td>
-{{ message.fullname }}
-</td>
-
-
-
-<td>
-{{ message.email }}
-</td>
-
-
-
-<td>
-{{ message.message[:50] }}...
-</td>
-
-
-
-
-<td>
-
-
-
-{% if message.is_read == 0 %}
-
-
-<span style="color:#8A1538;font-weight:bold;">
-NEW
-</span>
-
-
-{% else %}
-
-
-Read
-
-
-{% endif %}
-
-
-
-</td>
-
-
-
-</tr>
-
-
-
-
-{% else %}
-
-
-
-<tr>
-
-<td colspan="4">
-
-No customer enquiries available
-
-</td>
-
-</tr>
-
-
-
-{% endfor %}
-
-
-
-
-</tbody>
-
-
-</table>
-
-
-
-</div>
-
-
-
-
-
-
-
-</div>
-
-
-</section>
-
 
 <style>
 
-/* ==================================
-   LUXURY EXECUTIVE DASHBOARD STYLES
-================================== */
+/* =========================================================
+   PRESTIGIOUS REAL ESTATE — EXECUTIVE ADMIN DASHBOARD
+   ========================================================= */
 
-.dashboard-section{
-    padding:60px 0;
-    background:#f8fafc;
-    min-height: 80vh;
+:root {
+  --adm-maroon: #8A1538;
+  --adm-maroon-dark: #5f0d27;
+  --adm-maroon-light: rgba(138, 21, 56, 0.08);
+  --adm-navy: #17233d;
+  --adm-navy-dark: #0d172b;
+  --adm-navy-light: rgba(23, 35, 61, 0.06);
+  --adm-gold: #c9a227;
+  --adm-gold-light: rgba(201, 162, 39, 0.12);
+  --adm-emerald: #059669;
+  --adm-emerald-light: rgba(5, 150, 105, 0.1);
+  --adm-bg: #f8fafc;
+  --adm-card-bg: #ffffff;
+  --adm-border: #e2e8f0;
+  --adm-text-main: #0f172a;
+  --adm-text-muted: #64748b;
+  --adm-shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+  --adm-shadow-md: 0 12px 30px rgba(15, 23, 42, 0.07);
 }
 
-
-/* ADMIN HEADER */
-
-.admin-header{
-    background: #ffffff;
-    padding:36px 40px;
-    border-radius:24px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:48px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-left: 6px solid var(--gold-accent, #D4AF37);
+.dashboard-section {
+  padding: 50px 0 80px;
+  background: var(--adm-bg);
+  min-height: 85vh;
 }
 
-
-.admin-welcome h1{
-    color: var(--navy-dark, #1F2A44);
-    font-family: var(--font-serif, 'Playfair Display', serif);
-    font-size: 34px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    letter-spacing: -0.3px;
+.dashboard-container {
+  width: min(1240px, calc(100% - 40px));
+  margin: 0 auto;
 }
 
+/* =========================================================
+   EXECUTIVE HEADER
+   ========================================================= */
 
-.admin-welcome p{
-    color: var(--text-secondary, #64748b);
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.2px;
+.admin-header-card {
+  background: var(--adm-card-bg);
+  border: 1px solid var(--adm-border);
+  border-radius: 20px;
+  padding: 32px 36px;
+  margin-bottom: 40px;
+  box-shadow: var(--adm-shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
 }
 
-
-
-.logout-btn{
-    background: var(--qatar-maroon, #8A1538);
-    color: #ffffff;
-    text-decoration: none;
-    padding: 14px 32px;
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 14px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 6px 18px rgba(138, 21, 56, 0.2);
-    display: inline-block;
+.admin-header-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--adm-maroon), var(--adm-gold));
 }
 
-
-.logout-btn:hover{
-    background: var(--navy-dark, #1F2A44);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(31, 42, 68, 0.25);
-    color: #ffffff;
+.admin-welcome-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-
-
-/* SECTION TITLES */
-
-.dashboard-section-title{
-    color: var(--navy-dark, #1F2A44);
-    font-family: var(--font-serif, 'Playfair Display', serif);
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 24px;
-    letter-spacing: -0.2px;
+.admin-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--adm-navy);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  box-shadow: 0 6px 18px rgba(23, 35, 61, 0.2);
+  border: 2px solid var(--adm-gold);
+  flex-shrink: 0;
 }
 
-
-
-
-/* DASHBOARD GRID */
-
-.dashboard-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-    gap: 28px;
+.admin-welcome-text h1 {
+  margin: 0 0 6px;
+  color: var(--adm-navy);
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-size: clamp(24px, 3vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.3px;
 }
 
-
-
-/* CARDS */
-
-.dashboard-card{
-    background: #ffffff;
-    padding: 36px 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid var(--border-color, #e2e8f0);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.admin-welcome-text p {
+  margin: 0;
+  color: var(--adm-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-
-.dashboard-card:hover{
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
-    border-color: rgba(212, 175, 55, 0.5);
+.status-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: var(--adm-emerald-light);
+  color: var(--adm-emerald);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-
-
-.dashboard-icon{
-    font-size: 44px;
-    margin-bottom: 20px;
-    display: inline-block;
+.status-badge-live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--adm-emerald);
+  animation: pulseLive 2s infinite;
 }
 
-
-
-.dashboard-card h3{
-    color: var(--navy-dark, #1F2A44);
-    font-size: 19px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    font-family: var(--font-serif, 'Playfair Display', serif);
+@keyframes pulseLive {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
 }
 
-
-
-.dashboard-number{
-    font-size: 44px;
-    font-weight: 800;
-    color: var(--qatar-maroon, #8A1538);
-    margin-bottom: 8px;
-    line-height: 1;
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--adm-maroon);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 16px rgba(138, 21, 56, 0.2);
+}
 
+.logout-btn:hover {
+  background: var(--adm-maroon-dark);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(138, 21, 56, 0.3);
+}
 
-.dashboard-card p{
-    color: var(--text-secondary, #64748b);
-    font-size: 14px;
-    line-height: 1.6;
+/* =========================================================
+   SECTION HEADINGS
+   ========================================================= */
+
+.dashboard-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dashboard-section-title {
+  margin: 0;
+  color: var(--adm-navy);
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-section-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: var(--adm-maroon);
+  border-radius: 2px;
+}
+
+/* =========================================================
+   KPI METRIC GRIDS
+   ========================================================= */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-bottom: 45px;
+}
+
+.dashboard-card {
+  background: var(--adm-card-bg);
+  border: 1px solid var(--adm-border);
+  border-radius: 18px;
+  padding: 26px 24px;
+  box-shadow: var(--adm-shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--adm-shadow-md);
+  border-color: rgba(201, 162, 39, 0.4);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.dashboard-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.dashboard-card:hover .dashboard-icon-wrapper {
+  transform: scale(1.08);
+}
+
+.dashboard-icon-wrapper.maroon {
+  background: var(--adm-maroon-light);
+  color: var(--adm-maroon);
+  border: 1px solid rgba(138, 21, 56, 0.15);
+}
+
+.dashboard-icon-wrapper.emerald {
+  background: var(--adm-emerald-light);
+  color: var(--adm-emerald);
+  border: 1px solid rgba(5, 150, 105, 0.18);
+}
+
+.dashboard-icon-wrapper.navy {
+  background: var(--adm-navy-light);
+  color: var(--adm-navy);
+  border: 1px solid rgba(23, 35, 61, 0.15);
+}
+
+.dashboard-icon-wrapper.gold {
+  background: var(--adm-gold-light);
+  color: var(--adm-gold);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+}
+
+.card-chip {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--adm-text-muted);
+}
+
+.dashboard-card h3 {
+  margin: 0 0 6px;
+  color: var(--adm-text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.dashboard-number {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 900;
+  color: var(--adm-navy);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.dashboard-card p {
+  margin: 8px 0 0;
+  color: var(--adm-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .dashboard-card p strong {
-    color: var(--qatar-maroon, #8A1538);
-    background: rgba(138, 21, 56, 0.08);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-weight: 800;
+  color: var(--adm-maroon);
+  background: var(--adm-maroon-light);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 800;
 }
 
-
-
-.dashboard-card a{
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 20px;
-    color: var(--qatar-maroon, #8A1538);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    padding: 8px 16px;
-    background: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid var(--border-color, #e2e8f0);
-    width: fit-content;
+.dashboard-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  color: var(--adm-maroon);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 13px;
+  transition: all 0.25s ease;
+  padding: 8px 14px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid var(--adm-border);
+  width: fit-content;
 }
 
-
-.dashboard-card a:hover{
-    color: #ffffff;
-    background: var(--qatar-maroon, #8A1538);
-    border-color: var(--qatar-maroon, #8A1538);
-    box-shadow: 0 4px 14px rgba(138, 21, 56, 0.25);
-    text-decoration: none;
+.dashboard-card a:hover {
+  background: var(--adm-maroon);
+  color: #ffffff;
+  border-color: var(--adm-maroon);
+  transform: translateX(3px);
 }
 
+/* =========================================================
+   QUICK ACTIONS GRID
+   ========================================================= */
 
-
-/* RECENT MESSAGE TABLE CARD */
-
-.admin-form-card{
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-    border: 1px solid var(--border-color, #e2e8f0);
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-bottom: 45px;
 }
 
-
-
-.admin-form-card h2{
-    color: var(--navy-dark, #1F2A44);
-    font-family: var(--font-serif, 'Playfair Display', serif);
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 28px;
+.action-card {
+  background: var(--adm-card-bg);
+  border: 1px solid var(--adm-border);
+  border-radius: 18px;
+  padding: 26px 24px;
+  box-shadow: var(--adm-shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-
-
-/* TABLE */
-
-.property-table{
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--adm-shadow-md);
+  border-color: rgba(138, 21, 56, 0.3);
 }
 
-
-.property-table th{
-    background: var(--navy-dark, #1F2A44);
-    color: #ffffff;
-    padding: 16px 20px;
-    text-align: left;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
+.action-card h3 {
+  margin: 0 0 6px;
+  color: var(--adm-navy);
+  font-size: 17px;
+  font-weight: 800;
+  font-family: var(--font-serif, "Playfair Display", serif);
 }
 
-.property-table th:first-child {
-    border-top-left-radius: 12px;
+.action-card p {
+  margin: 0;
+  color: var(--adm-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.property-table th:last-child {
-    border-top-right-radius: 12px;
+.action-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 16px;
+  background: #f8fafc;
+  border: 1px solid var(--adm-border);
+  border-radius: 10px;
+  color: var(--adm-navy);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  transition: all 0.25s ease;
 }
 
+.action-card:hover a {
+  background: var(--adm-maroon);
+  border-color: var(--adm-maroon);
+  color: #ffffff;
+}
 
-.property-table td{
-    padding: 18px 20px;
-    border-bottom: 1px solid var(--border-color, #e2e8f0);
-    color: #475569;
-    font-size: 14px;
-    transition: background 0.2s ease;
+/* =========================================================
+   RECENT CUSTOMER INQUIRIES
+   ========================================================= */
+
+.admin-table-card {
+  background: var(--adm-card-bg);
+  border: 1px solid var(--adm-border);
+  border-radius: 20px;
+  padding: 32px 34px;
+  box-shadow: var(--adm-shadow-sm);
+}
+
+.table-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.admin-table-card h2 {
+  margin: 0;
+  color: var(--adm-navy);
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.table-responsive-wrapper {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid var(--adm-border);
+}
+
+.property-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.property-table thead {
+  background: var(--adm-navy);
+  color: #ffffff;
+}
+
+.property-table th {
+  padding: 16px 20px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.property-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--adm-border);
+  color: #334155;
+  font-size: 14px;
+  background: #ffffff;
+  transition: background 0.2s ease;
 }
 
 .property-table tbody tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 
-.property-table tbody tr:hover td{
-    background: #f8fafc;
+.property-table tbody tr:hover td {
+  background: #f8fafc;
 }
 
-.property-table span[style*="color:#8A1538"] {
-    display: inline-block !important;
-    background: rgba(138, 21, 56, 0.1) !important;
-    color: var(--qatar-maroon, #8A1538) !important;
-    padding: 4px 12px !important;
-    border-radius: 20px !important;
-    font-size: 11px !important;
-    letter-spacing: 0.5px !important;
-    border: 1px solid rgba(138, 21, 56, 0.2) !important;
+.client-name-cell {
+  font-weight: 800;
+  color: var(--adm-navy);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-
-
-/* MOBILE RESPONSIVE */
-
-@media(max-width: 992px){
-    .admin-header {
-        padding: 28px;
-    }
-    .admin-form-card {
-        padding: 28px;
-    }
+.client-avatar-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--adm-navy-light);
+  color: var(--adm-navy);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-@media(max-width:768px){
-
-
-.dashboard-section{
-    padding:40px 0;
+.client-email-cell {
+  color: var(--adm-text-muted);
+  font-size: 13px;
 }
 
-
-
-.admin-header{
-    flex-direction:column;
-    gap:20px;
-    text-align:center;
+.client-msg-cell {
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 380px;
 }
 
-
-
-.admin-welcome h1{
-    font-size:26px;
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-
-
-.dashboard-section-title{
-    font-size:24px;
+.status-tag.new {
+  background: var(--adm-maroon-light);
+  color: var(--adm-maroon);
+  border: 1px solid rgba(138, 21, 56, 0.2);
 }
 
+.status-tag.read {
+  background: #f1f5f9;
+  color: var(--adm-text-muted);
+  border: 1px solid var(--adm-border);
+}
 
+/* =========================================================
+   RESPONSIVE LAYOUT
+   ========================================================= */
 
-.dashboard-grid{
-    grid-template-columns:1fr;
+@media (max-width: 1150px) {
+  .dashboard-grid,
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-section {
+    padding: 30px 0 60px;
+  }
+
+  .admin-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
     gap: 20px;
-}
+  }
 
+  .admin-header-actions {
+    width: 100%;
+  }
 
+  .logout-btn {
+    width: 100%;
+    justify-content: center;
+  }
 
-.admin-form-card{
+  .dashboard-grid,
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-table-card {
     padding: 20px;
-    overflow-x: auto;
+  }
+
+  .property-table {
+    min-width: 600px;
+  }
 }
-
-
-
-.property-table{
-    min-width:600px;
-}
-
-
-
-.logout-btn{
-    width:100%;
-    text-align:center;
-}
-
-
-}
-
-
-
-@media(max-width:480px){
-
-
-.admin-welcome h1{
-    font-size:22px;
-}
-
-
-.dashboard-card{
-    padding:28px 20px;
-}
-
-
-.dashboard-number{
-    font-size:36px;
-}
-
-
-}
-
 
 </style>
+
+<section class="dashboard-section">
+
+<div class="dashboard-container">
+
+<!-- =========================
+     EXECUTIVE ADMIN HEADER
+========================= -->
+
+<div class="admin-header-card">
+
+  <div class="admin-welcome-block">
+
+    <div class="admin-avatar">
+      {{ session.admin_name[:2]|upper if session.admin_name else 'AD' }}
+    </div>
+
+    <div class="admin-welcome-text">
+
+      <h1>
+        Welcome, {{ session.admin_name }}
+      </h1>
+
+      <p>
+        <span>Prestigious Real Estate Management Suite</span>
+        <span class="status-badge-live">System Active</span>
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="admin-header-actions">
+
+    <a href="{{ url_for('admin_logout') }}" class="logout-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      Logout
+    </a>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     PROPERTY OVERVIEW
+========================= -->
+
+<div class="dashboard-section-header">
+  <h2 class="dashboard-section-title">
+    Property Overview
+  </h2>
+</div>
+
+<div class="dashboard-grid">
+
+  <div class="dashboard-card">
+
+    <div class="card-top">
+      <div class="dashboard-icon-wrapper maroon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="card-chip">Portfolio</span>
+    </div>
+
+    <h3>
+      Total Properties
+    </h3>
+
+    <p class="dashboard-number">
+      {{ total_properties }}
+    </p>
+
+  </div>
+
+  <div class="dashboard-card">
+
+    <div class="card-top">
+      <div class="dashboard-icon-wrapper emerald">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <span class="card-chip">Active</span>
+    </div>
+
+    <h3>
+      Available Properties
+    </h3>
+
+    <p class="dashboard-number">
+      {{ available_properties }}
+    </p>
+
+  </div>
+
+  <div class="dashboard-card">
+
+    <div class="card-top">
+      <div class="dashboard-icon-wrapper navy">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+          <path d="M9 22v-4h6v4"/>
+          <path d="M8 6h.01"/>
+          <path d="M16 6h.01"/>
+          <path d="M8 10h.01"/>
+          <path d="M16 10h.01"/>
+          <path d="M8 14h.01"/>
+          <path d="M16 14h.01"/>
+        </svg>
+      </div>
+      <span class="card-chip">Leasing</span>
+    </div>
+
+    <h3>
+      Rental Properties
+    </h3>
+
+    <p class="dashboard-number">
+      {{ rent_properties }}
+    </p>
+
+  </div>
+
+  <div class="dashboard-card">
+
+    <div class="card-top">
+      <div class="dashboard-icon-wrapper gold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+          <path d="M12 18V6"/>
+        </svg>
+      </div>
+      <span class="card-chip">Sales</span>
+    </div>
+
+    <h3>
+      Properties For Sale
+    </h3>
+
+    <p class="dashboard-number">
+      {{ sale_properties }}
+    </p>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     CUSTOMER ACTIVITY
+========================= -->
+
+<div class="dashboard-section-header">
+  <h2 class="dashboard-section-title">
+    Customer Activity
+  </h2>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+
+  <div class="dashboard-card">
+
+    <div class="card-top">
+      <div class="dashboard-icon-wrapper maroon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="20" height="16" x="2" y="4" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+      </div>
+      <span class="card-chip">Inbox</span>
+    </div>
+
+    <h3>
+      Contact Messages
+    </h3>
+
+    <p class="dashboard-number">
+      {{ total_messages }}
+    </p>
+
+    <p>
+      Unread Enquiries:
+      <strong>
+        {{ unread_messages }}
+      </strong>
+    </p>
+
+    <a href="{{ url_for('contact_messages') }}">
+      View Messages
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     QUICK ACTIONS
+========================= -->
+
+<div class="dashboard-section-header">
+  <h2 class="dashboard-section-title">
+    Quick Actions
+  </h2>
+</div>
+
+<div class="quick-actions-grid">
+
+  <div class="action-card">
+
+    <div>
+      <div class="dashboard-icon-wrapper maroon" style="margin-bottom: 16px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v8"/>
+          <path d="M8 12h8"/>
+        </svg>
+      </div>
+
+      <h3>
+        Add Property
+      </h3>
+
+      <p>
+        Create a new property listing
+      </p>
+    </div>
+
+    <a href="{{ url_for('add_property') }}">
+      <span>Add Property</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <div class="action-card">
+
+    <div>
+      <div class="dashboard-icon-wrapper navy" style="margin-bottom: 16px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+          <path d="M9 14h6"/>
+          <path d="M9 18h6"/>
+          <path d="M9 10h6"/>
+        </svg>
+      </div>
+
+      <h3>
+        Manage Properties
+      </h3>
+
+      <p>
+        Edit, update and remove listings
+      </p>
+    </div>
+
+    <a href="{{ url_for('manage_properties') }}">
+      <span>Manage Listings</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <div class="action-card">
+
+    <div>
+      <div class="dashboard-icon-wrapper gold" style="margin-bottom: 16px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/>
+          <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/>
+        </svg>
+      </div>
+
+      <h3>
+        Email Settings
+      </h3>
+
+      <p>
+        Manage Brevo email notifications
+      </p>
+    </div>
+
+    <a href="{{ url_for('email_settings') }}">
+      <span>Configure Email</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <div class="action-card">
+
+    <div>
+      <div class="dashboard-icon-wrapper emerald" style="margin-bottom: 16px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+
+      <h3>
+        View Website
+      </h3>
+
+      <p>
+        Open public website
+      </p>
+    </div>
+
+    <a href="{{ url_for('home') }}">
+      <span>Visit Website</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     RECENT CONTACT MESSAGES
+========================= -->
+
+<div class="admin-table-card">
+
+  <div class="table-header-row">
+
+    <h2>
+      Recent Customer Enquiries
+    </h2>
+
+    <a href="{{ url_for('contact_messages') }}" style="color: var(--adm-maroon); font-size: 13px; font-weight: 800; text-decoration: none;">
+      All Messages &rarr;
+    </a>
+
+  </div>
+
+  <div class="table-responsive-wrapper">
+
+    <table class="property-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Name
+          </th>
+
+          <th>
+            Email
+          </th>
+
+          <th>
+            Message
+          </th>
+
+          <th>
+            Status
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        {% for message in recent_messages %}
+
+        <tr>
+
+          <td>
+            <div class="client-name-cell">
+              <span class="client-avatar-mini">
+                {{ message.fullname[:2]|upper if message.fullname else 'CU' }}
+              </span>
+              <span>{{ message.fullname }}</span>
+            </div>
+          </td>
+
+          <td class="client-email-cell">
+            {{ message.email }}
+          </td>
+
+          <td class="client-msg-cell">
+            {{ message.message[:50] }}...
+          </td>
+
+          <td>
+
+            {% if message.is_read == 0 %}
+
+            <span class="status-tag new">
+              NEW
+            </span>
+
+            {% else %}
+
+            <span class="status-tag read">
+              Read
+            </span>
+
+            {% endif %}
+
+          </td>
+
+        </tr>
+
+        {% else %}
+
+        <tr>
+
+          <td colspan="4" style="text-align: center; padding: 36px 20px; color: var(--adm-text-muted);">
+
+            No customer enquiries available
+
+          </td>
+
+        </tr>
+
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+</div>
+
+</section>
 
 {% endblock %}
