@@ -40,7 +40,6 @@ Properties | Prestigious Real Estate
 
 </section>
 
-
 <!-- =========================================================
      FIND PROPERTY
 ========================================================= -->
@@ -64,7 +63,6 @@ Properties | Prestigious Real Estate
             </p>
 
         </div>
-
 
         <!-- SEARCH PANEL -->
 
@@ -112,7 +110,6 @@ Properties | Prestigious Real Estate
 
                 </div>
 
-
                 <!-- LIVE RESULTS DROPDOWN -->
 
                 <div
@@ -122,7 +119,6 @@ Properties | Prestigious Real Estate
                 </div>
 
             </div>
-
 
             <!-- ACTION BUTTONS -->
 
@@ -169,46 +165,155 @@ Properties | Prestigious Real Estate
 
                 </button>
 
+                <!-- SORT WRAPPER (ANCHORED RELATIVE CONTAINER) -->
 
-                <!-- SORT -->
+                <div class="sort-action-wrapper">
 
-                <button
-                    type="button"
-                    class="search-action-btn"
-                    id="sortBtn">
+                    <button
+                        type="button"
+                        class="search-action-btn"
+                        id="sortBtn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         width="19"
-                         height="19"
-                         viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
+                        <!-- REFINED DUAL ARROW SORT ICON -->
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="18"
+                             height="18"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="m3 16 4 4 4-4"/>
+                            <path d="M7 20V4"/>
+                            <path d="m21 8-4-4-4 4"/>
+                            <path d="M17 4v16"/>
+                        </svg>
 
-                        <path d="M3 6h18"/>
-                        <path d="M6 12h12"/>
-                        <path d="M10 18h4"/>
+                        <span>
+                            Sort
+                        </span>
 
-                    </svg>
+                        <span
+                            class="action-value"
+                            id="sortValue">
+                            Newest
+                        </span>
 
-                    <span>
-                        Sort
-                    </span>
+                    </button>
 
-                    <span
-                        class="action-value"
-                        id="sortValue">
-                        Newest
-                    </span>
+                    <!-- SORT PANEL (NESTED & ANCHORED) -->
 
-                </button>
+                    <div
+                        id="sortPanel"
+                        class="sort-panel"
+                        role="menu">
+
+                        <button
+                            type="button"
+                            class="sort-option {% if sort == 'newest' or not sort %}active{% endif %}"
+                            data-sort="newest"
+                            role="menuitem">
+
+                            <span>Newest First</span>
+
+                            <small>
+                                Recently added
+                            </small>
+
+                            <span class="sort-check">✓</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="sort-option {% if sort == 'oldest' %}active{% endif %}"
+                            data-sort="oldest"
+                            role="menuitem">
+
+                            <span>Oldest First</span>
+
+                            <small>
+                                Earliest listings
+                            </small>
+
+                            <span class="sort-check">✓</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="sort-option {% if sort == 'price_low' %}active{% endif %}"
+                            data-sort="price_low"
+                            role="menuitem">
+
+                            <span>Price: Low to High</span>
+
+                            <small>
+                                Lowest price first
+                            </small>
+
+                            <span class="sort-check">✓</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="sort-option {% if sort == 'price_high' %}active{% endif %}"
+                            data-sort="price_high"
+                            role="menuitem">
+
+                            <span>Price: High to Low</span>
+
+                            <small>
+                                Highest price first
+                            </small>
+
+                            <span class="sort-check">✓</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="sort-option {% if sort == 'area_large' %}active{% endif %}"
+                            data-sort="area_large"
+                            role="menuitem">
+
+                            <span>Largest Area</span>
+
+                            <small>
+                                Biggest properties first
+                            </small>
+
+                            <span class="sort-check">✓</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="sort-option {% if sort == 'area_small' %}active{% endif %}"
+                            data-sort="area_small"
+                            role="menuitem">
+
+                            <span>Smallest Area</span>
+
+                            <small>
+                                Smallest properties first
+                            </small>
+
+                            <span class="sort-check">✓</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
-
 
         <!-- =================================================
              ADVANCED FILTER PANEL
@@ -234,7 +339,6 @@ Properties | Prestigious Real Estate
                     name="sort"
                     id="advancedSortInput"
                     value="{{ sort or 'newest' }}">
-
 
                 <div class="advanced-filter-grid">
 
@@ -276,7 +380,6 @@ Properties | Prestigious Real Estate
 
                     </div>
 
-
                     <!-- PURPOSE -->
 
                     <div class="advanced-filter-group">
@@ -304,7 +407,6 @@ Properties | Prestigious Real Estate
                         </select>
 
                     </div>
-
 
                     <!-- LOCATION -->
 
@@ -349,7 +451,6 @@ Properties | Prestigious Real Estate
 
                     </div>
 
-
                     <!-- APPLY -->
 
                     <div class="advanced-filter-actions">
@@ -379,116 +480,9 @@ Properties | Prestigious Real Estate
 
         </div>
 
-
-        <!-- =================================================
-             SORT PANEL
-        ================================================= -->
-
-        <div
-            id="sortPanel"
-            class="sort-panel">
-
-            <button
-                type="button"
-                class="sort-option {% if sort == 'newest' or not sort %}active{% endif %}"
-                data-sort="newest">
-
-                <span>Newest First</span>
-
-                <small>
-                    Recently added
-                </small>
-
-                <span class="sort-check">✓</span>
-
-            </button>
-
-
-            <button
-                type="button"
-                class="sort-option {% if sort == 'oldest' %}active{% endif %}"
-                data-sort="oldest">
-
-                <span>Oldest First</span>
-
-                <small>
-                    Earliest listings
-                </small>
-
-                <span class="sort-check">✓</span>
-
-            </button>
-
-
-            <button
-                type="button"
-                class="sort-option {% if sort == 'price_low' %}active{% endif %}"
-                data-sort="price_low">
-
-                <span>Price: Low to High</span>
-
-                <small>
-                    Lowest price first
-                </small>
-
-                <span class="sort-check">✓</span>
-
-            </button>
-
-
-            <button
-                type="button"
-                class="sort-option {% if sort == 'price_high' %}active{% endif %}"
-                data-sort="price_high">
-
-                <span>Price: High to Low</span>
-
-                <small>
-                    Highest price first
-                </small>
-
-                <span class="sort-check">✓</span>
-
-            </button>
-
-
-            <button
-                type="button"
-                class="sort-option {% if sort == 'area_large' %}active{% endif %}"
-                data-sort="area_large">
-
-                <span>Largest Area</span>
-
-                <small>
-                    Biggest properties first
-                </small>
-
-                <span class="sort-check">✓</span>
-
-            </button>
-
-
-            <button
-                type="button"
-                class="sort-option {% if sort == 'area_small' %}active{% endif %}"
-                data-sort="area_small">
-
-                <span>Smallest Area</span>
-
-                <small>
-                    Smallest properties first
-                </small>
-
-                <span class="sort-check">✓</span>
-
-            </button>
-
-        </div>
-
     </div>
 
 </section>
-
 
 <!-- =========================================================
      PROPERTY LIST
@@ -510,7 +504,6 @@ Properties | Prestigious Real Estate
             </p>
 
         </div>
-
 
         <div class="property-grid">
 
@@ -540,7 +533,6 @@ Properties | Prestigious Real Estate
 
                         {% endif %}
 
-
                         <div class="property-badge
                             {% if property.purpose == 'Rent' %}
                                 badge-rent
@@ -555,7 +547,6 @@ Properties | Prestigious Real Estate
                     </div>
 
                 </a>
-
 
                 <div class="property-info">
 
@@ -572,7 +563,6 @@ Properties | Prestigious Real Estate
                         {% endif %}
 
                     </div>
-
 
                     <div class="property-location">
 
@@ -597,11 +587,9 @@ Properties | Prestigious Real Estate
 
                     </div>
 
-
                     <h3 class="property-title">
                         {{ property.title }}
                     </h3>
-
 
                     <div class="property-meta">
 
@@ -619,7 +607,6 @@ Properties | Prestigious Real Estate
 
                         </div>
 
-
                         <div class="meta-item">
 
                             <span class="meta-icon">🚿</span>
@@ -633,7 +620,6 @@ Properties | Prestigious Real Estate
                             </small>
 
                         </div>
-
 
                         <div class="meta-item">
 
@@ -678,7 +664,6 @@ Properties | Prestigious Real Estate
 
         </div>
 
-
         <!-- =================================================
              PAGINATION
         ================================================= -->
@@ -715,7 +700,6 @@ Properties | Prestigious Real Estate
 
                 {% endif %}
 
-
                 <div class="pagination-indicator">
 
                     Page
@@ -724,7 +708,6 @@ Properties | Prestigious Real Estate
                     {{ total_pages }}
 
                 </div>
-
 
                 {% if page < total_pages %}
 
@@ -762,7 +745,6 @@ Properties | Prestigious Real Estate
 
 </section>
 
-
 <!-- =========================================================
      CSS
 ========================================================= -->
@@ -781,16 +763,17 @@ Properties | Prestigious Real Estate
     --bg-page:#f8fafc;
 }
 
-
 /* =========================================================
    CONTAINER
 ========================================================= */
 
 .container {
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
     padding-left:clamp(20px,4vw,50px);
     padding-right:clamp(20px,4vw,50px);
 }
-
 
 /* =========================================================
    HERO
@@ -850,7 +833,6 @@ Properties | Prestigious Real Estate
     text-shadow:0 2px 6px rgba(0,0,0,.6);
 }
 
-
 /* =========================================================
    FIND PROPERTY
 ========================================================= */
@@ -892,7 +874,6 @@ Properties | Prestigious Real Estate
     font-size:13px;
 }
 
-
 /* =========================================================
    SEARCH PANEL
 ========================================================= */
@@ -906,8 +887,8 @@ Properties | Prestigious Real Estate
     display:grid;
     grid-template-columns:minmax(0,1fr) auto;
     gap:12px;
+    position:relative;
 }
-
 
 /* =========================================================
    LIVE SEARCH
@@ -982,10 +963,8 @@ Properties | Prestigious Real Estate
     color:#fff;
 }
 
-
 /* =========================================================
    LIVE SEARCH DROPDOWN
-   SMALLER + PRICE PROMINENT
 ========================================================= */
 
 .live-search-results {
@@ -1013,7 +992,6 @@ Properties | Prestigious Real Estate
 .live-search-results.show {
     display:block;
 }
-
 
 /* RESULT ROW */
 
@@ -1044,9 +1022,6 @@ Properties | Prestigious Real Estate
     background:#f8fafc;
 }
 
-
-/* SMALL IMAGE */
-
 .live-result-image {
     width:48px;
     height:40px;
@@ -1061,9 +1036,6 @@ Properties | Prestigious Real Estate
 
     display:block;
 }
-
-
-/* RESULT INFORMATION */
 
 .live-result-info {
     min-width:0;
@@ -1098,9 +1070,6 @@ Properties | Prestigious Real Estate
     text-overflow:ellipsis;
 }
 
-
-/* PRICE AREA */
-
 .live-result-price {
     flex:0 0 auto;
 
@@ -1118,9 +1087,6 @@ Properties | Prestigious Real Estate
     white-space:nowrap;
 }
 
-
-/* PRICE LABEL */
-
 .live-result-price-value {
     display:block;
 
@@ -1130,9 +1096,6 @@ Properties | Prestigious Real Estate
 
     color:var(--qatar-maroon);
 }
-
-
-/* PURPOSE BADGE */
 
 .live-result-purpose {
     display:inline-block;
@@ -1161,9 +1124,6 @@ Properties | Prestigious Real Estate
     background:var(--qatar-maroon);
 }
 
-
-/* SEARCH STATUS */
-
 .search-status {
     padding:18px;
 
@@ -1174,41 +1134,45 @@ Properties | Prestigious Real Estate
     font-size:12px;
 }
 
-
 /* =========================================================
-   SEARCH ACTIONS
+   SEARCH ACTIONS & SORT WRAPPER
 ========================================================= */
 
 .search-actions {
     display:flex;
     gap:10px;
+    align-items:center;
+}
+
+.sort-action-wrapper {
+    position:relative;
 }
 
 .search-action-btn {
     min-width:145px;
-
     height:56px;
 
     border:1px solid var(--border-light);
-
     background:#fff;
-
     color:var(--navy-dark);
 
     cursor:pointer;
-
     padding:0 14px;
 
-    display:flex;
+    display:inline-flex;
     align-items:center;
     justify-content:center;
-
     gap:8px;
 
     font-size:13px;
     font-weight:800;
-
     transition:.25s ease;
+    user-select:none;
+}
+
+.search-action-btn svg,
+.search-action-btn span {
+    pointer-events:none;
 }
 
 .search-action-btn:hover,
@@ -1220,21 +1184,16 @@ Properties | Prestigious Real Estate
 
 .search-action-btn svg {
     flex-shrink:0;
+    transition:transform .2s ease;
 }
 
 .action-value {
     display:inline-flex;
-
     align-items:center;
-
     padding:3px 7px;
-
     background:#f1f5f9;
-
     color:var(--text-muted);
-
     font-size:10px;
-
     font-weight:800;
 }
 
@@ -1242,7 +1201,6 @@ Properties | Prestigious Real Estate
     background:var(--qatar-maroon);
     color:#fff;
 }
-
 
 /* =========================================================
    ADVANCED FILTER
@@ -1350,29 +1308,20 @@ Properties | Prestigious Real Estate
     background:var(--qatar-maroon-dark);
 }
 
-
 /* =========================================================
-   SORT PANEL
+   SORT PANEL (ANCHORED DIRECTLY BELOW SORT BUTTON)
 ========================================================= */
 
 .sort-panel {
     display:none;
-
     position:absolute;
-
-    margin-top:8px;
-
-    right:clamp(20px,4vw,50px);
-
+    top:calc(100% + 8px);
+    right:0;
     width:280px;
-
     background:#fff;
-
     border:1px solid var(--border-light);
-
     box-shadow:0 20px 45px rgba(15,23,42,.15);
-
-    z-index:90;
+    z-index:110;
 }
 
 .sort-panel.show {
@@ -1381,26 +1330,17 @@ Properties | Prestigious Real Estate
 
 .sort-option {
     position:relative;
-
     width:100%;
-
     border:0;
-
     border-bottom:1px solid #f1f5f9;
-
     background:#fff;
-
     text-align:left;
-
     padding:13px 42px 13px 15px;
-
     cursor:pointer;
-
     display:flex;
-
     flex-direction:column;
-
     gap:3px;
+    transition:.2s ease;
 }
 
 .sort-option:hover {
@@ -1428,21 +1368,17 @@ Properties | Prestigious Real Estate
 
 .sort-check {
     position:absolute;
-
     right:15px;
     top:50%;
-
     transform:translateY(-50%);
-
     color:var(--qatar-maroon);
-
     display:none;
+    font-weight:bold;
 }
 
 .sort-option.active .sort-check {
     display:block;
 }
-
 
 /* =========================================================
    PROPERTY SECTION
@@ -1456,7 +1392,6 @@ Properties | Prestigious Real Estate
 .section-title {
     text-align:center;
     max-width:600px;
-
     margin:0 auto 45px;
 }
 
@@ -1473,20 +1408,15 @@ Properties | Prestigious Real Estate
     margin:0;
 }
 
-
 /* =========================================================
    PROPERTY GRID
 ========================================================= */
 
 .property-grid {
     display:grid;
-
-    grid-template-columns:
-        repeat(auto-fill,minmax(330px,1fr));
-
+    grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
     gap:30px;
 }
-
 
 /* =========================================================
    PROPERTY CARD
@@ -1494,23 +1424,16 @@ Properties | Prestigious Real Estate
 
 .property-card {
     background:#fff;
-
     overflow:hidden;
-
     border:1px solid var(--border-light);
-
     display:flex;
     flex-direction:column;
-
     transition:.3s ease;
 }
 
 .property-card:hover {
     transform:translateY(-6px);
-
-    box-shadow:
-        0 18px 40px rgba(15,23,42,.08);
-
+    box-shadow:0 18px 40px rgba(15,23,42,.08);
     border-color:rgba(138,21,56,.2);
 }
 
@@ -1521,39 +1444,29 @@ Properties | Prestigious Real Estate
 
 .property-image-wrapper {
     position:relative;
-
     height:230px;
-
     overflow:hidden;
-
     background:#e2e8f0;
 }
 
 .property-image-wrapper img {
     width:100%;
     height:100%;
-
     object-fit:cover;
-
     transition:.5s ease;
 }
 
-.property-card:hover
-.property-image-wrapper img {
+.property-card:hover .property-image-wrapper img {
     transform:scale(1.06);
 }
 
 .property-badge {
     position:absolute;
-
     top:16px;
     left:16px;
-
     padding:5px 12px;
-
     font-size:11px;
     font-weight:800;
-
     color:#fff;
 }
 
@@ -1565,62 +1478,41 @@ Properties | Prestigious Real Estate
     background:var(--navy-dark);
 }
 
-
 /* =========================================================
    PROPERTY INFO
 ========================================================= */
 
 .property-info {
     position:relative;
-
     padding:14px 20px 16px;
-
     display:flex;
     flex-direction:column;
     flex-grow:1;
-
-    background:linear-gradient(
-        180deg,
-        #2d3748 0%,
-        #1f2937 100%
-    );
-
+    background:linear-gradient(180deg, #2d3748 0%, #1f2937 100%);
     color:#f8fafc;
 }
 
 .property-price-tag {
     position:absolute;
-
     top:12px;
     right:14px;
-
     background:rgba(15,23,42,.95);
-
     color:#fff;
-
     padding:6px 11px;
-
     font-size:14px;
     font-weight:800;
-
     border:1px solid rgba(255,255,255,.18);
-
     white-space:nowrap;
 }
 
 .property-location {
     display:flex;
     align-items:center;
-
     gap:6px;
-
     color:var(--gold-accent);
-
     font-size:13px;
     font-weight:700;
-
     margin-bottom:5px;
-
     padding-right:145px;
 }
 
@@ -1632,22 +1524,15 @@ Properties | Prestigious Real Estate
 .property-title {
     font-size:18px;
     font-weight:800;
-
     color:#fff;
-
     margin-bottom:10px;
-
     line-height:1.35;
-
     display:-webkit-box;
     -webkit-line-clamp:2;
     -webkit-box-orient:vertical;
-
     overflow:hidden;
-
     min-height:48px;
 }
-
 
 /* =========================================================
    META
@@ -1655,32 +1540,21 @@ Properties | Prestigious Real Estate
 
 .property-meta {
     display:flex;
-
     align-items:center;
-
     gap:8px;
-
     padding:9px 0;
-
     border-top:1px solid rgba(255,255,255,.12);
     border-bottom:1px solid rgba(255,255,255,.12);
 }
 
 .meta-item {
     display:flex;
-
     align-items:center;
-
     gap:4px;
-
     color:#fff;
-
     font-size:12px;
-
     font-weight:700;
-
     padding-right:9px;
-
     border-right:1px solid rgba(255,255,255,.12);
 }
 
@@ -1698,20 +1572,15 @@ Properties | Prestigious Real Estate
     font-weight:600;
 }
 
-
 /* =========================================================
    EMPTY
 ========================================================= */
 
 .empty-properties-card {
     grid-column:1/-1;
-
     text-align:center;
-
     padding:80px 20px;
-
     background:#fff;
-
     border:1px dashed var(--border-light);
 }
 
@@ -1731,7 +1600,6 @@ Properties | Prestigious Real Estate
     font-size:14px;
 }
 
-
 /* =========================================================
    PAGINATION
 ========================================================= */
@@ -1739,30 +1607,22 @@ Properties | Prestigious Real Estate
 .pagination-container {
     display:flex;
     justify-content:center;
-
     margin-top:50px;
 }
 
 .pagination {
     display:inline-flex;
     align-items:center;
-
     gap:14px;
-
     background:#fff;
-
     padding:8px 16px;
-
     border:1px solid var(--border-light);
-
     box-shadow:0 4px 20px rgba(15,23,42,.05);
 }
 
 .pagination-link {
     padding:10px 18px;
-
     text-decoration:none;
-
     font-size:14px;
     font-weight:700;
 }
@@ -1790,7 +1650,6 @@ Properties | Prestigious Real Estate
     color:var(--navy-dark);
 }
 
-
 /* =========================================================
    RESPONSIVE
 ========================================================= */
@@ -1804,10 +1663,21 @@ Properties | Prestigious Real Estate
     .search-actions {
         display:grid;
         grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .sort-action-wrapper {
+        width:100%;
     }
 
     .search-action-btn {
         width:100%;
+    }
+
+    .sort-panel {
+        width:100%;
+        right:0;
+        left:0;
     }
 
     .advanced-filter-grid {
@@ -1819,7 +1689,6 @@ Properties | Prestigious Real Estate
     }
 
 }
-
 
 @media(max-width:768px) {
 
@@ -1869,7 +1738,6 @@ Properties | Prestigious Real Estate
 
 }
 
-
 @media(max-width:480px) {
 
     .search-actions {
@@ -1879,8 +1747,6 @@ Properties | Prestigious Real Estate
     .live-search-box {
         height:52px;
     }
-
-    /* SMALLER MOBILE SEARCH IMAGE */
 
     .live-result {
         gap:8px;
@@ -1931,7 +1797,6 @@ Properties | Prestigious Real Estate
 
 }
 
-
 @media(max-width:380px) {
 
     .live-result-price {
@@ -1954,7 +1819,6 @@ Properties | Prestigious Real Estate
 
 }
 
-
 /* =========================================================
    SEARCH SPINNER
 ========================================================= */
@@ -1962,28 +1826,20 @@ Properties | Prestigious Real Estate
 .search-loading {
     width:16px;
     height:16px;
-
     border:2px solid #e2e8f0;
     border-top-color:var(--qatar-maroon);
-
     border-radius:50%;
-
-    animation:
-        searchSpin .7s linear infinite;
-
+    animation:searchSpin .7s linear infinite;
     margin-left:8px;
 }
 
 @keyframes searchSpin {
-
     to {
         transform:rotate(360deg);
     }
-
 }
 
 </style>
-
 
 <!-- =========================================================
      JAVASCRIPT
@@ -2029,9 +1885,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const advancedValue =
         document.getElementById("advancedValue");
 
-
     let searchTimer = null;
-
 
     /* =====================================================
        UPDATE FILTER COUNT
@@ -2067,9 +1921,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
     updateFilterLabel();
-
 
     /* =====================================================
        ADVANCED SEARCH TOGGLE
@@ -2077,28 +1929,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     advancedBtn.addEventListener(
         "click",
-        function () {
+        function (e) {
+            e.stopPropagation();
 
-            advancedPanel.classList.toggle(
-                "show"
-            );
+            const isShown = advancedPanel.classList.toggle("show");
+            advancedBtn.classList.toggle("active", isShown);
 
-            advancedBtn.classList.toggle(
-                "active",
-                advancedPanel.classList.contains("show")
-            );
-
-            sortPanel.classList.remove(
-                "show"
-            );
-
-            sortBtn.classList.remove(
-                "active"
-            );
-
+            sortPanel.classList.remove("show");
+            sortBtn.classList.remove("active");
+            sortBtn.setAttribute("aria-expanded", "false");
         }
     );
-
 
     /* =====================================================
        SORT TOGGLE
@@ -2106,28 +1947,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     sortBtn.addEventListener(
         "click",
-        function () {
+        function (e) {
+            e.stopPropagation();
 
-            sortPanel.classList.toggle(
-                "show"
-            );
+            const isShown = sortPanel.classList.toggle("show");
+            sortBtn.classList.toggle("active", isShown);
+            sortBtn.setAttribute("aria-expanded", isShown ? "true" : "false");
 
-            sortBtn.classList.toggle(
-                "active",
-                sortPanel.classList.contains("show")
-            );
-
-            advancedPanel.classList.remove(
-                "show"
-            );
-
-            advancedBtn.classList.remove(
-                "active"
-            );
-
+            advancedPanel.classList.remove("show");
+            advancedBtn.classList.remove("active");
         }
     );
-
 
     /* =====================================================
        SORT SELECTION
@@ -2139,7 +1969,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             option.addEventListener(
                 "click",
-                function () {
+                function (e) {
+                    e.stopPropagation();
 
                     const selectedSort =
                         this.dataset.sort;
@@ -2162,13 +1993,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         "1"
                     );
 
-                    sortPanel.classList.remove(
-                        "show"
-                    );
-
-                    sortBtn.classList.remove(
-                        "active"
-                    );
+                    sortPanel.classList.remove("show");
+                    sortBtn.classList.remove("active");
+                    sortBtn.setAttribute("aria-expanded", "false");
 
                     window.location.href =
                         url.toString();
@@ -2178,7 +2005,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
 
-
     /* =====================================================
        UPDATE SORT LABEL
     ===================================================== */
@@ -2187,29 +2013,18 @@ document.addEventListener("DOMContentLoaded", function () {
         "{{ sort or 'newest' }}";
 
     const sortLabels = {
-
         newest:"Newest",
-
         oldest:"Oldest",
-
         price_low:"Low → High",
-
         price_high:"High → Low",
-
         area_large:"Largest",
-
         area_small:"Smallest"
-
     };
 
-
     if (sortLabels[currentSort]) {
-
         sortValue.textContent =
             sortLabels[currentSort];
-
     }
-
 
     /* =====================================================
        LIVE DATABASE SEARCH
@@ -2223,7 +2038,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.value.trim();
 
             clearTimeout(searchTimer);
-
 
             if (query.length === 0) {
 
@@ -2241,10 +2055,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-
             clearSearchBtn.style.display =
                 "block";
-
 
             searchTimer =
                 setTimeout(
@@ -2261,7 +2073,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 
-
     /* =====================================================
        SEARCH FUNCTION
     ===================================================== */
@@ -2272,29 +2083,14 @@ document.addEventListener("DOMContentLoaded", function () {
             "show"
         );
 
-
         resultsBox.innerHTML = `
-
             <div class="search-status">
-
-                <span
-                    style="
-                        display:inline-flex;
-                        align-items:center;
-                    ">
-
+                <span style="display:inline-flex;align-items:center;">
                     Searching
-
-                    <span
-                        class="search-loading">
-                    </span>
-
+                    <span class="search-loading"></span>
                 </span>
-
             </div>
-
         `;
-
 
         try {
 
@@ -2304,18 +2100,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.origin
                 );
 
-
             url.searchParams.set(
                 "search",
                 query
             );
 
-
             url.searchParams.set(
                 "page",
                 "1"
             );
-
 
             const response =
                 await fetch(
@@ -2328,30 +2121,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 );
 
-
             if (!response.ok) {
-
-                throw new Error(
-                    "Search request failed"
-                );
-
+                throw new Error("Search request failed");
             }
-
 
             const html =
                 await response.text();
 
-
             const parser =
                 new DOMParser();
-
 
             const doc =
                 parser.parseFromString(
                     html,
                     "text/html"
                 );
-
 
             const cards =
                 Array.from(
@@ -2360,38 +2144,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     )
                 );
 
-
             if (cards.length === 0) {
 
                 resultsBox.innerHTML = `
-
                     <div class="search-status">
-
                         No properties found for
-                        "<strong>
-                            ${escapeHtml(query)}
-                        </strong>"
-
+                        "<strong>${escapeHtml(query)}</strong>"
                     </div>
-
                 `;
 
                 return;
 
             }
 
-
-            /*
-             * Maximum 6 live suggestions.
-             */
-
             const suggestions =
                 cards.slice(0,6);
 
-
             resultsBox.innerHTML =
                 "";
-
 
             suggestions.forEach(
                 function (card) {
@@ -2401,186 +2171,98 @@ document.addEventListener("DOMContentLoaded", function () {
                             ".property-image-link"
                         );
 
-
                     if (!link) return;
-
 
                     const image =
                         card.querySelector(
                             ".property-image-wrapper img"
                         );
 
-
                     const title =
                         card.querySelector(
                             ".property-title"
                         );
-
 
                     const location =
                         card.querySelector(
                             ".property-location span"
                         );
 
-
                     const price =
                         card.querySelector(
                             ".property-price-tag"
                         );
-
 
                     const badge =
                         card.querySelector(
                             ".property-badge"
                         );
 
-
                     const result =
                         document.createElement(
                             "a"
                         );
 
-
                     result.className =
                         "live-result";
-
 
                     result.href =
                         link.href;
 
-
                     const imageSrc =
                         image
                             ? image.src
-                            : "{{ url_for(
-                                'static',
-                                filename='images/no-image.jpg'
-                            ) }}";
-
+                            : "{{ url_for('static', filename='images/no-image.jpg') }}";
 
                     const titleText =
                         title
                             ? title.textContent.trim()
                             : "Property";
 
-
                     const locationText =
                         location
                             ? location.textContent.trim()
                             : "";
 
-
-                    /*
-                     * Get the actual displayed
-                     * price from the property card.
-                     */
-
                     let priceText =
                         price
-                            ? price.textContent.trim()
-                            : "";
-
-
-                    /*
-                     * Clean excessive whitespace.
-                     */
-
-                    priceText =
-                        priceText.replace(
-                            /\s+/g,
-                            " "
-                        );
-
-
-                    if (!priceText) {
-
-                        priceText =
-                            "Contact For Price";
-
-                    }
-
+                            ? price.textContent.trim().replace(/\s+/g, " ")
+                            : "Contact For Price";
 
                     const badgeText =
                         badge
                             ? badge.textContent.trim()
                             : "";
 
-
                     const isRent =
                         badgeText
                             .toLowerCase()
                             .includes("rent");
 
-
                     result.innerHTML = `
-
                         <img
                             class="live-result-image"
-                            src="${escapeAttribute(
-                                imageSrc
-                            )}"
-                            alt="${escapeAttribute(
-                                titleText
-                            )}">
+                            src="${escapeAttribute(imageSrc)}"
+                            alt="${escapeAttribute(titleText)}">
 
-
-                        <div
-                            class="live-result-info">
-
-                            <div
-                                class="live-result-title">
-
-                                ${escapeHtml(
-                                    titleText
-                                )}
-
+                        <div class="live-result-info">
+                            <div class="live-result-title">
+                                ${escapeHtml(titleText)}
                             </div>
-
-
-                            <div
-                                class="live-result-location">
-
-                                📍
-                                ${escapeHtml(
-                                    locationText
-                                )}
-
+                            <div class="live-result-location">
+                                📍 ${escapeHtml(locationText)}
                             </div>
-
                         </div>
 
-
-                        <div
-                            class="live-result-price">
-
-                            <span
-                                class="live-result-price-value">
-
-                                ${escapeHtml(
-                                    priceText
-                                )}
-
+                        <div class="live-result-price">
+                            <span class="live-result-price-value">
+                                ${escapeHtml(priceText)}
                             </span>
-
-
-                            <span
-                                class="
-                                    live-result-purpose
-                                    ${isRent
-                                        ? "rent"
-                                        : "sale"}
-                                ">
-
-                                ${isRent
-                                    ? "FOR RENT"
-                                    : "FOR SALE"}
-
+                            <span class="live-result-purpose ${isRent ? "rent" : "sale"}">
+                                ${isRent ? "FOR RENT" : "FOR SALE"}
                             </span>
-
                         </div>
-
                     `;
-
 
                     resultsBox.appendChild(
                         result
@@ -2591,7 +2273,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
-
         catch (error) {
 
             console.error(
@@ -2599,22 +2280,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 error
             );
 
-
             resultsBox.innerHTML = `
-
                 <div class="search-status">
-
                     Unable to complete the search.
                     Please try again.
-
                 </div>
-
             `;
 
         }
 
     }
-
 
     /* =====================================================
        CLEAR SEARCH
@@ -2642,7 +2317,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 
-
     /* =====================================================
        CLEAR ADVANCED FILTERS
     ===================================================== */
@@ -2656,16 +2330,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     "advancedFilterForm"
                 );
 
-
             form.querySelector(
                 '[name="property_type"]'
             ).value = "";
 
-
             form.querySelector(
                 '[name="purpose"]'
             ).value = "";
-
 
             form.querySelector(
                 '[name="location"]'
@@ -2673,7 +2344,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
     );
-
 
     /* =====================================================
        KEEP SEARCH WHEN APPLYING FILTERS
@@ -2693,7 +2363,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
 
-
     /* =====================================================
        CLOSE DROPDOWNS OUTSIDE
     ===================================================== */
@@ -2703,51 +2372,25 @@ document.addEventListener("DOMContentLoaded", function () {
         function (event) {
 
             if (
-                !event.target.closest(
-                    ".live-search-wrapper"
-                )
+                !event.target.closest(".live-search-wrapper")
             ) {
-
-                resultsBox.classList.remove(
-                    "show"
-                );
-
+                resultsBox.classList.remove("show");
             }
 
-
             if (
-                !event.target.closest(
-                    ".search-action-btn"
-                ) &&
-                !event.target.closest(
-                    ".sort-panel"
-                ) &&
-                !event.target.closest(
-                    ".advanced-filter-panel"
-                )
+                !event.target.closest(".search-action-btn") &&
+                !event.target.closest(".sort-panel") &&
+                !event.target.closest(".advanced-filter-panel")
             ) {
-
-                advancedPanel.classList.remove(
-                    "show"
-                );
-
-                sortPanel.classList.remove(
-                    "show"
-                );
-
-                advancedBtn.classList.remove(
-                    "active"
-                );
-
-                sortBtn.classList.remove(
-                    "active"
-                );
-
+                advancedPanel.classList.remove("show");
+                sortPanel.classList.remove("show");
+                advancedBtn.classList.remove("active");
+                sortBtn.classList.remove("active");
+                sortBtn.setAttribute("aria-expanded", "false");
             }
 
         }
     );
-
 
     /* =====================================================
        ESCAPE KEY
@@ -2758,24 +2401,16 @@ document.addEventListener("DOMContentLoaded", function () {
         function (event) {
 
             if (event.key === "Escape") {
-
-                resultsBox.classList.remove(
-                    "show"
-                );
-
-                advancedPanel.classList.remove(
-                    "show"
-                );
-
-                sortPanel.classList.remove(
-                    "show"
-                );
-
+                resultsBox.classList.remove("show");
+                advancedPanel.classList.remove("show");
+                sortPanel.classList.remove("show");
+                sortBtn.classList.remove("active");
+                advancedBtn.classList.remove("active");
+                sortBtn.setAttribute("aria-expanded", "false");
             }
 
         }
     );
-
 
     /* =====================================================
        HTML ESCAPING
@@ -2784,29 +2419,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function escapeHtml(value) {
 
         return String(value)
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
     }
-
 
     function escapeAttribute(value) {
 
