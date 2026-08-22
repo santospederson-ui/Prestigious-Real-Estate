@@ -338,7 +338,7 @@ Prestigious Real Estate | Premium Properties in Qatar
 .search-input-wrapper {
   display: flex;
   align-items: center;
-  min-height: 60px;
+  min-height: 62px;
   border: 1px solid #d9dee7;
   background: #fafbfc;
   transition: .3s ease;
@@ -354,6 +354,7 @@ Prestigious Real Estate | Premium Properties in Qatar
   margin-left: 20px;
   margin-right: 13px;
   color: var(--pr-maroon);
+  font-size: 17px;
 }
 
 .search-input-wrapper input {
@@ -364,19 +365,25 @@ Prestigious Real Estate | Premium Properties in Qatar
   outline: none;
   background: transparent;
   color: var(--pr-text);
-  font-size: 14px;
+  font-size: 15px;
+  padding: 0 10px;
 }
 
 .search-input-wrapper button {
-  height: 48px;
+  height: 50px;
+  min-height: 50px;
   margin-right: 6px;
-  padding: 0 25px;
+  padding: 0 28px;
   border: none;
   background: var(--pr-maroon);
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   transition: .3s ease;
 }
 
@@ -611,12 +618,7 @@ Prestigious Real Estate | Premium Properties in Qatar
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
-  min-height: 500px;
-  transition: none;
-}
-
-.property-grid.fade-out {
-  opacity: 1;
+  min-height: 480px;
 }
 
 .property-card {
@@ -625,12 +627,16 @@ Prestigious Real Estate | Premium Properties in Qatar
   background: #fff;
   border: 1px solid var(--pr-border);
   box-shadow: 0 8px 25px rgba(15,23,42,.055);
-  transition: .35s ease;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .35s ease, transform .35s ease, box-shadow .35s ease, border-color .35s ease;
 }
 
 .property-card.active-card {
   display: flex;
   flex-direction: column;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .property-card:hover {
@@ -1146,7 +1152,7 @@ Prestigious Real Estate | Premium Properties in Qatar
 @media (max-width: 900px) {
 
   .property-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .testimonial-grid {
@@ -1207,25 +1213,30 @@ Prestigious Real Estate | Premium Properties in Qatar
   }
 
   .property-search-section {
-    margin-top: -25px;
+    margin-top: -30px;
   }
 
   .property-search-card {
-    padding: 23px 18px;
+    padding: 24px 18px;
   }
 
   .search-top {
     display: block;
+    margin-bottom: 16px;
   }
 
   .search-top h2 {
-    font-size: 23px;
+    font-size: 22px;
   }
 
+  /* MOBILE SEARCH BAR & BUTTON FIX */
   .search-input-wrapper {
     flex-direction: column;
     align-items: stretch;
     padding: 10px;
+    gap: 10px;
+    background: #fff;
+    min-height: auto;
   }
 
   .search-input-wrapper > i {
@@ -1234,27 +1245,36 @@ Prestigious Real Estate | Premium Properties in Qatar
 
   .search-input-wrapper input {
     width: 100%;
-    height: 48px;
-    text-align: center;
+    height: 52px;
+    min-height: 52px;
+    text-align: left;
+    padding: 0 16px;
+    background: #fafbfc;
+    border: 1px solid #e2e8f0;
+    font-size: 14px;
   }
 
   .search-input-wrapper button {
     width: 100%;
-    min-height: 54px;
-    height: 54px;
+    min-height: 52px;
+    height: 52px;
     margin: 0;
     padding: 0 20px;
     font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
 
   .popular-searches {
-    justify-content: center;
+    justify-content: flex-start;
+    margin-top: 14px;
   }
 
   .popular-searches > span {
     width: 100%;
-    text-align: center;
-    margin: 0 0 3px;
+    text-align: left;
+    margin: 0 0 4px;
   }
 
   .live-result-info {
@@ -1296,10 +1316,10 @@ Prestigious Real Estate | Premium Properties in Qatar
   }
 
   .property-info {
-  padding: 12px 17px;
-  min-height: 108px;
-  background: var(--pr-navy);
-}
+    padding: 12px 17px;
+    min-height: 108px;
+    background: var(--pr-navy);
+  }
 
   .property-info h3 {
     margin-right: 100px;
@@ -3093,7 +3113,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* =======================================================
-     FEATURED PROPERTY SLIDER
+     FEATURED PROPERTY SLIDER (SEAMLESS TRANSITION)
      ======================================================= */
 
   const propertyGrid =
@@ -3136,247 +3156,129 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  const CARDS_PER_SLIDE =
-    window.innerWidth <= 900
-      ? 1
-      : 3;
+  function getCardsPerSlide() {
+    return window.innerWidth <= 900 ? 1 : 3;
+  }
 
-  const totalSlides =
+  let CARDS_PER_SLIDE = getCardsPerSlide();
+
+  let totalSlides =
     Math.ceil(
       propertyCards.length /
       CARDS_PER_SLIDE
     );
 
-  let currentSlide =
-    0;
+  let currentSlide = 0;
+  let slideTimer = null;
 
-  let slideTimer =
-    null;
+  function renderDots() {
+    if (!dotsContainer) return;
 
-  if (dotsContainer) {
+    dotsContainer.innerHTML = "";
 
-    dotsContainer.innerHTML =
-      "";
-
-    for (
-      let i = 0;
-      i < totalSlides;
-      i++
-    ) {
-
-      const dot =
-        document.createElement("div");
-
-      dot.className =
-        "dot";
-
-      if (i === 0) {
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement("div");
+      dot.className = "dot";
+      if (i === currentSlide) {
         dot.classList.add("active");
       }
 
-      dot.addEventListener(
-        "click",
-        function () {
-
-          goToSlide(i);
-
-          resetPropertyTimer();
-
-        }
-      );
+      dot.addEventListener("click", function () {
+        goToSlide(i);
+        resetPropertyTimer();
+      });
 
       dotsContainer.appendChild(dot);
-
     }
-
   }
 
-  const propertyDots =
-    dotsContainer
-      ? Array.from(
-          dotsContainer.querySelectorAll(".dot")
-        )
-      : [];
+  renderDots();
 
   function showPropertySlide(index) {
+    propertyCards.forEach(function (card) {
+      card.classList.remove("active-card");
+      card.style.order = "";
+    });
 
-    propertyCards.forEach(
-      function (card) {
-
-        card.classList.remove(
-          "active-card"
-        );
-
-        card.style.order =
-          "";
-
-      }
-    );
-
-    for (
-      let i = 0;
-      i < CARDS_PER_SLIDE;
-      i++
-    ) {
-
-      const cardIndex =
-        (
-          index *
-          CARDS_PER_SLIDE +
-          i
-        ) %
-        propertyCards.length;
-
-      const card =
-        propertyCards[cardIndex];
+    for (let i = 0; i < CARDS_PER_SLIDE; i++) {
+      const cardIndex = (index * CARDS_PER_SLIDE + i) % propertyCards.length;
+      const card = propertyCards[cardIndex];
 
       if (card) {
-
-        card.classList.add(
-          "active-card"
-        );
-
-        card.style.order =
-          i;
-
+        card.classList.add("active-card");
+        card.style.order = i;
       }
-
     }
 
-    propertyDots.forEach(
-      function (dot, dotIndex) {
-
-        dot.classList.toggle(
-          "active",
-          dotIndex === index
-        );
-
-      }
-    );
-
+    const currentDots = dotsContainer ? Array.from(dotsContainer.querySelectorAll(".dot")) : [];
+    currentDots.forEach(function (dot, dotIndex) {
+      dot.classList.toggle("active", dotIndex === index);
+    });
   }
 
   function nextPropertySlide() {
-
-    currentSlide =
-      (
-        currentSlide + 1
-      ) %
-      totalSlides;
-
-    showPropertySlide(
-      currentSlide
-    );
-
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showPropertySlide(currentSlide);
   }
 
   function previousPropertySlide() {
-
-    currentSlide =
-      (
-        currentSlide -
-        1 +
-        totalSlides
-      ) %
-      totalSlides;
-
-    showPropertySlide(
-      currentSlide
-    );
-
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    showPropertySlide(currentSlide);
   }
 
   function goToSlide(index) {
-
-    currentSlide =
-      index;
-
-    showPropertySlide(
-      currentSlide
-    );
-
+    currentSlide = index;
+    showPropertySlide(currentSlide);
   }
 
   function startPropertyTimer() {
-
-    clearInterval(
-      slideTimer
-    );
-
+    clearInterval(slideTimer);
     if (totalSlides > 1) {
-
-      slideTimer =
-        setInterval(
-          nextPropertySlide,
-          5500
-        );
-
+      slideTimer = setInterval(nextPropertySlide, 5500);
     }
-
   }
 
   function resetPropertyTimer() {
-
     startPropertyTimer();
-
   }
 
   if (nextButton) {
-
-    nextButton.addEventListener(
-      "click",
-      function () {
-
-        nextPropertySlide();
-
-        resetPropertyTimer();
-
-      }
-    );
-
+    nextButton.addEventListener("click", function () {
+      nextPropertySlide();
+      resetPropertyTimer();
+    });
   }
 
   if (previousButton) {
-
-    previousButton.addEventListener(
-      "click",
-      function () {
-
-        previousPropertySlide();
-
-        resetPropertyTimer();
-
-      }
-    );
-
+    previousButton.addEventListener("click", function () {
+      previousPropertySlide();
+      resetPropertyTimer();
+    });
   }
 
   if (propertyWrapper) {
+    propertyWrapper.addEventListener("mouseenter", function () {
+      clearInterval(slideTimer);
+    });
 
-    propertyWrapper.addEventListener(
-      "mouseenter",
-      function () {
-
-        clearInterval(
-          slideTimer
-        );
-
-      }
-    );
-
-    propertyWrapper.addEventListener(
-      "mouseleave",
-      function () {
-
-        startPropertyTimer();
-
-      }
-    );
-
+    propertyWrapper.addEventListener("mouseleave", function () {
+      startPropertyTimer();
+    });
   }
 
-  showPropertySlide(0);
+  window.addEventListener("resize", function () {
+    const newPerSlide = getCardsPerSlide();
+    if (newPerSlide !== CARDS_PER_SLIDE) {
+      CARDS_PER_SLIDE = newPerSlide;
+      totalSlides = Math.ceil(propertyCards.length / CARDS_PER_SLIDE);
+      currentSlide = 0;
+      renderDots();
+      showPropertySlide(0);
+      resetPropertyTimer();
+    }
+  });
 
+  showPropertySlide(0);
   startPropertyTimer();
 
 });
