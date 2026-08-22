@@ -2135,12 +2135,14 @@ def add_property():
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
-
     # ==========================================
     # HANDLE FORM SUBMISSION
     # ==========================================
 
     if request.method == "POST":
+
+        conn = None
+        cursor = None
 
         try:
 
@@ -2150,6 +2152,10 @@ def add_property():
 
             title = request.form.get("title", "").strip()
 
+            if not title:
+                flash("Property title is required.", "danger")
+                return redirect(url_for("add_property"))
+
             slug = (
                 title.lower()
                 .replace(" ", "-")
@@ -2157,7 +2163,10 @@ def add_property():
                 + str(uuid.uuid4())[:6]
             )
 
-            purpose = request.form.get("purpose", "").strip()
+            purpose = request.form.get(
+                "purpose",
+                ""
+            ).strip()
 
             property_type = request.form.get(
                 "property_type",
@@ -2208,33 +2217,36 @@ def add_property():
             # ==========================================
             # FURNISHED
             # ==========================================
-            # Database currently uses:
             #
-            # enum('Yes','No')
+            # Railway database:
             #
-            # Your old HTML was sending:
-            # Not Furnished
-            # Semi Furnished
-            # Fully Furnished
+            # enum(
+            #   'Not Furnished',
+            #   'Semi Furnished',
+            #   'Fully Furnished'
+            # )
             #
-            # We convert the values here so the database
-            # receives a valid value.
+            # We save the value EXACTLY as received
+            # from the HTML form.
+            # ==========================================
 
-            furnished_value = request.form.get(
+            furnished = request.form.get(
                 "furnished",
-                "No"
+                "Not Furnished"
             ).strip()
 
 
-            if furnished_value in [
-                "Fully Furnished",
-                "Semi Furnished",
-                "Yes"
-            ]:
-                furnished = "Yes"
+            # Only allow values that actually exist
+            # in the database.
 
-            else:
-                furnished = "No"
+            allowed_furnished = [
+                "Not Furnished",
+                "Semi Furnished",
+                "Fully Furnished"
+            ]
+
+            if furnished not in allowed_furnished:
+                furnished = "Not Furnished"
 
 
             # ==========================================
@@ -2250,14 +2262,6 @@ def add_property():
             # ==========================================
             # GOOGLE MAPS EMBED URL
             # ==========================================
-            #
-            # This was missing from the old backend.
-            #
-            # The HTML form sends:
-            #
-            # name="map_embed_url"
-            #
-            # We now collect it here.
 
             map_embed_url = request.form.get(
                 "map_embed_url",
@@ -2268,9 +2272,10 @@ def add_property():
             # ==========================================
             # DEFAULT PROPERTY STATUS
             # ==========================================
-
+            #
             # Database:
             # enum('Available','Sold','Rented')
+            # ==========================================
 
             status = "Available"
 
@@ -2281,9 +2286,7 @@ def add_property():
             #
             # Database:
             # enum('Yes','No')
-            #
-            # Therefore we must NOT use:
-            # featured = 0
+            # ==========================================
 
             featured = "No"
 
@@ -2310,78 +2313,141 @@ def add_property():
 
 
             # ==========================================
-            # UPLOAD EACH IMAGE
+            # MAX IMAGE SIZE
+            # ==========================================
+            #
+            # Maximum allowed per image = 10 MB
+            #
+            # We cannot rely only on image.content_length
+            # because it may be None.
+            #
+            # Instead, seek to the end of the uploaded
+            # file and determine the actual size.
+            # ==========================================
+
+            MAX_IMAGE_SIZE = 10 * 1024 * 1024
+
+
+            # ==========================================
+            # PROCESS EACH IMAGE
             # ==========================================
 
             for image in images:
 
-                if image and allowed_file(
-                    image.filename
-                ):
+                # Ignore empty file fields
 
-                    MAX_IMAGE_SIZE = (
-                        10 * 1024 * 1024
-                    )  # 10MB
+                if not image:
+                    continue
 
-
-                    # Check file size when available
-
-                    if (
-                        image.content_length
-                        and image.content_length
-                        > MAX_IMAGE_SIZE
-                    ):
-
-                        cursor.close()
-                        conn.close()
-
-                        flash(
-                            "Image too large. Maximum size is 10MB.",
-                            "danger"
-                        )
-
-                        return redirect(
-                            url_for(
-                                "add_property"
-                            )
-                        )
+                if not image.filename:
+                    continue
 
 
-                    # ==================================
-                    # CLOUDINARY UPLOAD
-                    # ==================================
+                # ==========================================
+                # CHECK FILE EXTENSION
+                # ==========================================
 
-                    result = cloudinary.uploader.upload(
-                        image,
-                        folder="prestigious_real_estate/properties"
+                if not allowed_file(image.filename):
+
+                    cursor.close()
+                    conn.close()
+
+                    flash(
+                        f"Invalid image file: {image.filename}",
+                        "danger"
+                    )
+
+                    return redirect(
+                        url_for("add_property")
                     )
 
 
-                    image_url = result[
-                        "secure_url"
-                    ]
+                # ==========================================
+                # CHECK ACTUAL FILE SIZE
+                # ==========================================
+
+                try:
+
+                    image.seek(
+                        0,
+                        os.SEEK_END
+                    )
+
+                    file_size = image.tell()
+
+                    image.seek(0)
+
+                except Exception:
+
+                    file_size = 0
 
 
-                    uploaded_images.append(
-                        image_url
+                # ==========================================
+                # REJECT FILE ABOVE 10 MB
+                # ==========================================
+
+                if file_size > MAX_IMAGE_SIZE:
+
+                    cursor.close()
+                    conn.close()
+
+                    size_mb = round(
+                        file_size / (
+                            1024 * 1024
+                        ),
+                        2
+                    )
+
+                    flash(
+                        f"Image '{image.filename}' is too large "
+                        f"({size_mb} MB). Maximum allowed size is 10 MB.",
+                        "danger"
+                    )
+
+                    return redirect(
+                        url_for("add_property")
                     )
 
 
-                    # ==================================
-                    # FIRST IMAGE = MAIN IMAGE
-                    # ==================================
+                # ==========================================
+                # CLOUDINARY UPLOAD
+                # ==========================================
 
-                    if main_image is None:
+                result = cloudinary.uploader.upload(
+                    image,
+                    folder="prestigious_real_estate/properties"
+                )
 
-                        main_image = image_url
+
+                image_url = result.get(
+                    "secure_url"
+                )
+
+
+                if not image_url:
+
+                    raise Exception(
+                        "Cloudinary did not return an image URL."
+                    )
+
+
+                uploaded_images.append(
+                    image_url
+                )
+
+
+                # ==========================================
+                # FIRST IMAGE = MAIN IMAGE
+                # ==========================================
+
+                if main_image is None:
+
+                    main_image = image_url
 
 
             # ==========================================
             # INSERT PROPERTY
             # ==========================================
-            #
-            # IMPORTANT:
-            # map_embed_url has now been added here.
 
             cursor.execute(
                 """
@@ -2543,6 +2609,9 @@ def add_property():
             cursor.close()
             conn.close()
 
+            conn = None
+            cursor = None
+
 
             # ==========================================
             # SUCCESS MESSAGE
@@ -2570,8 +2639,11 @@ def add_property():
             # ==========================================
 
             try:
-                conn.rollback()
-            except:
+
+                if conn:
+                    conn.rollback()
+
+            except Exception:
                 pass
 
 
@@ -2580,18 +2652,25 @@ def add_property():
             # ==========================================
 
             try:
-                cursor.close()
-            except:
+
+                if cursor:
+                    cursor.close()
+
+            except Exception:
                 pass
 
+
             try:
-                conn.close()
-            except:
+
+                if conn:
+                    conn.close()
+
+            except Exception:
                 pass
 
 
             # ==========================================
-            # SHOW ERROR
+            # SHOW ERROR IN RENDER LOG
             # ==========================================
 
             print(
@@ -2600,8 +2679,13 @@ def add_property():
             )
 
 
+            # ==========================================
+            # USER ERROR MESSAGE
+            # ==========================================
+
             flash(
-                "Unable to add property. Please check the information and try again.",
+                "Unable to add property. "
+                "Please check the information and try again.",
                 "danger"
             )
 
@@ -2618,7 +2702,6 @@ def add_property():
     return render_template(
         "admin/add_property.html"
     )
-
 
 
 
