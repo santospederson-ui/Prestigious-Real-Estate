@@ -612,11 +612,11 @@ Prestigious Real Estate | Premium Properties in Qatar
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
   min-height: 500px;
-  transition: opacity .35s ease;
+  transition: none;
 }
 
 .property-grid.fade-out {
-  opacity: 0;
+  opacity: 1;
 }
 
 .property-card {
@@ -1240,7 +1240,11 @@ Prestigious Real Estate | Premium Properties in Qatar
 
   .search-input-wrapper button {
     width: 100%;
+    min-height: 54px;
+    height: 54px;
     margin: 0;
+    padding: 0 20px;
+    font-size: 14px;
   }
 
   .popular-searches {
@@ -3196,73 +3200,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showPropertySlide(index) {
 
-    propertyGrid.classList.add(
-      "fade-out"
+    propertyCards.forEach(
+      function (card) {
+
+        card.classList.remove(
+          "active-card"
+        );
+
+        card.style.order =
+          "";
+
+      }
     );
 
-    setTimeout(
-      function () {
+    for (
+      let i = 0;
+      i < CARDS_PER_SLIDE;
+      i++
+    ) {
 
-        propertyCards.forEach(
-          function (card) {
+      const cardIndex =
+        (
+          index *
+          CARDS_PER_SLIDE +
+          i
+        ) %
+        propertyCards.length;
 
-            card.classList.remove(
-              "active-card"
-            );
+      const card =
+        propertyCards[cardIndex];
 
-            card.style.order =
-              "";
+      if (card) {
 
-          }
+        card.classList.add(
+          "active-card"
         );
 
-        for (
-          let i = 0;
-          i < CARDS_PER_SLIDE;
-          i++
-        ) {
+        card.style.order =
+          i;
 
-          const cardIndex =
-            (
-              index *
-              CARDS_PER_SLIDE +
-              i
-            ) %
-            propertyCards.length;
+      }
 
-          const card =
-            propertyCards[cardIndex];
+    }
 
-          if (card) {
+    propertyDots.forEach(
+      function (dot, dotIndex) {
 
-            card.classList.add(
-              "active-card"
-            );
-
-            card.style.order =
-              i;
-
-          }
-
-        }
-
-        propertyDots.forEach(
-          function (dot, dotIndex) {
-
-            dot.classList.toggle(
-              "active",
-              dotIndex === index
-            );
-
-          }
+        dot.classList.toggle(
+          "active",
+          dotIndex === index
         );
 
-        propertyGrid.classList.remove(
-          "fade-out"
-        );
-
-      },
-      250
+      }
     );
 
   }
