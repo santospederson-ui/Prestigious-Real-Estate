@@ -2128,257 +2128,496 @@ def admin_dashboard():
 @app.route("/admin/add-property", methods=["GET", "POST"])
 def add_property():
 
+    # ==========================================
+    # ADMIN LOGIN CHECK
+    # ==========================================
+
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
 
+    # ==========================================
+    # HANDLE FORM SUBMISSION
+    # ==========================================
+
     if request.method == "POST":
 
+        try:
 
-        title = request.form["title"]
+            # ==========================================
+            # BASIC PROPERTY INFORMATION
+            # ==========================================
 
-        slug = (
-            title.lower()
-            .replace(" ", "-")
-            + "-"
-            + str(uuid.uuid4())[:6]
-        )
+            title = request.form.get("title", "").strip()
 
-
-        purpose = request.form["purpose"]
-        property_type = request.form["property_type"]
-        location = request.form["location"]
-        address = request.form["address"]
-
-        price = request.form.get("price", 0)
-        bedrooms = request.form.get("bedrooms", 0)
-        bathrooms = request.form.get("bathrooms", 0)
-        area = request.form.get("area", 0)
-        parking = request.form.get("parking", 0)
-
-        furnished = request.form["furnished"]
-
-        description = request.form["description"]
-
-
-        featured = 0
-        status = "Available"
-
-
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-
-
-        # ==========================
-        # CLOUDINARY IMAGE UPLOAD
-        # ==========================
-
-
-        main_image = None
-
-        uploaded_images = []
-
-
-        images = request.files.getlist("images")
-
-
-        for image in images:
-
-
-            if image and allowed_file(image.filename):
-
-                MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10MB
-
-                if image.content_length and image.content_length > MAX_IMAGE_SIZE:
-                    flash("Image too large. Maximum size is 10MB.", "danger")
-                    return redirect(url_for("add_property"))
-
-
-                result = cloudinary.uploader.upload(
-                    image,
-                    folder="prestigious_real_estate/properties"
-                )
-
-
-                image_url = result["secure_url"]
-
-
-                uploaded_images.append(image_url)
-
-
-
-                # First image becomes cover image
-
-                if main_image is None:
-
-                    main_image = image_url
-
-
-
-
-
-        # ==========================
-        # INSERT PROPERTY
-        # ==========================
-
-
-        cursor.execute(
-            """
-            INSERT INTO properties
-            (
-                title,
-                slug,
-                purpose,
-                property_type,
-                location,
-                address,
-                price,
-                bedrooms,
-                bathrooms,
-                area,
-                parking,
-                furnished,
-                featured,
-                status,
-                description,
-                main_image
+            slug = (
+                title.lower()
+                .replace(" ", "-")
+                + "-"
+                + str(uuid.uuid4())[:6]
             )
 
-            VALUES
-            (
-                %s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s
+            purpose = request.form.get("purpose", "").strip()
+
+            property_type = request.form.get(
+                "property_type",
+                ""
+            ).strip()
+
+            location = request.form.get(
+                "location",
+                ""
+            ).strip()
+
+            address = request.form.get(
+                "address",
+                ""
+            ).strip()
+
+
+            # ==========================================
+            # PROPERTY NUMERIC INFORMATION
+            # ==========================================
+
+            price = request.form.get(
+                "price",
+                0
             )
 
-            """,
-
-            (
-                title,
-                slug,
-                purpose,
-                property_type,
-                location,
-                address,
-                price,
-                bedrooms,
-                bathrooms,
-                area,
-                parking,
-                furnished,
-                featured,
-                status,
-                description,
-                main_image
+            bedrooms = request.form.get(
+                "bedrooms",
+                0
             )
-        )
+
+            bathrooms = request.form.get(
+                "bathrooms",
+                0
+            )
+
+            area = request.form.get(
+                "area",
+                0
+            )
+
+            parking = request.form.get(
+                "parking",
+                0
+            )
 
 
+            # ==========================================
+            # FURNISHED
+            # ==========================================
+            # Database currently uses:
+            #
+            # enum('Yes','No')
+            #
+            # Your old HTML was sending:
+            # Not Furnished
+            # Semi Furnished
+            # Fully Furnished
+            #
+            # We convert the values here so the database
+            # receives a valid value.
 
-        property_id = cursor.lastrowid
+            furnished_value = request.form.get(
+                "furnished",
+                "No"
+            ).strip()
 
 
+            if furnished_value in [
+                "Fully Furnished",
+                "Semi Furnished",
+                "Yes"
+            ]:
+                furnished = "Yes"
+
+            else:
+                furnished = "No"
 
 
+            # ==========================================
+            # DESCRIPTION
+            # ==========================================
 
-        # ==========================
-        # SAVE FEATURES
-        # ==========================
+            description = request.form.get(
+                "description",
+                ""
+            ).strip()
 
 
-        features = request.form.getlist("features")
+            # ==========================================
+            # GOOGLE MAPS EMBED URL
+            # ==========================================
+            #
+            # This was missing from the old backend.
+            #
+            # The HTML form sends:
+            #
+            # name="map_embed_url"
+            #
+            # We now collect it here.
+
+            map_embed_url = request.form.get(
+                "map_embed_url",
+                ""
+            ).strip()
 
 
-        for feature in features:
+            # ==========================================
+            # DEFAULT PROPERTY STATUS
+            # ==========================================
 
+            # Database:
+            # enum('Available','Sold','Rented')
+
+            status = "Available"
+
+
+            # ==========================================
+            # DEFAULT FEATURED STATUS
+            # ==========================================
+            #
+            # Database:
+            # enum('Yes','No')
+            #
+            # Therefore we must NOT use:
+            # featured = 0
+
+            featured = "No"
+
+
+            # ==========================================
+            # DATABASE CONNECTION
+            # ==========================================
+
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+
+            # ==========================================
+            # CLOUDINARY IMAGE UPLOAD
+            # ==========================================
+
+            main_image = None
+
+            uploaded_images = []
+
+            images = request.files.getlist(
+                "images"
+            )
+
+
+            # ==========================================
+            # UPLOAD EACH IMAGE
+            # ==========================================
+
+            for image in images:
+
+                if image and allowed_file(
+                    image.filename
+                ):
+
+                    MAX_IMAGE_SIZE = (
+                        10 * 1024 * 1024
+                    )  # 10MB
+
+
+                    # Check file size when available
+
+                    if (
+                        image.content_length
+                        and image.content_length
+                        > MAX_IMAGE_SIZE
+                    ):
+
+                        cursor.close()
+                        conn.close()
+
+                        flash(
+                            "Image too large. Maximum size is 10MB.",
+                            "danger"
+                        )
+
+                        return redirect(
+                            url_for(
+                                "add_property"
+                            )
+                        )
+
+
+                    # ==================================
+                    # CLOUDINARY UPLOAD
+                    # ==================================
+
+                    result = cloudinary.uploader.upload(
+                        image,
+                        folder="prestigious_real_estate/properties"
+                    )
+
+
+                    image_url = result[
+                        "secure_url"
+                    ]
+
+
+                    uploaded_images.append(
+                        image_url
+                    )
+
+
+                    # ==================================
+                    # FIRST IMAGE = MAIN IMAGE
+                    # ==================================
+
+                    if main_image is None:
+
+                        main_image = image_url
+
+
+            # ==========================================
+            # INSERT PROPERTY
+            # ==========================================
+            #
+            # IMPORTANT:
+            # map_embed_url has now been added here.
 
             cursor.execute(
-
                 """
-                INSERT INTO property_features
+                INSERT INTO properties
                 (
-                    property_id,
-                    feature_name
+                    title,
+                    slug,
+                    purpose,
+                    property_type,
+                    location,
+                    address,
+                    price,
+                    bedrooms,
+                    bathrooms,
+                    area,
+                    parking,
+                    furnished,
+                    featured,
+                    status,
+                    description,
+                    main_image,
+                    map_embed_url
                 )
 
                 VALUES
-                (%s,%s)
-
+                (
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s
+                )
                 """,
 
                 (
-                    property_id,
-                    feature
+                    title,
+                    slug,
+                    purpose,
+                    property_type,
+                    location,
+                    address,
+                    price,
+                    bedrooms,
+                    bathrooms,
+                    area,
+                    parking,
+                    furnished,
+                    featured,
+                    status,
+                    description,
+                    main_image,
+                    map_embed_url
                 )
-
             )
 
 
+            # ==========================================
+            # GET NEW PROPERTY ID
+            # ==========================================
+
+            property_id = cursor.lastrowid
 
 
+            if not property_id:
 
-
-        # ==========================
-        # SAVE CLOUDINARY IMAGES
-        # ==========================
-
-
-        for image_url in uploaded_images:
-
-
-            cursor.execute(
-
-                """
-                INSERT INTO property_images
-                (
-                    property_id,
-                    image_name
+                raise Exception(
+                    "Property ID could not be generated."
                 )
 
-                VALUES
-                (%s,%s)
 
-                """,
+            # ==========================================
+            # SAVE PROPERTY FEATURES
+            # ==========================================
 
-                (
-                    property_id,
-                    image_url
-                )
-
+            features = request.form.getlist(
+                "features"
             )
 
 
+            for feature in features:
+
+                feature = feature.strip()
+
+                if feature:
+
+                    cursor.execute(
+                        """
+                        INSERT INTO property_features
+                        (
+                            property_id,
+                            feature_name
+                        )
+
+                        VALUES
+                        (
+                            %s,
+                            %s
+                        )
+                        """,
+
+                        (
+                            property_id,
+                            feature
+                        )
+                    )
 
 
+            # ==========================================
+            # SAVE CLOUDINARY IMAGES
+            # ==========================================
 
-        conn.commit()
+            for image_url in uploaded_images:
+
+                cursor.execute(
+                    """
+                    INSERT INTO property_images
+                    (
+                        property_id,
+                        image_name
+                    )
+
+                    VALUES
+                    (
+                        %s,
+                        %s
+                    )
+                    """,
+
+                    (
+                        property_id,
+                        image_url
+                    )
+                )
 
 
-        cursor.close()
-        conn.close()
+            # ==========================================
+            # COMMIT EVERYTHING
+            # ==========================================
+
+            conn.commit()
 
 
+            # ==========================================
+            # CLOSE DATABASE
+            # ==========================================
 
-        flash(
-            "Property added successfully",
-            "success"
-        )
-
-
-
-        return redirect(
-            url_for("admin_dashboard")
-        )
+            cursor.close()
+            conn.close()
 
 
+            # ==========================================
+            # SUCCESS MESSAGE
+            # ==========================================
+
+            flash(
+                "Property added successfully.",
+                "success"
+            )
 
 
+            # ==========================================
+            # RETURN TO ADMIN DASHBOARD
+            # ==========================================
+
+            return redirect(
+                url_for("admin_dashboard")
+            )
+
+
+        except Exception as e:
+
+            # ==========================================
+            # ROLLBACK IF SOMETHING FAILS
+            # ==========================================
+
+            try:
+                conn.rollback()
+            except:
+                pass
+
+
+            # ==========================================
+            # CLOSE DATABASE SAFELY
+            # ==========================================
+
+            try:
+                cursor.close()
+            except:
+                pass
+
+            try:
+                conn.close()
+            except:
+                pass
+
+
+            # ==========================================
+            # SHOW ERROR
+            # ==========================================
+
+            print(
+                "ADD PROPERTY ERROR:",
+                str(e)
+            )
+
+
+            flash(
+                "Unable to add property. Please check the information and try again.",
+                "danger"
+            )
+
+
+            return redirect(
+                url_for("add_property")
+            )
+
+
+    # ==========================================
+    # SHOW ADD PROPERTY PAGE
+    # ==========================================
 
     return render_template(
         "admin/add_property.html"
     )
-
 
 
 
