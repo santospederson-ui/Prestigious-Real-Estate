@@ -725,31 +725,85 @@ def properties():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
+    # =========================
+    # FILTERS
+    # =========================
+
     property_type = request.args.get("property_type", "").strip()
     purpose = request.args.get("purpose", "").strip()
     location = request.args.get("location", "").strip()
     search = request.args.get("search", "").strip()
 
-    page = request.args.get("page", 1, type=int)
+    # =========================
+    # SORTING
+    # =========================
+
+    sort = request.args.get("sort", "newest").strip()
+
+    sort_options = {
+        "newest": "p.created_at DESC",
+        "oldest": "p.created_at ASC",
+        "price_low": "p.price ASC",
+        "price_high": "p.price DESC",
+        "area_large": "p.area DESC",
+        "area_small": "p.area ASC"
+    }
+
+    order_sql = sort_options.get(
+        sort,
+        "p.created_at DESC"
+    )
+
+    # =========================
+    # PAGINATION
+    # =========================
+
+    page = request.args.get(
+        "page",
+        1,
+        type=int
+    )
+
+    if page < 1:
+        page = 1
+
     per_page = 9
+
     offset = (page - 1) * per_page
+
+    # =========================
+    # BUILD WHERE QUERY
+    # =========================
 
     where = []
     values = []
 
     if property_type:
-        where.append("p.property_type=%s")
+
+        where.append(
+            "p.property_type = %s"
+        )
+
         values.append(property_type)
 
     if purpose:
-        where.append("p.purpose=%s")
+
+        where.append(
+            "p.purpose = %s"
+        )
+
         values.append(purpose)
 
     if location:
-        where.append("p.location=%s")
+
+        where.append(
+            "p.location = %s"
+        )
+
         values.append(location)
 
     if search:
+
         where.append("""
         (
             p.title LIKE %s
@@ -759,7 +813,8 @@ def properties():
             OR p.address LIKE %s
             OR p.description LIKE %s
             OR p.furnished LIKE %s
-            OR EXISTS (
+            OR EXISTS
+            (
                 SELECT 1
                 FROM property_features pf
                 WHERE pf.property_id = p.id
@@ -784,33 +839,53 @@ def properties():
     where_sql = ""
 
     if where:
+
         where_sql = "WHERE " + " AND ".join(where)
 
+    # =========================
     # COUNT
+    # =========================
+
     count_sql = f"""
         SELECT COUNT(*) AS total
         FROM properties p
         {where_sql}
     """
 
-    cursor.execute(count_sql, values)
+    cursor.execute(
+        count_sql,
+        values
+    )
+
     total = cursor.fetchone()["total"]
 
-    total_pages = (total + per_page - 1) // per_page
+    total_pages = (
+        total + per_page - 1
+    ) // per_page
 
-    # PROPERTIES
+    # =========================
+    # GET PROPERTIES
+    # =========================
+
     sql = f"""
         SELECT *
         FROM properties p
         {where_sql}
-        ORDER BY p.created_at DESC
+        ORDER BY {order_sql}
         LIMIT %s OFFSET %s
     """
 
     property_values = values.copy()
-    property_values.extend([per_page, offset])
 
-    cursor.execute(sql, property_values)
+    property_values.extend([
+        per_page,
+        offset
+    ])
+
+    cursor.execute(
+        sql,
+        property_values
+    )
 
     properties = cursor.fetchall()
 
@@ -825,13 +900,14 @@ def properties():
         property_type=property_type,
         purpose=purpose,
         location=location,
-        search=search
+        search=search,
+        sort=sort
     )
 
 
 
 # =====================================================
-# PROPERTIES ROUTE
+# SEARCH PROPERTIES ROUTE
 # =====================================================
 @app.route("/api/properties/search")
 def api_properties_search():
