@@ -2135,6 +2135,7 @@ def add_property():
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
+
     # ==========================================
     # HANDLE FORM SUBMISSION
     # ==========================================
@@ -2150,11 +2151,26 @@ def add_property():
             # BASIC PROPERTY INFORMATION
             # ==========================================
 
-            title = request.form.get("title", "").strip()
+            title = request.form.get(
+                "title",
+                ""
+            ).strip()
 
             if not title:
-                flash("Property title is required.", "danger")
-                return redirect(url_for("add_property"))
+
+                flash(
+                    "Property title is required.",
+                    "danger"
+                )
+
+                return redirect(
+                    url_for("add_property")
+                )
+
+
+            # ==========================================
+            # GENERATE UNIQUE SLUG
+            # ==========================================
 
             slug = (
                 title.lower()
@@ -2163,20 +2179,89 @@ def add_property():
                 + str(uuid.uuid4())[:6]
             )
 
+
+            # ==========================================
+            # PURPOSE
+            # ==========================================
+
             purpose = request.form.get(
                 "purpose",
                 ""
             ).strip()
+
+
+            allowed_purposes = [
+                "Sale",
+                "Rent"
+            ]
+
+            if purpose not in allowed_purposes:
+
+                flash(
+                    "Please select a valid property purpose.",
+                    "danger"
+                )
+
+                return redirect(
+                    url_for("add_property")
+                )
+
+
+            # ==========================================
+            # PROPERTY TYPE
+            # ==========================================
 
             property_type = request.form.get(
                 "property_type",
                 ""
             ).strip()
 
+
+            allowed_property_types = [
+                "Villa",
+                "Apartment",
+                "Office",
+                "Commercial Building"
+            ]
+
+            if property_type not in allowed_property_types:
+
+                flash(
+                    "Please select a valid property type.",
+                    "danger"
+                )
+
+                return redirect(
+                    url_for("add_property")
+                )
+
+
+            # ==========================================
+            # LOCATION
+            # ==========================================
+
             location = request.form.get(
                 "location",
                 ""
             ).strip()
+
+
+            allowed_locations = [
+                "Doha",
+                "Lusail",
+                "The Pearl",
+                "West Bay",
+                "Al Wakrah"
+            ]
+
+            if location not in allowed_locations:
+
+                location = "Doha"
+
+
+            # ==========================================
+            # PROPERTY ADDRESS
+            # ==========================================
 
             address = request.form.get(
                 "address",
@@ -2185,49 +2270,86 @@ def add_property():
 
 
             # ==========================================
-            # PROPERTY NUMERIC INFORMATION
+            # NUMERIC PROPERTY INFORMATION
             # ==========================================
 
             price = request.form.get(
                 "price",
-                0
-            )
+                "0"
+            ).strip()
 
             bedrooms = request.form.get(
                 "bedrooms",
-                0
-            )
+                "0"
+            ).strip()
 
             bathrooms = request.form.get(
                 "bathrooms",
-                0
-            )
+                "0"
+            ).strip()
 
             area = request.form.get(
                 "area",
-                0
-            )
+                "0"
+            ).strip()
 
             parking = request.form.get(
                 "parking",
-                0
-            )
+                "0"
+            ).strip()
+
+
+            # ==========================================
+            # VALIDATE NUMERIC VALUES
+            # ==========================================
+
+            try:
+
+                price = float(price) if price else 0
+
+                bedrooms = int(bedrooms) if bedrooms else 0
+
+                bathrooms = int(bathrooms) if bathrooms else 0
+
+                area = float(area) if area else 0
+
+                parking = int(parking) if parking else 0
+
+
+            except (ValueError, TypeError):
+
+                flash(
+                    "Please enter valid numeric values for price, bedrooms, bathrooms, area and parking.",
+                    "danger"
+                )
+
+                return redirect(
+                    url_for("add_property")
+                )
+
+
+            # ==========================================
+            # PREVENT NEGATIVE VALUES
+            # ==========================================
+
+            if price < 0:
+                price = 0
+
+            if bedrooms < 0:
+                bedrooms = 0
+
+            if bathrooms < 0:
+                bathrooms = 0
+
+            if area < 0:
+                area = 0
+
+            if parking < 0:
+                parking = 0
 
 
             # ==========================================
             # FURNISHED
-            # ==========================================
-            #
-            # Railway database:
-            #
-            # enum(
-            #   'Not Furnished',
-            #   'Semi Furnished',
-            #   'Fully Furnished'
-            # )
-            #
-            # We save the value EXACTLY as received
-            # from the HTML form.
             # ==========================================
 
             furnished = request.form.get(
@@ -2236,16 +2358,15 @@ def add_property():
             ).strip()
 
 
-            # Only allow values that actually exist
-            # in the database.
-
             allowed_furnished = [
                 "Not Furnished",
                 "Semi Furnished",
                 "Fully Furnished"
             ]
 
+
             if furnished not in allowed_furnished:
+
                 furnished = "Not Furnished"
 
 
@@ -2270,11 +2391,33 @@ def add_property():
 
 
             # ==========================================
-            # DEFAULT PROPERTY STATUS
+            # BASIC GOOGLE MAP URL VALIDATION
             # ==========================================
-            #
-            # Database:
-            # enum('Available','Sold','Rented')
+
+            if map_embed_url:
+
+                if not (
+                    map_embed_url.startswith(
+                        "https://www.google.com/maps/"
+                    )
+                    or
+                    map_embed_url.startswith(
+                        "https://maps.google.com/"
+                    )
+                ):
+
+                    flash(
+                        "Please enter a valid Google Maps embed URL.",
+                        "danger"
+                    )
+
+                    return redirect(
+                        url_for("add_property")
+                    )
+
+
+            # ==========================================
+            # DEFAULT PROPERTY STATUS
             # ==========================================
 
             status = "Available"
@@ -2283,12 +2426,47 @@ def add_property():
             # ==========================================
             # DEFAULT FEATURED STATUS
             # ==========================================
-            #
-            # Database:
-            # enum('Yes','No')
-            # ==========================================
 
             featured = "No"
+
+
+            # ==========================================
+            # PROPERTY FEATURES
+            # ==========================================
+
+            features = request.form.getlist(
+                "features"
+            )
+
+
+            allowed_features = [
+                "Swimming Pool",
+                "Smart Home",
+                "Sea View",
+                "Private Garden",
+                "Gym",
+                "Security 24/7",
+                "Maid Room",
+                "Balcony"
+            ]
+
+
+            cleaned_features = []
+
+
+            for feature in features:
+
+                feature = feature.strip()
+
+                if (
+                    feature
+                    and feature in allowed_features
+                    and feature not in cleaned_features
+                ):
+
+                    cleaned_features.append(
+                        feature
+                    )
 
 
             # ==========================================
@@ -2296,6 +2474,7 @@ def add_property():
             # ==========================================
 
             conn = get_db_connection()
+
             cursor = conn.cursor()
 
 
@@ -2313,16 +2492,36 @@ def add_property():
 
 
             # ==========================================
-            # MAX IMAGE SIZE
+            # REQUIRE AT LEAST ONE IMAGE
             # ==========================================
-            #
-            # Maximum allowed per image = 10 MB
-            #
-            # We cannot rely only on image.content_length
-            # because it may be None.
-            #
-            # Instead, seek to the end of the uploaded
-            # file and determine the actual size.
+
+            valid_images = [
+                image
+                for image in images
+                if image and image.filename
+            ]
+
+
+            if not valid_images:
+
+                cursor.close()
+                conn.close()
+
+                conn = None
+                cursor = None
+
+                flash(
+                    "Please upload at least one property image.",
+                    "danger"
+                )
+
+                return redirect(
+                    url_for("add_property")
+                )
+
+
+            # ==========================================
+            # MAXIMUM IMAGE SIZE
             # ==========================================
 
             MAX_IMAGE_SIZE = 10 * 1024 * 1024
@@ -2332,33 +2531,19 @@ def add_property():
             # PROCESS EACH IMAGE
             # ==========================================
 
-            for image in images:
-
-                # Ignore empty file fields
-
-                if not image:
-                    continue
-
-                if not image.filename:
-                    continue
+            for image in valid_images:
 
 
                 # ==========================================
                 # CHECK FILE EXTENSION
                 # ==========================================
 
-                if not allowed_file(image.filename):
+                if not allowed_file(
+                    image.filename
+                ):
 
-                    cursor.close()
-                    conn.close()
-
-                    flash(
-                        f"Invalid image file: {image.filename}",
-                        "danger"
-                    )
-
-                    return redirect(
-                        url_for("add_property")
+                    raise Exception(
+                        f"Invalid image file: {image.filename}"
                     )
 
 
@@ -2377,19 +2562,17 @@ def add_property():
 
                     image.seek(0)
 
+
                 except Exception:
 
                     file_size = 0
 
 
                 # ==========================================
-                # REJECT FILE ABOVE 10 MB
+                # REJECT IMAGE ABOVE 10 MB
                 # ==========================================
 
                 if file_size > MAX_IMAGE_SIZE:
-
-                    cursor.close()
-                    conn.close()
 
                     size_mb = round(
                         file_size / (
@@ -2398,14 +2581,9 @@ def add_property():
                         2
                     )
 
-                    flash(
+                    raise Exception(
                         f"Image '{image.filename}' is too large "
-                        f"({size_mb} MB). Maximum allowed size is 10 MB.",
-                        "danger"
-                    )
-
-                    return redirect(
-                        url_for("add_property")
+                        f"({size_mb} MB). Maximum allowed size is 10 MB."
                     )
 
 
@@ -2431,13 +2609,17 @@ def add_property():
                     )
 
 
+                # ==========================================
+                # SAVE IMAGE URL
+                # ==========================================
+
                 uploaded_images.append(
                     image_url
                 )
 
 
                 # ==========================================
-                # FIRST IMAGE = MAIN IMAGE
+                # FIRST IMAGE = MAIN PROPERTY IMAGE
                 # ==========================================
 
                 if main_image is None:
@@ -2534,41 +2716,32 @@ def add_property():
             # SAVE PROPERTY FEATURES
             # ==========================================
 
-            features = request.form.getlist(
-                "features"
-            )
+            for feature in cleaned_features:
 
-
-            for feature in features:
-
-                feature = feature.strip()
-
-                if feature:
-
-                    cursor.execute(
-                        """
-                        INSERT INTO property_features
-                        (
-                            property_id,
-                            feature_name
-                        )
-
-                        VALUES
-                        (
-                            %s,
-                            %s
-                        )
-                        """,
-
-                        (
-                            property_id,
-                            feature
-                        )
+                cursor.execute(
+                    """
+                    INSERT INTO property_features
+                    (
+                        property_id,
+                        feature_name
                     )
+
+                    VALUES
+                    (
+                        %s,
+                        %s
+                    )
+                    """,
+
+                    (
+                        property_id,
+                        feature
+                    )
+                )
 
 
             # ==========================================
-            # SAVE CLOUDINARY IMAGES
+            # SAVE PROPERTY IMAGES
             # ==========================================
 
             for image_url in uploaded_images:
@@ -2603,7 +2776,7 @@ def add_property():
 
 
             # ==========================================
-            # CLOSE DATABASE
+            # CLOSE DATABASE CONNECTION
             # ==========================================
 
             cursor.close()
@@ -2632,45 +2805,59 @@ def add_property():
             )
 
 
+        # ==========================================
+        # ERROR HANDLING
+        # ==========================================
+
         except Exception as e:
 
             # ==========================================
-            # ROLLBACK IF SOMETHING FAILS
+            # ROLLBACK DATABASE
             # ==========================================
 
             try:
 
                 if conn:
+
                     conn.rollback()
 
             except Exception:
+
                 pass
 
 
             # ==========================================
-            # CLOSE DATABASE SAFELY
+            # CLOSE CURSOR
             # ==========================================
 
             try:
 
                 if cursor:
+
                     cursor.close()
 
             except Exception:
-                pass
 
-
-            try:
-
-                if conn:
-                    conn.close()
-
-            except Exception:
                 pass
 
 
             # ==========================================
-            # SHOW ERROR IN RENDER LOG
+            # CLOSE CONNECTION
+            # ==========================================
+
+            try:
+
+                if conn:
+
+                    conn.close()
+
+            except Exception:
+
+                pass
+
+
+            # ==========================================
+            # LOG ERROR
             # ==========================================
 
             print(
@@ -2680,14 +2867,36 @@ def add_property():
 
 
             # ==========================================
-            # USER ERROR MESSAGE
+            # USER MESSAGE
             # ==========================================
 
-            flash(
-                "Unable to add property. "
-                "Please check the information and try again.",
-                "danger"
-            )
+            error_message = str(e)
+
+
+            # Give the user a useful message for
+            # validation/upload errors while keeping
+            # database errors generic.
+
+            if (
+                "too large" in error_message.lower()
+                or
+                "invalid image" in error_message.lower()
+                or
+                "google maps" in error_message.lower()
+            ):
+
+                flash(
+                    error_message,
+                    "danger"
+                )
+
+            else:
+
+                flash(
+                    "Unable to add property. "
+                    "Please check the information and try again.",
+                    "danger"
+                )
 
 
             return redirect(
@@ -2702,7 +2911,6 @@ def add_property():
     return render_template(
         "admin/add_property.html"
     )
-
 
 
 
