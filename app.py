@@ -2886,191 +2886,731 @@ def manage_properties():
 @app.route("/admin/edit-property/<int:id>", methods=["GET", "POST"])
 def edit_property(id):
 
+    # ==========================================
+    # ADMIN LOGIN CHECK
+    # ==========================================
+
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
+    conn = None
+    cursor = None
 
-    conn = get_db_connection()
+    try:
 
-    cursor = conn.cursor(dictionary=True)
+        # ==========================================
+        # DATABASE CONNECTION
+        # ==========================================
 
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
+        # ==========================================
+        # HANDLE FORM SUBMISSION
+        # ==========================================
 
-    # =========================
-    # UPDATE PROPERTY
-    # =========================
+        if request.method == "POST":
 
-    if request.method == "POST":
+            # ==========================================
+            # BASIC PROPERTY INFORMATION
+            # ==========================================
 
+            title = request.form.get(
+                "title",
+                ""
+            ).strip()
 
-        title = request.form.get("title")
-        purpose = request.form.get("purpose")
-        property_type = request.form.get("property_type")
-        location = request.form.get("location")
-        address = request.form.get("address")
-        price = request.form.get("price", 0)
-        bedrooms = request.form.get("bedrooms", 0)
-        bathrooms = request.form.get("bathrooms", 0)
-        area = request.form.get("area", 0)
-        parking = request.form.get("parking", 0)
-        furnished = request.form.get("furnished")
-        status = request.form.get("status")
-        description = request.form.get("description")
+            if not title:
+                flash(
+                    "Property title is required.",
+                    "danger"
+                )
 
-
-
-        cursor.execute(
-        """
-        UPDATE properties
-
-        SET
-
-        title=%s,
-        purpose=%s,
-        property_type=%s,
-        location=%s,
-        address=%s,
-        price=%s,
-        bedrooms=%s,
-        bathrooms=%s,
-        area=%s,
-        parking=%s,
-        furnished=%s,
-        status=%s,
-        description=%s
-
-        WHERE id=%s
-
-        """,
-        (
-        title,
-        purpose,
-        property_type,
-        location,
-        address,
-        price,
-        bedrooms,
-        bathrooms,
-        area,
-        parking,
-        furnished,
-        status,
-        description,
-        id
-        )
-        )
+                return redirect(
+                    url_for(
+                        "edit_property",
+                        id=id
+                    )
+                )
 
 
+            purpose = request.form.get(
+                "purpose",
+                ""
+            ).strip()
 
-        # =========================
-        # UPDATE PROPERTY FEATURES
-        # =========================
 
+            property_type = request.form.get(
+                "property_type",
+                ""
+            ).strip()
+
+
+            location = request.form.get(
+                "location",
+                ""
+            ).strip()
+
+
+            address = request.form.get(
+                "address",
+                ""
+            ).strip()
+
+
+            # ==========================================
+            # PROPERTY NUMERIC INFORMATION
+            # ==========================================
+
+            price = request.form.get(
+                "price",
+                0
+            )
+
+
+            bedrooms = request.form.get(
+                "bedrooms",
+                0
+            )
+
+
+            bathrooms = request.form.get(
+                "bathrooms",
+                0
+            )
+
+
+            area = request.form.get(
+                "area",
+                0
+            )
+
+
+            parking = request.form.get(
+                "parking",
+                0
+            )
+
+
+            # ==========================================
+            # FURNISHED
+            # ==========================================
+
+            furnished = request.form.get(
+                "furnished",
+                "Not Furnished"
+            ).strip()
+
+
+            allowed_furnished = [
+                "Not Furnished",
+                "Semi Furnished",
+                "Fully Furnished"
+            ]
+
+
+            if furnished not in allowed_furnished:
+
+                furnished = "Not Furnished"
+
+
+            # ==========================================
+            # PROPERTY STATUS
+            # ==========================================
+
+            status = request.form.get(
+                "status",
+                "Available"
+            ).strip()
+
+
+            allowed_status = [
+                "Available",
+                "Sold",
+                "Rented"
+            ]
+
+
+            if status not in allowed_status:
+
+                status = "Available"
+
+
+            # ==========================================
+            # FEATURED
+            #
+            # IMPORTANT:
+            #
+            # Your database column is INTEGER.
+            #
+            # Therefore:
+            #
+            # Yes = 1
+            # No  = 0
+            # ==========================================
+
+            featured = request.form.get(
+                "featured",
+                "0"
+            ).strip()
+
+
+            if featured.lower() in [
+                "yes",
+                "1",
+                "true",
+                "on"
+            ]:
+
+                featured = 1
+
+            else:
+
+                featured = 0
+
+
+            # ==========================================
+            # DESCRIPTION
+            # ==========================================
+
+            description = request.form.get(
+                "description",
+                ""
+            ).strip()
+
+
+            # ==========================================
+            # GOOGLE MAPS EMBED URL
+            # ==========================================
+
+            map_embed_url = request.form.get(
+                "map_embed_url",
+                ""
+            ).strip()
+
+
+            # ==========================================
+            # UPDATE BASIC PROPERTY INFORMATION
+            # ==========================================
+
+            cursor.execute(
+                """
+                UPDATE properties
+
+                SET
+
+                    title=%s,
+                    purpose=%s,
+                    property_type=%s,
+                    location=%s,
+                    address=%s,
+                    price=%s,
+                    bedrooms=%s,
+                    bathrooms=%s,
+                    area=%s,
+                    parking=%s,
+                    furnished=%s,
+                    featured=%s,
+                    status=%s,
+                    description=%s,
+                    map_embed_url=%s
+
+                WHERE id=%s
+                """,
+
+                (
+                    title,
+                    purpose,
+                    property_type,
+                    location,
+                    address,
+                    price,
+                    bedrooms,
+                    bathrooms,
+                    area,
+                    parking,
+                    furnished,
+                    featured,
+                    status,
+                    description,
+                    map_embed_url,
+                    id
+                )
+            )
+
+
+            # ==========================================
+            # UPDATE PROPERTY FEATURES
+            # ==========================================
+
+            cursor.execute(
+                """
+                DELETE FROM property_features
+
+                WHERE property_id=%s
+                """,
+
+                (id,)
+            )
+
+
+            selected_features = request.form.getlist(
+                "features"
+            )
+
+
+            for feature in selected_features:
+
+                feature = feature.strip()
+
+                if feature:
+
+                    cursor.execute(
+                        """
+                        INSERT INTO property_features
+                        (
+                            property_id,
+                            feature_name
+                        )
+
+                        VALUES
+                        (
+                            %s,
+                            %s
+                        )
+                        """,
+
+                        (
+                            id,
+                            feature
+                        )
+                    )
+
+
+            # ==========================================
+            # HANDLE NEW PROPERTY IMAGES
+            # ==========================================
+
+            images = request.files.getlist(
+                "images"
+            )
+
+
+            MAX_IMAGE_SIZE = 10 * 1024 * 1024
+
+
+            uploaded_images = []
+
+
+            for image in images:
+
+                # Ignore empty upload fields
+
+                if not image:
+                    continue
+
+
+                if not image.filename:
+                    continue
+
+
+                # ==========================================
+                # CHECK FILE EXTENSION
+                # ==========================================
+
+                if not allowed_file(
+                    image.filename
+                ):
+
+                    flash(
+                        f"Invalid image file: {image.filename}",
+                        "danger"
+                    )
+
+                    conn.rollback()
+
+                    return redirect(
+                        url_for(
+                            "edit_property",
+                            id=id
+                        )
+                    )
+
+
+                # ==========================================
+                # CHECK ACTUAL FILE SIZE
+                # ==========================================
+
+                try:
+
+                    image.seek(
+                        0,
+                        os.SEEK_END
+                    )
+
+                    file_size = image.tell()
+
+                    image.seek(0)
+
+                except Exception:
+
+                    file_size = 0
+
+
+                # ==========================================
+                # MAXIMUM 10 MB
+                # ==========================================
+
+                if file_size > MAX_IMAGE_SIZE:
+
+                    size_mb = round(
+                        file_size / (
+                            1024 * 1024
+                        ),
+                        2
+                    )
+
+
+                    flash(
+                        f"Image '{image.filename}' is too large "
+                        f"({size_mb} MB). Maximum allowed size is 10 MB.",
+                        "danger"
+                    )
+
+
+                    conn.rollback()
+
+
+                    return redirect(
+                        url_for(
+                            "edit_property",
+                            id=id
+                        )
+                    )
+
+
+                # ==========================================
+                # UPLOAD TO CLOUDINARY
+                # ==========================================
+
+                result = cloudinary.uploader.upload(
+                    image,
+                    folder="prestigious_real_estate/properties"
+                )
+
+
+                image_url = result.get(
+                    "secure_url"
+                )
+
+
+                if not image_url:
+
+                    raise Exception(
+                        "Cloudinary did not return an image URL."
+                    )
+
+
+                uploaded_images.append(
+                    image_url
+                )
+
+
+            # ==========================================
+            # SAVE NEW IMAGES
+            # ==========================================
+
+            for image_url in uploaded_images:
+
+                cursor.execute(
+                    """
+                    INSERT INTO property_images
+                    (
+                        property_id,
+                        image_name
+                    )
+
+                    VALUES
+                    (
+                        %s,
+                        %s
+                    )
+                    """,
+
+                    (
+                        id,
+                        image_url
+                    )
+                )
+
+
+            # ==========================================
+            # IF NEW IMAGES WERE UPLOADED
+            #
+            # Keep the existing main image unless there
+            # is currently no main image.
+            # ==========================================
+
+            if uploaded_images:
+
+                cursor.execute(
+                    """
+                    SELECT main_image
+                    FROM properties
+                    WHERE id=%s
+                    """,
+
+                    (id,)
+                )
+
+
+                current_property = cursor.fetchone()
+
+
+                current_main_image = None
+
+
+                if current_property:
+
+                    current_main_image = (
+                        current_property.get(
+                            "main_image"
+                        )
+                    )
+
+
+                # ==========================================
+                # ONLY SET FIRST NEW IMAGE AS MAIN IMAGE
+                # IF THERE IS NO EXISTING MAIN IMAGE
+                # ==========================================
+
+                if not current_main_image:
+
+                    cursor.execute(
+                        """
+                        UPDATE properties
+
+                        SET main_image=%s
+
+                        WHERE id=%s
+                        """,
+
+                        (
+                            uploaded_images[0],
+                            id
+                        )
+                    )
+
+
+            # ==========================================
+            # COMMIT EVERYTHING
+            # ==========================================
+
+            conn.commit()
+
+
+            # ==========================================
+            # CLOSE DATABASE
+            # ==========================================
+
+            cursor.close()
+            conn.close()
+
+            cursor = None
+            conn = None
+
+
+            # ==========================================
+            # SUCCESS MESSAGE
+            # ==========================================
+
+            flash(
+                "Property updated successfully.",
+                "success"
+            )
+
+
+            # ==========================================
+            # RETURN TO PROPERTY MANAGEMENT
+            # ==========================================
+
+            return redirect(
+                url_for("manage_properties")
+            )
+
+
+        # ==========================================
+        # GET PROPERTY DETAILS
+        # ==========================================
 
         cursor.execute(
             """
-            DELETE FROM property_features
-            WHERE property_id=%s
+            SELECT *
+            FROM properties
+            WHERE id=%s
             """,
+
             (id,)
         )
 
 
-
-        selected_features = request.form.getlist("features")
-
+        property = cursor.fetchone()
 
 
-        for feature in selected_features:
+        # ==========================================
+        # PROPERTY NOT FOUND
+        # ==========================================
 
-            cursor.execute(
+        if not property:
+
+            cursor.close()
+            conn.close()
+
+            cursor = None
+            conn = None
+
+            flash(
+                "Property not found.",
+                "danger"
+            )
+
+            return redirect(
+                url_for("manage_properties")
+            )
+
+
+        # ==========================================
+        # EXISTING FEATURES
+        # ==========================================
+
+        cursor.execute(
             """
-            INSERT INTO property_features
-            (
-            property_id,
-            feature_name
-            )
-
-            VALUES
-            (%s,%s)
-
+            SELECT feature_name
+            FROM property_features
+            WHERE property_id=%s
             """,
-            (
-            id,
-            feature
-            )
-            )
+
+            (id,)
+        )
 
 
+        saved_features = cursor.fetchall()
 
-        conn.commit()
+
+        # ==========================================
+        # EXISTING PROPERTY IMAGES
+        # ==========================================
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM property_images
+            WHERE property_id=%s
+            ORDER BY id ASC
+            """,
+
+            (id,)
+        )
 
 
+        property_images = cursor.fetchall()
+
+
+        # ==========================================
+        # CLOSE DATABASE
+        # ==========================================
 
         cursor.close()
         conn.close()
 
+        cursor = None
+        conn = None
 
+
+        # ==========================================
+        # RENDER EDIT PAGE
+        # ==========================================
+
+        return render_template(
+            "admin/edit_property.html",
+            property=property,
+            saved_features=saved_features,
+            property_images=property_images
+        )
+
+
+    # ==========================================
+    # ERROR HANDLING
+    # ==========================================
+
+    except Exception as e:
+
+        # ==========================================
+        # ROLLBACK
+        # ==========================================
+
+        try:
+
+            if conn:
+                conn.rollback()
+
+        except Exception:
+            pass
+
+
+        # ==========================================
+        # CLOSE CURSOR
+        # ==========================================
+
+        try:
+
+            if cursor:
+                cursor.close()
+
+        except Exception:
+            pass
+
+
+        # ==========================================
+        # CLOSE CONNECTION
+        # ==========================================
+
+        try:
+
+            if conn:
+                conn.close()
+
+        except Exception:
+            pass
+
+
+        # ==========================================
+        # RENDER LOG
+        # ==========================================
+
+        print(
+            "EDIT PROPERTY ERROR:",
+            str(e)
+        )
+
+
+        # ==========================================
+        # USER MESSAGE
+        # ==========================================
 
         flash(
-            "Property updated successfully",
-            "success"
+            "Unable to update property. "
+            "Please check the information and try again.",
+            "danger"
         )
 
 
         return redirect(
-            url_for("manage_properties")
+            url_for(
+                "edit_property",
+                id=id
+            )
         )
-
-
-
-
-
-    # =========================
-    # GET PROPERTY DETAILS
-    # =========================
-
-
-    cursor.execute(
-    """
-    SELECT *
-    FROM properties
-    WHERE id=%s
-    """,
-    (id,)
-    )
-
-
-    property = cursor.fetchone()
-
-
-
-    # Existing features
-
-    cursor.execute(
-    """
-    SELECT feature_name
-    FROM property_features
-    WHERE property_id=%s
-    """,
-    (id,)
-    )
-
-
-    saved_features = cursor.fetchall()
-
-
-
-    cursor.close()
-    conn.close()
-
-
-
-    return render_template(
-        "admin/edit_property.html",
-        property=property,
-        saved_features=saved_features
-    )
 
 
 
